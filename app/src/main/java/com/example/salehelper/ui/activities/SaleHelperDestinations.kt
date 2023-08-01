@@ -6,6 +6,7 @@ import androidx.compose.material.icons.filled.Create
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.ui.graphics.vector.ImageVector
 
+// todo - mover essa interface daqui
 interface SaleHelperDestination {
     val icon: ImageVector
     val route: String
@@ -16,22 +17,30 @@ interface SaleHelperDestination {
  */
 object HomeScreen : SaleHelperDestination {
     override val icon = Icons.Filled.Home
-    override val route = "homescreen"
+    override val route = "home_screen"
 }
 
-object RegisterScreen : SaleHelperDestination {
+object RegisterProductScreen : SaleHelperDestination {
     override val icon = Icons.Filled.Add
-    override val route = "registerscreen"
+    override val route = "register_product_screen"
 }
 
-object TransactionScreen : SaleHelperDestination {
+// posição consolidada em inglês para facilitar a busca
+
+object ConsolidatedPositionScreen : SaleHelperDestination {
     override val icon = Icons.Filled.Create
-    override val route = "transactionscreen"
+    override val route = "consolidated_position_screen"
 }
 
 object RegisterTransactionScreen : SaleHelperDestination {
     override val icon = Icons.Filled.Add
-    override val route = "registertransactionscreen"
+    override val route = "register_transaction_screen"
 }
 
-val screens = listOf(HomeScreen, RegisterScreen, TransactionScreen, RegisterTransactionScreen)
+val screens =
+    listOf(
+        HomeScreen,
+        RegisterProductScreen,
+        ConsolidatedPositionScreen,
+        RegisterTransactionScreen,
+    )

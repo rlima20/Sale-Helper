@@ -5,5 +5,5 @@ import androidx.compose.runtime.Composable
 
 @Composable
 fun TransactionScreen() {
-    Text("Transaction Screen")
+    Text("Consolidated position Screen")
 }

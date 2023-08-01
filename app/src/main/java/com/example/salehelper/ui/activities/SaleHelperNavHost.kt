@@ -11,7 +11,7 @@ import com.example.salehelper.ui.components.RegisterTransactionScreen
 import com.example.salehelper.ui.components.TransactionScreen
 
 @Composable
-fun RallyNavHost(
+fun SaleHelperNavHost(
     navController: NavHostController,
     modifier: Modifier = Modifier,
 ) {
@@ -23,10 +23,10 @@ fun RallyNavHost(
         composable(route = HomeScreen.route) {
             HomeScreen()
         }
-        composable(route = RegisterScreen.route) {
+        composable(route = RegisterProductScreen.route) {
             RegisterScreen()
         }
-        composable(route = TransactionScreen.route) {
+        composable(route = ConsolidatedPositionScreen.route) {
             TransactionScreen()
         }
         composable(route = RegisterTransactionScreen.route) {
