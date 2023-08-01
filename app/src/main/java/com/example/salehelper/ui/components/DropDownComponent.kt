@@ -11,10 +11,6 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Menu
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.layout.onGloballyPositioned
@@ -24,87 +20,47 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.unit.toSize
 
 @Composable
-fun DropDownComponent() {
-    var mExpanded by remember { mutableStateOf(false) }
-    val mCities =
-        listOf(
-            "Home",
-            "Cadastro de produtos",
-            "Registro de transação",
-            "Posição consolidada",
-            )
-    var mSelectedText by remember { mutableStateOf("") }
-    var mTextFieldSize by remember { mutableStateOf(Size.Zero) }
-
+fun DropDownComponent(
+    screens: List<String>,
+    isMenuExpanded: Boolean,
+    textFieldSize: Size,
+    onMenuIconClicked: () -> Unit = {},
+    onDismissRequest: () -> Unit = {},
+    onDropDownMenuItemClicked: (String) -> Unit = {},
+    onChangeTextFieldSize: (size: Size) -> Unit = {},
+) {
     Column {
         Icon(
             Icons.Rounded.Menu,
             "contentDescription",
             Modifier.clickable(
                 onClick = {
-                    mExpanded = !mExpanded
+                    onMenuIconClicked()
                 },
             ),
         )
 
         DropdownMenu(
-            expanded = mExpanded,
-            onDismissRequest = {
-                mExpanded = false
-            },
-            modifier = Modifier
-                .fillMaxWidth()
-                .onGloballyPositioned { coordinates ->
-                    mTextFieldSize = coordinates.size.toSize()
-                }
-                .width(with(LocalDensity.current) { mTextFieldSize.width.toDp() }),
-        ) {
-            mCities.forEach { label ->
-                DropdownMenuItem(
-                    onClick = {
-                        mSelectedText = label
-                        mExpanded = false
-                    },
-                    content = {
-                        Column {
-                            Text(
-                                text = label,
-                                fontSize = 16.sp,
-                            )
-                        }
-                    },
-                )
-            }
-        }
-    }
-}
-
-@Composable
-fun Dropdown(
-    mExpanded: Boolean,
-    mCities: List<String>,
-    mTextFieldSize: Size,
-    onDismissRequest: () -> Unit = {},
-    onDropdownMenuItemClicked: (String) -> Unit = {},
-) {
-    Column {
-        DropdownMenu(
-            expanded = mExpanded,
+            expanded = isMenuExpanded,
             onDismissRequest = {
                 onDismissRequest()
             },
             modifier = Modifier
-                .width(with(LocalDensity.current) { mTextFieldSize.width.toDp() }),
+                .fillMaxWidth()
+                .onGloballyPositioned { coordinates ->
+                    onChangeTextFieldSize(coordinates.size.toSize())
+                }
+                .width(with(LocalDensity.current) { textFieldSize.width.toDp() }),
         ) {
-            mCities.forEach { label ->
+            screens.forEach { screenName ->
                 DropdownMenuItem(
                     onClick = {
-                        onDropdownMenuItemClicked(label)
+                        onDropDownMenuItemClicked(screenName)
                     },
                     content = {
                         Column {
                             Text(
-                                text = label,
+                                text = screenName,
                                 fontSize = 16.sp,
                             )
                         }
@@ -118,5 +74,9 @@ fun Dropdown(
 @Composable
 @Preview
 fun DropDownComponentPreview() {
-    DropDownComponent()
+    DropDownComponent(
+        screens = listOf("Home", "Sales", "Products"),
+        isMenuExpanded = false,
+        textFieldSize = Size(0f, 0f),
+    )
 }

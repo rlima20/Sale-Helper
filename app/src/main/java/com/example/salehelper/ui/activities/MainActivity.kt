@@ -52,16 +52,16 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun SaleHelperApp() {
     SaleAdvisorTheme {
+        // Navigation variables
         val navController = rememberNavController()
         val currentBackStack by navController.currentBackStackEntryAsState()
         val currentDestination = currentBackStack?.destination
         val currentScreen = screens.find { it.route == currentDestination?.route } ?: HomeScreen
 
-        var mExpanded by remember { mutableStateOf(false) }
-        val mCities =
-            listOf("Delhi", "Mumbai", "Chennai", "Kolkata", "Hyderabad", "Bengaluru", "Pune")
-        var mSelectedText by remember { mutableStateOf("") }
-        var mTextFieldSize by remember { mutableStateOf(Size.Zero) }
+        // DropdownMenu variables
+        var isMenuExpanded by remember { mutableStateOf(false) }
+        var selectedScreen by remember { mutableStateOf("") }
+        var textFieldSize by remember { mutableStateOf(Size.Zero) }
 
         Scaffold(
             topBar = {
@@ -86,7 +86,24 @@ fun SaleHelperApp() {
                         fontSize = 22.sp,
                     )
 
-                    DropDownComponent()
+                    DropDownComponent(
+                        screens = com.example.salehelper.screens,
+                        isMenuExpanded = isMenuExpanded,
+                        textFieldSize = textFieldSize,
+                        onMenuIconClicked = {
+                            isMenuExpanded = !isMenuExpanded
+                        },
+                        onDismissRequest = {
+                            isMenuExpanded = false
+                        },
+                        onDropDownMenuItemClicked = { screen ->
+                            selectedScreen = screen
+                            isMenuExpanded = false
+                        },
+                        onChangeTextFieldSize = { size ->
+                            textFieldSize = size
+                        },
+                    )
                 }
             },
         ) {
@@ -94,34 +111,6 @@ fun SaleHelperApp() {
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 @Composable
 fun Menu(
@@ -295,4 +284,3 @@ fun Dropdown(
             modifier = Modifier.padding(innerPadding),
         )
     }*/
-
