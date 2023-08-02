@@ -6,11 +6,11 @@ plugins {
 }
 
 android {
-    namespace 'com.example.salehelper'
+    namespace 'com.example.mystore'
     compileSdk 33
 
     defaultConfig {
-        applicationId "com.example.salehelper"
+        applicationId "com.example.mystore"
         minSdk 24
         targetSdk 33
         versionCode 1

@@ -1,3 +1,11 @@
 <resources>
-    <string name="app_name">Sale Helper</string>
+    <string name="app_name">My Store</string>
+
+    <!-- Menu -->
+    <string name="my_store_home">Home</string>
+    <string name="my_store_register_product">Cadastro de produtos</string>
+    <string name="my_store_register_transaction">Registro de transação</string>
+    <string name="my_store_consolidated_position">Posição consolidada</string>
+
+
 </resources>
