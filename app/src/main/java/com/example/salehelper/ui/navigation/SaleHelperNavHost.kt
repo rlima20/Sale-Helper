@@ -6,10 +6,10 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.example.salehelper.ui.components.HomeScreen
-import com.example.salehelper.ui.components.RegisterScreen
-import com.example.salehelper.ui.components.RegisterTransactionScreen
-import com.example.salehelper.ui.components.TransactionScreen
+import com.example.salehelper.ui.components.screens.HomeScreen
+import com.example.salehelper.ui.components.screens.RegisterScreen
+import com.example.salehelper.ui.components.screens.RegisterTransactionScreen
+import com.example.salehelper.ui.components.screens.TransactionScreen
 
 @Composable
 fun SaleHelperNavHost(

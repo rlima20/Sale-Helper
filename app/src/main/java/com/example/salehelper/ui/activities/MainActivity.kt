@@ -13,10 +13,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.Icon
 import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Add
-import androidx.compose.material.icons.rounded.Home
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -29,11 +27,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.navigation.compose.rememberNavController
 import com.example.salehelper.R
-import com.example.salehelper.screenList
-import com.example.salehelper.ui.components.MenuComponent
+import com.example.salehelper.ui.components.topbar.TopBarComponent
 import com.example.salehelper.ui.navigation.ConsolidatedPositionScreen
 import com.example.salehelper.ui.navigation.HomeScreen
 import com.example.salehelper.ui.navigation.RegisterProductScreen
@@ -57,6 +53,8 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun SaleHelperApp() {
     SaleAdvisorTheme {
+        // todo - Essas variáveis devem ser movidas para o ViewModel
+        // todo - Adicionar strings
         // Navigation variables
         val navController = rememberNavController()
         var currentScreen: SaleHelperDestinationInterface by remember { mutableStateOf(HomeScreen) }
@@ -64,60 +62,35 @@ fun SaleHelperApp() {
 
         // DropdownMenu variables
         var isMenuExpanded by remember { mutableStateOf(false) }
-        var selectedScreen by remember { mutableStateOf("") }
         var textFieldSize by remember { mutableStateOf(Size.Zero) }
+
+        // TopNavigation variables
+        var shouldItemBeVisible by remember { mutableStateOf(false) }
 
         Scaffold(
             topBar = {
-                Row(
-                    modifier = Modifier
-                        .background(secondary)
-                        .padding(12.dp)
-                        .fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                ) {
-                    Icon(
-                        modifier = Modifier
-                            .padding(end = 16.dp)
-                            .clickable(
-                                onClick = {
-                                    navController.navigateSingleTopTo(HomeScreen.route)
-                                },
-                            ),
-                        imageVector = Icons.Rounded.Home,
-                        contentDescription = null,
-                        tint = Color.White,
-                    )
-
-                    Text(
-                        text = screenTitle,
-                        color = Color.White,
-                        fontSize = 18.sp,
-                    )
-
-                    MenuComponent(
-                        screens = screenList,
-                        isMenuExpanded = isMenuExpanded,
-                        textFieldSize = textFieldSize,
-                        onMenuIconClicked = {
-                            isMenuExpanded = !isMenuExpanded
-                        },
-                        onDismissRequest = {
-                            isMenuExpanded = false
-                        },
-                        onDropDownMenuItemClicked = { screen ->
-                            screenTitle = screen
-                            selectedScreen = screen
-                            isMenuExpanded = false
-                            currentScreen = setCurrentScreen(screen)
-                            navController.navigateSingleTopTo(currentScreen.route)
-                        },
-                        onChangeTextFieldSize = { size ->
-                            textFieldSize = size
-                        },
-                    )
-                }
+                TopBarComponent(
+                    screenTitle,
+                    shouldItemBeVisible,
+                    isMenuExpanded,
+                    textFieldSize,
+                    onHomeIconClicked = {
+                        screenTitle = "Home"
+                        navController.navigateSingleTopTo(HomeScreen.route)
+                    },
+                    onIconVisibilityClicked = {
+                        shouldItemBeVisible = !shouldItemBeVisible
+                    },
+                    onMenuIconClicked = { isMenuExpanded = !isMenuExpanded },
+                    onDismissRequest = { isMenuExpanded = false },
+                    onDropDownMenuItemClicked = { screen ->
+                        screenTitle = screen
+                        isMenuExpanded = false
+                        currentScreen = setCurrentScreen(screen)
+                        navController.navigateSingleTopTo(currentScreen.route)
+                    },
+                    onChangeTextFieldSize = { size -> textFieldSize = size },
+                )
             },
             content = {
                 SaleHelperNavHost(
@@ -140,7 +113,8 @@ fun SaleHelperApp() {
                             .size(20.dp)
                             .clickable(
                                 onClick = {
-                                    navController.navigateSingleTopTo(HomeScreen.route)
+                                    screenTitle = "Posição consilidada"
+                                    navController.navigateSingleTopTo(ConsolidatedPositionScreen.route)
                                 },
                             ),
                         painter = painterResource(id = R.drawable.position),
@@ -149,25 +123,27 @@ fun SaleHelperApp() {
                     )
                     Icon(
                         modifier = Modifier
+                            .size(20.dp)
                             .clickable(
                                 onClick = {
-                                    navController.navigateSingleTopTo(HomeScreen.route)
+                                    screenTitle = "Registro de transação"
+                                    navController.navigateSingleTopTo(RegisterTransactionScreen.route)
                                 },
                             ),
-                        imageVector = Icons.Rounded.Add,
+                        painter = painterResource(id = R.drawable.transaction),
                         contentDescription = null,
                         tint = Color.White,
                     )
                     Icon(
                         modifier = Modifier
                             .padding(end = 16.dp)
-                            .size(20.dp)
                             .clickable(
                                 onClick = {
-                                    navController.navigateSingleTopTo(HomeScreen.route)
+                                    screenTitle = "Cadastro de produtos"
+                                    navController.navigateSingleTopTo(RegisterProductScreen.route)
                                 },
                             ),
-                        painter = painterResource(id = R.drawable.transaction),
+                        imageVector = Icons.Rounded.Add,
                         contentDescription = null,
                         tint = Color.White,
                     )

@@ -1,4 +1,4 @@
-package com.example.salehelper.ui.components
+package com.example.salehelper.ui.components.topbar
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
