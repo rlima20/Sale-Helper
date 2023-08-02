@@ -1,4 +1,4 @@
-package com.example.salehelper.ui.activities.navigation
+package com.example.salehelper.ui.navigation
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add

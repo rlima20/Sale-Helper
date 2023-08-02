@@ -1,4 +1,4 @@
-package com.example.salehelper.ui.activities.navigation
+package com.example.salehelper.ui.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
