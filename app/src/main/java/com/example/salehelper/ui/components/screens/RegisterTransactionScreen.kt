@@ -5,5 +5,5 @@ import androidx.compose.runtime.Composable
 
 @Composable
 fun RegisterTransactionScreen() {
-    Text("Register transaction screen")
+    Text("Registro de transação")
 }

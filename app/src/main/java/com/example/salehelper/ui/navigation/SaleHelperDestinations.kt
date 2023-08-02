@@ -15,8 +15,6 @@ object RegisterProductScreen : SaleHelperDestinationInterface {
     override val route = "register_product_screen"
 }
 
-// posição consolidada em inglês para facilitar a busca
-
 object ConsolidatedPositionScreen : SaleHelperDestinationInterface {
     override val icon = Icons.Filled.Create
     override val route = "consolidated_position_screen"
