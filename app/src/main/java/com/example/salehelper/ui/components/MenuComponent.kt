@@ -13,6 +13,7 @@ import androidx.compose.material.icons.rounded.Menu
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
@@ -20,7 +21,8 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.unit.toSize
 
 @Composable
-fun DropDownComponent(
+fun MenuComponent(
+    modifier: Modifier = Modifier,
     screens: List<String>,
     isMenuExpanded: Boolean,
     textFieldSize: Size,
@@ -29,11 +31,12 @@ fun DropDownComponent(
     onDropDownMenuItemClicked: (String) -> Unit = {},
     onChangeTextFieldSize: (size: Size) -> Unit = {},
 ) {
-    Column {
+    Column(modifier = modifier) {
         Icon(
-            Icons.Rounded.Menu,
-            "contentDescription",
-            Modifier.clickable(
+            imageVector = Icons.Rounded.Menu,
+            contentDescription = null,
+            tint = Color.White,
+            modifier = Modifier.clickable(
                 onClick = {
                     onMenuIconClicked()
                 },
@@ -74,7 +77,7 @@ fun DropDownComponent(
 @Composable
 @Preview
 fun DropDownComponentPreview() {
-    DropDownComponent(
+    MenuComponent(
         screens = listOf("Home", "Sales", "Products"),
         isMenuExpanded = false,
         textFieldSize = Size(0f, 0f),

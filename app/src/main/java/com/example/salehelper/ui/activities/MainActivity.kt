@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -23,14 +24,21 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.example.salehelper.ui.components.DropDownComponent
-import com.example.salehelper.ui.theme.Purple700
+import com.example.salehelper.screenList
+import com.example.salehelper.ui.activities.navigation.ConsolidatedPositionScreen
+import com.example.salehelper.ui.activities.navigation.HomeScreen
+import com.example.salehelper.ui.activities.navigation.RegisterProductScreen
+import com.example.salehelper.ui.activities.navigation.RegisterTransactionScreen
+import com.example.salehelper.ui.activities.navigation.SaleHelperDestinationInterface
+import com.example.salehelper.ui.activities.navigation.SaleHelperNavHost
+import com.example.salehelper.ui.activities.navigation.navigateSingleTopTo
+import com.example.salehelper.ui.components.MenuComponent
 import com.example.salehelper.ui.theme.SaleAdvisorTheme
+import com.example.salehelper.ui.theme.secondary
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,9 +55,8 @@ fun SaleHelperApp() {
     SaleAdvisorTheme {
         // Navigation variables
         val navController = rememberNavController()
-        val currentBackStack by navController.currentBackStackEntryAsState()
-        val currentDestination = currentBackStack?.destination
-        var currentScreen = screens.find { it.route == currentDestination?.route } ?: HomeScreen
+        var currentScreen: SaleHelperDestinationInterface by remember { mutableStateOf(HomeScreen) }
+        var screenTitle: String by remember { mutableStateOf("Home") }
 
         // DropdownMenu variables
         var isMenuExpanded by remember { mutableStateOf(false) }
@@ -60,27 +67,33 @@ fun SaleHelperApp() {
             topBar = {
                 Row(
                     modifier = Modifier
-                        .background(Purple700)
+                        .background(secondary)
                         .padding(12.dp)
                         .fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.SpaceBetween,
                 ) {
                     Icon(
-                        Icons.Rounded.Home,
+                        modifier = Modifier
+                            .padding(end = 16.dp)
+                            .clickable(
+                                onClick = {
+                                    navController.navigateSingleTopTo(HomeScreen.route)
+                                },
+                            ),
+                        imageVector = Icons.Rounded.Home,
                         contentDescription = null,
                         tint = Color.White,
                     )
 
                     Text(
-                        text = "Alura",
+                        text = screenTitle,
                         color = Color.White,
-                        textAlign = TextAlign.Center,
-                        fontSize = 22.sp,
+                        fontSize = 18.sp,
                     )
 
-                    DropDownComponent(
-                        screens = com.example.salehelper.screens,
+                    MenuComponent(
+                        screens = screenList,
                         isMenuExpanded = isMenuExpanded,
                         textFieldSize = textFieldSize,
                         onMenuIconClicked = {
@@ -90,10 +103,11 @@ fun SaleHelperApp() {
                             isMenuExpanded = false
                         },
                         onDropDownMenuItemClicked = { screen ->
+                            screenTitle = screen
                             selectedScreen = screen
                             isMenuExpanded = false
                             currentScreen = setCurrentScreen(screen)
-                            navController.navigate(currentScreen.route)
+                            navController.navigateSingleTopTo(currentScreen.route)
                         },
                         onChangeTextFieldSize = { size ->
                             textFieldSize = size
@@ -101,16 +115,28 @@ fun SaleHelperApp() {
                     )
                 }
             },
-        ) { innerPadding ->
-            SaleHelperNavHost(
-                navController = navController,
-                modifier = Modifier.padding(innerPadding),
-            )
-        }
+            content = {
+                SaleHelperNavHost(
+                    navController = navController,
+                    modifier = Modifier.padding(it),
+                )
+            },
+            bottomBar = {
+                Row(
+                    modifier = Modifier
+                        .background(secondary)
+                        .padding(12.dp)
+                        .fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                ) {
+                }
+            },
+        )
     }
 }
 
-private fun setCurrentScreen(screen: String): SaleHelperDestination {
+private fun setCurrentScreen(screen: String): SaleHelperDestinationInterface {
     return when (screen) {
         "Home" -> HomeScreen
         "Cadastro de produtos" -> RegisterProductScreen
@@ -118,4 +144,10 @@ private fun setCurrentScreen(screen: String): SaleHelperDestination {
         "Posição consolidada" -> ConsolidatedPositionScreen
         else -> HomeScreen
     }
+}
+
+@Preview
+@Composable
+fun SaleHelperAppPreview() {
+    SaleHelperApp()
 }

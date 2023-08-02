@@ -1,6 +1,6 @@
 package com.example.salehelper
 
-val screens =
+val screenList =
     listOf(
         "Home",
         "Cadastro de produtos",

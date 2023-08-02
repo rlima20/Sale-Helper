@@ -1,46 +1,28 @@
-package com.example.salehelper.ui.activities
+package com.example.salehelper.ui.activities.navigation
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Create
 import androidx.compose.material.icons.filled.Home
-import androidx.compose.ui.graphics.vector.ImageVector
 
-// todo - mover essa interface daqui
-interface SaleHelperDestination {
-    val icon: ImageVector
-    val route: String
-}
-
-/**
- * Rally app navigation destinations
- */
-object HomeScreen : SaleHelperDestination {
+object HomeScreen : SaleHelperDestinationInterface {
     override val icon = Icons.Filled.Home
     override val route = "home_screen"
 }
 
-object RegisterProductScreen : SaleHelperDestination {
+object RegisterProductScreen : SaleHelperDestinationInterface {
     override val icon = Icons.Filled.Add
     override val route = "register_product_screen"
 }
 
 // posição consolidada em inglês para facilitar a busca
 
-object ConsolidatedPositionScreen : SaleHelperDestination {
+object ConsolidatedPositionScreen : SaleHelperDestinationInterface {
     override val icon = Icons.Filled.Create
     override val route = "consolidated_position_screen"
 }
 
-object RegisterTransactionScreen : SaleHelperDestination {
+object RegisterTransactionScreen : SaleHelperDestinationInterface {
     override val icon = Icons.Filled.Add
     override val route = "register_transaction_screen"
 }
-
-val screens =
-    listOf(
-        HomeScreen,
-        RegisterProductScreen,
-        ConsolidatedPositionScreen,
-        RegisterTransactionScreen,
-    )
