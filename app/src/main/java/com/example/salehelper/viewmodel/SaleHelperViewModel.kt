@@ -1,10 +1,7 @@
 package com.example.salehelper.viewmodel
 
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Home
 import androidx.compose.ui.geometry.Size
 import androidx.lifecycle.ViewModel
-import com.example.salehelper.ui.navigation.SaleHelperDestinationInterface
 import kotlinx.coroutines.flow.MutableStateFlow
 
 class SaleHelperViewModel : ViewModel() {

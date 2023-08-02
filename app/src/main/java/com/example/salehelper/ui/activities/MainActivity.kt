@@ -25,9 +25,12 @@ import com.example.salehelper.ui.navigation.SaleHelperNavHost
 import com.example.salehelper.ui.navigation.navigateSingleTopTo
 import com.example.salehelper.ui.theme.SaleHelperTheme
 import com.example.salehelper.viewmodel.SaleHelperViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : ComponentActivity() {
-    private val viewModel = SaleHelperViewModel()
+
+    private val viewModel: SaleHelperViewModel by viewModel()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -68,11 +71,6 @@ fun SaleHelperApp(viewModel: SaleHelperViewModel) {
                     },
                     onDropDownMenuItemClicked = { screen ->
                         currentScreen = transformStringToInterfaceObject(screen)
-                        /*                        viewModel.setCurrentScreen(
-                                                    screenInterfaceObject = transformStringToInterfaceObject(
-                                                        screen = screen,
-                                                    ),
-                                                )*/
                         viewModel.setScreenTitle(screen)
                         viewModel.setIsMenuExpanded(false)
                         navController.navigateSingleTopTo(currentScreen.route)
