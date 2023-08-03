@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="mcgpalette0_50">#e8e8e8</color>
-    <color name="mcgpalette0_100">#c6c6c6</color>
-    <color name="mcgpalette0_200">#a1a1a1</color>
-    <color name="mcgpalette0_300">#7b7b7b</color>
-    <color name="mcgpalette0_400">#5e5e5e</color>
-    <color name="mcgpalette0_500">#424242</color>
-    <color name="mcgpalette0_600">#3c3c3c</color>
-    <color name="mcgpalette0_700">#333333</color>
-    <color name="mcgpalette0_800">#2b2b2b</color>
-    <color name="mcgpalette0_900">#1d1d1d</color>
-    <color name="mcgpalette0_A100">#8aaeb2</color>
-    <color name="mcgpalette0_A200">#96bdc1</color>
-    <color name="mcgpalette0_A400">#a8d2d6</color>
-    <color name="mcgpalette0_A700">#bfe3e7</color>
+    <color name="color_50">#e8e8e8</color>
+    <color name="color_100">#c6c6c6</color>
+    <color name="color_200">#a1a1a1</color>
+    <color name="color_300">#7b7b7b</color>
+    <color name="color_400">#5e5e5e</color>
+    <color name="color_500">#424242</color>
+    <color name="color_600">#3c3c3c</color>
+    <color name="color_700">#333333</color>
+    <color name="color_800">#2b2b2b</color>
+    <color name="color_900">#1d1d1d</color>
+    <color name="color_A100">#8aaeb2</color>
+    <color name="color_A200">#96bdc1</color>
+    <color name="color_A400">#a8d2d6</color>
+    <color name="color_A700">#bfe3e7</color>
+    <color name="color_A800">#747474</color>
 </resources>

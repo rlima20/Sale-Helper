@@ -17,6 +17,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.example.mystore.R
+import com.example.mystore.ui.theme.primary
 import com.example.mystore.ui.theme.secondary
 
 @Composable
@@ -27,7 +28,7 @@ internal fun BottomBarComponent(
 ) {
     Row(
         modifier = Modifier
-            .background(secondary)
+            .background(primary)
             .padding(12.dp)
             .fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,

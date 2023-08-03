@@ -33,7 +33,7 @@ class SplashActivity : ComponentActivity() {
             }
             startActivity(intent)
             finish()
-        }, 2000)
+        }, 3000)
 
         setContent {
             SplashComponent()
@@ -45,8 +45,8 @@ class SplashActivity : ComponentActivity() {
         Surface(
             modifier = Modifier
                 .fillMaxSize()
-                .background(color = colorResource(id = R.color.mcgpalette0_300)),
-            color = colorResource(id = R.color.mcgpalette0_300),
+                .background(color = colorResource(id = R.color.color_800)),
+            color = colorResource(id = R.color.color_800),
         ) {
             Box(
                 contentAlignment = androidx.compose.ui.Alignment.Center,
@@ -55,9 +55,9 @@ class SplashActivity : ComponentActivity() {
                 Image(
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
-                        .size(280.dp)
-                        .background(color = colorResource(id = R.color.mcgpalette0_300)),
-                    painter = painterResource(id = R.drawable.my_store_launcher_image),
+                        .size(244.dp)
+                        .background(color = colorResource(id = R.color.color_800)),
+                    painter = painterResource(id = R.drawable.my_store_shop),
                     contentDescription = null,
                 )
             }

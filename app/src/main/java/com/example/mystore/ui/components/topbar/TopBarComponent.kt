@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.sp
 import com.example.mystore.R
 import com.example.mystore.screenList
 import com.example.mystore.toParse
+import com.example.mystore.ui.theme.primary
 import com.example.mystore.ui.theme.secondary
 
 @Composable
@@ -39,7 +40,7 @@ internal fun TopBarComponent(
 ) {
     Row(
         modifier = Modifier
-            .background(secondary)
+            .background(primary)
             .padding(12.dp)
             .fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
