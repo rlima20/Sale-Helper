@@ -18,10 +18,10 @@
     <string name="my_store_total">Total</string>
     <string name="my_store_overall_total">Total geral</string>
     <string name="my_store_transactions">Transações</string>
-    <string name="my_store_debits">Débitos</string>
-    <string name="my_store_gross_revenue">Receita bruta</string>
-    <string name="my_store_net_revenue">Receita líquida</string>
-    <string name="my_store_stock_value">Valor em estoque</string>
+    <string name="my_store_debits">Débitos: </string>
+    <string name="my_store_gross_revenue">Receita bruta: </string>
+    <string name="my_store_net_revenue">Receita líquida: </string>
+    <string name="my_store_stock_value">Valor em estoque: </string>
     <string name="my_store_product_registration">Cadastro de produto</string>
     <string name="my_store_product_update">Alteração de produto</string>
     <string name="my_store_description">Descrição</string>

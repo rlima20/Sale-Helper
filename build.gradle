@@ -4,6 +4,8 @@ buildscript {
         mockkVersion = '1.12.3'
         koin = '2.2.0'
         nav_version = '2.5.3'
+        room_version = '2.4.1'
+
     }
     dependencies {
         // Make sure that you have the Google services Gradle plugin dependency

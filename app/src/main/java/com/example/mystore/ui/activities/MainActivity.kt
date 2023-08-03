@@ -28,23 +28,31 @@ import com.example.mystore.ui.navigation.RegisterProductScreen
 import com.example.mystore.ui.navigation.RegisterTransactionScreen
 import com.example.mystore.ui.navigation.navigateSingleTopTo
 import com.example.mystore.ui.theme.MyStoreTheme
+import com.example.mystore.viewmodel.HomeViewModel
 import com.example.mystore.viewmodel.MyStoreViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : ComponentActivity() {
 
     private val viewModel: MyStoreViewModel by viewModel()
+    private val homeViewModel: HomeViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            MyStoreApp(viewModel)
+            MyStoreApp(
+                viewModel,
+                homeViewModel,
+            )
         }
     }
 }
 
 @Composable
-fun MyStoreApp(viewModel: MyStoreViewModel) {
+fun MyStoreApp(
+    viewModel: MyStoreViewModel,
+    homeViewModel: HomeViewModel,
+) {
     MyStoreTheme {
         val navController = rememberNavController()
         val screenTitle by viewModel.screenTitle.collectAsState()
@@ -87,8 +95,9 @@ fun MyStoreApp(viewModel: MyStoreViewModel) {
                     navController = navController,
                     modifier = Modifier
                         .fillMaxSize()
-                        .background(colorResource(id = R.color.color_500))
+                        .background(colorResource(id = R.color.color_400))
                         .padding(it),
+                    homeViewModel = homeViewModel,
                 )
             },
             bottomBar = {
@@ -124,5 +133,8 @@ private fun transformStringToInterfaceObject(screen: String): MyStoreDestination
 @Preview
 @Composable
 fun MyStoreAppPreview() {
-    MyStoreApp(viewModel = MyStoreViewModel())
+    MyStoreApp(
+        viewModel = MyStoreViewModel(),
+        homeViewModel = HomeViewModel(),
+    )
 }
