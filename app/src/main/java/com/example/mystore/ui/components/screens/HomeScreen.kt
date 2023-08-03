@@ -20,32 +20,32 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.mystore.R
 import com.example.mystore.toCurrency
+import com.example.mystore.toUnity
 import com.example.mystore.viewmodel.HomeViewModel
 import com.example.mystore.viewmodel.Resume
 
 @Composable
 fun HomeScreen(
     homeViewModel: HomeViewModel,
+    shouldItemBeVisible: Boolean,
 ) {
     Column(
         modifier = Modifier.padding(top = 8.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
-        Section(
+        HomeScreenSection(
             title = "Total geral",
             resume = homeViewModel.getResume(),
-        )
-        Section(
-            title = "Produtos",
-            resume = homeViewModel.getResume(),
+            shouldItemBeVisible = shouldItemBeVisible,
         )
     }
 }
 
 @Composable
-fun Section(
+fun HomeScreenSection(
     title: String,
     resume: Resume,
+    shouldItemBeVisible: Boolean,
 ) {
     Surface(
         modifier = Modifier
@@ -101,7 +101,7 @@ fun Section(
                         fontSize = 18.sp,
                         fontWeight = MaterialTheme.typography.h5.fontWeight,
                         color = colorResource(id = R.color.color_50),
-                        text = resume.debits.toCurrency(),
+                        text = resume.debits.toCurrency(shouldItemBeVisible),
                     )
                 }
 
@@ -130,7 +130,7 @@ fun Section(
                         fontSize = 18.sp,
                         fontWeight = MaterialTheme.typography.h5.fontWeight,
                         color = colorResource(id = R.color.color_50),
-                        text = resume.grossRevenue.toCurrency(),
+                        text = resume.grossRevenue.toCurrency(shouldItemBeVisible),
                     )
                 }
                 Row {
@@ -158,7 +158,7 @@ fun Section(
                         fontSize = 18.sp,
                         fontWeight = MaterialTheme.typography.h5.fontWeight,
                         color = colorResource(id = R.color.color_50),
-                        text = resume.netRevenue.toCurrency(),
+                        text = resume.netRevenue.toCurrency(shouldItemBeVisible),
                     )
                 }
                 Row {
@@ -186,7 +186,7 @@ fun Section(
                         fontSize = 18.sp,
                         fontWeight = MaterialTheme.typography.h5.fontWeight,
                         color = colorResource(id = R.color.color_50),
-                        text = resume.inStock.toString(),
+                        text = resume.inStock.toUnity(shouldItemBeVisible),
                     )
                 }
             }
@@ -197,5 +197,5 @@ fun Section(
 @Preview
 @Composable
 fun ScreenPreview() {
-    Section("This is a title", Resume())
+    HomeScreenSection("This is a title", Resume(), false)
 }

@@ -98,6 +98,7 @@ fun MyStoreApp(
                         .background(colorResource(id = R.color.color_400))
                         .padding(it),
                     homeViewModel = homeViewModel,
+                    shouldItemBeVisible = shouldItemBeVisible,
                 )
             },
             bottomBar = {

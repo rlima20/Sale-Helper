@@ -11,13 +11,13 @@ import com.example.mystore.ui.components.screens.RegisterScreen
 import com.example.mystore.ui.components.screens.RegisterTransactionScreen
 import com.example.mystore.ui.components.screens.TransactionScreen
 import com.example.mystore.viewmodel.HomeViewModel
-import com.example.mystore.viewmodel.Resume
 
 @Composable
 fun MyStoreNavHost(
     navController: NavHostController,
     modifier: Modifier = Modifier,
     homeViewModel: HomeViewModel,
+    shouldItemBeVisible: Boolean,
 ) {
     NavHost(
         navController = navController,
@@ -25,7 +25,7 @@ fun MyStoreNavHost(
         modifier = modifier,
     ) {
         composable(route = HomeScreen.route) {
-            HomeScreen(homeViewModel)
+            HomeScreen(homeViewModel, shouldItemBeVisible)
         }
         composable(route = RegisterProductScreen.route) {
             RegisterScreen()
