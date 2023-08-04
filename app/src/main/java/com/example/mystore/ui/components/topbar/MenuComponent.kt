@@ -20,7 +20,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.unit.toSize
 import com.example.mystore.screenList
-import com.example.mystore.toParse
 
 @Composable
 fun MenuComponent(
@@ -80,7 +79,7 @@ fun MenuComponent(
 @Preview
 fun DropDownComponentPreview() {
     MenuComponent(
-        screens = screenList.toParse(),
+        screens = screenList,
         isMenuExpanded = false,
         textFieldSize = Size(0f, 0f),
     )

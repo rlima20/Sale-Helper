@@ -1,8 +1,8 @@
 package com.example.mystore
 
-fun List<Int>.toParse(): List<String> {
-    return this.map { it.toString() }
-}
+private val application = AppApplication.instance
+
+fun Int.toStringResource(): String = application.getString(this)
 
 fun Double.toCurrency(isVisible: Boolean): String {
     return if (isVisible) {

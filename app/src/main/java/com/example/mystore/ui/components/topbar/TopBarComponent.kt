@@ -21,9 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.mystore.R
 import com.example.mystore.screenList
-import com.example.mystore.toParse
 import com.example.mystore.ui.theme.primary
-import com.example.mystore.ui.theme.secondary
 
 @Composable
 internal fun TopBarComponent(
@@ -79,7 +77,7 @@ internal fun TopBarComponent(
         )
 
         MenuComponent(
-            screens = screenList.toParse(),
+            screens = screenList,
             isMenuExpanded = isMenuExpanded,
             textFieldSize = textFieldSize,
             onMenuIconClicked = {

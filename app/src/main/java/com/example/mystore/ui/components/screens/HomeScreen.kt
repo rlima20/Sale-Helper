@@ -20,7 +20,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.mystore.R
 import com.example.mystore.toCurrency
-import com.example.mystore.toUnity
 import com.example.mystore.viewmodel.HomeViewModel
 import com.example.mystore.viewmodel.Resume
 
@@ -186,7 +185,7 @@ fun HomeScreenSection(
                         fontSize = 18.sp,
                         fontWeight = MaterialTheme.typography.h5.fontWeight,
                         color = colorResource(id = R.color.color_50),
-                        text = resume.inStock.toUnity(shouldItemBeVisible),
+                        text = resume.stockValue.toCurrency(shouldItemBeVisible),
                     )
                 }
             }
