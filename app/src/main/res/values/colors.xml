@@ -15,4 +15,6 @@
     <color name="color_A400">#a8d2d6</color>
     <color name="color_A700">#bfe3e7</color>
     <color name="color_A800">#747474</color>
+    <color name="color_green_A900">#B5D78D</color>
+    <color name="color_red_A1000">#E6633A</color>
 </resources>

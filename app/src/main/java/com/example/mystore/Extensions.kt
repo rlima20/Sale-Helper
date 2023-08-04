@@ -18,3 +18,6 @@ fun Int.toUnity(isVisible: Boolean): String =
     } else {
         "$this un".replace(Regex("[0-9]"), "-")
     }
+
+fun setTextColor(value: Double): Int =
+    if (value > 0) R.color.color_green_A900 else R.color.color_red_A1000

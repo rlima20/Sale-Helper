@@ -15,10 +15,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.mystore.R
+import com.example.mystore.setTextColor
 import com.example.mystore.toCurrency
 import com.example.mystore.viewmodel.HomeViewModel
 import com.example.mystore.viewmodel.Resume
@@ -32,7 +34,7 @@ fun HomeScreen(
         modifier = Modifier.padding(top = 8.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
-        HomeScreenSection(
+        ScreenSection(
             title = "Total geral",
             resume = homeViewModel.getResume(),
             shouldItemBeVisible = shouldItemBeVisible,
@@ -41,7 +43,7 @@ fun HomeScreen(
 }
 
 @Composable
-fun HomeScreenSection(
+fun ScreenSection(
     title: String,
     resume: Resume,
     shouldItemBeVisible: Boolean,
@@ -68,8 +70,8 @@ fun HomeScreenSection(
                             bottom = 8.dp,
                             end = 8.dp,
                         ),
+                    fontWeight = FontWeight.ExtraBold,
                     fontSize = 18.sp,
-                    fontWeight = MaterialTheme.typography.h4.fontWeight,
                     color = colorResource(id = R.color.color_50),
                     text = title,
                 )
@@ -84,7 +86,6 @@ fun HomeScreenSection(
                                 end = 8.dp,
                             ),
                         fontSize = 18.sp,
-                        fontWeight = MaterialTheme.typography.h5.fontWeight,
                         color = colorResource(id = R.color.color_50),
                         text = stringResource(id = R.string.my_store_debits),
                     )
@@ -99,7 +100,7 @@ fun HomeScreenSection(
                             ),
                         fontSize = 18.sp,
                         fontWeight = MaterialTheme.typography.h5.fontWeight,
-                        color = colorResource(id = R.color.color_50),
+                        color = colorResource(id = R.color.color_red_A1000),
                         text = resume.debits.toCurrency(shouldItemBeVisible),
                     )
                 }
@@ -128,7 +129,7 @@ fun HomeScreenSection(
                             ),
                         fontSize = 18.sp,
                         fontWeight = MaterialTheme.typography.h5.fontWeight,
-                        color = colorResource(id = R.color.color_50),
+                        color = colorResource(setTextColor(resume.grossRevenue)),
                         text = resume.grossRevenue.toCurrency(shouldItemBeVisible),
                     )
                 }
@@ -156,7 +157,7 @@ fun HomeScreenSection(
                             ),
                         fontSize = 18.sp,
                         fontWeight = MaterialTheme.typography.h5.fontWeight,
-                        color = colorResource(id = R.color.color_50),
+                        color = colorResource(setTextColor(resume.netRevenue)),
                         text = resume.netRevenue.toCurrency(shouldItemBeVisible),
                     )
                 }
@@ -184,7 +185,7 @@ fun HomeScreenSection(
                             ),
                         fontSize = 18.sp,
                         fontWeight = MaterialTheme.typography.h5.fontWeight,
-                        color = colorResource(id = R.color.color_50),
+                        color = colorResource(setTextColor(resume.stockValue)),
                         text = resume.stockValue.toCurrency(shouldItemBeVisible),
                     )
                 }
@@ -196,5 +197,5 @@ fun HomeScreenSection(
 @Preview
 @Composable
 fun ScreenPreview() {
-    HomeScreenSection("This is a title", Resume(), false)
+    ScreenSection("This is a title", Resume(), false)
 }

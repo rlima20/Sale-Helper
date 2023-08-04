@@ -104,4 +104,7 @@ dependencies {
     // Room datase
     implementation "androidx.room:room-runtime:$room_version"
     annotationProcessor "androidx.room:room-compiler:$room_version"
+
+    // Google fonts
+    implementation "androidx.compose.ui:ui-text-google-fonts:1.4.3"
 }
