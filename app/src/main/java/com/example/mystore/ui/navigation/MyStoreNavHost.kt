@@ -31,7 +31,7 @@ fun MyStoreNavHost(
             RegisterScreen()
         }
         composable(route = ConsolidatedPositionScreen.route) {
-            TransactionScreen()
+            TransactionScreen(shouldItemBeVisible)
         }
         composable(route = RegisterTransactionScreen.route) {
             RegisterTransactionScreen()
