@@ -2,7 +2,7 @@ package com.example.mystore.ui.components.screens
 
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import com.example.mystore.ui.components.ScreenSectionComponent
+import com.example.mystore.ui.components.commons.ScreenSectionComponent
 
 @Composable
 fun TransactionScreen(shouldItemBeVisible: Boolean) {

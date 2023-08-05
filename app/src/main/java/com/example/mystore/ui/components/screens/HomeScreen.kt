@@ -4,8 +4,8 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.mystore.R
-import com.example.mystore.ui.components.RowComponent
-import com.example.mystore.ui.components.ScreenSectionComponent
+import com.example.mystore.ui.components.commons.RowComponent
+import com.example.mystore.ui.components.commons.ScreenSectionComponent
 import com.example.mystore.viewmodel.HomeViewModel
 import com.example.mystore.viewmodel.Resume
 

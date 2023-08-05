@@ -1,4 +1,4 @@
-package com.example.mystore.ui.components
+package com.example.mystore.ui.components.commons
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
