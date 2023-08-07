@@ -23,6 +23,7 @@
     <string name="my_store_net_revenue">Receita líquida: </string>
     <string name="my_store_revenue">Lucro: </string>
     <string name="my_store_stock_value">Valor em estoque: </string>
+    <string name="my_store_stock_quantity">Estoque: </string>
     <string name="my_store_product_registration">Cadastro de produto</string>
     <string name="my_store_product_update">Alteração de produto</string>
     <string name="my_store_description">Descrição</string>
