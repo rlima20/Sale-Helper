@@ -19,8 +19,8 @@ import com.example.mystore.R
 
 @Composable
 fun ScreenSectionComponent(
-    body: @Composable () -> Unit,
     title: String,
+    body: @Composable () -> Unit,
 ) {
     Column(
         modifier = Modifier.padding(top = 8.dp),

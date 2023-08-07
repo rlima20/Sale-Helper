@@ -4,8 +4,18 @@ import android.content.Context
 import androidx.lifecycle.ViewModel
 import coil.request.ImageRequest
 import coil.size.Size
+import com.example.mystore.States
+import kotlinx.coroutines.flow.MutableStateFlow
 
 class HomeViewModel : ViewModel() {
+
+    private var _imageRequestState: MutableStateFlow<States> = MutableStateFlow(States.LOADING)
+    val imageRequestState: MutableStateFlow<States> = _imageRequestState
+
+    fun setImageRequestState(state: States) {
+        _imageRequestState.value = state
+    }
+
     fun getResume() = Resume()
 
     fun getAsyncImage(
