@@ -5,6 +5,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.mystore.R
+import com.example.mystore.Type
 import com.example.mystore.ui.components.commons.ProductCarouselComponent
 import com.example.mystore.ui.components.commons.RowComponent
 import com.example.mystore.ui.components.commons.ScreenSectionComponent
@@ -14,6 +15,9 @@ import com.example.mystore.viewmodel.HomeViewModel
 fun HomeScreen(
     homeViewModel: HomeViewModel,
     shouldItemBeVisible: Boolean,
+    onClick: () -> Unit = {},
+    onLongClick: () -> Unit = {},
+    onDloubleClick: () -> Unit = {},
 ) {
     Column {
         ScreenSectionComponent(
@@ -34,6 +38,9 @@ fun HomeScreen(
                     onImageRequestState = { state ->
                         homeViewModel.setImageRequestState(state)
                     },
+                    onClick = { onClick() },
+                    onLongClick = { onLongClick() },
+                    onDoubleClick = { onDloubleClick() },
                 )
             },
         )
@@ -46,27 +53,31 @@ fun HomeBody(
     shouldItemBeVisible: Boolean,
 ) {
     RowComponent(
-        resume.debits,
-        shouldItemBeVisible,
-        R.string.my_store_debits,
+        textCurrency = resume.debits,
+        shouldItemBeVisible = shouldItemBeVisible,
+        stringId = R.string.my_store_debits,
+        type = Type.CURRENCY,
     )
 
     RowComponent(
-        resume.grossRevenue,
-        shouldItemBeVisible,
-        R.string.my_store_gross_revenue,
+        textCurrency = resume.grossRevenue,
+        shouldItemBeVisible = shouldItemBeVisible,
+        stringId = R.string.my_store_gross_revenue,
+        type = Type.CURRENCY,
     )
 
     RowComponent(
-        resume.netRevenue,
-        shouldItemBeVisible,
-        R.string.my_store_net_revenue,
+        textCurrency = resume.netRevenue,
+        shouldItemBeVisible = shouldItemBeVisible,
+        stringId = R.string.my_store_net_revenue,
+        type = Type.CURRENCY,
     )
 
     RowComponent(
-        resume.stockValue,
-        shouldItemBeVisible,
-        R.string.my_store_stock_value,
+        textCurrency = resume.stockValue,
+        shouldItemBeVisible = shouldItemBeVisible,
+        stringId = R.string.my_store_stock_value,
+        type = Type.CURRENCY,
     )
 }
 

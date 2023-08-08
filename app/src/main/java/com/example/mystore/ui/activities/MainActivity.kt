@@ -7,6 +7,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
+import androidx.compose.material.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -99,6 +100,9 @@ fun MyStoreApp(
                         .padding(it),
                     homeViewModel = homeViewModel,
                     shouldItemBeVisible = shouldItemBeVisible,
+                    onClick = { navController.navigate(RegisterProductScreen.route) },
+                    onLongClick = {},
+                    onDloubleClick = {},
                 )
             },
             bottomBar = {

@@ -1,7 +1,9 @@
 package com.example.mystore.ui.components.commons
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -26,13 +28,15 @@ import com.example.mystore.Type
 import com.example.mystore.model.Product
 import com.example.mystore.setTextColor
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ProductItemComponent(
     product: Product,
     painter: Painter,
     shouldItemBeVisible: Boolean,
-    onClick: () -> Unit = {},
-    onLongClick: () -> Unit = {},
+    onClick: () -> Unit,
+    onLongClick: () -> Unit,
+    onDoubleClick: () -> Unit,
 ) {
     Surface(
         modifier = Modifier
@@ -47,7 +51,13 @@ fun ProductItemComponent(
                 verticalArrangement = Arrangement.Top,
                 modifier = Modifier
                     .background(colorResource(id = R.color.color_800))
-                    .width(140.dp),
+                    .width(140.dp)
+                    .combinedClickable(
+                        enabled = true,
+                        onClick = { onClick() },
+                        onLongClick = { onLongClick() },
+                        onDoubleClick = { onDoubleClick() },
+                    ),
             ) {
                 Image(
                     modifier = Modifier

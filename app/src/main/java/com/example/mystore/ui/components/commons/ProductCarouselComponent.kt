@@ -2,9 +2,11 @@ package com.example.mystore.ui.components.commons
 
 import android.content.Context
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
@@ -18,8 +20,16 @@ import com.example.mystore.listOfProductsLocal
 fun ProductCarouselComponent(
     shouldItemBeVisible: Boolean,
     onImageRequestState: (state: States) -> Unit,
+    onClick: () -> Unit,
+    onLongClick: () -> Unit,
+    onDoubleClick: () -> Unit,
 ) {
     LazyRow(
+        modifier = Modifier.padding(
+            start = 8.dp,
+            end = 8.dp,
+            bottom = 8.dp,
+        ),
         horizontalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         items(listOfProductsLocal) { product ->
@@ -32,6 +42,9 @@ fun ProductCarouselComponent(
                     },
                 ),
                 shouldItemBeVisible = shouldItemBeVisible,
+                onClick = { onClick() },
+                onLongClick = { onLongClick() },
+                onDoubleClick = { onDoubleClick() },
             )
         }
     }

@@ -18,6 +18,9 @@ fun MyStoreNavHost(
     modifier: Modifier = Modifier,
     homeViewModel: HomeViewModel,
     shouldItemBeVisible: Boolean,
+    onClick: () -> Unit = {},
+    onLongClick: () -> Unit = {},
+    onDloubleClick: () -> Unit = {},
 ) {
     NavHost(
         navController = navController,
@@ -25,7 +28,13 @@ fun MyStoreNavHost(
         modifier = modifier,
     ) {
         composable(route = HomeScreen.route) {
-            HomeScreen(homeViewModel, shouldItemBeVisible)
+            HomeScreen(
+                homeViewModel = homeViewModel,
+                shouldItemBeVisible = shouldItemBeVisible,
+                onClick = { onClick() },
+                onLongClick = { onLongClick() },
+                onDloubleClick = { onDloubleClick() },
+            )
         }
         composable(route = RegisterProductScreen.route) {
             RegisterScreen()

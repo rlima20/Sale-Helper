@@ -20,28 +20,15 @@ internal fun TextCurrencyComponent(
     type: Type,
 ) {
     Text(
-        modifier = setPadding(type),
+        modifier = Modifier.padding(
+            start = 8.dp,
+            end = 8.dp,
+        ),
         fontSize = 18.sp,
         fontWeight = MaterialTheme.typography.h5.fontWeight,
         color = colorResource(setTextColor(value)),
         text = setUnit(type, value, shouldItemBeVisible),
     )
-}
-
-// todo - dá pra criar uma extension function para isso
-@Composable
-private fun setPadding(type: Type): Modifier {
-    return if (type == Type.CURRENCY) {
-        Modifier
-            .padding(
-                start = 8.dp,
-                top = 8.dp,
-                bottom = 8.dp,
-                end = 8.dp,
-            )
-    } else {
-        Modifier
-    }
 }
 
 @Composable
