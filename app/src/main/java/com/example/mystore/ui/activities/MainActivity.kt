@@ -100,7 +100,7 @@ fun MyStoreApp(
                         .padding(it),
                     homeViewModel = homeViewModel,
                     shouldItemBeVisible = shouldItemBeVisible,
-                    onClick = { navController.navigate(RegisterProductScreen.route) },
+                    onClick = { navController.navigateSingleTopTo(RegisterProductScreen.route) },
                     onLongClick = {},
                     onDloubleClick = {},
                 )
