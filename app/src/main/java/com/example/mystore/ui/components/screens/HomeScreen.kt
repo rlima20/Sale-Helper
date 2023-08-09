@@ -3,19 +3,22 @@ package com.example.mystore.ui.components.screens
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.mystore.R
 import com.example.mystore.Type
+import com.example.mystore.model.Product
 import com.example.mystore.ui.components.commons.ProductCarouselComponent
 import com.example.mystore.ui.components.commons.RowComponent
 import com.example.mystore.ui.components.commons.ScreenSectionComponent
+import com.example.mystore.ui.components.commons.TextCurrencyComponent
 import com.example.mystore.viewmodel.HomeViewModel
 
 @Composable
 fun HomeScreen(
     homeViewModel: HomeViewModel,
     shouldItemBeVisible: Boolean,
-    onClick: () -> Unit = {},
+    onClick: (product: Product) -> Unit = {},
     onLongClick: () -> Unit = {},
     onDloubleClick: () -> Unit = {},
 ) {
@@ -38,7 +41,7 @@ fun HomeScreen(
                     onImageRequestState = { state ->
                         homeViewModel.setImageRequestState(state)
                     },
-                    onClick = { onClick() },
+                    onClick = { onClick(it) },
                     onLongClick = { onLongClick() },
                     onDoubleClick = { onDloubleClick() },
                 )
@@ -53,31 +56,47 @@ fun HomeBody(
     shouldItemBeVisible: Boolean,
 ) {
     RowComponent(
-        textCurrency = resume.debits,
-        shouldItemBeVisible = shouldItemBeVisible,
-        stringId = R.string.my_store_debits,
-        type = Type.CURRENCY,
+        leftSideText = stringResource(id = R.string.my_store_debits),
+        rightSide = {
+            TextCurrencyComponent(
+                value = resume.debits.toString(),
+                shouldItemBeVisible = shouldItemBeVisible,
+                type = Type.CURRENCY,
+            )
+        },
     )
 
     RowComponent(
-        textCurrency = resume.grossRevenue,
-        shouldItemBeVisible = shouldItemBeVisible,
-        stringId = R.string.my_store_gross_revenue,
-        type = Type.CURRENCY,
+        leftSideText = stringResource(id = R.string.my_store_gross_revenue),
+        rightSide = {
+            TextCurrencyComponent(
+                value = resume.grossRevenue.toString(),
+                shouldItemBeVisible = shouldItemBeVisible,
+                type = Type.CURRENCY,
+            )
+        },
     )
 
     RowComponent(
-        textCurrency = resume.netRevenue,
-        shouldItemBeVisible = shouldItemBeVisible,
-        stringId = R.string.my_store_net_revenue,
-        type = Type.CURRENCY,
+        leftSideText = stringResource(id = R.string.my_store_net_revenue),
+        rightSide = {
+            TextCurrencyComponent(
+                value = resume.netRevenue.toString(),
+                shouldItemBeVisible = shouldItemBeVisible,
+                type = Type.CURRENCY,
+            )
+        },
     )
 
     RowComponent(
-        textCurrency = resume.stockValue,
-        shouldItemBeVisible = shouldItemBeVisible,
-        stringId = R.string.my_store_stock_value,
-        type = Type.CURRENCY,
+        leftSideText = stringResource(id = R.string.my_store_stock_value),
+        rightSide = {
+            TextCurrencyComponent(
+                value = resume.stockValue.toString(),
+                shouldItemBeVisible = shouldItemBeVisible,
+                type = Type.CURRENCY,
+            )
+        },
     )
 }
 

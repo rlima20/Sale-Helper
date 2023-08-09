@@ -18,17 +18,6 @@ class HomeViewModel : ViewModel() {
 
     fun getResume() = Resume()
 
-    fun getAsyncImage(
-        context: Context,
-        imageUrl: String,
-    ): ImageRequest {
-        return ImageRequest.Builder(context)
-            .data(imageUrl)
-            .size(Size.ORIGINAL)
-            .crossfade(true)
-            .build()
-    }
-
     class Resume(
         val debits: Double = 100.0,
         val grossRevenue: Double = 200.0,

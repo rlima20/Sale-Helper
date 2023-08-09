@@ -8,6 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.mystore.R
 import com.example.mystore.Type
 import com.example.mystore.setTextColor
 import com.example.mystore.toCurrency
@@ -15,7 +16,7 @@ import com.example.mystore.toUnity
 
 @Composable
 internal fun TextCurrencyComponent(
-    value: Double,
+    value: String,
     shouldItemBeVisible: Boolean,
     type: Type,
 ) {
@@ -26,7 +27,13 @@ internal fun TextCurrencyComponent(
         ),
         fontSize = 18.sp,
         fontWeight = MaterialTheme.typography.h5.fontWeight,
-        color = colorResource(setTextColor(value)),
+        color = colorResource(
+            if (type == Type.STRING) {
+                R.color.color_50
+            } else {
+                setTextColor(value.toDouble())
+            },
+        ),
         text = setUnit(type, value, shouldItemBeVisible),
     )
 }
@@ -34,10 +41,11 @@ internal fun TextCurrencyComponent(
 @Composable
 fun setUnit(
     type: Type,
-    value: Double,
+    value: String,
     shouldItemBeVisible: Boolean,
-) = if (type == Type.CURRENCY) {
-    value.toCurrency(shouldItemBeVisible)
-} else {
-    value.toInt().toUnity(shouldItemBeVisible)
+) = when (type) {
+    Type.CURRENCY -> value.toDouble().toCurrency(shouldItemBeVisible)
+    Type.QUANTITY -> value.toInt().toUnity(shouldItemBeVisible)
+    Type.STRING -> value
+    Type.DATE -> value
 }

@@ -15,12 +15,13 @@ import coil.size.Size
 import com.example.mystore.States
 import com.example.mystore.getAsyncImagePainter
 import com.example.mystore.listOfProductsLocal
+import com.example.mystore.model.Product
 
 @Composable
 fun ProductCarouselComponent(
     shouldItemBeVisible: Boolean,
     onImageRequestState: (state: States) -> Unit,
-    onClick: () -> Unit,
+    onClick: (product: Product) -> Unit,
     onLongClick: () -> Unit,
     onDoubleClick: () -> Unit,
 ) {
@@ -42,7 +43,7 @@ fun ProductCarouselComponent(
                     },
                 ),
                 shouldItemBeVisible = shouldItemBeVisible,
-                onClick = { onClick() },
+                onClick = { onClick(product) },
                 onLongClick = { onLongClick() },
                 onDoubleClick = { onDoubleClick() },
             )

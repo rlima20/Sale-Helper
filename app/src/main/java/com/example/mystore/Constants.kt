@@ -1,14 +1,9 @@
 package com.example.mystore
 
 import com.example.mystore.model.Product
-
-val screenList =
-    listOf(
-        R.string.my_store_home.toStringResource(),
-        R.string.my_store_register_product.toStringResource(),
-        R.string.my_store_register_transaction.toStringResource(),
-        R.string.my_store_consolidated_position.toStringResource(),
-    )
+import com.example.mystore.model.TransactionType
+import com.example.mystore.viewmodel.ConsolidatedPosViewModel
+import java.util.Date
 
 val listOfProductsLocal = listOf(
     Product(
@@ -47,6 +42,50 @@ val listOfProductsLocal = listOf(
         salePrice = 400.0,
         imageUrl = "https://m.media-amazon.com/images/I/71fzcZQlbqS._AC_SL1500_.jpg",
     ),
+    Product(
+        id = 1,
+        title = "Coca-Cola",
+        description = "Refrigerante de cola",
+        quantity = 10,
+        purchasePrice = 5.0,
+        salePrice = 10.0,
+        imageUrl = "https://veja.abril.com.br/wp-content/uploads/2016/06/logo-coca-cola-caminhao-original4.jpeg?quality=90&strip=info&w=1040&h=585&crop=1",
+    ),
+)
+
+val screenList =
+    listOf(
+        R.string.my_store_home.toStringResource(),
+        R.string.my_store_register_product.toStringResource(),
+        R.string.my_store_register_transaction.toStringResource(),
+        R.string.my_store_consolidated_position.toStringResource(),
+    )
+
+val listOfTransactions = listOf(
+    ConsolidatedPosViewModel.Transaction(
+        product = listOfProductsLocal[4],
+        transactionType = TransactionType.SALE,
+        transactionDate = Date(),
+        unitValue = 10.0,
+        quantity = 2,
+        transactionAmount = 20.0,
+    ),
+    ConsolidatedPosViewModel.Transaction(
+        product = listOfProductsLocal[0],
+        transactionType = TransactionType.SALE,
+        transactionDate = Date(),
+        unitValue = 2000.0,
+        quantity = 2,
+        transactionAmount = 4000.0,
+    ),
+    ConsolidatedPosViewModel.Transaction(
+        product = listOfProductsLocal[2],
+        transactionType = TransactionType.SALE,
+        transactionDate = Date(),
+        unitValue = 350.0,
+        quantity = 1,
+        transactionAmount = 350.0,
+    ),
 )
 
 enum class States {
@@ -58,5 +97,6 @@ enum class States {
 enum class Type {
     CURRENCY,
     QUANTITY,
+    DATE,
+    STRING,
 }
-

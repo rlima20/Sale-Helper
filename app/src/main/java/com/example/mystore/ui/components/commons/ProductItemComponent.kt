@@ -87,7 +87,7 @@ fun ProductItemComponent(
                     color = colorResource(setTextColor(product.quantity.toDouble())),
                     text = setUnit(
                         Type.QUANTITY,
-                        product.quantity.toDouble(),
+                        product.quantity.toString(),
                         shouldItemBeVisible,
                     ),
                 )

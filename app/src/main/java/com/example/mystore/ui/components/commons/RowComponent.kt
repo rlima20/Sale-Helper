@@ -7,15 +7,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.mystore.Type
 
+// todo - melhorar essa parte para receber uma string. primeira parte e depois segunda parte e
+// deixar essa função mais reutilizável.
 @Composable
 fun RowComponent(
-    textCurrency: Double,
-    shouldItemBeVisible: Boolean,
-    stringId: Int,
-    type: Type = Type.CURRENCY,
+    leftSideText: String,
+    rightSide: @Composable () -> Unit,
 ) {
     Row(modifier = Modifier.padding(8.dp)) {
-        TextFormattedComponent(stringId)
-        TextCurrencyComponent(textCurrency, shouldItemBeVisible, type)
+        TextFormattedComponent(leftSideText)
+        rightSide()
+        // TextCurrencyComponent(textCurrency, shouldItemBeVisible, type)
     }
 }

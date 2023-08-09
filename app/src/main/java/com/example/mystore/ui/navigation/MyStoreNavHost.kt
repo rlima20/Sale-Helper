@@ -6,10 +6,12 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.example.mystore.model.Product
+import com.example.mystore.ui.components.screens.ConsolidatedPositionScreen
 import com.example.mystore.ui.components.screens.HomeScreen
 import com.example.mystore.ui.components.screens.RegisterScreen
 import com.example.mystore.ui.components.screens.RegisterTransactionScreen
-import com.example.mystore.ui.components.screens.TransactionScreen
+import com.example.mystore.viewmodel.ConsolidatedPosViewModel
 import com.example.mystore.viewmodel.HomeViewModel
 
 @Composable
@@ -17,8 +19,9 @@ fun MyStoreNavHost(
     navController: NavHostController,
     modifier: Modifier = Modifier,
     homeViewModel: HomeViewModel,
+    consolidatedPosViewModel: ConsolidatedPosViewModel,
     shouldItemBeVisible: Boolean,
-    onClick: () -> Unit = {},
+    onClick: (product: Product) -> Unit = {},
     onLongClick: () -> Unit = {},
     onDloubleClick: () -> Unit = {},
 ) {
@@ -31,7 +34,7 @@ fun MyStoreNavHost(
             HomeScreen(
                 homeViewModel = homeViewModel,
                 shouldItemBeVisible = shouldItemBeVisible,
-                onClick = { onClick() },
+                onClick = { onClick(it) },
                 onLongClick = { onLongClick() },
                 onDloubleClick = { onDloubleClick() },
             )
@@ -40,7 +43,12 @@ fun MyStoreNavHost(
             RegisterScreen()
         }
         composable(route = ConsolidatedPositionScreen.route) {
-            TransactionScreen(shouldItemBeVisible)
+            ConsolidatedPositionScreen(
+                consolidatedPosViewModel = consolidatedPosViewModel,
+                shouldItemBeVisible = shouldItemBeVisible,
+                onClick = { },
+                onLongClick = { },
+            )
         }
         composable(route = RegisterTransactionScreen.route) {
             RegisterTransactionScreen()

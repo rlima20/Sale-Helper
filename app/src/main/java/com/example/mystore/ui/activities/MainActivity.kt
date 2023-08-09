@@ -7,7 +7,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
-import androidx.compose.material.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -29,6 +28,7 @@ import com.example.mystore.ui.navigation.RegisterProductScreen
 import com.example.mystore.ui.navigation.RegisterTransactionScreen
 import com.example.mystore.ui.navigation.navigateSingleTopTo
 import com.example.mystore.ui.theme.MyStoreTheme
+import com.example.mystore.viewmodel.ConsolidatedPosViewModel
 import com.example.mystore.viewmodel.HomeViewModel
 import com.example.mystore.viewmodel.MyStoreViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -37,6 +37,7 @@ class MainActivity : ComponentActivity() {
 
     private val viewModel: MyStoreViewModel by viewModel()
     private val homeViewModel: HomeViewModel by viewModel()
+    private val consolidatedPosViewModel: ConsolidatedPosViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,6 +45,7 @@ class MainActivity : ComponentActivity() {
             MyStoreApp(
                 viewModel,
                 homeViewModel,
+                consolidatedPosViewModel,
             )
         }
     }
@@ -53,6 +55,7 @@ class MainActivity : ComponentActivity() {
 fun MyStoreApp(
     viewModel: MyStoreViewModel,
     homeViewModel: HomeViewModel,
+    consolidatedPosViewModel: ConsolidatedPosViewModel,
 ) {
     MyStoreTheme {
         val navController = rememberNavController()
@@ -99,6 +102,7 @@ fun MyStoreApp(
                         .background(colorResource(id = R.color.color_400))
                         .padding(it),
                     homeViewModel = homeViewModel,
+                    consolidatedPosViewModel = consolidatedPosViewModel,
                     shouldItemBeVisible = shouldItemBeVisible,
                     onClick = { navController.navigateSingleTopTo(RegisterProductScreen.route) },
                     onLongClick = {},
@@ -141,5 +145,6 @@ fun MyStoreAppPreview() {
     MyStoreApp(
         viewModel = MyStoreViewModel(),
         homeViewModel = HomeViewModel(),
+        consolidatedPosViewModel = ConsolidatedPosViewModel(),
     )
 }

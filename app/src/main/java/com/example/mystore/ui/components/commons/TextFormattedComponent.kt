@@ -5,13 +5,12 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.mystore.R
 
 @Composable
-fun TextFormattedComponent(stringId: Int) {
+fun TextFormattedComponent(leftSideText: String) {
     Text(
         modifier = Modifier.padding(
             start = 8.dp,
@@ -19,6 +18,6 @@ fun TextFormattedComponent(stringId: Int) {
         ),
         fontSize = 18.sp,
         color = colorResource(id = R.color.color_50),
-        text = stringResource(stringId),
+        text = leftSideText,
     )
 }
