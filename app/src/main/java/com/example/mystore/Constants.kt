@@ -100,3 +100,12 @@ enum class Type {
     DATE,
     STRING,
 }
+
+enum class Section {
+    RESUME,
+    PRODUCTS,
+    TRANSACTIONS,
+    SALE,
+    PURCHASE,
+    REGISTER,
+}

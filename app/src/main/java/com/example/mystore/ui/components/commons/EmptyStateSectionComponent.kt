@@ -30,7 +30,7 @@ import com.example.mystore.R
 fun EmptyStateSectionComponent(
     title: String,
     painter: Painter,
-    onImageClick: () -> Unit = {},
+    onEmptyStateImageClicked: () -> Unit = {},
 ) {
     Surface(
         modifier = Modifier
@@ -62,7 +62,7 @@ fun EmptyStateSectionComponent(
                                 .padding(top = 16.dp)
                                 .size(100.dp)
                                 .background(color = colorResource(id = R.color.color_900))
-                                .clickable(onClick = onImageClick),
+                                .clickable(onClick = onEmptyStateImageClicked),
                             painter = painter,
                             contentDescription = null,
                         )

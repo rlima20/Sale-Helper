@@ -106,7 +106,7 @@ fun MyStoreApp(
                     shouldItemBeVisible = shouldItemBeVisible,
                     onClick = { navController.navigateSingleTopTo(RegisterProductScreen.route) },
                     onLongClick = {},
-                    onDloubleClick = {},
+                    onDoubleClick = {},
                 )
             },
             bottomBar = {

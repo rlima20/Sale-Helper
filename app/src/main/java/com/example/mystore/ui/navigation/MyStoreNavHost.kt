@@ -23,7 +23,7 @@ fun MyStoreNavHost(
     shouldItemBeVisible: Boolean,
     onClick: (product: Product) -> Unit = {},
     onLongClick: () -> Unit = {},
-    onDloubleClick: () -> Unit = {},
+    onDoubleClick: () -> Unit = {},
 ) {
     NavHost(
         navController = navController,
@@ -36,12 +36,9 @@ fun MyStoreNavHost(
                 shouldItemBeVisible = shouldItemBeVisible,
                 onClick = { onClick(it) },
                 onLongClick = { onLongClick() },
-                onDoubleClick = { onDloubleClick() },
+                onDoubleClick = { onDoubleClick() },
                 onEmptyStateImageClicked = {
-                    // todo - Aqui eu não posso navegar para um lugar só. Eu preciso achar um
-                    //  jeito de navegar para telas diferentes, dependendo de qual emptyState foi
-                    //  clicado.
-                    navController.navigateSingleTopTo(RegisterProductScreen.route)
+                    navController.navigateSingleTopTo(it)
                 },
             )
         }

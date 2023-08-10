@@ -3,19 +3,22 @@ package com.example.mystore.ui.components.screens
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.mystore.R
+import com.example.mystore.Section
 import com.example.mystore.Type
 import com.example.mystore.listOfProductsLocal
 import com.example.mystore.model.Product
-import com.example.mystore.ui.components.commons.EmptyStateSectionComponent
 import com.example.mystore.ui.components.commons.ProductCarouselComponent
 import com.example.mystore.ui.components.commons.RowComponent
 import com.example.mystore.ui.components.commons.ScreenSectionComponent
+import com.example.mystore.ui.components.commons.SectionEmptyStateInfo
+import com.example.mystore.ui.components.commons.SectionInfo
 import com.example.mystore.ui.components.commons.TextCurrencyComponent
+import com.example.mystore.ui.components.commons.ValidateSection
+import com.example.mystore.ui.components.commons.validateSection
 import com.example.mystore.viewmodel.HomeViewModel
 
 @Composable
@@ -25,34 +28,41 @@ fun HomeScreen(
     onClick: (product: Product) -> Unit = {},
     onLongClick: () -> Unit = {},
     onDoubleClick: () -> Unit = {},
-    onEmptyStateImageClicked: () -> Unit = {},
+    onEmptyStateImageClicked: (route: String) -> Unit = {},
 ) {
     Column {
         ValidateSection(
             // data = listOf(homeViewModel.getResume()),
-            data = listOf(),
-            emptySectionTitle = stringResource(R.string.my_store_no_transactions_done),
-            emptySectionPainter = painterResource(id = R.drawable.my_store_plus_icon),
-            section = {
-                ScreenSectionComponent(
-                    title = "Total geral",
-                    body = {
-                        HomeBody(
-                            homeViewModel.getResume(),
-                            shouldItemBeVisible,
-                        )
-                    },
-                )
-            },
-            onEmptyStateImageClicked = { onEmptyStateImageClicked() },
+            sectionInfo = SectionInfo(
+                section = {
+                    ScreenSectionComponent(
+                        title = "Total geral",
+                        body = {
+                            HomeBody(
+                                homeViewModel.getResume(),
+                                shouldItemBeVisible,
+                            )
+                        },
+                    )
+                },
+            ),
+            sectionEmptyStateInfo = SectionEmptyStateInfo(
+                data = listOf(homeViewModel.getResume()),
+                emptySectionTitle = stringResource(R.string.my_store_no_transactions_done),
+                emptySectionPainter = painterResource(id = R.drawable.my_store_plus_icon),
+                onEmptyStateImageClicked = {
+                    onEmptyStateImageClicked(
+                        validateSection(
+                            Section.RESUME,
+                        ),
+                    )
+                },
+            ),
         )
 
         ValidateSection(
             // data = listOfProductsLocal,
-            data = listOf(),
-            emptySectionTitle = stringResource(R.string.my_store_no_products),
-            emptySectionPainter = painterResource(id = R.drawable.my_store_plus_icon),
-            section = {
+            sectionInfo = SectionInfo {
                 ScreenSectionComponent(
                     title = "Produtos",
                     body = {
@@ -69,26 +79,20 @@ fun HomeScreen(
                     },
                 )
             },
+            sectionEmptyStateInfo =
+            SectionEmptyStateInfo(
+                data = listOf(),
+                emptySectionTitle = stringResource(R.string.my_store_no_products),
+                emptySectionPainter = painterResource(id = R.drawable.my_store_plus_icon),
+                onEmptyStateImageClicked = {
+                    onEmptyStateImageClicked(
+                        validateSection(
+                            Section.PRODUCTS,
+                        ),
+                    )
+                },
+            ),
         )
-    }
-}
-
-@Composable
-fun ValidateSection(
-    data: List<Any>,
-    emptySectionTitle: String,
-    emptySectionPainter: Painter,
-    section: @Composable () -> Unit,
-    onEmptyStateImageClicked: () -> Unit = {},
-) {
-    if (data.isEmpty()) {
-        EmptyStateSectionComponent(
-            title = emptySectionTitle,
-            painter = emptySectionPainter,
-            onImageClick = { onEmptyStateImageClicked() },
-        )
-    } else {
-        section()
     }
 }
 
