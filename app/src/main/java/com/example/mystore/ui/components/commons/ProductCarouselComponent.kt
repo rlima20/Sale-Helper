@@ -19,6 +19,7 @@ import com.example.mystore.model.Product
 
 @Composable
 fun ProductCarouselComponent(
+    listOfProductsLocal: List<Product>,
     shouldItemBeVisible: Boolean,
     onImageRequestState: (state: States) -> Unit,
     onClick: (product: Product) -> Unit,

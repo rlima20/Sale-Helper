@@ -15,6 +15,7 @@
     <string name="my_store_date">Data: </string>
     <string name="my_store_quantity">Quantidade: </string>
     <string name="my_store_amount">Montante: </string>
+    <string name="my_store_sale_value">Valor da venda: </string>
     <string name="my_store_total">Total</string>
     <string name="my_store_overall_total">Total geral</string>
     <string name="my_store_transactions">Transações</string>
@@ -29,4 +30,6 @@
     <string name="my_store_product_update">Alteração de produto</string>
     <string name="my_store_description">Descrição</string>
     <string name="my_store_name">Nome</string>
+    <string name="my_store_no_transactions_done">"Você não tem transações realizadas. "</string>
+    <string name="my_store_no_products">"Você não tem produtos cadastrados. </string>
 </resources>

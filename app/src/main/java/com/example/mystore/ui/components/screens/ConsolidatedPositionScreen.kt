@@ -1,10 +1,14 @@
 package com.example.mystore.ui.components.screens
 
+import android.view.Surface
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
@@ -49,62 +53,76 @@ fun ConsolidatedPosBody(
         horizontalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         items(transactions) { transaction ->
-            Column(
-                modifier = Modifier
-                    .background(colorResource(id = R.color.color_600)),
+            Surface(
+                shape = RoundedCornerShape(15.dp),
+                elevation = 12.dp,
             ) {
-                RowComponent(
-                    leftSideText = stringResource(id = R.string.my_store_product),
-                    rightSide = {
-                        TextCurrencyComponent(
-                            value = transaction.product.title,
-                            shouldItemBeVisible = shouldItemBeVisible,
-                            type = Type.STRING,
-                        )
-                    },
-                )
-                RowComponent(
-                    leftSideText = stringResource(id = R.string.my_store_date),
-                    rightSide = {
-                        TextCurrencyComponent(
-                            value = transaction.transactionDate.toShortString(),
-                            shouldItemBeVisible = shouldItemBeVisible,
-                            type = Type.STRING,
-                        )
-                    },
-                )
-                RowComponent(
-                    leftSideText = stringResource(id = R.string.my_store_quantity),
-                    rightSide = {
-                        TextCurrencyComponent(
-                            value = transaction.quantity.toString(),
-                            shouldItemBeVisible = shouldItemBeVisible,
-                            type = Type.QUANTITY,
-                        )
-                    },
-                )
-                RowComponent(
-                    leftSideText = stringResource(id = R.string.my_store_unit_value),
-                    rightSide = {
-                        TextCurrencyComponent(
-                            value = transaction.unitValue.toString(),
-                            shouldItemBeVisible = shouldItemBeVisible,
-                            type = Type.CURRENCY,
-                        )
-                    },
-                )
-                RowComponent(
-                    leftSideText = stringResource(id = R.string.my_store_gross_revenue),
-                    rightSide = {
-                        TextCurrencyComponent(
-                            value = transaction.transactionAmount.toString(),
-                            shouldItemBeVisible = shouldItemBeVisible,
-                            type = Type.CURRENCY,
-                        )
-                    },
-                )
+                Column(
+                    modifier = Modifier
+                        .background(colorResource(id = R.color.color_800)),
+                ) {
+                    RowComponent(
+                        leftSideText = stringResource(id = R.string.my_store_product),
+                        rightSide = {
+                            TextCurrencyComponent(
+                                value = transaction.product.title,
+                                shouldItemBeVisible = shouldItemBeVisible,
+                                type = Type.STRING,
+                            )
+                        },
+                    )
+                    RowComponent(
+                        leftSideText = stringResource(id = R.string.my_store_date),
+                        rightSide = {
+                            TextCurrencyComponent(
+                                value = transaction.transactionDate.toShortString(),
+                                shouldItemBeVisible = shouldItemBeVisible,
+                                type = Type.STRING,
+                            )
+                        },
+                    )
+                    RowComponent(
+                        leftSideText = stringResource(id = R.string.my_store_quantity),
+                        rightSide = {
+                            TextCurrencyComponent(
+                                value = transaction.quantity.toString(),
+                                shouldItemBeVisible = shouldItemBeVisible,
+                                type = Type.QUANTITY,
+                            )
+                        },
+                    )
+                    RowComponent(
+                        leftSideText = stringResource(id = R.string.my_store_unit_value),
+                        rightSide = {
+                            TextCurrencyComponent(
+                                value = transaction.unitValue.toString(),
+                                shouldItemBeVisible = shouldItemBeVisible,
+                                type = Type.CURRENCY,
+                            )
+                        },
+                    )
+                    RowComponent(
+                        leftSideText = stringResource(id = R.string.my_store_sale_value),
+                        rightSide = {
+                            TextCurrencyComponent(
+                                value = transaction.transactionAmount.toString(),
+                                shouldItemBeVisible = shouldItemBeVisible,
+                                type = Type.CURRENCY,
+                            )
+                        },
+                    )
+                }
             }
         }
+    }
+}
+
+// Limit the number of characters in a string
+fun String.limitTo(maxLength: Int): String {
+    return if (this.length > maxLength) {
+        this.substring(0, maxLength - 3) + "..."
+    } else {
+        this
     }
 }
 

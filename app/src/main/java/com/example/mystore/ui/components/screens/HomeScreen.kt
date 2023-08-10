@@ -3,11 +3,15 @@ package com.example.mystore.ui.components.screens
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.mystore.R
 import com.example.mystore.Type
+import com.example.mystore.listOfProductsLocal
 import com.example.mystore.model.Product
+import com.example.mystore.ui.components.commons.EmptyStateSectionComponent
 import com.example.mystore.ui.components.commons.ProductCarouselComponent
 import com.example.mystore.ui.components.commons.RowComponent
 import com.example.mystore.ui.components.commons.ScreenSectionComponent
@@ -20,33 +24,71 @@ fun HomeScreen(
     shouldItemBeVisible: Boolean,
     onClick: (product: Product) -> Unit = {},
     onLongClick: () -> Unit = {},
-    onDloubleClick: () -> Unit = {},
+    onDoubleClick: () -> Unit = {},
+    onEmptyStateImageClicked: () -> Unit = {},
 ) {
     Column {
-        ScreenSectionComponent(
-            title = "Total geral",
-            body = {
-                HomeBody(
-                    homeViewModel.getResume(),
-                    shouldItemBeVisible,
+        ValidateSection(
+            // data = listOf(homeViewModel.getResume()),
+            data = listOf(),
+            emptySectionTitle = stringResource(R.string.my_store_no_transactions_done),
+            emptySectionPainter = painterResource(id = R.drawable.my_store_plus_icon),
+            section = {
+                ScreenSectionComponent(
+                    title = "Total geral",
+                    body = {
+                        HomeBody(
+                            homeViewModel.getResume(),
+                            shouldItemBeVisible,
+                        )
+                    },
                 )
             },
+            onEmptyStateImageClicked = { onEmptyStateImageClicked() },
         )
 
-        ScreenSectionComponent(
-            title = "Produtos",
-            body = {
-                ProductCarouselComponent(
-                    shouldItemBeVisible = shouldItemBeVisible,
-                    onImageRequestState = { state ->
-                        homeViewModel.setImageRequestState(state)
+        ValidateSection(
+            // data = listOfProductsLocal,
+            data = listOf(),
+            emptySectionTitle = stringResource(R.string.my_store_no_products),
+            emptySectionPainter = painterResource(id = R.drawable.my_store_plus_icon),
+            section = {
+                ScreenSectionComponent(
+                    title = "Produtos",
+                    body = {
+                        ProductCarouselComponent(
+                            listOfProductsLocal = listOfProductsLocal,
+                            shouldItemBeVisible = shouldItemBeVisible,
+                            onImageRequestState = { state ->
+                                homeViewModel.setImageRequestState(state)
+                            },
+                            onClick = { onClick(it) },
+                            onLongClick = { onLongClick() },
+                            onDoubleClick = { onDoubleClick() },
+                        )
                     },
-                    onClick = { onClick(it) },
-                    onLongClick = { onLongClick() },
-                    onDoubleClick = { onDloubleClick() },
                 )
             },
         )
+    }
+}
+
+@Composable
+fun ValidateSection(
+    data: List<Any>,
+    emptySectionTitle: String,
+    emptySectionPainter: Painter,
+    section: @Composable () -> Unit,
+    onEmptyStateImageClicked: () -> Unit = {},
+) {
+    if (data.isEmpty()) {
+        EmptyStateSectionComponent(
+            title = emptySectionTitle,
+            painter = emptySectionPainter,
+            onImageClick = { onEmptyStateImageClicked() },
+        )
+    } else {
+        section()
     }
 }
 
