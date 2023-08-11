@@ -111,6 +111,7 @@ enum class States {
 }
 
 enum class Type {
+    PURCHASE_CURRENCY,
     CURRENCY,
     QUANTITY,
     DATE,

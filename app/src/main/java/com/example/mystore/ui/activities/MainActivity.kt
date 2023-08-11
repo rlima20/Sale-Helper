@@ -66,7 +66,8 @@ fun MyStoreApp(
         val shouldItemBeVisible by viewModel.shouldItemBeVisible.collectAsState()
         var currentScreen: MyStoreDestinationInterface by remember { mutableStateOf(HomeScreen) }
         var expandedBottomBar: Boolean by remember { mutableStateOf(false) }
-        var salesValue: Double by remember { mutableStateOf(0.0) }
+        var totalAmountOfSales: Double by remember { mutableStateOf(0.0) }
+        var totalAmountOfPurchases: Double by remember { mutableStateOf(0.0) }
 
         Scaffold(
             topBar = {
@@ -110,8 +111,9 @@ fun MyStoreApp(
                     onExpandBottomBar = { shouldExpandBottomBar ->
                         expandedBottomBar = shouldExpandBottomBar
                     },
-                    onComponent = { sales, _ ->
-                        salesValue = sales
+                    onComponent = { sales, purchases ->
+                        totalAmountOfSales = sales
+                        totalAmountOfPurchases = purchases
                     },
                     onClick = { navController.navigateSingleTopTo(RegisterProductScreen.route) },
                     onLongClick = {},
@@ -120,6 +122,7 @@ fun MyStoreApp(
             },
             bottomBar = {
                 BottomBarComponent(
+                    expandedBottomBar = expandedBottomBar,
                     onPositionConsolidateIconClicked = {
                         viewModel.setScreenTitle("Posição consilidada")
                         navController.navigateSingleTopTo(ConsolidatedPositionScreen.route)
@@ -132,11 +135,10 @@ fun MyStoreApp(
                         viewModel.setScreenTitle("Registro de transação")
                         navController.navigateSingleTopTo(RegisterTransactionScreen.route)
                     },
-                    expandedBottomBar = expandedBottomBar,
                     expandedBottomBarContent = {
                         TotalComponent(
-                            salesValue = salesValue,
-                            purchasesValue = 0.0,
+                            salesValue = totalAmountOfSales,
+                            purchasesValue = totalAmountOfPurchases,
                             shouldItemBeVisible = shouldItemBeVisible,
                         )
                     },

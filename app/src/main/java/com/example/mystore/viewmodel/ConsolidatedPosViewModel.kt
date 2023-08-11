@@ -35,7 +35,17 @@ class ConsolidatedPosViewModel : ViewModel() {
         return totalValue
     }
 
+    fun getPurchasesValue(): Double {
+        var totalValue = 0.0
 
+        listOfTransactions.filter { transaction ->
+            transaction.transactionType == TransactionType.PURCHASE
+        }.forEach { transaction ->
+            totalValue += transaction.transactionAmount
+        }
+
+        return totalValue
+    }
 
     fun getPurchases(): List<Transaction> {
         return listOfTransactions.filter { it.transactionType == TransactionType.PURCHASE }

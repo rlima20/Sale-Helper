@@ -62,19 +62,10 @@ fun MyStoreNavHost(
                 onComponentCanBeSeen = {
                     onComponent(
                         consolidatedPosViewModel.getSalesValue(),
-                        0.0,
+                        consolidatedPosViewModel.getPurchasesValue(),
                     )
                 },
             )
-
-            /*            val sales = consolidatedPosViewModel.getSalesValue()
-                        val purchases = consolidatedPosViewModel.getPurchases()
-
-                        TotalComponent(
-                            salesValue = sales,
-                            purchasesValue = 0.0,
-                            shouldItemBeVisible = shouldItemBeVisible,
-                        )*/
         }
 
         // Navega para a RegisterTransactionScreen

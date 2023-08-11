@@ -1,9 +1,12 @@
 package com.example.mystore.ui.components.commons
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import com.example.mystore.R
 import com.example.mystore.Section
 import com.example.mystore.Type
@@ -71,7 +74,9 @@ fun TotalComponent(
     purchasesValue: Double,
     shouldItemBeVisible: Boolean,
 ) {
-    Column {
+    Column(
+        modifier = Modifier.padding(top = 8.dp, bottom = 8.dp),
+    ) {
         RowComponent(
             leftSideText = stringResource(id = R.string.my_store_total_purchases),
             rightSide = {
@@ -96,12 +101,11 @@ fun TotalComponent(
             leftSideText = stringResource(id = R.string.my_store_total),
             rightSide = {
                 TextCurrencyComponent(
-                    value = purchasesValue.toString(),
+                    value = (salesValue - purchasesValue).toString(),
                     shouldItemBeVisible = shouldItemBeVisible,
-                    type = Type.CURRENCY,
+                    type = Type.PURCHASE_CURRENCY,
                 )
             },
         )
     }
 }
-
