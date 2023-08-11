@@ -86,6 +86,22 @@ val listOfTransactions = listOf(
         quantity = 1,
         transactionAmount = 350.0,
     ),
+    ConsolidatedPosViewModel.Transaction(
+        product = listOfProductsLocal[4],
+        transactionType = TransactionType.PURCHASE,
+        transactionDate = Date(),
+        unitValue = 5.0,
+        quantity = 10,
+        transactionAmount = 50.0,
+    ),
+    ConsolidatedPosViewModel.Transaction(
+        product = listOfProductsLocal[3],
+        transactionType = TransactionType.PURCHASE,
+        transactionDate = Date(),
+        unitValue = 250.0,
+        quantity = 4,
+        transactionAmount = 1000.0,
+    ),
 )
 
 enum class States {

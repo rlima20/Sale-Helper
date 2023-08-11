@@ -30,16 +30,17 @@ fun HomeScreen(
     onDoubleClick: () -> Unit = {},
     onEmptyStateImageClicked: (route: String) -> Unit = {},
 ) {
+    val resume = homeViewModel.getResume()
+
     Column {
         ValidateSection(
-            // data = listOf(homeViewModel.getResume()),
             sectionInfo = SectionInfo(
                 section = {
                     ScreenSectionComponent(
                         title = "Total geral",
                         body = {
                             HomeBody(
-                                homeViewModel.getResume(),
+                                resume,
                                 shouldItemBeVisible,
                             )
                         },
@@ -47,7 +48,7 @@ fun HomeScreen(
                 },
             ),
             sectionEmptyStateInfo = SectionEmptyStateInfo(
-                data = listOf(homeViewModel.getResume()),
+                data = listOf(resume),
                 emptySectionTitle = stringResource(R.string.my_store_no_transactions_done),
                 emptySectionPainter = painterResource(id = R.drawable.my_store_plus_icon),
                 onEmptyStateImageClicked = {

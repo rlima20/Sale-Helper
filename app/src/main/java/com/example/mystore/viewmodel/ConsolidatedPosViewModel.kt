@@ -18,4 +18,12 @@ class ConsolidatedPosViewModel : ViewModel() {
         val quantity: Int = 0,
         val transactionAmount: Double = 0.0,
     )
+
+    fun getSales(): List<Transaction> {
+        return listOfTransactions.filter { it.transactionType == TransactionType.SALE }
+    }
+
+    fun getPurchases(): List<Transaction> {
+        return listOfTransactions.filter { it.transactionType == TransactionType.PURCHASE }
+    }
 }

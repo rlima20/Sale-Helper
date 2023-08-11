@@ -6,6 +6,9 @@ import androidx.compose.ui.res.painterResource
 import coil.compose.AsyncImagePainter
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 private val application = AppApplication.instance
 
@@ -46,4 +49,18 @@ fun ImageRequest.getAsyncImagePainter(
     } else {
         painterResource(id = R.drawable.placeholder)
     }
+}
+
+// Limit the number of characters in a string
+fun String.limitTo(maxLength: Int): String {
+    return if (this.length > maxLength) {
+        this.substring(0, maxLength - 3) + "..."
+    } else {
+        this
+    }
+}
+
+fun Date.toShortString(): String {
+    val formatter = SimpleDateFormat("EEE MMM dd", Locale.getDefault())
+    return formatter.format(this)
 }

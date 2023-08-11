@@ -1,45 +1,97 @@
 package com.example.mystore.ui.components.screens
 
-import android.view.Surface
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.mystore.R
+import com.example.mystore.Section
 import com.example.mystore.Type
+import com.example.mystore.toShortString
 import com.example.mystore.ui.components.commons.RowComponent
 import com.example.mystore.ui.components.commons.ScreenSectionComponent
+import com.example.mystore.ui.components.commons.SectionEmptyStateInfo
+import com.example.mystore.ui.components.commons.SectionInfo
 import com.example.mystore.ui.components.commons.TextCurrencyComponent
+import com.example.mystore.ui.components.commons.ValidateSection
+import com.example.mystore.ui.components.commons.validateSection
 import com.example.mystore.viewmodel.ConsolidatedPosViewModel
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
 
 @Composable
 fun ConsolidatedPositionScreen(
     consolidatedPosViewModel: ConsolidatedPosViewModel,
     shouldItemBeVisible: Boolean,
+    onEmptyStateImageClicked: (route: String) -> Unit = {},
     onClick: () -> Unit = {},
     onLongClick: () -> Unit = {},
 ) {
-    Column {
-        ScreenSectionComponent(
-            title = "Vendas",
-            body = {
-                ConsolidatedPosBody(
-                    consolidatedPosViewModel.getTransactions(),
-                    shouldItemBeVisible,
+    val sales = consolidatedPosViewModel.getSales()
+    val purchases = consolidatedPosViewModel.getPurchases()
+
+    Column(
+        modifier = Modifier
+            .verticalScroll(rememberScrollState()),
+    ) {
+        ValidateSection(
+            sectionInfo = SectionInfo {
+                ScreenSectionComponent(
+                    title = "Vendas",
+                    body = {
+                        ConsolidatedPosBody(
+                            sales,
+                            shouldItemBeVisible,
+                        )
+                    },
                 )
             },
+            sectionEmptyStateInfo = SectionEmptyStateInfo(
+                data = sales,
+                emptySectionTitle = stringResource(R.string.my_store_no_sales_done),
+                emptySectionPainter = painterResource(id = R.drawable.my_store_plus_icon),
+                onEmptyStateImageClicked = {
+                    onEmptyStateImageClicked(
+                        validateSection(
+                            Section.REGISTER,
+                        ),
+                    )
+                },
+            ),
+        )
+        ValidateSection(
+            sectionInfo = SectionInfo {
+                ScreenSectionComponent(
+                    title = "Compras",
+                    body = {
+                        ConsolidatedPosBody(
+                            purchases,
+                            shouldItemBeVisible,
+                        )
+                    },
+                )
+            },
+            sectionEmptyStateInfo = SectionEmptyStateInfo(
+                data = purchases,
+                emptySectionTitle = stringResource(R.string.my_store_no_sales_done),
+                emptySectionPainter = painterResource(id = R.drawable.my_store_plus_icon),
+                onEmptyStateImageClicked = {
+                    onEmptyStateImageClicked(
+                        validateSection(
+                            Section.REGISTER,
+                        ),
+                    )
+                },
+            ),
         )
     }
 }
@@ -116,52 +168,3 @@ fun ConsolidatedPosBody(
         }
     }
 }
-
-// Limit the number of characters in a string
-fun String.limitTo(maxLength: Int): String {
-    return if (this.length > maxLength) {
-        this.substring(0, maxLength - 3) + "..."
-    } else {
-        this
-    }
-}
-
-fun Date.toShortString(): String {
-    val formatter = SimpleDateFormat("EEE MMM dd", Locale.getDefault())
-    return formatter.format(this)
-}
-
-// A fun that transforms a Date into a String
-// The return must be like this Tue Aug 08
-// fun Date.toShortString(): String {
-//     val formatter = SimpleDateFormat("EEE MMM dd", Locale.getDefault())
-//     return formatter.format(this)
-// }
-
-/* RowComponent(
-   textCurrency = resume.debits,
-    shouldItemBeVisible = shouldItemBeVisible,
-    stringId = R.string.my_store_debits,
-    type = Type.CURRENCY,
-)
-
-RowComponent(
-    textCurrency = resume.grossRevenue,
-    shouldItemBeVisible = shouldItemBeVisible,
-    stringId = R.string.my_store_gross_revenue,
-    type = Type.CURRENCY,
-)
-
-RowComponent(
-    textCurrency = resume.netRevenue,
-    shouldItemBeVisible = shouldItemBeVisible,
-    stringId = R.string.my_store_net_revenue,
-    type = Type.CURRENCY,
-)
-
-RowComponent(
-    textCurrency = resume.stockValue,
-    shouldItemBeVisible = shouldItemBeVisible,
-    stringId = R.string.my_store_stock_value,
-    type = Type.CURRENCY,
-)*/

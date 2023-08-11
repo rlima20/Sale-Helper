@@ -31,5 +31,6 @@
     <string name="my_store_description">Descrição</string>
     <string name="my_store_name">Nome</string>
     <string name="my_store_no_transactions_done">"Você não tem transações realizadas. "</string>
+    <string name="my_store_no_sales_done">"Você não tem vendas realizadas. "</string>
     <string name="my_store_no_products">"Você não tem produtos cadastrados. </string>
 </resources>

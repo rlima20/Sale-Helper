@@ -11,10 +11,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.mystore.R
 import com.example.mystore.Type
+import com.example.mystore.limitTo
 import com.example.mystore.setTextColor
 import com.example.mystore.toCurrency
 import com.example.mystore.toUnity
-import com.example.mystore.ui.components.screens.limitTo
 
 @Composable
 internal fun TextCurrencyComponent(

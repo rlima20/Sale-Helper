@@ -49,8 +49,6 @@ fun MyStoreNavHost(
             ConsolidatedPositionScreen(
                 consolidatedPosViewModel = consolidatedPosViewModel,
                 shouldItemBeVisible = shouldItemBeVisible,
-                onClick = { },
-                onLongClick = { },
             )
         }
         composable(route = RegisterTransactionScreen.route) {
