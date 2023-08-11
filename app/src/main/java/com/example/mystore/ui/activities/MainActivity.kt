@@ -18,6 +18,8 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
 import com.example.mystore.R
+import com.example.mystore.navigateSingleTopTo
+import com.example.mystore.ui.components.commons.TotalComponent
 import com.example.mystore.ui.components.topbar.BottomBarComponent
 import com.example.mystore.ui.components.topbar.TopBarComponent
 import com.example.mystore.ui.navigation.ConsolidatedPositionScreen
@@ -26,7 +28,6 @@ import com.example.mystore.ui.navigation.MyStoreDestinationInterface
 import com.example.mystore.ui.navigation.MyStoreNavHost
 import com.example.mystore.ui.navigation.RegisterProductScreen
 import com.example.mystore.ui.navigation.RegisterTransactionScreen
-import com.example.mystore.ui.navigation.navigateSingleTopTo
 import com.example.mystore.ui.theme.MyStoreTheme
 import com.example.mystore.viewmodel.ConsolidatedPosViewModel
 import com.example.mystore.viewmodel.HomeViewModel
@@ -64,6 +65,8 @@ fun MyStoreApp(
         val textFieldSize by viewModel.textFieldSize.collectAsState()
         val shouldItemBeVisible by viewModel.shouldItemBeVisible.collectAsState()
         var currentScreen: MyStoreDestinationInterface by remember { mutableStateOf(HomeScreen) }
+        var expandedBottomBar: Boolean by remember { mutableStateOf(false) }
+        var salesValue: Double by remember { mutableStateOf(0.0) }
 
         Scaffold(
             topBar = {
@@ -104,6 +107,12 @@ fun MyStoreApp(
                     homeViewModel = homeViewModel,
                     consolidatedPosViewModel = consolidatedPosViewModel,
                     shouldItemBeVisible = shouldItemBeVisible,
+                    onExpandBottomBar = { shouldExpandBottomBar ->
+                        expandedBottomBar = shouldExpandBottomBar
+                    },
+                    onComponent = { sales, _ ->
+                        salesValue = sales
+                    },
                     onClick = { navController.navigateSingleTopTo(RegisterProductScreen.route) },
                     onLongClick = {},
                     onDoubleClick = {},
@@ -122,6 +131,14 @@ fun MyStoreApp(
                     onRegisterTransactionIconClicked = {
                         viewModel.setScreenTitle("Registro de transação")
                         navController.navigateSingleTopTo(RegisterTransactionScreen.route)
+                    },
+                    expandedBottomBar = expandedBottomBar,
+                    expandedBottomBarContent = {
+                        TotalComponent(
+                            salesValue = salesValue,
+                            purchasesValue = 0.0,
+                            shouldItemBeVisible = shouldItemBeVisible,
+                        )
                     },
                 )
             },

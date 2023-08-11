@@ -3,6 +3,8 @@ package com.example.mystore
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
+import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.NavHostController
 import coil.compose.AsyncImagePainter
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
@@ -64,3 +66,13 @@ fun Date.toShortString(): String {
     val formatter = SimpleDateFormat("EEE MMM dd", Locale.getDefault())
     return formatter.format(this)
 }
+
+fun NavHostController.navigateSingleTopTo(route: String) =
+    this.navigate(route) {
+        popUpTo(this@navigateSingleTopTo.graph.findStartDestination().id) {
+            saveState = true
+        }
+
+        launchSingleTop = true
+        restoreState = true
+    }

@@ -125,3 +125,9 @@ enum class Section {
     PURCHASE,
     REGISTER,
 }
+
+data class TotalInfo(
+    val salesValue: Double,
+    val purchasesValue: Double,
+    val shouldItemBeVisible: Boolean,
+)

@@ -1,8 +1,12 @@
 package com.example.mystore.ui.components.commons
 
+import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.res.stringResource
+import com.example.mystore.R
 import com.example.mystore.Section
+import com.example.mystore.Type
 import com.example.mystore.ui.navigation.RegisterProductScreen
 import com.example.mystore.ui.navigation.RegisterTransactionScreen
 
@@ -60,3 +64,44 @@ fun ValidateSection(
         sectionInfo.section()
     }
 }
+
+@Composable
+fun TotalComponent(
+    salesValue: Double,
+    purchasesValue: Double,
+    shouldItemBeVisible: Boolean,
+) {
+    Column {
+        RowComponent(
+            leftSideText = stringResource(id = R.string.my_store_total_purchases),
+            rightSide = {
+                TextCurrencyComponent(
+                    value = purchasesValue.toString(),
+                    shouldItemBeVisible = shouldItemBeVisible,
+                    type = Type.CURRENCY,
+                )
+            },
+        )
+        RowComponent(
+            leftSideText = stringResource(id = R.string.my_store_total_sales),
+            rightSide = {
+                TextCurrencyComponent(
+                    value = salesValue.toString(),
+                    shouldItemBeVisible = shouldItemBeVisible,
+                    type = Type.CURRENCY,
+                )
+            },
+        )
+        RowComponent(
+            leftSideText = stringResource(id = R.string.my_store_total),
+            rightSide = {
+                TextCurrencyComponent(
+                    value = purchasesValue.toString(),
+                    shouldItemBeVisible = shouldItemBeVisible,
+                    type = Type.CURRENCY,
+                )
+            },
+        )
+    }
+}
+

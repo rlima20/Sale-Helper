@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.Icon
-import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Add
 import androidx.compose.runtime.Composable
@@ -27,17 +26,18 @@ internal fun BottomBarComponent(
     onPositionConsolidateIconClicked: () -> Unit,
     onRegisterTransactionIconClicked: () -> Unit,
     onRegisterProductIconClicked: () -> Unit,
-    bottomBarExpanded: Boolean = false,
+    expandedBottomBar: Boolean = false,
+    expandedBottomBarContent: @Composable () -> Unit = {},
 ) {
     Column {
-        if (bottomBarExpanded) {
+        if (expandedBottomBar) {
             Row(
                 modifier = Modifier
                     .background(primary)
                     .height(100.dp)
                     .fillMaxWidth(),
             ) {
-                Text(text = "TextBox")
+                expandedBottomBarContent()
             }
         }
         Row(

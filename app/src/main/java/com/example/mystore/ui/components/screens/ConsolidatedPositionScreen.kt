@@ -3,6 +3,7 @@ package com.example.mystore.ui.components.screens
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
@@ -28,19 +29,20 @@ import com.example.mystore.ui.components.commons.ValidateSection
 import com.example.mystore.ui.components.commons.validateSection
 import com.example.mystore.viewmodel.ConsolidatedPosViewModel
 
+// todo - Se não tiver compras nem vendas não faz sentido mostrar a bottomBar expandida.
 @Composable
 fun ConsolidatedPositionScreen(
     consolidatedPosViewModel: ConsolidatedPosViewModel,
     shouldItemBeVisible: Boolean,
     onEmptyStateImageClicked: (route: String) -> Unit = {},
-    onClick: () -> Unit = {},
-    onLongClick: () -> Unit = {},
+    onComponentCanBeSeen: (shouldSee: Boolean) -> Unit = {},
 ) {
-    val sales = consolidatedPosViewModel.getSales()
+    val sales = consolidatedPosViewModel.getListOfSales()
     val purchases = consolidatedPosViewModel.getPurchases()
 
     Column(
         modifier = Modifier
+            .padding(bottom = 1.dp)
             .verticalScroll(rememberScrollState()),
     ) {
         ValidateSection(
@@ -49,7 +51,7 @@ fun ConsolidatedPositionScreen(
                     title = "Vendas",
                     body = {
                         ConsolidatedPosBody(
-                            sales,
+                            consolidatedPosViewModel.getListOfSales(),
                             shouldItemBeVisible,
                         )
                     },
@@ -93,6 +95,7 @@ fun ConsolidatedPositionScreen(
                 },
             ),
         )
+        onComponentCanBeSeen(true)
     }
 }
 
