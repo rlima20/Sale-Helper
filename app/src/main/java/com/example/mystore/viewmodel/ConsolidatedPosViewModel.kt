@@ -8,6 +8,8 @@ import java.util.Date
 
 class ConsolidatedPosViewModel : ViewModel() {
 
+    // todo - refactor this to use a database
+
     fun getTransactions() = listOfTransactions
 
     class Transaction(

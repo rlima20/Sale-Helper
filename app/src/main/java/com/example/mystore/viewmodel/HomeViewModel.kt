@@ -1,9 +1,6 @@
 package com.example.mystore.viewmodel
 
-import android.content.Context
 import androidx.lifecycle.ViewModel
-import coil.request.ImageRequest
-import coil.size.Size
 import com.example.mystore.States
 import kotlinx.coroutines.flow.MutableStateFlow
 

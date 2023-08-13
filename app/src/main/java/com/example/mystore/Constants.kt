@@ -127,6 +127,7 @@ enum class Section {
     REGISTER,
 }
 
+// todo - arrumar um lugar certo para as data classes
 data class TotalInfo(
     val salesValue: Double,
     val purchasesValue: Double,

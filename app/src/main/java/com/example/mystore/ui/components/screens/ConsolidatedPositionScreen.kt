@@ -35,7 +35,7 @@ fun ConsolidatedPositionScreen(
     consolidatedPosViewModel: ConsolidatedPosViewModel,
     shouldItemBeVisible: Boolean,
     onEmptyStateImageClicked: (route: String) -> Unit = {},
-    onComponentCanBeSeen: (shouldSee: Boolean) -> Unit = {},
+    onShowBottomBarExpanded: (shouldSee: Boolean) -> Unit = {},
 ) {
     val sales = consolidatedPosViewModel.getListOfSales()
     val purchases = consolidatedPosViewModel.getPurchases()
@@ -95,7 +95,7 @@ fun ConsolidatedPositionScreen(
                 },
             ),
         )
-        onComponentCanBeSeen(true)
+        onShowBottomBarExpanded(true)
     }
 }
 

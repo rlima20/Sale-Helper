@@ -13,8 +13,6 @@ import com.example.mystore.R
 import com.example.mystore.Type
 import com.example.mystore.limitTo
 import com.example.mystore.setTextColor
-import com.example.mystore.toCurrency
-import com.example.mystore.toUnity
 
 @Composable
 internal fun TextCurrencyComponent(
@@ -40,17 +38,4 @@ internal fun TextCurrencyComponent(
         overflow = TextOverflow.Ellipsis,
         maxLines = 1,
     )
-}
-
-@Composable
-fun setUnit(
-    type: Type,
-    value: String,
-    shouldItemBeVisible: Boolean,
-) = when (type) {
-    Type.CURRENCY -> value.toDouble().toCurrency(shouldItemBeVisible)
-    Type.PURCHASE_CURRENCY -> value.toDouble().toCurrency(shouldItemBeVisible)
-    Type.QUANTITY -> value.toInt().toUnity(shouldItemBeVisible)
-    Type.STRING -> value
-    Type.DATE -> value
 }

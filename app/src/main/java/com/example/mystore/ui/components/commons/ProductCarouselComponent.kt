@@ -22,9 +22,9 @@ fun ProductCarouselComponent(
     listOfProductsLocal: List<Product>,
     shouldItemBeVisible: Boolean,
     onImageRequestState: (state: States) -> Unit,
-    onClick: (product: Product) -> Unit,
-    onLongClick: () -> Unit,
-    onDoubleClick: () -> Unit,
+    onProductClick: (product: Product) -> Unit,
+    onProductLongClick: () -> Unit,
+    onProductDoubleClick: () -> Unit,
 ) {
     LazyRow(
         modifier = Modifier.padding(
@@ -37,16 +37,16 @@ fun ProductCarouselComponent(
         items(listOfProductsLocal) { product ->
             ProductItemComponent(
                 product = product,
-                painter = getPainter(
+                productPainter = getPainter(
                     imageUrl = product.imageUrl,
                     onImageRequestState = {
                         onImageRequestState(it)
                     },
                 ),
                 shouldItemBeVisible = shouldItemBeVisible,
-                onClick = { onClick(product) },
-                onLongClick = { onLongClick() },
-                onDoubleClick = { onDoubleClick() },
+                onProductClick = { onProductClick(product) },
+                onProductLongClick = { onProductLongClick() },
+                onProductDoubleClick = { onProductDoubleClick() },
             )
         }
     }

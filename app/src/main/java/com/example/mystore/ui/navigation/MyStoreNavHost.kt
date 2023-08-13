@@ -22,10 +22,13 @@ fun MyStoreNavHost(
     consolidatedPosViewModel: ConsolidatedPosViewModel,
     shouldItemBeVisible: Boolean,
     onExpandBottomBar: (Boolean) -> Unit = {},
-    onComponent: (sales: Double, purchase: Double) -> Unit = { sales: Double, purchase: Double -> },
-    onClick: (product: Product) -> Unit = {},
-    onLongClick: () -> Unit = {},
-    onDoubleClick: () -> Unit = {},
+    onShowBottomBarExpanded: (
+        sales: Double,
+        purchase: Double,
+    ) -> Unit = { _: Double, _: Double -> },
+    onProductClick: (product: Product) -> Unit = {},
+    onProductLongClick: () -> Unit = {},
+    onProductDoubleClick: () -> Unit = {},
 ) {
     NavHost(
         navController = navController,
@@ -38,9 +41,9 @@ fun MyStoreNavHost(
             HomeScreen(
                 homeViewModel = homeViewModel,
                 shouldItemBeVisible = shouldItemBeVisible,
-                onClick = { onClick(it) },
-                onLongClick = { onLongClick() },
-                onDoubleClick = { onDoubleClick() },
+                onProductClick = { onProductClick(it) },
+                onProductLongClick = { onProductLongClick() },
+                onProductDoubleClick = { onProductDoubleClick() },
                 onEmptyStateImageClicked = {
                     navController.navigateSingleTopTo(it)
                 },
@@ -59,8 +62,8 @@ fun MyStoreNavHost(
             ConsolidatedPositionScreen(
                 consolidatedPosViewModel = consolidatedPosViewModel,
                 shouldItemBeVisible = shouldItemBeVisible,
-                onComponentCanBeSeen = {
-                    onComponent(
+                onShowBottomBarExpanded = {
+                    onShowBottomBarExpanded(
                         consolidatedPosViewModel.getSalesValue(),
                         consolidatedPosViewModel.getPurchasesValue(),
                     )

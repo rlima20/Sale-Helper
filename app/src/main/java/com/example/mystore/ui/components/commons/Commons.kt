@@ -10,6 +10,8 @@ import androidx.compose.ui.unit.dp
 import com.example.mystore.R
 import com.example.mystore.Section
 import com.example.mystore.Type
+import com.example.mystore.toCurrency
+import com.example.mystore.toUnity
 import com.example.mystore.ui.navigation.RegisterProductScreen
 import com.example.mystore.ui.navigation.RegisterTransactionScreen
 
@@ -23,6 +25,19 @@ data class SectionEmptyStateInfo(
     val emptySectionPainter: Painter,
     val onEmptyStateImageClicked: () -> Unit = {},
 )
+
+@Composable
+fun setUnit(
+    type: Type,
+    value: String,
+    shouldItemBeVisible: Boolean,
+) = when (type) {
+    Type.CURRENCY -> value.toDouble().toCurrency(shouldItemBeVisible)
+    Type.PURCHASE_CURRENCY -> value.toDouble().toCurrency(shouldItemBeVisible)
+    Type.QUANTITY -> value.toInt().toUnity(shouldItemBeVisible)
+    Type.STRING -> value
+    Type.DATE -> value
+}
 
 fun validateSection(section: Section): String {
     return when (section) {

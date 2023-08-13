@@ -32,11 +32,11 @@ import com.example.mystore.setTextColor
 @Composable
 fun ProductItemComponent(
     product: Product,
-    painter: Painter,
+    productPainter: Painter,
     shouldItemBeVisible: Boolean,
-    onClick: () -> Unit,
-    onLongClick: () -> Unit,
-    onDoubleClick: () -> Unit,
+    onProductClick: () -> Unit,
+    onProductLongClick: () -> Unit,
+    onProductDoubleClick: () -> Unit,
 ) {
     Surface(
         modifier = Modifier
@@ -54,16 +54,16 @@ fun ProductItemComponent(
                     .width(140.dp)
                     .combinedClickable(
                         enabled = true,
-                        onClick = { onClick() },
-                        onLongClick = { onLongClick() },
-                        onDoubleClick = { onDoubleClick() },
+                        onClick = { onProductClick() },
+                        onLongClick = { onProductLongClick() },
+                        onDoubleClick = { onProductDoubleClick() },
                     ),
             ) {
                 Image(
                     modifier = Modifier
                         .width(140.dp)
                         .height(100.dp),
-                    painter = painter,
+                    painter = productPainter,
                     contentDescription = null,
                     contentScale = ContentScale.FillWidth,
                 )

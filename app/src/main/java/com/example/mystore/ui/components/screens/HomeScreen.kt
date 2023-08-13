@@ -25,9 +25,9 @@ import com.example.mystore.viewmodel.HomeViewModel
 fun HomeScreen(
     homeViewModel: HomeViewModel,
     shouldItemBeVisible: Boolean,
-    onClick: (product: Product) -> Unit = {},
-    onLongClick: () -> Unit = {},
-    onDoubleClick: () -> Unit = {},
+    onProductClick: (product: Product) -> Unit = {},
+    onProductLongClick: () -> Unit = {},
+    onProductDoubleClick: () -> Unit = {},
     onEmptyStateImageClicked: (route: String) -> Unit = {},
 ) {
     val resume = homeViewModel.getResume()
@@ -37,7 +37,7 @@ fun HomeScreen(
             sectionInfo = SectionInfo(
                 section = {
                     ScreenSectionComponent(
-                        title = "Total geral",
+                        title = stringResource(id = R.string.my_store_overall_total),
                         body = {
                             HomeBody(
                                 resume,
@@ -65,7 +65,7 @@ fun HomeScreen(
             // data = listOfProductsLocal,
             sectionInfo = SectionInfo {
                 ScreenSectionComponent(
-                    title = "Produtos",
+                    title = stringResource(id = R.string.my_store_products),
                     body = {
                         ProductCarouselComponent(
                             listOfProductsLocal = listOfProductsLocal,
@@ -73,9 +73,9 @@ fun HomeScreen(
                             onImageRequestState = { state ->
                                 homeViewModel.setImageRequestState(state)
                             },
-                            onClick = { onClick(it) },
-                            onLongClick = { onLongClick() },
-                            onDoubleClick = { onDoubleClick() },
+                            onProductClick = { onProductClick(it) },
+                            onProductLongClick = { onProductLongClick() },
+                            onProductDoubleClick = { onProductDoubleClick() },
                         )
                     },
                 )
