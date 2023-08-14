@@ -3,6 +3,8 @@ package com.example.mystore.ui.components.screens
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -11,6 +13,7 @@ import com.example.mystore.Section
 import com.example.mystore.Type
 import com.example.mystore.listOfProductsLocal
 import com.example.mystore.model.Product
+import com.example.mystore.model.Resume
 import com.example.mystore.ui.components.commons.ProductCarouselComponent
 import com.example.mystore.ui.components.commons.RowComponent
 import com.example.mystore.ui.components.commons.ScreenSectionComponent
@@ -19,7 +22,7 @@ import com.example.mystore.ui.components.commons.SectionInfo
 import com.example.mystore.ui.components.commons.TextCurrencyComponent
 import com.example.mystore.ui.components.commons.ValidateSection
 import com.example.mystore.ui.components.commons.validateSection
-import com.example.mystore.viewmodel.HomeViewModel
+import com.example.mystore.viewmodel.screen.HomeViewModel
 
 @Composable
 fun HomeScreen(
@@ -30,7 +33,8 @@ fun HomeScreen(
     onProductDoubleClick: () -> Unit = {},
     onEmptyStateImageClicked: (route: String) -> Unit = {},
 ) {
-    val resume = homeViewModel.getResume()
+    val resume by homeViewModel.resume.collectAsState()
+    val listOfProducts by homeViewModel.listOfProducts.collectAsState()
 
     Column {
         ValidateSection(
@@ -82,7 +86,7 @@ fun HomeScreen(
             },
             sectionEmptyStateInfo =
             SectionEmptyStateInfo(
-                data = listOf(),
+                data = listOfProducts,
                 emptySectionTitle = stringResource(R.string.my_store_no_products),
                 emptySectionPainter = painterResource(id = R.drawable.my_store_plus_icon),
                 onEmptyStateImageClicked = {
@@ -99,7 +103,7 @@ fun HomeScreen(
 
 @Composable
 fun HomeBody(
-    resume: HomeViewModel.Resume,
+    resume: Resume,
     shouldItemBeVisible: Boolean,
 ) {
     RowComponent(

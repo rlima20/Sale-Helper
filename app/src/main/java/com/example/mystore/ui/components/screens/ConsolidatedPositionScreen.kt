@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.dp
 import com.example.mystore.R
 import com.example.mystore.Section
 import com.example.mystore.Type
+import com.example.mystore.model.Transaction
 import com.example.mystore.toShortString
 import com.example.mystore.ui.components.commons.RowComponent
 import com.example.mystore.ui.components.commons.ScreenSectionComponent
@@ -27,9 +28,8 @@ import com.example.mystore.ui.components.commons.SectionInfo
 import com.example.mystore.ui.components.commons.TextCurrencyComponent
 import com.example.mystore.ui.components.commons.ValidateSection
 import com.example.mystore.ui.components.commons.validateSection
-import com.example.mystore.viewmodel.ConsolidatedPosViewModel
+import com.example.mystore.viewmodel.screen.ConsolidatedPosViewModel
 
-// todo - Se não tiver compras nem vendas não faz sentido mostrar a bottomBar expandida.
 @Composable
 fun ConsolidatedPositionScreen(
     consolidatedPosViewModel: ConsolidatedPosViewModel,
@@ -37,9 +37,6 @@ fun ConsolidatedPositionScreen(
     onEmptyStateImageClicked: (route: String) -> Unit = {},
     onShowBottomBarExpanded: (shouldSee: Boolean) -> Unit = {},
 ) {
-    val sales = consolidatedPosViewModel.getListOfSales()
-    val purchases = consolidatedPosViewModel.getPurchases()
-
     Column(
         modifier = Modifier
             .padding(bottom = 1.dp)
@@ -51,14 +48,14 @@ fun ConsolidatedPositionScreen(
                     title = "Vendas",
                     body = {
                         ConsolidatedPosBody(
-                            consolidatedPosViewModel.getListOfSales(),
+                            consolidatedPosViewModel.listOfSales.value,
                             shouldItemBeVisible,
                         )
                     },
                 )
             },
             sectionEmptyStateInfo = SectionEmptyStateInfo(
-                data = sales,
+                data = consolidatedPosViewModel.listOfSales.value,
                 emptySectionTitle = stringResource(R.string.my_store_no_sales_done),
                 emptySectionPainter = painterResource(id = R.drawable.my_store_plus_icon),
                 onEmptyStateImageClicked = {
@@ -76,14 +73,14 @@ fun ConsolidatedPositionScreen(
                     title = "Compras",
                     body = {
                         ConsolidatedPosBody(
-                            purchases,
+                            consolidatedPosViewModel.listOfPurchases.value,
                             shouldItemBeVisible,
                         )
                     },
                 )
             },
             sectionEmptyStateInfo = SectionEmptyStateInfo(
-                data = purchases,
+                data = consolidatedPosViewModel.listOfPurchases.value,
                 emptySectionTitle = stringResource(R.string.my_store_no_sales_done),
                 emptySectionPainter = painterResource(id = R.drawable.my_store_plus_icon),
                 onEmptyStateImageClicked = {
@@ -101,7 +98,7 @@ fun ConsolidatedPositionScreen(
 
 @Composable
 fun ConsolidatedPosBody(
-    transactions: List<ConsolidatedPosViewModel.Transaction>,
+    transactions: List<Transaction>,
     shouldItemBeVisible: Boolean,
 ) {
     LazyRow(

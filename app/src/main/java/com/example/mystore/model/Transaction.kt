@@ -1,22 +1,13 @@
 package com.example.mystore.model
 
-import androidx.room.Entity
-import androidx.room.PrimaryKey
+import com.example.mystore.model.entities.TransactionType
 import java.util.Date
 
-@Entity(tableName = "transactions")
 data class Transaction(
-    @PrimaryKey(autoGenerate = true)
-    val id: Long = 0,
-    val productId: Long, // Chave estrangeira referenciando o id do produto
+    val product: Product,
     val transactionType: TransactionType,
+    val unitValue: Double = 0.0,
     val transactionDate: Date,
-    val quantity: Int,
-    val transactionAmount: Double,
+    val quantity: Int = 0,
+    val transactionAmount: Double = 0.0,
 )
-
-// Enum para definir o tipo de transação (compra ou venda)
-enum class TransactionType {
-    PURCHASE, // Compra
-    SALE, // Venda
-}

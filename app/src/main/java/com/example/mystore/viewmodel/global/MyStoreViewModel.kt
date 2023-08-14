@@ -1,4 +1,4 @@
-package com.example.mystore.viewmodel
+package com.example.mystore.viewmodel.global
 
 import androidx.compose.ui.geometry.Size
 import androidx.lifecycle.ViewModel
@@ -29,7 +29,7 @@ class MyStoreViewModel : ViewModel() {
         _screenTitle.value = title
     }
 
-    fun setIsMenuExpanded(isExpanded: Boolean) {
+    fun expandMenu(isExpanded: Boolean) {
         _isMenuExpanded.value = isExpanded
     }
 
@@ -37,7 +37,7 @@ class MyStoreViewModel : ViewModel() {
         _textFieldSize.value = size
     }
 
-    fun setShouldItemBeVisible(shouldItemBeVisible: Boolean) {
+    fun setValueVisibility(shouldItemBeVisible: Boolean) {
         _shouldItemBeVisible.value = shouldItemBeVisible
     }
 }

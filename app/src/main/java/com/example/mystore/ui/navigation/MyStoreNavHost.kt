@@ -11,8 +11,8 @@ import com.example.mystore.ui.components.screens.ConsolidatedPositionScreen
 import com.example.mystore.ui.components.screens.HomeScreen
 import com.example.mystore.ui.components.screens.RegisterScreen
 import com.example.mystore.ui.components.screens.RegisterTransactionScreen
-import com.example.mystore.viewmodel.ConsolidatedPosViewModel
-import com.example.mystore.viewmodel.HomeViewModel
+import com.example.mystore.viewmodel.screen.ConsolidatedPosViewModel
+import com.example.mystore.viewmodel.screen.HomeViewModel
 
 @Composable
 fun MyStoreNavHost(
@@ -22,10 +22,7 @@ fun MyStoreNavHost(
     consolidatedPosViewModel: ConsolidatedPosViewModel,
     shouldItemBeVisible: Boolean,
     onExpandBottomBar: (Boolean) -> Unit = {},
-    onShowBottomBarExpanded: (
-        sales: Double,
-        purchase: Double,
-    ) -> Unit = { _: Double, _: Double -> },
+    onShowBottomBarExpanded: (sales: Double, purchase: Double) -> Unit = { _: Double, _: Double -> },
     onProductClick: (product: Product) -> Unit = {},
     onProductLongClick: () -> Unit = {},
     onProductDoubleClick: () -> Unit = {},
@@ -63,10 +60,15 @@ fun MyStoreNavHost(
                 consolidatedPosViewModel = consolidatedPosViewModel,
                 shouldItemBeVisible = shouldItemBeVisible,
                 onShowBottomBarExpanded = {
-                    onShowBottomBarExpanded(
-                        consolidatedPosViewModel.getSalesValue(),
-                        consolidatedPosViewModel.getPurchasesValue(),
-                    )
+                    val sales = consolidatedPosViewModel.getSalesValue()
+                    val purchases = consolidatedPosViewModel.getPurchasesValue()
+                    val listOfSales = consolidatedPosViewModel.listOfSales.value
+                    val listOfPurchases = consolidatedPosViewModel.listOfPurchases.value
+
+                    if (listOfSales.isNotEmpty() && listOfPurchases.isNotEmpty()) {
+                        onExpandBottomBar(true)
+                        onShowBottomBarExpanded(sales, purchases)
+                    }
                 },
             )
         }

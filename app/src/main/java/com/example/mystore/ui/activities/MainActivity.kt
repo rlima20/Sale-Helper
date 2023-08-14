@@ -30,9 +30,9 @@ import com.example.mystore.ui.navigation.MyStoreNavHost
 import com.example.mystore.ui.navigation.RegisterProductScreen
 import com.example.mystore.ui.navigation.RegisterTransactionScreen
 import com.example.mystore.ui.theme.MyStoreTheme
-import com.example.mystore.viewmodel.ConsolidatedPosViewModel
-import com.example.mystore.viewmodel.HomeViewModel
-import com.example.mystore.viewmodel.MyStoreViewModel
+import com.example.mystore.viewmodel.screen.ConsolidatedPosViewModel
+import com.example.mystore.viewmodel.screen.HomeViewModel
+import com.example.mystore.viewmodel.global.MyStoreViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : ComponentActivity() {
@@ -85,18 +85,18 @@ fun MyStoreApp(
                         navController.navigateSingleTopTo(HomeScreen.route)
                     },
                     onIconVisibilityClicked = {
-                        myStoreViewModel.setShouldItemBeVisible(!shouldItemBeVisible)
+                        myStoreViewModel.setValueVisibility(!shouldItemBeVisible)
                     },
                     onMenuIconClicked = {
-                        myStoreViewModel.setIsMenuExpanded(!isMenuExpanded)
+                        myStoreViewModel.expandMenu(!isMenuExpanded)
                     },
                     onDismissRequest = {
-                        myStoreViewModel.setIsMenuExpanded(false)
+                        myStoreViewModel.expandMenu(false)
                     },
                     onDropDownMenuItemClicked = { screen ->
                         currentScreen = transformStringToInterfaceObject(application, screen)
                         myStoreViewModel.setScreenTitle(screen)
-                        myStoreViewModel.setIsMenuExpanded(false)
+                        myStoreViewModel.expandMenu(false)
                         navController.navigateSingleTopTo(currentScreen.route)
                     },
                     onChangeTextFieldSize = { size -> myStoreViewModel.setTextFieldSize(size) },
