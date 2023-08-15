@@ -3,9 +3,9 @@ package com.example.mystore.viewmodel.screen
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import com.example.mystore.TransactionType
 import com.example.mystore.listOfTransactions
 import com.example.mystore.model.Transaction
-import com.example.mystore.model.entities.TransactionType
 
 class ConsolidatedPosViewModel : ViewModel() {
 

@@ -1,10 +1,11 @@
 package com.example.mystore.ui.components.commons
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.DropdownMenu
 import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material.Icon
@@ -18,8 +19,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.toSize
+import com.example.mystore.R
 
 @Composable
 fun DropdownComponent(
@@ -27,6 +31,8 @@ fun DropdownComponent(
     options: List<String>,
     selectedText: String,
     textFieldSize: Size,
+    label: String,
+    modifier: Modifier = Modifier,
     onOutLinedTextFieldSize: (size: Size) -> Unit = {},
     onOutLinedTextFieldValueChanged: (String) -> Unit = {},
     onTrailingIconClicked: () -> Unit = {},
@@ -39,23 +45,38 @@ fun DropdownComponent(
         Icons.Filled.KeyboardArrowDown
     }
 
-    Column(Modifier.padding(20.dp)) {
+    Column {
         OutlinedTextField(
+            enabled = false,
             value = selectedText,
             onValueChange = { onOutLinedTextFieldValueChanged(selectedText) },
-            modifier = Modifier
-                .fillMaxWidth()
+            modifier = modifier
+                .background(colorResource(id = R.color.color_900))
                 .onGloballyPositioned { coordinates ->
                     onOutLinedTextFieldSize(coordinates.size.toSize())
                 },
-            label = { Text("Label") },
+            label = { Text(label) },
             trailingIcon = {
                 Icon(
                     icon,
                     "contentDescription",
                     Modifier.clickable { onTrailingIconClicked() },
+                    tint = colorResource(id = R.color.color_50),
                 )
             },
+            colors = androidx.compose.material.TextFieldDefaults.outlinedTextFieldColors(
+                focusedBorderColor = colorResource(id = R.color.color_50),
+                unfocusedBorderColor = colorResource(id = R.color.color_100),
+                disabledBorderColor = colorResource(id = R.color.color_200),
+                focusedLabelColor = colorResource(id = R.color.color_50),
+                unfocusedLabelColor = colorResource(id = R.color.color_500),
+                disabledLabelColor = colorResource(id = R.color.color_50),
+                cursorColor = colorResource(id = R.color.color_50),
+                textColor = colorResource(id = R.color.color_50),
+                disabledTextColor = colorResource(id = R.color.color_50),
+                placeholderColor = colorResource(id = R.color.color_50),
+            ),
+            shape = RoundedCornerShape(15.dp),
         )
 
         DropdownMenu(
@@ -76,14 +97,15 @@ fun DropdownComponent(
     }
 }
 
-// For displaying preview in
-// the Android Studio IDE emulator
-// @Preview(showBackground = true)
-// @Composable
-// fun DefaultPreview() {
-//    DropdownComponent(
-//        isExpanded = false,
-//        options = listOf("A", "B", "C"),
-//        selectedText = "A",
-//    )
-// }
+@Preview(showBackground = true)
+@Composable
+fun DefaultPreview() {
+    DropdownComponent(
+        isExpanded = false,
+        modifier = Modifier.padding(16.dp),
+        label = "Tipo de transação",
+        options = listOf("A", "B", "C"),
+        textFieldSize = Size.Zero,
+        selectedText = "A",
+    )
+}

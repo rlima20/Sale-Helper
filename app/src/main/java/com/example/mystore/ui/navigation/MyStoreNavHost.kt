@@ -13,6 +13,7 @@ import com.example.mystore.ui.components.screens.RegisterScreen
 import com.example.mystore.ui.components.screens.RegisterTransactionScreen
 import com.example.mystore.viewmodel.screen.ConsolidatedPosViewModel
 import com.example.mystore.viewmodel.screen.HomeViewModel
+import com.example.mystore.viewmodel.screen.RegisterTransactionViewModel
 
 @Composable
 fun MyStoreNavHost(
@@ -20,6 +21,7 @@ fun MyStoreNavHost(
     modifier: Modifier = Modifier,
     homeViewModel: HomeViewModel,
     consolidatedPosViewModel: ConsolidatedPosViewModel,
+    registerTransactionViewModel: RegisterTransactionViewModel,
     shouldItemBeVisible: Boolean,
     onExpandBottomBar: (Boolean) -> Unit = {},
     onShowBottomBarExpanded: (sales: Double, purchase: Double) -> Unit = { _: Double, _: Double -> },
@@ -76,7 +78,9 @@ fun MyStoreNavHost(
         // Navega para a RegisterTransactionScreen
         composable(route = RegisterTransactionScreen.route) {
             onExpandBottomBar(false)
-            RegisterTransactionScreen()
+            RegisterTransactionScreen(
+                registerTransactionViewModel = registerTransactionViewModel,
+            )
         }
     }
 }

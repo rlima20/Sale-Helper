@@ -43,8 +43,7 @@ internal fun Quantifier(
                 start = 16.dp,
                 top = 8.dp,
                 end = 16.dp,
-            )
-            .padding(bottom = 8.dp),
+            ),
         elevation = 4.dp,
         shape = setRoundedCornersShape(),
         color = colorResource(id = R.color.color_50),
@@ -65,7 +64,7 @@ internal fun Quantifier(
             }
 
             Text(
-                modifier = Modifier.padding(top = 4.dp),
+                modifier = Modifier.padding(top = 8.dp),
                 text = quantifier.toString(),
                 fontSize = 18.dp.value.sp,
                 color = colorResource(id = R.color.color_400),

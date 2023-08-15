@@ -1,6 +1,6 @@
 package com.example.mystore.model
 
-import com.example.mystore.model.entities.TransactionType
+import com.example.mystore.TransactionType
 import java.util.Date
 
 data class Transaction(

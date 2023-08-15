@@ -2,6 +2,7 @@ package com.example.mystore.model.entities
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.example.mystore.TransactionType
 import java.util.Date
 
 @Entity(tableName = "transactions")
@@ -14,9 +15,3 @@ data class TransactionEntity(
     val quantity: Int,
     val transactionAmount: Double,
 )
-
-// Enum para definir o tipo de transação (compra ou venda)
-enum class TransactionType {
-    PURCHASE, // Compra
-    SALE, // Venda
-}

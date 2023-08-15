@@ -2,7 +2,6 @@ package com.example.mystore
 
 import com.example.mystore.model.Product
 import com.example.mystore.model.Transaction
-import com.example.mystore.model.entities.TransactionType
 import java.util.Date
 
 val listOfProductsLocal = listOf(

@@ -30,9 +30,10 @@ import com.example.mystore.ui.navigation.MyStoreNavHost
 import com.example.mystore.ui.navigation.RegisterProductScreen
 import com.example.mystore.ui.navigation.RegisterTransactionScreen
 import com.example.mystore.ui.theme.MyStoreTheme
+import com.example.mystore.viewmodel.global.MyStoreViewModel
 import com.example.mystore.viewmodel.screen.ConsolidatedPosViewModel
 import com.example.mystore.viewmodel.screen.HomeViewModel
-import com.example.mystore.viewmodel.global.MyStoreViewModel
+import com.example.mystore.viewmodel.screen.RegisterTransactionViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : ComponentActivity() {
@@ -41,6 +42,7 @@ class MainActivity : ComponentActivity() {
     private val viewModel: MyStoreViewModel by viewModel()
     private val homeViewModel: HomeViewModel by viewModel()
     private val consolidatedPosViewModel: ConsolidatedPosViewModel by viewModel()
+    private val registerTransactionViewModel: RegisterTransactionViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,6 +52,7 @@ class MainActivity : ComponentActivity() {
                 viewModel,
                 homeViewModel,
                 consolidatedPosViewModel,
+                registerTransactionViewModel,
             )
         }
     }
@@ -61,6 +64,7 @@ fun MyStoreApp(
     myStoreViewModel: MyStoreViewModel,
     homeViewModel: HomeViewModel,
     consolidatedPosViewModel: ConsolidatedPosViewModel,
+    registerTransactionViewModel: RegisterTransactionViewModel,
 ) {
     MyStoreTheme {
         val navController = rememberNavController()
@@ -111,6 +115,7 @@ fun MyStoreApp(
                         .padding(it),
                     homeViewModel = homeViewModel,
                     consolidatedPosViewModel = consolidatedPosViewModel,
+                    registerTransactionViewModel = registerTransactionViewModel,
                     shouldItemBeVisible = shouldItemBeVisible,
                     onExpandBottomBar = { shouldExpandBottomBar ->
                         expandedBottomBar = shouldExpandBottomBar
@@ -183,5 +188,6 @@ fun MyStoreAppPreview() {
         myStoreViewModel = MyStoreViewModel(),
         homeViewModel = HomeViewModel(),
         consolidatedPosViewModel = ConsolidatedPosViewModel(),
+        registerTransactionViewModel = RegisterTransactionViewModel(),
     )
 }

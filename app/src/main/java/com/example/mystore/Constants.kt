@@ -13,7 +13,12 @@ enum class Screens {
     REGISTER_PRODUCT,
     REGISTER_TRANSACTION,
     CONSOLIDATED_POSITION,
-    NONE
+    NONE,
+}
+
+enum class TransactionType {
+    PURCHASE,
+    SALE,
 }
 
 enum class States {
