@@ -5,9 +5,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.example.mystore.AppApplication
 import com.example.mystore.R
+import com.example.mystore.Screens
 import com.example.mystore.Section
 import com.example.mystore.Type
 import com.example.mystore.toCurrency
@@ -15,13 +18,15 @@ import com.example.mystore.toUnity
 import com.example.mystore.ui.navigation.RegisterProductScreen
 import com.example.mystore.ui.navigation.RegisterTransactionScreen
 
+private val application = AppApplication.instance
+
 data class SectionInfo(
     val section: @Composable () -> Unit,
 )
 
 data class SectionEmptyStateInfo(
-    val data: List<Any>,
-    val emptySectionTitle: String,
+    val data: List<Any> = listOf(),
+    val emptySectionTitle: String = "",
     val emptySectionPainter: Painter,
     val onEmptyStateImageClicked: () -> Unit = {},
 )
@@ -69,10 +74,15 @@ fun validateSection(section: Section): String {
 
 @Composable
 fun ValidateSection(
-    sectionInfo: SectionInfo,
-    sectionEmptyStateInfo: SectionEmptyStateInfo,
+    screen: Screens = Screens.NONE,
+    sectionInfo: SectionInfo = SectionInfo { },
+    sectionEmptyStateInfo: SectionEmptyStateInfo = SectionEmptyStateInfo(
+        emptySectionPainter = painterResource(id = R.drawable.empty_state),
+    ),
 ) {
-    if (sectionEmptyStateInfo.data.isEmpty()) {
+    if (screen == Screens.REGISTER_PRODUCT || screen == Screens.REGISTER_TRANSACTION) {
+        sectionInfo.section()
+    } else if (sectionEmptyStateInfo.data.isEmpty()) {
         EmptyStateSectionComponent(
             title = sectionEmptyStateInfo.emptySectionTitle,
             painter = sectionEmptyStateInfo.emptySectionPainter,

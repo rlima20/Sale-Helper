@@ -8,6 +8,14 @@ val screenList =
         R.string.my_store_consolidated_position.toStringResource(),
     )
 
+enum class Screens {
+    HOME,
+    REGISTER_PRODUCT,
+    REGISTER_TRANSACTION,
+    CONSOLIDATED_POSITION,
+    NONE
+}
+
 enum class States {
     SUCCESS,
     LOADING,

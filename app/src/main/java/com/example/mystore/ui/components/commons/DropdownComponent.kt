@@ -1,6 +1,5 @@
 package com.example.mystore.ui.components.commons
 
-import android.util.Size
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -16,23 +15,23 @@ import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.LayoutCoordinates
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.toSize
 
 @Composable
 fun DropdownComponent(
     isExpanded: Boolean,
     options: List<String>,
     selectedText: String,
-    textFieldSize: Size = Size(0, 0),
-    onOutLinedTextFieldSize: (coordinates: LayoutCoordinates) -> Unit = {}, // todo textFieldSize = coordinates.size.toSize()
-    onOutLinedTextFieldValueChanged: () -> Unit = {}, // todo selectedText = it
-    onTrailingIconClicked: () -> Unit = {}, // todo - isExpanded = !isExpanded
-    onDropdownMenuDismissRequest: () -> Unit = {}, // todo - isExpanded = false
-    onDropdownMenuItemClicked: (String) -> Unit = {}, // todo - selectedText = label
+    textFieldSize: Size,
+    onOutLinedTextFieldSize: (size: Size) -> Unit = {},
+    onOutLinedTextFieldValueChanged: (String) -> Unit = {},
+    onTrailingIconClicked: () -> Unit = {},
+    onDropdownMenuDismissRequest: () -> Unit = {},
+    onDropdownMenuItemClicked: (String) -> Unit = {},
 ) {
     val icon = if (isExpanded) {
         Icons.Filled.KeyboardArrowUp
@@ -43,11 +42,11 @@ fun DropdownComponent(
     Column(Modifier.padding(20.dp)) {
         OutlinedTextField(
             value = selectedText,
-            onValueChange = { onOutLinedTextFieldValueChanged() },
+            onValueChange = { onOutLinedTextFieldValueChanged(selectedText) },
             modifier = Modifier
                 .fillMaxWidth()
                 .onGloballyPositioned { coordinates ->
-                    onOutLinedTextFieldSize(coordinates)
+                    onOutLinedTextFieldSize(coordinates.size.toSize())
                 },
             label = { Text("Label") },
             trailingIcon = {
@@ -79,12 +78,12 @@ fun DropdownComponent(
 
 // For displaying preview in
 // the Android Studio IDE emulator
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    DropdownComponent(
-        isExpanded = false,
-        options = listOf("A", "B", "C"),
-        selectedText = "A",
-    )
-}
+// @Preview(showBackground = true)
+// @Composable
+// fun DefaultPreview() {
+//    DropdownComponent(
+//        isExpanded = false,
+//        options = listOf("A", "B", "C"),
+//        selectedText = "A",
+//    )
+// }

@@ -9,6 +9,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.mystore.R
+import com.example.mystore.Screens
 import com.example.mystore.Section
 import com.example.mystore.Type
 import com.example.mystore.listOfProductsLocal
@@ -63,6 +64,7 @@ fun HomeScreen(
                     )
                 },
             ),
+            screen = Screens.HOME,
         )
 
         ValidateSection(
@@ -97,6 +99,7 @@ fun HomeScreen(
                     )
                 },
             ),
+            screen = Screens.HOME,
         )
     }
 }
