@@ -25,6 +25,7 @@ import com.example.mystore.Type
 import com.example.mystore.limitTo
 import com.example.mystore.model.Product
 import com.example.mystore.model.Transaction
+import com.example.mystore.toTransactionString
 import com.example.mystore.toTransactionType
 import com.example.mystore.ui.components.commons.DropdownComponent
 import com.example.mystore.ui.components.commons.Quantifier
@@ -36,6 +37,8 @@ import com.example.mystore.ui.components.commons.ValidateSection
 import com.example.mystore.viewmodel.screen.RegisterTransactionViewModel
 import java.util.Calendar
 
+// todo - Implementar o FloatingActionButton
+// todo - refatorar
 @Composable
 fun RegisterTransactionScreen(
     registerTransactionViewModel: RegisterTransactionViewModel,
@@ -99,7 +102,7 @@ fun RegisterTransactionBody(
         ) {
             DropdownComponent(
                 isExpanded = isExpandedTransaction,
-                items = listOfTransactionTypes.map { it.name },
+                items = listOfTransactionTypes.map { it.name.toTransactionString() },
                 selectedText = selectedTextTransaction,
                 textFieldSize = textFieldSizeTransaction,
                 label = stringResource(id = R.string.my_store_transaction_type),
@@ -115,7 +118,7 @@ fun RegisterTransactionBody(
                     isExpandedTransaction = false
                 },
                 onDropdownMenuItemClicked = {
-                    selectedTextTransaction = it // ok
+                    selectedTextTransaction = it
 
                     val transaction = createTransaction(
                         product = toProduct(
@@ -209,7 +212,8 @@ private fun createTransaction(
     transactionType: TransactionType,
     quantity: Int,
 ): Transaction {
-    val unitValue = if (transactionType == TransactionType.SALE) product.salePrice else product.purchasePrice
+    val unitValue =
+        if (transactionType == TransactionType.SALE) product.salePrice else product.purchasePrice
     return Transaction(
         product = product,
         transactionType = transactionType,

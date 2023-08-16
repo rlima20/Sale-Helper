@@ -15,6 +15,9 @@ import com.example.mystore.viewmodel.screen.ConsolidatedPosViewModel
 import com.example.mystore.viewmodel.screen.HomeViewModel
 import com.example.mystore.viewmodel.screen.RegisterTransactionViewModel
 
+// todo - Quando eu saio da tela de registro de transação eu preciso que todos os estados dessa
+//  tela sejam reiniciados.
+
 @Composable
 fun MyStoreNavHost(
     navController: NavHostController,

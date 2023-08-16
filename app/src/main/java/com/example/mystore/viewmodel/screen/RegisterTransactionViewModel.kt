@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 
 class RegisterTransactionViewModel : ViewModel() {
 
-    // todo - quase todo esse código está duplicado, refatorar.
+    // todo - Refatorar. Quase todo esse código está duplicado
     private var _transactionType: MutableStateFlow<List<TransactionType>> =
         MutableStateFlow(listOf(TransactionType.SALE, TransactionType.PURCHASE))
     val listOfTransactionType: MutableStateFlow<List<TransactionType>> = _transactionType
@@ -109,4 +109,10 @@ class RegisterTransactionViewModel : ViewModel() {
 
     fun getSalesValue(): Double = getTotalValueByTransactionType(TransactionType.SALE)
     fun getPurchasesValue(): Double = getTotalValueByTransactionType(TransactionType.PURCHASE)
+
+    fun clearTransactionVariables() {
+        _transactionType.value = listOf(TransactionType.SALE, TransactionType.PURCHASE)
+        _quantity.value = 1
+        _totalValue.value = 0.0
+    }
 }
