@@ -2,8 +2,6 @@ package com.example.mystore.viewmodel.screen
 
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModel
 import com.example.mystore.TransactionType
 import com.example.mystore.listOfProductsLocal
@@ -15,7 +13,7 @@ class RegisterTransactionViewModel : ViewModel() {
 
     // todo - quase todo esse código está duplicado, refatorar.
     private var _transactionType: MutableStateFlow<List<TransactionType>> =
-        MutableStateFlow(listOf(TransactionType.SALE))
+        MutableStateFlow(listOf(TransactionType.SALE, TransactionType.PURCHASE))
     val listOfTransactionType: MutableStateFlow<List<TransactionType>> = _transactionType
 
     private var _listOfProducts: MutableStateFlow<List<Product>> = MutableStateFlow(listOf())
@@ -95,6 +93,10 @@ class RegisterTransactionViewModel : ViewModel() {
 
     private fun getScreenWidth() {
         screenWidth.value = _screenWidth.value
+    }
+
+    fun setScreenWidth(width: Int) {
+        _screenWidth.value = width
     }
 
     private fun getQUantity() {

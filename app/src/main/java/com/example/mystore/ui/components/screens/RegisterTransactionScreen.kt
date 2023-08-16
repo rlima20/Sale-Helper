@@ -10,8 +10,10 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
@@ -21,7 +23,6 @@ import com.example.mystore.Screens
 import com.example.mystore.TransactionType
 import com.example.mystore.Type
 import com.example.mystore.limitTo
-import com.example.mystore.model.DropdownInfo
 import com.example.mystore.model.Product
 import com.example.mystore.model.Transaction
 import com.example.mystore.toTransactionType
@@ -40,20 +41,13 @@ fun RegisterTransactionScreen(
     registerTransactionViewModel: RegisterTransactionViewModel,
     shouldItemBeVisible: Boolean,
 ) {
+    registerTransactionViewModel.setScreenWidth(LocalConfiguration.current.screenWidthDp)
+
     val listOfProducts by registerTransactionViewModel.listOfProducts.collectAsState()
     val listOfTransactionTypes by registerTransactionViewModel.listOfTransactionType.collectAsState()
-//    val quantity by registerTransactionViewModel.quantity.collectAsState()
-//    val screenWidth by registerTransactionViewModel.screenWidth.collectAsState()
-//    val total by registerTransactionViewModel.totalValue.collectAsState()
-//
-
-    val currentWidth = LocalConfiguration.current.screenWidthDp
-    val quantity by remember { mutableStateOf(1) }
-    val screenWidth by remember { mutableStateOf(currentWidth) }
-    val total by remember { mutableStateOf(0.0) }
-
-    val dropdownInfoTypeOfTransaction by remember { mutableStateOf(DropdownInfo()) }
-    val dropdownInfoProduct by remember { mutableStateOf(DropdownInfo()) }
+    val screenWidth by registerTransactionViewModel.screenWidth.collectAsState()
+    val quantity by registerTransactionViewModel.quantity.collectAsState()
+    val total by registerTransactionViewModel.totalValue.collectAsState()
 
     Column {
         ValidateSection(
@@ -66,8 +60,6 @@ fun RegisterTransactionScreen(
                             RegisterTransactionBody(
                                 listOfTransactionTypes = listOfTransactionTypes,
                                 listOfProducts = listOfProducts,
-                                dropdownInfoProduct = dropdownInfoProduct,
-                                dropdownInfoTypeOfTransaction = dropdownInfoTypeOfTransaction,
                                 quantity = quantity,
                                 total = total,
                                 screenWidth = screenWidth,
@@ -90,46 +82,50 @@ fun RegisterTransactionBody(
     listOfTransactionTypes: List<TransactionType>,
     total: Double,
     quantity: Int,
-    dropdownInfoProduct: DropdownInfo,
-    dropdownInfoTypeOfTransaction: DropdownInfo,
     registerTransactionViewModel: RegisterTransactionViewModel,
     listOfProducts: List<Product>,
 ) {
     Column {
+        var selectedTextTransaction: String by remember { mutableStateOf("") }
+        var isExpandedTransaction: Boolean by remember { mutableStateOf(false) }
+        var textFieldSizeTransaction: Size by remember { mutableStateOf(Size.Zero) }
+
+        var selectedTextProduct: String by remember { mutableStateOf("") }
+        var isExpandedProduct: Boolean by remember { mutableStateOf(false) }
+        var textFieldSizeProduct: Size by remember { mutableStateOf(Size.Zero) }
+
         Row(
             modifier = Modifier.padding(start = 8.dp, end = 8.dp, bottom = 8.dp),
         ) {
             DropdownComponent(
-                isExpanded = dropdownInfoTypeOfTransaction.isExpanded,
+                isExpanded = isExpandedTransaction,
                 items = listOfTransactionTypes.map { it.name },
-                selectedText = dropdownInfoTypeOfTransaction.selectedText,
-                textFieldSize = dropdownInfoTypeOfTransaction.textFieldSize,
+                selectedText = selectedTextTransaction,
+                textFieldSize = textFieldSizeTransaction,
                 label = stringResource(id = R.string.my_store_transaction_type),
                 modifier = Modifier.fillMaxWidth(),
-                onOutLinedTextFieldSize = { dropdownInfoTypeOfTransaction.setTextFieldSize(it) },
+                onOutLinedTextFieldSize = { textFieldSizeTransaction = it },
                 onOutLinedTextFieldValueChanged = {
-                    dropdownInfoTypeOfTransaction.setSelectedText(it)
+                    selectedTextTransaction = it
                 },
                 onTrailingIconClicked = {
-                    dropdownInfoTypeOfTransaction.setExpanded(
-                        !dropdownInfoTypeOfTransaction.isExpanded,
-                    )
+                    isExpandedTransaction = !isExpandedTransaction
                 },
                 onDropdownMenuDismissRequest = {
-                    dropdownInfoTypeOfTransaction.setExpanded(
-                        false,
-                    )
+                    isExpandedTransaction = false
                 },
                 onDropdownMenuItemClicked = {
-                    dropdownInfoTypeOfTransaction.setSelectedText(it)
-                    val transaction = setTotalValue(
+                    selectedTextTransaction = it // ok
+
+                    val transaction = createTransaction(
                         product = toProduct(
                             listOfProducts = listOfProducts,
-                            productName = dropdownInfoTypeOfTransaction.selectedText,
+                            productName = selectedTextProduct,
                         ),
-                        transactionType = dropdownInfoTypeOfTransaction.selectedText.toTransactionType(),
+                        transactionType = selectedTextTransaction.toTransactionType(),
                         quantity = quantity,
                     )
+
                     registerTransactionViewModel.setTotalValue(transaction.transactionAmount)
                 },
             )
@@ -141,26 +137,26 @@ fun RegisterTransactionBody(
         ) {
             DropdownComponent(
 
-                isExpanded = dropdownInfoProduct.isExpanded,
+                isExpanded = isExpandedProduct,
                 items = listOfProducts.map { it.title.limitTo(20) },
-                selectedText = dropdownInfoProduct.selectedText,
-                textFieldSize = dropdownInfoProduct.textFieldSize,
+                selectedText = selectedTextProduct,
+                textFieldSize = textFieldSizeProduct,
                 label = stringResource(id = R.string.my_store_product_2),
                 modifier = Modifier.width(setItemSize(screenWidth)),
-                onOutLinedTextFieldSize = { dropdownInfoProduct.setTextFieldSize(it) },
+                onOutLinedTextFieldSize = { textFieldSizeProduct = it },
                 onOutLinedTextFieldValueChanged = {
-                    dropdownInfoProduct.setSelectedText(it)
+                    selectedTextProduct = it
                 },
-                onTrailingIconClicked = { dropdownInfoProduct.setExpanded(!dropdownInfoProduct.isExpanded) },
-                onDropdownMenuDismissRequest = { dropdownInfoProduct.setExpanded(false) },
+                onTrailingIconClicked = { isExpandedProduct = !isExpandedProduct },
+                onDropdownMenuDismissRequest = { isExpandedProduct = false },
                 onDropdownMenuItemClicked = {
-                    dropdownInfoProduct.setSelectedText(it)
-                    val transaction = setTotalValue(
+                    selectedTextProduct = it
+                    val transaction = createTransaction(
                         product = toProduct(
                             listOfProducts = listOfProducts,
-                            productName = dropdownInfoProduct.selectedText,
+                            productName = it,
                         ),
-                        transactionType = dropdownInfoProduct.selectedText.toTransactionType(),
+                        transactionType = selectedTextTransaction.toTransactionType(),
                         quantity = quantity,
                     )
                     registerTransactionViewModel.setTotalValue(transaction.transactionAmount)
@@ -173,13 +169,13 @@ fun RegisterTransactionBody(
                 quantifier = quantity,
                 onQuantifierChange = {
                     registerTransactionViewModel.setQuantity(it)
-                    val transaction = setTotalValue(
+                    val transaction = createTransaction(
                         product = toProduct(
                             listOfProducts = listOfProducts,
-                            productName = dropdownInfoProduct.selectedText,
+                            productName = selectedTextProduct,
                         ),
-                        transactionType = dropdownInfoTypeOfTransaction.selectedText.toTransactionType(),
-                        quantity = quantity,
+                        transactionType = selectedTextTransaction.toTransactionType(),
+                        quantity = it,
                     )
                     registerTransactionViewModel.setTotalValue(transaction.transactionAmount)
                 },
@@ -208,23 +204,19 @@ private fun toProduct(
     } ?: Product()
 }
 
-private fun setTotalValue(
+private fun createTransaction(
     product: Product,
     transactionType: TransactionType,
     quantity: Int,
 ): Transaction {
-    val price = if (transactionType == TransactionType.SALE) {
-        product.salePrice
-    } else {
-        product.purchasePrice
-    }
+    val unitValue = if (transactionType == TransactionType.SALE) product.salePrice else product.purchasePrice
     return Transaction(
         product = product,
         transactionType = transactionType,
-        unitValue = price,
+        unitValue = unitValue,
         transactionDate = Calendar.getInstance().time,
         quantity = quantity,
-        transactionAmount = quantity * price,
+        transactionAmount = quantity * unitValue,
     )
 }
 
