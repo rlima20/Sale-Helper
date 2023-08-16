@@ -11,6 +11,8 @@
     <string name="my_store_sales">Vendas</string>
     <string name="my_store_purchases">Compras</string>
     <string name="my_store_product">Produto: </string>
+    <string name="my_store_product_2">Produto</string>
+    <string name="my_store_transaction_type">Tipo de transação</string>
     <string name="my_store_products">Produtos</string>
     <string name="my_store_date">Data: </string>
     <string name="my_store_quantity">Quantidade: </string>

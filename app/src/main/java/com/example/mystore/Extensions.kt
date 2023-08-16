@@ -62,6 +62,12 @@ fun String.limitTo(maxLength: Int): String {
     }
 }
 
+fun String.toTransactionType(): TransactionType = when (this) {
+    TransactionType.PURCHASE.name -> TransactionType.PURCHASE
+    TransactionType.SALE.name -> TransactionType.SALE
+    else -> TransactionType.SALE
+}
+
 fun Date.toShortString(): String {
     val formatter = SimpleDateFormat("EEE MMM dd", Locale.getDefault())
     return formatter.format(this)

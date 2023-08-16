@@ -28,6 +28,7 @@ import com.example.mystore.R
 
 @Composable
 internal fun Quantifier(
+    maxValue: Int = 9,
     width: Dp,
     quantifier: Int,
     onQuantifierChange: (Int) -> Unit,
@@ -109,8 +110,10 @@ private fun QuantifierPreview() {
         modifier = Modifier.fillMaxWidth(),
     ) {
         Quantifier(
+            9,
             150.dp,
             1,
+
         ) {}
     }
 }

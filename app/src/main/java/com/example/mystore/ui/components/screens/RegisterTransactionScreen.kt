@@ -6,77 +6,132 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.example.mystore.R
 import com.example.mystore.Screens
+import com.example.mystore.TransactionType
+import com.example.mystore.Type
+import com.example.mystore.limitTo
+import com.example.mystore.model.DropdownInfo
+import com.example.mystore.model.Product
+import com.example.mystore.model.Transaction
+import com.example.mystore.toTransactionType
 import com.example.mystore.ui.components.commons.DropdownComponent
 import com.example.mystore.ui.components.commons.Quantifier
+import com.example.mystore.ui.components.commons.RowComponent
 import com.example.mystore.ui.components.commons.ScreenSectionComponent
 import com.example.mystore.ui.components.commons.SectionInfo
+import com.example.mystore.ui.components.commons.TextCurrencyComponent
 import com.example.mystore.ui.components.commons.ValidateSection
 import com.example.mystore.viewmodel.screen.RegisterTransactionViewModel
+import java.util.Calendar
 
 @Composable
 fun RegisterTransactionScreen(
     registerTransactionViewModel: RegisterTransactionViewModel,
+    shouldItemBeVisible: Boolean,
 ) {
+    val listOfProducts by registerTransactionViewModel.listOfProducts.collectAsState()
+    val listOfTransactionTypes by registerTransactionViewModel.listOfTransactionType.collectAsState()
+//    val quantity by registerTransactionViewModel.quantity.collectAsState()
+//    val screenWidth by registerTransactionViewModel.screenWidth.collectAsState()
+//    val total by registerTransactionViewModel.totalValue.collectAsState()
+//
+
+    val currentWidth = LocalConfiguration.current.screenWidthDp
+    val quantity by remember { mutableStateOf(1) }
+    val screenWidth by remember { mutableStateOf(currentWidth) }
+    val total by remember { mutableStateOf(0.0) }
+
+    val dropdownInfoTypeOfTransaction by remember { mutableStateOf(DropdownInfo()) }
+    val dropdownInfoProduct by remember { mutableStateOf(DropdownInfo()) }
+
     Column {
         ValidateSection(
+            screen = Screens.REGISTER_TRANSACTION,
             sectionInfo = SectionInfo(
                 section = {
                     ScreenSectionComponent(
                         title = stringResource(id = R.string.my_store_register_transaction),
                         body = {
-                            Body()
+                            RegisterTransactionBody(
+                                listOfTransactionTypes = listOfTransactionTypes,
+                                listOfProducts = listOfProducts,
+                                dropdownInfoProduct = dropdownInfoProduct,
+                                dropdownInfoTypeOfTransaction = dropdownInfoTypeOfTransaction,
+                                quantity = quantity,
+                                total = total,
+                                screenWidth = screenWidth,
+                                shouldItemBeVisible = shouldItemBeVisible,
+                                registerTransactionViewModel = registerTransactionViewModel,
+
+                            )
                         },
                     )
                 },
             ),
-            screen = Screens.REGISTER_TRANSACTION,
         )
     }
 }
 
 @Composable
-fun Body() {
+fun RegisterTransactionBody(
+    shouldItemBeVisible: Boolean = true,
+    screenWidth: Int,
+    listOfTransactionTypes: List<TransactionType>,
+    total: Double,
+    quantity: Int,
+    dropdownInfoProduct: DropdownInfo,
+    dropdownInfoTypeOfTransaction: DropdownInfo,
+    registerTransactionViewModel: RegisterTransactionViewModel,
+    listOfProducts: List<Product>,
+) {
     Column {
-        val screenWidth = LocalConfiguration.current.screenWidthDp
-
-        var selectedTextTransaction by remember { mutableStateOf("") }
-        var isExpandedTransaction by remember { mutableStateOf(false) }
-        val listOfProductsTransaction = listOf("VENDA", "COMPRA")
-        var textFieldSizeTransaction by remember { mutableStateOf(Size.Zero) }
-
-        var selectedText by remember { mutableStateOf("") }
-        var isExpanded by remember { mutableStateOf(false) }
-        val listOfProducts = listOf("Produto1", "Produto2", "Produto3")
-        var textFieldSize by remember { mutableStateOf(Size.Zero) }
-
         Row(
             modifier = Modifier.padding(start = 8.dp, end = 8.dp, bottom = 8.dp),
         ) {
             DropdownComponent(
-                isExpanded = isExpandedTransaction,
-                options = listOfProductsTransaction,
-                selectedText = selectedTextTransaction,
-                textFieldSize = textFieldSizeTransaction,
-                label = "Tipo de transação",
+                isExpanded = dropdownInfoTypeOfTransaction.isExpanded,
+                items = listOfTransactionTypes.map { it.name },
+                selectedText = dropdownInfoTypeOfTransaction.selectedText,
+                textFieldSize = dropdownInfoTypeOfTransaction.textFieldSize,
+                label = stringResource(id = R.string.my_store_transaction_type),
                 modifier = Modifier.fillMaxWidth(),
-                onOutLinedTextFieldSize = { textFieldSizeTransaction = it },
-                onOutLinedTextFieldValueChanged = { selectedTextTransaction = it },
-                onTrailingIconClicked = { isExpandedTransaction = !isExpandedTransaction },
-                onDropdownMenuDismissRequest = { isExpandedTransaction = false },
-                onDropdownMenuItemClicked = { selectedTextTransaction = it },
+                onOutLinedTextFieldSize = { dropdownInfoTypeOfTransaction.setTextFieldSize(it) },
+                onOutLinedTextFieldValueChanged = {
+                    dropdownInfoTypeOfTransaction.setSelectedText(it)
+                },
+                onTrailingIconClicked = {
+                    dropdownInfoTypeOfTransaction.setExpanded(
+                        !dropdownInfoTypeOfTransaction.isExpanded,
+                    )
+                },
+                onDropdownMenuDismissRequest = {
+                    dropdownInfoTypeOfTransaction.setExpanded(
+                        false,
+                    )
+                },
+                onDropdownMenuItemClicked = {
+                    dropdownInfoTypeOfTransaction.setSelectedText(it)
+                    val transaction = setTotalValue(
+                        product = toProduct(
+                            listOfProducts = listOfProducts,
+                            productName = dropdownInfoTypeOfTransaction.selectedText,
+                        ),
+                        transactionType = dropdownInfoTypeOfTransaction.selectedText.toTransactionType(),
+                        quantity = quantity,
+                    )
+                    registerTransactionViewModel.setTotalValue(transaction.transactionAmount)
+                },
             )
         }
 
@@ -85,26 +140,92 @@ fun Body() {
             modifier = Modifier.padding(start = 8.dp, end = 8.dp, bottom = 8.dp),
         ) {
             DropdownComponent(
-                isExpanded = isExpanded,
-                options = listOfProducts,
-                selectedText = selectedText,
-                textFieldSize = textFieldSize,
-                label = "Produto",
+
+                isExpanded = dropdownInfoProduct.isExpanded,
+                items = listOfProducts.map { it.title.limitTo(20) },
+                selectedText = dropdownInfoProduct.selectedText,
+                textFieldSize = dropdownInfoProduct.textFieldSize,
+                label = stringResource(id = R.string.my_store_product_2),
                 modifier = Modifier.width(setItemSize(screenWidth)),
-                onOutLinedTextFieldSize = { textFieldSize = it },
-                onOutLinedTextFieldValueChanged = { selectedText = it },
-                onTrailingIconClicked = { isExpanded = !isExpanded },
-                onDropdownMenuDismissRequest = { isExpanded = false },
-                onDropdownMenuItemClicked = { selectedText = it },
+                onOutLinedTextFieldSize = { dropdownInfoProduct.setTextFieldSize(it) },
+                onOutLinedTextFieldValueChanged = {
+                    dropdownInfoProduct.setSelectedText(it)
+                },
+                onTrailingIconClicked = { dropdownInfoProduct.setExpanded(!dropdownInfoProduct.isExpanded) },
+                onDropdownMenuDismissRequest = { dropdownInfoProduct.setExpanded(false) },
+                onDropdownMenuItemClicked = {
+                    dropdownInfoProduct.setSelectedText(it)
+                    val transaction = setTotalValue(
+                        product = toProduct(
+                            listOfProducts = listOfProducts,
+                            productName = dropdownInfoProduct.selectedText,
+                        ),
+                        transactionType = dropdownInfoProduct.selectedText.toTransactionType(),
+                        quantity = quantity,
+                    )
+                    registerTransactionViewModel.setTotalValue(transaction.transactionAmount)
+                },
             )
 
             Quantifier(
+                maxValue = 100,
                 width = setItemSize(screenWidth),
-                quantifier = 1,
-                onQuantifierChange = {},
+                quantifier = quantity,
+                onQuantifierChange = {
+                    registerTransactionViewModel.setQuantity(it)
+                    val transaction = setTotalValue(
+                        product = toProduct(
+                            listOfProducts = listOfProducts,
+                            productName = dropdownInfoProduct.selectedText,
+                        ),
+                        transactionType = dropdownInfoTypeOfTransaction.selectedText.toTransactionType(),
+                        quantity = quantity,
+                    )
+                    registerTransactionViewModel.setTotalValue(transaction.transactionAmount)
+                },
             )
         }
+
+        RowComponent(
+            leftSideText = stringResource(id = R.string.my_store_total),
+            rightSide = {
+                TextCurrencyComponent(
+                    value = total.toString(),
+                    shouldItemBeVisible = shouldItemBeVisible,
+                    type = Type.CURRENCY,
+                )
+            },
+        )
     }
+}
+
+private fun toProduct(
+    listOfProducts: List<Product>,
+    productName: String,
+): Product {
+    return listOfProducts.find {
+        it.title.limitTo(20) == productName
+    } ?: Product()
+}
+
+private fun setTotalValue(
+    product: Product,
+    transactionType: TransactionType,
+    quantity: Int,
+): Transaction {
+    val price = if (transactionType == TransactionType.SALE) {
+        product.salePrice
+    } else {
+        product.purchasePrice
+    }
+    return Transaction(
+        product = product,
+        transactionType = transactionType,
+        unitValue = price,
+        transactionDate = Calendar.getInstance().time,
+        quantity = quantity,
+        transactionAmount = quantity * price,
+    )
 }
 
 private fun setItemSize(screenWidth: Int): Dp = ((screenWidth - 16) / 2).dp

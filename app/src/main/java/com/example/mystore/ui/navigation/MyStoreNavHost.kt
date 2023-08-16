@@ -28,6 +28,7 @@ fun MyStoreNavHost(
     onProductClick: (product: Product) -> Unit = {},
     onProductLongClick: () -> Unit = {},
     onProductDoubleClick: () -> Unit = {},
+    onShowFab: (Boolean) -> Unit = {},
 ) {
     NavHost(
         navController = navController,
@@ -37,6 +38,7 @@ fun MyStoreNavHost(
         // Navega para a HomeScreen
         composable(route = HomeScreen.route) {
             onExpandBottomBar(false)
+            onShowFab(false)
             HomeScreen(
                 homeViewModel = homeViewModel,
                 shouldItemBeVisible = shouldItemBeVisible,
@@ -52,12 +54,14 @@ fun MyStoreNavHost(
         // Navega para a RegisterProductScreen
         composable(route = RegisterProductScreen.route) {
             onExpandBottomBar(false)
+            onShowFab(true)
             RegisterScreen()
         }
 
         // Navega para a ConsolidatedPositionScreen
         composable(route = ConsolidatedPositionScreen.route) {
             onExpandBottomBar(true)
+            onShowFab(false)
             ConsolidatedPositionScreen(
                 consolidatedPosViewModel = consolidatedPosViewModel,
                 shouldItemBeVisible = shouldItemBeVisible,
@@ -78,8 +82,10 @@ fun MyStoreNavHost(
         // Navega para a RegisterTransactionScreen
         composable(route = RegisterTransactionScreen.route) {
             onExpandBottomBar(false)
+            onShowFab(true)
             RegisterTransactionScreen(
                 registerTransactionViewModel = registerTransactionViewModel,
+                shouldItemBeVisible = shouldItemBeVisible,
             )
         }
     }

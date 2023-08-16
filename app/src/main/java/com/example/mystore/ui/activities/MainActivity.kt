@@ -78,6 +78,11 @@ fun MyStoreApp(
         var totalAmountOfPurchases: Double by remember { mutableStateOf(0.0) }
 
         Scaffold(
+            floatingActionButton = {
+/*                FloatingActionButton(
+                    onClick = onFabClicked(""),
+                )*/
+            },
             topBar = {
                 TopBarComponent(
                     screenTitle = screenTitle,

@@ -28,7 +28,7 @@ import com.example.mystore.R
 @Composable
 fun DropdownComponent(
     isExpanded: Boolean,
-    options: List<String>,
+    items: List<String>,
     selectedText: String,
     textFieldSize: Size,
     label: String,
@@ -77,6 +77,7 @@ fun DropdownComponent(
                 placeholderColor = colorResource(id = R.color.color_50),
             ),
             shape = RoundedCornerShape(15.dp),
+            maxLines = 1,
         )
 
         DropdownMenu(
@@ -85,12 +86,12 @@ fun DropdownComponent(
             modifier = Modifier
                 .width(with(LocalDensity.current) { textFieldSize.width.toDp() }),
         ) {
-            options.forEach { label ->
+            items.forEach { label ->
                 DropdownMenuItem(onClick = {
-                    onDropdownMenuItemClicked(label)
+                    onDropdownMenuItemClicked(label.toString())
                     onDropdownMenuDismissRequest()
                 }) {
-                    Text(text = label)
+                    Text(text = label.toString())
                 }
             }
         }
@@ -104,7 +105,7 @@ fun DefaultPreview() {
         isExpanded = false,
         modifier = Modifier.padding(16.dp),
         label = "Tipo de transação",
-        options = listOf("A", "B", "C"),
+        items = listOf("A", "B", "C"),
         textFieldSize = Size.Zero,
         selectedText = "A",
     )
