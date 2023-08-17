@@ -1,35 +1,18 @@
 package com.example.mystore.viewmodel.screen
 
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.ViewModel
 import com.example.mystore.TransactionType
 import com.example.mystore.listOfProductsLocal
 import com.example.mystore.model.Product
-import com.example.mystore.model.Transaction
 import kotlinx.coroutines.flow.MutableStateFlow
 
-class RegisterTransactionViewModel : ViewModel() {
+class RegisterTransactionViewModel : CommonViewModel() {
 
-    // todo - Refatorar. Quase todo esse código está duplicado
     private var _transactionType: MutableStateFlow<List<TransactionType>> =
         MutableStateFlow(listOf(TransactionType.SALE, TransactionType.PURCHASE))
     val listOfTransactionType: MutableStateFlow<List<TransactionType>> = _transactionType
 
     private var _listOfProducts: MutableStateFlow<List<Product>> = MutableStateFlow(listOf())
     val listOfProducts: MutableStateFlow<List<Product>> = _listOfProducts
-
-    // State of the screen
-    private val _listOfSales: MutableState<List<Transaction>> =
-        mutableStateOf(listOf())
-    val listOfSales: MutableState<List<Transaction>> = _listOfSales
-
-    private val _listOfPurchases: MutableState<List<Transaction>> =
-        mutableStateOf(listOf())
-    val listOfPurchases: MutableState<List<Transaction>> = _listOfPurchases
-
-    val _transactions: MutableStateFlow<List<Transaction>> = MutableStateFlow(listOf())
-    val transactions: MutableStateFlow<List<Transaction>> = _transactions
 
     private val _quantity: MutableStateFlow<Int> = MutableStateFlow(1)
     val quantity: MutableStateFlow<Int> = _quantity
@@ -48,7 +31,7 @@ class RegisterTransactionViewModel : ViewModel() {
         getListOfSales()
         getListOfPurchases()
         getScreenWidth()
-        getQUantity()
+        getQuantity()
     }
 
     private fun getTransactionTypes() {
@@ -62,57 +45,23 @@ class RegisterTransactionViewModel : ViewModel() {
         listOfProducts.value = listOfProductsLocal
     }
 
-    // get the list of sales
-    private fun getListOfSales() {
-        listOfSales.value = transactions.value.filter {
-            it.transactionType == TransactionType.SALE
-        }
+    private fun getScreenWidth() {
+        screenWidth.value = _screenWidth.value
     }
 
-    // get the list of purchases
-    private fun getListOfPurchases() {
-        listOfPurchases.value = transactions.value.filter {
-            it.transactionType == TransactionType
-                .PURCHASE
-        }
+    private fun getQuantity() {
+        quantity.value = _quantity.value
     }
 
     fun setTotalValue(value: Double) {
         _totalValue.value = value
     }
 
-    fun setQuantityValue(value: Int) {
-        _quantity.value = value
-    }
-
-    private fun getTotalValueByTransactionType(type: TransactionType): Double {
-        return transactions.value
-            .filter { transaction -> transaction.transactionType == type }
-            .sumOf { transaction -> transaction.transactionAmount }
-    }
-
-    private fun getScreenWidth() {
-        screenWidth.value = _screenWidth.value
-    }
-
     fun setScreenWidth(width: Int) {
         _screenWidth.value = width
     }
 
-    private fun getQUantity() {
-        quantity.value = _quantity.value
-    }
-
     fun setQuantity(quantity: Int) {
         _quantity.value = quantity
-    }
-
-    fun getSalesValue(): Double = getTotalValueByTransactionType(TransactionType.SALE)
-    fun getPurchasesValue(): Double = getTotalValueByTransactionType(TransactionType.PURCHASE)
-
-    fun clearTransactionVariables() {
-        _transactionType.value = listOf(TransactionType.SALE, TransactionType.PURCHASE)
-        _quantity.value = 1
-        _totalValue.value = 0.0
     }
 }
