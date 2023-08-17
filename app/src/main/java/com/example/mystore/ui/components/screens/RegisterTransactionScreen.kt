@@ -25,7 +25,6 @@ import com.example.mystore.Type
 import com.example.mystore.limitTo
 import com.example.mystore.model.Product
 import com.example.mystore.model.Transaction
-import com.example.mystore.toTransactionString
 import com.example.mystore.toTransactionType
 import com.example.mystore.ui.components.commons.DropdownComponent
 import com.example.mystore.ui.components.commons.Quantifier
@@ -38,11 +37,17 @@ import com.example.mystore.viewmodel.screen.RegisterTransactionViewModel
 import java.util.Calendar
 
 // todo - Implementar o FloatingActionButton
-// todo - refatorar
+// todo - Estilizar o FloatingActionButton
+// todo - Incluir lógica de estoque (No quantifier tbm... Ele não pode deixar eu ultrapassar a
+//  quantidade de estoque disponível para aquele determinado produto.)
+// todo - Inverter olho para começar visível
+// todo - Mudar o enableFab para false quando já tiver feito o click.
+
 @Composable
 fun RegisterTransactionScreen(
     registerTransactionViewModel: RegisterTransactionViewModel,
     shouldItemBeVisible: Boolean,
+    onSaveTransaction: (transaction: Transaction, enableFloatingActionButton: Boolean) -> Unit,
 ) {
     registerTransactionViewModel.setScreenWidth(LocalConfiguration.current.screenWidthDp)
 
@@ -68,7 +73,9 @@ fun RegisterTransactionScreen(
                                 screenWidth = screenWidth,
                                 shouldItemBeVisible = shouldItemBeVisible,
                                 registerTransactionViewModel = registerTransactionViewModel,
-
+                                onSaveTransaction = { transaction, enableFloatingActionButton ->
+                                    onSaveTransaction(transaction, enableFloatingActionButton)
+                                },
                             )
                         },
                     )
@@ -79,7 +86,7 @@ fun RegisterTransactionScreen(
 }
 
 @Composable
-fun RegisterTransactionBody(
+private fun RegisterTransactionBody(
     shouldItemBeVisible: Boolean = true,
     screenWidth: Int,
     listOfTransactionTypes: List<TransactionType>,
@@ -87,6 +94,7 @@ fun RegisterTransactionBody(
     quantity: Int,
     registerTransactionViewModel: RegisterTransactionViewModel,
     listOfProducts: List<Product>,
+    onSaveTransaction: (transaction: Transaction, enableFloatingActionButton: Boolean) -> Unit,
 ) {
     Column {
         var selectedTextTransaction: String by remember { mutableStateOf("") }
@@ -102,34 +110,30 @@ fun RegisterTransactionBody(
         ) {
             DropdownComponent(
                 isExpanded = isExpandedTransaction,
-                items = listOfTransactionTypes.map { it.name.toTransactionString() },
+                items = listOfTransactionTypes.map { it.name },
                 selectedText = selectedTextTransaction,
                 textFieldSize = textFieldSizeTransaction,
                 label = stringResource(id = R.string.my_store_transaction_type),
                 modifier = Modifier.fillMaxWidth(),
                 onOutLinedTextFieldSize = { textFieldSizeTransaction = it },
-                onOutLinedTextFieldValueChanged = {
-                    selectedTextTransaction = it
-                },
-                onTrailingIconClicked = {
-                    isExpandedTransaction = !isExpandedTransaction
-                },
-                onDropdownMenuDismissRequest = {
-                    isExpandedTransaction = false
-                },
-                onDropdownMenuItemClicked = {
-                    selectedTextTransaction = it
+                onOutLinedTextFieldValueChanged = { selectedTextTransaction = it },
+                onTrailingIconClicked = { isExpandedTransaction = !isExpandedTransaction },
+                onDropdownMenuDismissRequest = { isExpandedTransaction = false },
+                onDropdownMenuItemClicked = { itemSelected ->
+                    selectedTextTransaction = itemSelected
 
                     val transaction = createTransaction(
-                        product = toProduct(
+                        product = stringToProduct(
                             listOfProducts = listOfProducts,
                             productName = selectedTextProduct,
                         ),
                         transactionType = selectedTextTransaction.toTransactionType(),
                         quantity = quantity,
                     )
-
                     registerTransactionViewModel.setTotalValue(transaction.transactionAmount)
+                    if (total > 0.0) {
+                        onSaveTransaction(transaction, true)
+                    }
                 },
             )
         }
@@ -147,22 +151,24 @@ fun RegisterTransactionBody(
                 label = stringResource(id = R.string.my_store_product_2),
                 modifier = Modifier.width(setItemSize(screenWidth)),
                 onOutLinedTextFieldSize = { textFieldSizeProduct = it },
-                onOutLinedTextFieldValueChanged = {
-                    selectedTextProduct = it
-                },
+                onOutLinedTextFieldValueChanged = { selectedTextProduct = it },
                 onTrailingIconClicked = { isExpandedProduct = !isExpandedProduct },
                 onDropdownMenuDismissRequest = { isExpandedProduct = false },
-                onDropdownMenuItemClicked = {
-                    selectedTextProduct = it
+                onDropdownMenuItemClicked = { itemSelected ->
+                    selectedTextProduct = itemSelected
                     val transaction = createTransaction(
-                        product = toProduct(
+                        product = stringToProduct(
                             listOfProducts = listOfProducts,
-                            productName = it,
+                            productName = itemSelected,
                         ),
                         transactionType = selectedTextTransaction.toTransactionType(),
                         quantity = quantity,
                     )
+
                     registerTransactionViewModel.setTotalValue(transaction.transactionAmount)
+                    if (total > 0.0) {
+                        onSaveTransaction(transaction, true)
+                    }
                 },
             )
 
@@ -173,7 +179,7 @@ fun RegisterTransactionBody(
                 onQuantifierChange = {
                     registerTransactionViewModel.setQuantity(it)
                     val transaction = createTransaction(
-                        product = toProduct(
+                        product = stringToProduct(
                             listOfProducts = listOfProducts,
                             productName = selectedTextProduct,
                         ),
@@ -181,6 +187,7 @@ fun RegisterTransactionBody(
                         quantity = it,
                     )
                     registerTransactionViewModel.setTotalValue(transaction.transactionAmount)
+                    onSaveTransaction(transaction, true)
                 },
             )
         }
@@ -198,7 +205,7 @@ fun RegisterTransactionBody(
     }
 }
 
-private fun toProduct(
+private fun stringToProduct(
     listOfProducts: List<Product>,
     productName: String,
 ): Product {

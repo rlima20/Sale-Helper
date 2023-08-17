@@ -33,8 +33,8 @@ fun Int.toUnity(isVisible: Boolean): String =
 
 fun String.toTransactionString(): String {
     return when (this) {
-        TransactionType.PURCHASE.name -> "COMPRA"
         TransactionType.SALE.name -> "VENDA"
+        TransactionType.PURCHASE.name -> "COMPRA"
         else -> "VENDA"
     }
 }
@@ -73,7 +73,7 @@ fun String.limitTo(maxLength: Int): String {
 fun String.toTransactionType(): TransactionType = when (this) {
     TransactionType.PURCHASE.name -> TransactionType.PURCHASE
     TransactionType.SALE.name -> TransactionType.SALE
-    else -> TransactionType.SALE
+    else -> TransactionType.PURCHASE
 }
 
 fun Date.toShortString(): String {

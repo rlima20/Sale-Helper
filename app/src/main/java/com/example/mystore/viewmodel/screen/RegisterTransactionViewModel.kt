@@ -3,6 +3,7 @@ package com.example.mystore.viewmodel.screen
 import com.example.mystore.TransactionType
 import com.example.mystore.listOfProductsLocal
 import com.example.mystore.model.Product
+import com.example.mystore.model.Transaction
 import kotlinx.coroutines.flow.MutableStateFlow
 
 class RegisterTransactionViewModel : CommonViewModel() {
@@ -22,6 +23,9 @@ class RegisterTransactionViewModel : CommonViewModel() {
 
     private val _totalValue: MutableStateFlow<Double> = MutableStateFlow(0.0)
     val totalValue: MutableStateFlow<Double> = _totalValue
+
+    private val _transactionValue: MutableStateFlow<Transaction> = MutableStateFlow(Transaction())
+    val transactionValue: MutableStateFlow<Transaction> = _transactionValue
 
     init {
         getProducts()
@@ -63,5 +67,13 @@ class RegisterTransactionViewModel : CommonViewModel() {
 
     fun setQuantity(quantity: Int) {
         _quantity.value = quantity
+    }
+
+    fun setTransactionValue(transaction: Transaction) {
+        _transactionValue.value = transaction
+    }
+
+    fun saveTransaction(transaction: Transaction) {
+        _transactionValue.value = transaction
     }
 }

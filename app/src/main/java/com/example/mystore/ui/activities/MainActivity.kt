@@ -6,6 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -16,10 +17,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.rememberNavController
 import com.example.mystore.AppApplication
 import com.example.mystore.R
 import com.example.mystore.navigateSingleTopTo
+import com.example.mystore.ui.components.commons.FloatingActionButton
 import com.example.mystore.ui.components.commons.TotalComponent
 import com.example.mystore.ui.components.topbar.BottomBarComponent
 import com.example.mystore.ui.components.topbar.TopBarComponent
@@ -77,11 +80,23 @@ fun MyStoreApp(
         var totalAmountOfSales: Double by remember { mutableStateOf(0.0) }
         var totalAmountOfPurchases: Double by remember { mutableStateOf(0.0) }
 
+        var fabVisibility: Boolean by remember { mutableStateOf(false) }
+        val transactionValue by registerTransactionViewModel.transactionValue.collectAsState()
+
+        var enableFab: Boolean by remember { mutableStateOf(false) }
+
         Scaffold(
             floatingActionButton = {
-/*                FloatingActionButton(
-                    onClick = onFabClicked(""),
-                )*/
+                if (fabVisibility) {
+                    FloatingActionButton(
+                        clickable = enableFab,
+                        modifier = Modifier
+                            .size(32.dp),
+                        onClick = {
+                            registerTransactionViewModel.saveTransaction(transactionValue)
+                        },
+                    )
+                }
             },
             topBar = {
                 TopBarComponent(
@@ -132,6 +147,13 @@ fun MyStoreApp(
                     onProductClick = { navController.navigateSingleTopTo(RegisterProductScreen.route) },
                     onProductLongClick = {},
                     onProductDoubleClick = {},
+                    onShowFloatingActionButton = { visibility ->
+                        fabVisibility = visibility
+                    },
+                    onSaveTransaction = { transaction, enableFloatingActionButton ->
+                        enableFab = enableFloatingActionButton
+                        registerTransactionViewModel.setTransactionValue(transaction)
+                    },
                 )
             },
             bottomBar = {

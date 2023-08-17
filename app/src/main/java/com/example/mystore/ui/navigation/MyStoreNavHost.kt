@@ -6,6 +6,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.mystore.model.Product
+import com.example.mystore.model.Transaction
 import com.example.mystore.navigateSingleTopTo
 import com.example.mystore.ui.components.screens.ConsolidatedPositionScreen
 import com.example.mystore.ui.components.screens.HomeScreen
@@ -31,7 +32,9 @@ fun MyStoreNavHost(
     onProductClick: (product: Product) -> Unit = {},
     onProductLongClick: () -> Unit = {},
     onProductDoubleClick: () -> Unit = {},
-    onShowFab: (Boolean) -> Unit = {},
+    onShowFloatingActionButton: (Boolean) -> Unit = {},
+    onSaveTransaction: (transaction: Transaction, enableFloatingActionButton: Boolean) -> Unit =
+        { _: Transaction, _: Boolean -> },
 ) {
     NavHost(
         navController = navController,
@@ -41,7 +44,7 @@ fun MyStoreNavHost(
         // Navega para a HomeScreen
         composable(route = HomeScreen.route) {
             onExpandBottomBar(false)
-            onShowFab(false)
+            onShowFloatingActionButton(false)
             HomeScreen(
                 homeViewModel = homeViewModel,
                 shouldItemBeVisible = shouldItemBeVisible,
@@ -57,14 +60,14 @@ fun MyStoreNavHost(
         // Navega para a RegisterProductScreen
         composable(route = RegisterProductScreen.route) {
             onExpandBottomBar(false)
-            onShowFab(true)
+            onShowFloatingActionButton(true)
             RegisterScreen()
         }
 
         // Navega para a ConsolidatedPositionScreen
         composable(route = ConsolidatedPositionScreen.route) {
             onExpandBottomBar(true)
-            onShowFab(false)
+            onShowFloatingActionButton(false)
             ConsolidatedPositionScreen(
                 consolidatedPosViewModel = consolidatedPosViewModel,
                 shouldItemBeVisible = shouldItemBeVisible,
@@ -85,10 +88,13 @@ fun MyStoreNavHost(
         // Navega para a RegisterTransactionScreen
         composable(route = RegisterTransactionScreen.route) {
             onExpandBottomBar(false)
-            onShowFab(true)
+            onShowFloatingActionButton(true)
             RegisterTransactionScreen(
                 registerTransactionViewModel = registerTransactionViewModel,
                 shouldItemBeVisible = shouldItemBeVisible,
+                onSaveTransaction = { transaction, enableFloatingActionButton ->
+                    onSaveTransaction(transaction, enableFloatingActionButton)
+                },
             )
         }
     }
