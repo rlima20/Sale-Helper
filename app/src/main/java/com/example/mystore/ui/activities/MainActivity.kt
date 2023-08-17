@@ -80,24 +80,7 @@ fun MyStoreApp(
         var totalAmountOfSales: Double by remember { mutableStateOf(0.0) }
         var totalAmountOfPurchases: Double by remember { mutableStateOf(0.0) }
 
-        var fabVisibility: Boolean by remember { mutableStateOf(false) }
-        val transactionValue by registerTransactionViewModel.transactionValue.collectAsState()
-
-        var enableFab: Boolean by remember { mutableStateOf(false) }
-
         Scaffold(
-            floatingActionButton = {
-                if (fabVisibility) {
-                    FloatingActionButton(
-                        clickable = enableFab,
-                        modifier = Modifier
-                            .size(32.dp),
-                        onClick = {
-                            registerTransactionViewModel.saveTransaction(transactionValue)
-                        },
-                    )
-                }
-            },
             topBar = {
                 TopBarComponent(
                     screenTitle = screenTitle,
@@ -147,13 +130,6 @@ fun MyStoreApp(
                     onProductClick = { navController.navigateSingleTopTo(RegisterProductScreen.route) },
                     onProductLongClick = {},
                     onProductDoubleClick = {},
-                    onShowFloatingActionButton = { visibility ->
-                        fabVisibility = visibility
-                    },
-                    onSaveTransaction = { transaction, enableFloatingActionButton ->
-                        enableFab = enableFloatingActionButton
-                        registerTransactionViewModel.setTransactionValue(transaction)
-                    },
                 )
             },
             bottomBar = {

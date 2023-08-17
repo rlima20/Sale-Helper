@@ -1,9 +1,12 @@
 package com.example.mystore.ui.components.screens
 
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -27,6 +30,7 @@ import com.example.mystore.model.Product
 import com.example.mystore.model.Transaction
 import com.example.mystore.toTransactionType
 import com.example.mystore.ui.components.commons.DropdownComponent
+import com.example.mystore.ui.components.commons.FloatingActionButton
 import com.example.mystore.ui.components.commons.Quantifier
 import com.example.mystore.ui.components.commons.RowComponent
 import com.example.mystore.ui.components.commons.ScreenSectionComponent
@@ -36,18 +40,13 @@ import com.example.mystore.ui.components.commons.ValidateSection
 import com.example.mystore.viewmodel.screen.RegisterTransactionViewModel
 import java.util.Calendar
 
-// todo - Implementar o FloatingActionButton
-// todo - Estilizar o FloatingActionButton
 // todo - Incluir lógica de estoque (No quantifier tbm... Ele não pode deixar eu ultrapassar a
 //  quantidade de estoque disponível para aquele determinado produto.)
-// todo - Inverter olho para começar visível
-// todo - Mudar o enableFab para false quando já tiver feito o click.
 
 @Composable
 fun RegisterTransactionScreen(
     registerTransactionViewModel: RegisterTransactionViewModel,
     shouldItemBeVisible: Boolean,
-    onSaveTransaction: (transaction: Transaction, enableFloatingActionButton: Boolean) -> Unit,
 ) {
     registerTransactionViewModel.setScreenWidth(LocalConfiguration.current.screenWidthDp)
 
@@ -73,9 +72,6 @@ fun RegisterTransactionScreen(
                                 screenWidth = screenWidth,
                                 shouldItemBeVisible = shouldItemBeVisible,
                                 registerTransactionViewModel = registerTransactionViewModel,
-                                onSaveTransaction = { transaction, enableFloatingActionButton ->
-                                    onSaveTransaction(transaction, enableFloatingActionButton)
-                                },
                             )
                         },
                     )
@@ -94,7 +90,6 @@ private fun RegisterTransactionBody(
     quantity: Int,
     registerTransactionViewModel: RegisterTransactionViewModel,
     listOfProducts: List<Product>,
-    onSaveTransaction: (transaction: Transaction, enableFloatingActionButton: Boolean) -> Unit,
 ) {
     Column {
         var selectedTextTransaction: String by remember { mutableStateOf("") }
@@ -131,9 +126,6 @@ private fun RegisterTransactionBody(
                         quantity = quantity,
                     )
                     registerTransactionViewModel.setTotalValue(transaction.transactionAmount)
-                    if (total > 0.0) {
-                        onSaveTransaction(transaction, true)
-                    }
                 },
             )
         }
@@ -166,9 +158,6 @@ private fun RegisterTransactionBody(
                     )
 
                     registerTransactionViewModel.setTotalValue(transaction.transactionAmount)
-                    if (total > 0.0) {
-                        onSaveTransaction(transaction, true)
-                    }
                 },
             )
 
@@ -187,21 +176,43 @@ private fun RegisterTransactionBody(
                         quantity = it,
                     )
                     registerTransactionViewModel.setTotalValue(transaction.transactionAmount)
-                    onSaveTransaction(transaction, true)
                 },
             )
         }
 
-        RowComponent(
-            leftSideText = stringResource(id = R.string.my_store_total),
-            rightSide = {
-                TextCurrencyComponent(
-                    value = total.toString(),
-                    shouldItemBeVisible = shouldItemBeVisible,
-                    type = Type.CURRENCY,
+        Row(
+            horizontalArrangement = Arrangement.SpaceBetween,
+            modifier = Modifier.fillMaxWidth(),
+        ) {
+            RowComponent(
+                leftSideText = stringResource(id = R.string.my_store_total),
+                rightSide = {
+                    TextCurrencyComponent(
+                        value = total.toString(),
+                        shouldItemBeVisible = shouldItemBeVisible,
+                        type = Type.CURRENCY,
+                    )
+                },
+            )
+            Box(modifier = Modifier.padding(end = 22.dp)) {
+                FloatingActionButton(
+                    enabled = total > 0.0,
+                    modifier = Modifier.size(36.dp),
+                    colorId = if (total > 0.0) R.color.color_50 else R.color.color_400,
+                    onClick = {
+                        registerTransactionViewModel.saveTransaction(
+                            registerTransactionViewModel
+                                .transactionValue.value,
+                        )
+
+                        // Clear all fields
+                        registerTransactionViewModel.clearAll()
+                        selectedTextTransaction = ""
+                        selectedTextProduct = ""
+                    },
                 )
-            },
-        )
+            }
+        }
     }
 }
 

@@ -6,7 +6,7 @@ import com.example.mystore.model.Product
 import com.example.mystore.model.Transaction
 import kotlinx.coroutines.flow.MutableStateFlow
 
-class RegisterTransactionViewModel : CommonViewModel() {
+class RegisterTransactionViewModel : CommomViewModel() {
 
     private var _transactionType: MutableStateFlow<List<TransactionType>> =
         MutableStateFlow(listOf(TransactionType.SALE, TransactionType.PURCHASE))
@@ -75,5 +75,12 @@ class RegisterTransactionViewModel : CommonViewModel() {
 
     fun saveTransaction(transaction: Transaction) {
         _transactionValue.value = transaction
+    }
+
+    fun clearAll() {
+        _transactionValue.value = Transaction()
+        _quantity.value = 1
+        _listOfProducts.value = listOf()
+        _totalValue.value = 0.0
     }
 }

@@ -22,7 +22,7 @@ class MyStoreViewModel : ViewModel() {
     private val _textFieldSize: MutableStateFlow<Size> = MutableStateFlow(Size.Zero)
     val textFieldSize: MutableStateFlow<Size> = _textFieldSize
 
-    private val _shouldItemBeVisible: MutableStateFlow<Boolean> = MutableStateFlow(false)
+    private val _shouldItemBeVisible: MutableStateFlow<Boolean> = MutableStateFlow(true)
     val shouldItemBeVisible: MutableStateFlow<Boolean> = _shouldItemBeVisible
 
     fun setScreenTitle(title: String) {

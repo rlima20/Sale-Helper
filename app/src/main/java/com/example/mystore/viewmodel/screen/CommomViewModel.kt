@@ -7,7 +7,7 @@ import com.example.mystore.TransactionType
 import com.example.mystore.model.Transaction
 import kotlinx.coroutines.flow.MutableStateFlow
 
-open class CommonViewModel : ViewModel() {
+open class CommomViewModel : ViewModel() {
     private val _listOfSales: MutableState<List<Transaction>> =
         mutableStateOf(listOf())
     val listOfSales: MutableState<List<Transaction>> = _listOfSales
