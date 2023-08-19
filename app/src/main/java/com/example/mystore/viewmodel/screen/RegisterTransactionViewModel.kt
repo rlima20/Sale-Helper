@@ -83,6 +83,9 @@ class RegisterTransactionViewModel : CommomViewModel() {
         _totalValue.value = 0.0
     }
 
+    /**
+     * This method is used to update the quantity of the product in the list of products
+     */
     fun updateProductQuantity(
         product: Product,
         quantity: Int,

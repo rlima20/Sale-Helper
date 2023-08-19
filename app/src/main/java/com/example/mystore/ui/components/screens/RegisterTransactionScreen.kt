@@ -40,8 +40,17 @@ import com.example.mystore.ui.components.commons.ValidateSection
 import com.example.mystore.viewmodel.screen.RegisterTransactionViewModel
 import java.util.Calendar
 
-// todo - Incluir lógica de estoque (No quantifier tbm... Ele não pode deixar eu ultrapassar a
-//  quantidade de estoque disponível para aquele determinado produto.)
+// todo - Limitar o número de vendas ao número de estoque disponível.
+// todo - Quando o estoque estiver acabado mostrar uma msg no lugar de 0un dizendo Fora de
+//  estoque em vermelho.
+// todo - No quantifier, quando o usuário digitar um número maior que o estoque disponível,
+//  mostrar um texto em vermelho dizendo que o número digitado é maior que o estoque disponível.
+// Dado que o usuário está na tela de registro de transação
+// Quando o usuário selecionar o tipo de transação PURCHASE
+// Então o usuário deve ver a lista de produtos disponíveis para compra
+// E o usuário deve ver o campo de quantidade
+// Quando o usuário aumentar a quantidade até 9 e depois mudar de PURCHASE para SALE
+// Então o texto do quantifier deve ser a quantidade máxima de estoque para aquele produto.
 
 @Composable
 fun RegisterTransactionScreen(
@@ -55,6 +64,7 @@ fun RegisterTransactionScreen(
     val screenWidth by registerTransactionViewModel.screenWidth.collectAsState()
     val quantity by registerTransactionViewModel.quantity.collectAsState()
     val total by registerTransactionViewModel.totalValue.collectAsState()
+    val transaction by registerTransactionViewModel.transactionValue.collectAsState()
 
     Column {
         ValidateSection(
@@ -72,6 +82,7 @@ fun RegisterTransactionScreen(
                                 screenWidth = screenWidth,
                                 shouldItemBeVisible = shouldItemBeVisible,
                                 registerTransactionViewModel = registerTransactionViewModel,
+                                transaction = transaction,
                             )
                         },
                     )
@@ -90,6 +101,7 @@ private fun RegisterTransactionBody(
     quantity: Int,
     registerTransactionViewModel: RegisterTransactionViewModel,
     listOfProducts: List<Product>,
+    transaction: Transaction,
 ) {
     Column {
         var selectedTextTransaction: String by remember { mutableStateOf("") }
@@ -117,7 +129,7 @@ private fun RegisterTransactionBody(
                 onDropdownMenuItemClicked = { itemSelected ->
                     selectedTextTransaction = itemSelected
 
-                    val transaction = createTransaction(
+                    val newTransaction = createTransaction(
                         product = stringToProduct(
                             listOfProducts = listOfProducts,
                             productName = selectedTextProduct,
@@ -125,8 +137,8 @@ private fun RegisterTransactionBody(
                         transactionType = selectedTextTransaction.toTransactionType(),
                         quantity = quantity,
                     )
-                    registerTransactionViewModel.setTotalValue(transaction.transactionAmount)
-                    registerTransactionViewModel.setTransactionValue(transaction)
+                    registerTransactionViewModel.setTotalValue(newTransaction.transactionAmount)
+                    registerTransactionViewModel.setTransactionValue(newTransaction)
                 },
             )
         }
@@ -149,7 +161,7 @@ private fun RegisterTransactionBody(
                 onDropdownMenuDismissRequest = { isExpandedProduct = false },
                 onDropdownMenuItemClicked = { itemSelected ->
                     selectedTextProduct = itemSelected
-                    val transaction = createTransaction(
+                    val newTransaction = createTransaction(
                         product = stringToProduct(
                             listOfProducts = listOfProducts,
                             productName = itemSelected,
@@ -158,18 +170,18 @@ private fun RegisterTransactionBody(
                         quantity = quantity,
                     )
 
-                    registerTransactionViewModel.setTotalValue(transaction.transactionAmount)
-                    registerTransactionViewModel.setTransactionValue(transaction)
+                    registerTransactionViewModel.setTotalValue(newTransaction.transactionAmount)
+                    registerTransactionViewModel.setTransactionValue(newTransaction)
                 },
             )
 
             Quantifier(
-                maxValue = 100,
+                maxValue = setMaxValue(selectedTextTransaction, transaction, quantity),
                 width = setItemSize(screenWidth),
                 quantifier = quantity,
                 onQuantifierChange = {
                     registerTransactionViewModel.setQuantity(it)
-                    val transaction = createTransaction(
+                    val newTransaction = createTransaction(
                         product = stringToProduct(
                             listOfProducts = listOfProducts,
                             productName = selectedTextProduct,
@@ -177,8 +189,8 @@ private fun RegisterTransactionBody(
                         transactionType = selectedTextTransaction.toTransactionType(),
                         quantity = it,
                     )
-                    registerTransactionViewModel.setTotalValue(transaction.transactionAmount)
-                    registerTransactionViewModel.setTransactionValue(transaction)
+                    registerTransactionViewModel.setTotalValue(newTransaction.transactionAmount)
+                    registerTransactionViewModel.setTransactionValue(newTransaction)
                 },
             )
         }
@@ -223,6 +235,17 @@ private fun RegisterTransactionBody(
             }
         }
     }
+}
+
+@Composable
+private fun setMaxValue(
+    selectedTextTransaction: String,
+    transaction: Transaction,
+    quantity: Int,
+) = if (selectedTextTransaction.toTransactionType() == TransactionType.SALE) {
+    transaction.product.quantity
+} else {
+    9
 }
 
 private fun stringToProduct(

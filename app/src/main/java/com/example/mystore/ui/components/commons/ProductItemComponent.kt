@@ -82,11 +82,11 @@ fun ProductItemComponent(
                 )
                 Text(
                     modifier = Modifier.padding(start = 8.dp),
-                    fontSize = 18.sp,
+                    fontSize = 14.sp,
                     fontWeight = MaterialTheme.typography.h5.fontWeight,
                     color = colorResource(setTextColor(product.quantity.toDouble())),
                     text = setUnit(
-                        Type.QUANTITY,
+                        Type.QUANTITY_OOS,
                         product.quantity.toString(),
                         shouldItemBeVisible,
                     ),

@@ -31,6 +31,7 @@ enum class Type {
     PURCHASE_CURRENCY,
     CURRENCY,
     QUANTITY,
+    QUANTITY_OOS,
     DATE,
     STRING,
 }

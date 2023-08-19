@@ -34,7 +34,7 @@ internal fun Quantifier(
     onQuantifierChange: (Int) -> Unit,
 ) {
     val isLeftIconEnabled = quantifier > 1
-    val isRightIconEnabled = quantifier < 9
+    val isRightIconEnabled = quantifier < maxValue
 
     Surface(
         modifier = Modifier

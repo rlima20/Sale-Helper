@@ -31,6 +31,17 @@ fun Int.toUnity(isVisible: Boolean): String =
         "$this un".replace(Regex("[0-9]"), "-")
     }
 
+fun Int.toUnityOutOfStock(isVisible: Boolean): String =
+    if (this == 0) {
+        application.getString(R.string.my_store_out_of_stock)
+    } else {
+        if (isVisible) {
+            "$this un"
+        } else {
+            "$this un".replace(Regex("[0-9]"), "-")
+        }
+    }
+
 fun String.toTransactionString(): String {
     return when (this) {
         TransactionType.SALE.name -> "VENDA"

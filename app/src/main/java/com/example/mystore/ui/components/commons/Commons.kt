@@ -8,17 +8,15 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.example.mystore.AppApplication
 import com.example.mystore.R
 import com.example.mystore.Screens
 import com.example.mystore.Section
 import com.example.mystore.Type
 import com.example.mystore.toCurrency
 import com.example.mystore.toUnity
+import com.example.mystore.toUnityOutOfStock
 import com.example.mystore.ui.navigation.RegisterProductScreen
 import com.example.mystore.ui.navigation.RegisterTransactionScreen
-
-private val application = AppApplication.instance
 
 data class SectionInfo(
     val section: @Composable () -> Unit,
@@ -40,6 +38,7 @@ fun setUnit(
     Type.CURRENCY -> value.toDouble().toCurrency(shouldItemBeVisible)
     Type.PURCHASE_CURRENCY -> value.toDouble().toCurrency(shouldItemBeVisible)
     Type.QUANTITY -> value.toInt().toUnity(shouldItemBeVisible)
+    Type.QUANTITY_OOS -> value.toInt().toUnityOutOfStock(shouldItemBeVisible)
     Type.STRING -> value
     Type.DATE -> value
 }

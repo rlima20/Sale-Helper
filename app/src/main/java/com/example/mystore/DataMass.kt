@@ -45,7 +45,7 @@ val listOfProductsLocal = listOf(
         id = 1,
         title = "Coca-Cola",
         description = "Refrigerante de cola",
-        quantity = 10,
+        quantity = 0,
         purchasePrice = 5.0,
         salePrice = 10.0,
         imageUrl = "https://veja.abril.com.br/wp-content/uploads/2016/06/logo-coca-cola-caminhao-original4.jpeg?quality=90&strip=info&w=1040&h=585&crop=1",
