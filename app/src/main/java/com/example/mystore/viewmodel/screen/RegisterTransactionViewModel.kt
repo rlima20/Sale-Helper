@@ -80,7 +80,20 @@ class RegisterTransactionViewModel : CommomViewModel() {
     fun clearAll() {
         _transactionValue.value = Transaction()
         _quantity.value = 1
-        _listOfProducts.value = listOf()
         _totalValue.value = 0.0
+    }
+
+    fun updateProductQuantity(
+        product: Product,
+        quantity: Int,
+        transaction: Transaction,
+    ) {
+        val index = listOfProducts.value.indexOf(product)
+
+        if (transaction.transactionType.name == TransactionType.SALE.name) {
+            listOfProducts.value[index].quantity -= quantity
+        } else {
+            listOfProducts.value[index].quantity += quantity
+        }
     }
 }

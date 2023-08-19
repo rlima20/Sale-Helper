@@ -126,6 +126,7 @@ private fun RegisterTransactionBody(
                         quantity = quantity,
                     )
                     registerTransactionViewModel.setTotalValue(transaction.transactionAmount)
+                    registerTransactionViewModel.setTransactionValue(transaction)
                 },
             )
         }
@@ -158,6 +159,7 @@ private fun RegisterTransactionBody(
                     )
 
                     registerTransactionViewModel.setTotalValue(transaction.transactionAmount)
+                    registerTransactionViewModel.setTransactionValue(transaction)
                 },
             )
 
@@ -176,6 +178,7 @@ private fun RegisterTransactionBody(
                         quantity = it,
                     )
                     registerTransactionViewModel.setTotalValue(transaction.transactionAmount)
+                    registerTransactionViewModel.setTransactionValue(transaction)
                 },
             )
         }
@@ -203,6 +206,12 @@ private fun RegisterTransactionBody(
                         registerTransactionViewModel.saveTransaction(
                             registerTransactionViewModel
                                 .transactionValue.value,
+                        )
+
+                        registerTransactionViewModel.updateProductQuantity(
+                            registerTransactionViewModel.transactionValue.value.product,
+                            quantity,
+                            registerTransactionViewModel.transactionValue.value,
                         )
 
                         // Clear all fields
