@@ -28,13 +28,13 @@ import com.example.mystore.R
 
 @Composable
 internal fun Quantifier(
-    maxValue: Int = 9,
     width: Dp,
-    textQuantity: Int,
+    maxQuantity: Int = 9,
+    quantity: Int,
     onQuantifierChange: (Int) -> Unit,
 ) {
-    val isLeftIconEnabled = textQuantity > 1
-    val isRightIconEnabled = textQuantity < maxValue
+    val isLeftIconEnabled = quantity > 1
+    val isRightIconEnabled = quantity < maxQuantity
 
     Surface(
         modifier = Modifier
@@ -54,7 +54,7 @@ internal fun Quantifier(
         ) {
             IconButton(
                 enabled = isLeftIconEnabled,
-                onClick = { onQuantifierChange(textQuantity - 1) },
+                onClick = { onQuantifierChange(quantity - 1) },
             ) {
                 Icon(
                     modifier = Modifier.size(18.dp),
@@ -66,14 +66,14 @@ internal fun Quantifier(
 
             Text(
                 modifier = Modifier.padding(top = 8.dp),
-                text = textQuantity.toString(),
+                text = quantity.toString(),
                 fontSize = 18.dp.value.sp,
                 color = colorResource(id = R.color.color_400),
             )
 
             IconButton(
                 enabled = isRightIconEnabled,
-                onClick = { onQuantifierChange(textQuantity + 1) },
+                onClick = { onQuantifierChange(quantity + 1) },
             ) {
                 Icon(
                     modifier = Modifier.size(18.dp),
@@ -110,10 +110,9 @@ private fun QuantifierPreview() {
         modifier = Modifier.fillMaxWidth(),
     ) {
         Quantifier(
-            9,
             150.dp,
+            9,
             1,
-
         ) {}
     }
 }

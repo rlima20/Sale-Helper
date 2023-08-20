@@ -27,8 +27,8 @@ import com.example.mystore.R
 
 @Composable
 fun DropdownComponent(
-    isExpanded: Boolean,
     items: List<String>,
+    isExpanded: Boolean,
     selectedText: String,
     textFieldSize: Size,
     label: String,
@@ -88,10 +88,10 @@ fun DropdownComponent(
         ) {
             items.forEach { label ->
                 DropdownMenuItem(onClick = {
-                    onDropdownMenuItemClicked(label.toString())
+                    onDropdownMenuItemClicked(label)
                     onDropdownMenuDismissRequest()
                 }) {
-                    Text(text = label.toString())
+                    Text(text = label)
                 }
             }
         }

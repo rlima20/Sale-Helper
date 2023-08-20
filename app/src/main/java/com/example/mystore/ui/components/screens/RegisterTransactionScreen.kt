@@ -40,8 +40,7 @@ import com.example.mystore.ui.components.commons.ValidateSection
 import com.example.mystore.viewmodel.screen.RegisterTransactionViewModel
 import java.util.Calendar
 
-// Todo - Fazer uma refatoração completa do MaxValue. Eu não posso passar como maxValue o valor
-//  do estoque.
+// Todo - Quando navegar para fora, para outra tela, limpar os states
 @Composable
 fun RegisterTransactionScreen(
     registerTransactionViewModel: RegisterTransactionViewModel,
@@ -66,15 +65,15 @@ fun RegisterTransactionScreen(
                         title = stringResource(id = R.string.my_store_register_transaction),
                         body = {
                             RegisterTransactionBody(
-                                listOfTransactionTypes = listOfTransactionTypes,
-                                listOfProducts = listOfProducts,
-                                quantity = quantity,
-                                total = total,
                                 screenWidth = screenWidth,
                                 shouldItemBeVisible = shouldItemBeVisible,
-                                registerTransactionViewModel = registerTransactionViewModel,
-                                transaction = transaction,
+                                listOfProducts = listOfProducts,
+                                listOfTransactionTypes = listOfTransactionTypes,
+                                quantity = quantity,
                                 maxQuantity = maxQuantity,
+                                total = total,
+                                transaction = transaction,
+                                registerTransactionViewModel = registerTransactionViewModel,
                             )
                         },
                     )
@@ -86,15 +85,15 @@ fun RegisterTransactionScreen(
 
 @Composable
 private fun RegisterTransactionBody(
-    shouldItemBeVisible: Boolean = true,
     screenWidth: Int,
-    listOfTransactionTypes: List<TransactionType>,
-    total: Double,
-    quantity: Int,
-    registerTransactionViewModel: RegisterTransactionViewModel,
+    shouldItemBeVisible: Boolean = true,
     listOfProducts: List<Product>,
-    transaction: Transaction,
+    listOfTransactionTypes: List<TransactionType>,
+    quantity: Int,
     maxQuantity: Int,
+    total: Double,
+    transaction: Transaction,
+    registerTransactionViewModel: RegisterTransactionViewModel,
 ) {
     Column {
         var selectedTextTransaction: String by remember { mutableStateOf("") }
@@ -120,36 +119,23 @@ private fun RegisterTransactionBody(
                 onTrailingIconClicked = { isExpandedTransaction = !isExpandedTransaction },
                 onDropdownMenuDismissRequest = { isExpandedTransaction = false },
                 onDropdownMenuItemClicked = { itemSelected ->
-                    selectedTextTransaction = itemSelected
-
-                    val newTransaction = createTransaction(
-                        product = stringToProduct(
-                            listOfProducts = listOfProducts,
-                            productName = selectedTextProduct,
-                        ),
-                        transactionType = selectedTextTransaction.toTransactionType(),
+                    setScreenStates(
+                        listOfProducts = listOfProducts,
+                        selectedTextTransaction = selectedTextTransaction,
                         quantity = quantity,
-                    )
-                    registerTransactionViewModel.setTotalValue(newTransaction.transactionAmount)
-                    registerTransactionViewModel.setTransactionValue(newTransaction)
-                    registerTransactionViewModel.setMaxQuantity(
-                        if (selectedTextTransaction.toTransactionType() == TransactionType
-                                .SALE && maxQuantity > newTransaction.product.quantity
-                        ) {
-                            newTransaction.product.quantity + 1
-                        } else if (selectedTextTransaction.toTransactionType() == TransactionType
-                                .PURCHASE
-                        ) {
-                            newTransaction.product.maxQuantityToBuy
-                        } else {
-                            newTransaction.product.quantity
-                        },
-                    )
-                    registerTransactionViewModel.setQuantity(
-                        if (quantity > newTransaction.product.quantity){
-                            newTransaction.product.quantity
-                        } else {
-                            quantity
+                        productName = selectedTextProduct,
+                        maxQuantity = maxQuantity,
+                        registerTransactionViewModel = registerTransactionViewModel,
+                        itemSelected = itemSelected,
+                        onSelectedTextTransaction = { selectedTextTransaction = it },
+                        onSetQuantity = { quantity, newTransaction ->
+                            registerTransactionViewModel.setQuantity(
+                                if (quantity > newTransaction.product.quantity) {
+                                    newTransaction.product.quantity
+                                } else {
+                                    quantity
+                                },
+                            )
                         },
                     )
                 },
@@ -161,7 +147,6 @@ private fun RegisterTransactionBody(
             modifier = Modifier.padding(start = 8.dp, end = 8.dp, bottom = 8.dp),
         ) {
             DropdownComponent(
-
                 isExpanded = isExpandedProduct,
                 items = listOfProducts.map { it.title.limitTo(20) },
                 selectedText = selectedTextProduct,
@@ -173,66 +158,37 @@ private fun RegisterTransactionBody(
                 onTrailingIconClicked = { isExpandedProduct = !isExpandedProduct },
                 onDropdownMenuDismissRequest = { isExpandedProduct = false },
                 onDropdownMenuItemClicked = { itemSelected ->
-                    selectedTextProduct = itemSelected
-                    val newTransaction = createTransaction(
-                        product = stringToProduct(
-                            listOfProducts = listOfProducts,
-                            productName = itemSelected,
-                        ),
-                        transactionType = selectedTextTransaction.toTransactionType(),
+                    setScreenStates(
+                        listOfProducts = listOfProducts,
+                        selectedTextTransaction = selectedTextTransaction,
                         quantity = quantity,
-                    )
-
-                    registerTransactionViewModel.setTotalValue(newTransaction.transactionAmount)
-                    registerTransactionViewModel.setTransactionValue(newTransaction)
-                    registerTransactionViewModel.setMaxQuantity(
-                        if (selectedTextTransaction.toTransactionType() == TransactionType
-                                .SALE && maxQuantity > newTransaction.product.quantity
-                        ) {
-                            newTransaction.product.quantity + 1
-                        } else if (selectedTextTransaction.toTransactionType() == TransactionType
-                                .PURCHASE
-                        ) {
-                            newTransaction.product.maxQuantityToBuy
-                        } else {
-                            newTransaction.product.quantity
-                        },
+                        productName = itemSelected,
+                        maxQuantity = maxQuantity,
+                        registerTransactionViewModel = registerTransactionViewModel,
+                        itemSelected = itemSelected,
+                        onSelectedTextTransaction = { selectedTextProduct = it },
                     )
                 },
             )
 
             Quantifier(
-                maxValue = setMaxValue(
+                maxQuantity = setMaxValue(
                     selectedTextTransaction = selectedTextTransaction,
                     transaction = transaction,
                     maxQuantity = maxQuantity,
                 ),
                 width = setItemSize(screenWidth),
-                textQuantity = quantity,
-                onQuantifierChange = {
-                    registerTransactionViewModel.setQuantity(it)
-                    val newTransaction = createTransaction(
-                        product = stringToProduct(
-                            listOfProducts = listOfProducts,
-                            productName = selectedTextProduct,
-                        ),
-                        transactionType = selectedTextTransaction.toTransactionType(),
-                        quantity = it,
-                    )
-                    registerTransactionViewModel.setTotalValue(newTransaction.transactionAmount)
-                    registerTransactionViewModel.setTransactionValue(newTransaction)
-                    registerTransactionViewModel.setMaxQuantity(
-                        if (selectedTextTransaction.toTransactionType() == TransactionType
-                                .SALE && maxQuantity > newTransaction.product.quantity
-                        ) {
-                            newTransaction.product.quantity + 1
-                        } else if (selectedTextTransaction.toTransactionType() == TransactionType
-                                .PURCHASE
-                        ) {
-                            newTransaction.product.maxQuantityToBuy
-                        } else {
-                            newTransaction.product.quantity
-                        },
+                quantity = quantity,
+                onQuantifierChange = { quantifierQuantity ->
+                    setScreenStates(
+                        listOfProducts = listOfProducts,
+                        selectedTextTransaction = selectedTextTransaction,
+                        quantity = quantity,
+                        productName = selectedTextProduct,
+                        maxQuantity = maxQuantity,
+                        registerTransactionViewModel = registerTransactionViewModel,
+                        quantifierQuantity = quantifierQuantity,
+                        onQuantifierQuantity = { registerTransactionViewModel.setQuantity(it) },
                     )
                 },
             )
@@ -280,6 +236,24 @@ private fun RegisterTransactionBody(
     }
 }
 
+private fun setMaxQuantityByTransactionType(
+    selectedTextTransaction: String,
+    maxQuantity: Int,
+    newTransaction: Transaction,
+): Int {
+    return if (selectedTextTransaction.toTransactionType() == TransactionType
+            .SALE && maxQuantity > newTransaction.product.quantity
+    ) {
+        newTransaction.product.quantity + 1
+    } else if (selectedTextTransaction.toTransactionType() == TransactionType
+            .PURCHASE
+    ) {
+        newTransaction.product.maxQuantityToBuy
+    } else {
+        newTransaction.product.quantity
+    }
+}
+
 @Composable
 private fun setMaxValue(
     selectedTextTransaction: String,
@@ -300,6 +274,23 @@ private fun stringToProduct(
     } ?: Product()
 }
 
+private fun setStates(
+    registerTransactionViewModel: RegisterTransactionViewModel,
+    selectedTextTransaction: String,
+    newTransaction: Transaction,
+    maxQuantity: Int,
+) {
+    registerTransactionViewModel.setTotalValue(newTransaction.transactionAmount)
+    registerTransactionViewModel.setTransactionValue(newTransaction)
+    registerTransactionViewModel.setMaxQuantity(
+        setMaxQuantityByTransactionType(
+            selectedTextTransaction = selectedTextTransaction,
+            maxQuantity = maxQuantity,
+            newTransaction = newTransaction,
+        ),
+    )
+}
+
 private fun createTransaction(
     product: Product,
     transactionType: TransactionType,
@@ -318,3 +309,36 @@ private fun createTransaction(
 }
 
 private fun setItemSize(screenWidth: Int): Dp = ((screenWidth - 16) / 2).dp
+
+private fun setScreenStates(
+    listOfProducts: List<Product>,
+    selectedTextTransaction: String,
+    quantity: Int,
+    maxQuantity: Int,
+    productName: String,
+    registerTransactionViewModel: RegisterTransactionViewModel,
+    itemSelected: String = "",
+    onSelectedTextTransaction: (String) -> Unit = {},
+    onSetQuantity: (Int, Transaction) -> Unit = { _, _ -> },
+    quantifierQuantity: Int = 0,
+    onQuantifierQuantity: (Int) -> Unit = {},
+) {
+    onSelectedTextTransaction(itemSelected)
+
+    val newTransaction = createTransaction(
+        product = stringToProduct(
+            listOfProducts = listOfProducts,
+            productName = productName,
+        ),
+        transactionType = selectedTextTransaction.toTransactionType(),
+        quantity = quantity,
+    )
+    setStates(
+        registerTransactionViewModel = registerTransactionViewModel,
+        selectedTextTransaction = selectedTextTransaction,
+        newTransaction = newTransaction,
+        maxQuantity = maxQuantity,
+    )
+    onSetQuantity(quantity, newTransaction)
+    onQuantifierQuantity(quantifierQuantity)
+}
