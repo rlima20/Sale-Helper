@@ -30,11 +30,11 @@ import com.example.mystore.R
 internal fun Quantifier(
     maxValue: Int = 9,
     width: Dp,
-    quantifier: Int,
+    textQuantity: Int,
     onQuantifierChange: (Int) -> Unit,
 ) {
-    val isLeftIconEnabled = quantifier > 1
-    val isRightIconEnabled = quantifier < maxValue
+    val isLeftIconEnabled = textQuantity > 1
+    val isRightIconEnabled = textQuantity < maxValue
 
     Surface(
         modifier = Modifier
@@ -54,7 +54,7 @@ internal fun Quantifier(
         ) {
             IconButton(
                 enabled = isLeftIconEnabled,
-                onClick = { onQuantifierChange(quantifier - 1) },
+                onClick = { onQuantifierChange(textQuantity - 1) },
             ) {
                 Icon(
                     modifier = Modifier.size(18.dp),
@@ -66,14 +66,14 @@ internal fun Quantifier(
 
             Text(
                 modifier = Modifier.padding(top = 8.dp),
-                text = quantifier.toString(),
+                text = textQuantity.toString(),
                 fontSize = 18.dp.value.sp,
                 color = colorResource(id = R.color.color_400),
             )
 
             IconButton(
                 enabled = isRightIconEnabled,
-                onClick = { onQuantifierChange(quantifier + 1) },
+                onClick = { onQuantifierChange(textQuantity + 1) },
             ) {
                 Icon(
                     modifier = Modifier.size(18.dp),

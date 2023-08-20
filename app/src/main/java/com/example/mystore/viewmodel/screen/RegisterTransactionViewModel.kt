@@ -18,6 +18,9 @@ class RegisterTransactionViewModel : CommomViewModel() {
     private val _quantity: MutableStateFlow<Int> = MutableStateFlow(1)
     val quantity: MutableStateFlow<Int> = _quantity
 
+    private val _maxQuantity: MutableStateFlow<Int> = MutableStateFlow(1)
+    val maxQuantity: MutableStateFlow<Int> = _maxQuantity
+
     private val _screenWidth: MutableStateFlow<Int> = MutableStateFlow(0)
     val screenWidth: MutableStateFlow<Int> = _screenWidth
 
@@ -36,6 +39,7 @@ class RegisterTransactionViewModel : CommomViewModel() {
         getListOfPurchases()
         getScreenWidth()
         getQuantity()
+        getMaxQuantity()
     }
 
     private fun getTransactionTypes() {
@@ -55,6 +59,14 @@ class RegisterTransactionViewModel : CommomViewModel() {
 
     private fun getQuantity() {
         quantity.value = _quantity.value
+    }
+
+    private fun getMaxQuantity() {
+        maxQuantity.value = _maxQuantity.value
+    }
+
+    fun setMaxQuantity(quantity: Int) {
+        _maxQuantity.value = quantity
     }
 
     fun setTotalValue(value: Double) {

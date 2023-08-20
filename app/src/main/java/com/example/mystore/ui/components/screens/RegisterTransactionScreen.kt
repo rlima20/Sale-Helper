@@ -40,18 +40,8 @@ import com.example.mystore.ui.components.commons.ValidateSection
 import com.example.mystore.viewmodel.screen.RegisterTransactionViewModel
 import java.util.Calendar
 
-// todo - Limitar o número de vendas ao número de estoque disponível.
-// todo - Quando o estoque estiver acabado mostrar uma msg no lugar de 0un dizendo Fora de
-//  estoque em vermelho.
-// todo - No quantifier, quando o usuário digitar um número maior que o estoque disponível,
-//  mostrar um texto em vermelho dizendo que o número digitado é maior que o estoque disponível.
-// Dado que o usuário está na tela de registro de transação
-// Quando o usuário selecionar o tipo de transação PURCHASE
-// Então o usuário deve ver a lista de produtos disponíveis para compra
-// E o usuário deve ver o campo de quantidade
-// Quando o usuário aumentar a quantidade até 9 e depois mudar de PURCHASE para SALE
-// Então o texto do quantifier deve ser a quantidade máxima de estoque para aquele produto.
-
+// Todo - Fazer uma refatoração completa do MaxValue. Eu não posso passar como maxValue o valor
+//  do estoque.
 @Composable
 fun RegisterTransactionScreen(
     registerTransactionViewModel: RegisterTransactionViewModel,
@@ -63,6 +53,7 @@ fun RegisterTransactionScreen(
     val listOfTransactionTypes by registerTransactionViewModel.listOfTransactionType.collectAsState()
     val screenWidth by registerTransactionViewModel.screenWidth.collectAsState()
     val quantity by registerTransactionViewModel.quantity.collectAsState()
+    val maxQuantity by registerTransactionViewModel.maxQuantity.collectAsState()
     val total by registerTransactionViewModel.totalValue.collectAsState()
     val transaction by registerTransactionViewModel.transactionValue.collectAsState()
 
@@ -83,6 +74,7 @@ fun RegisterTransactionScreen(
                                 shouldItemBeVisible = shouldItemBeVisible,
                                 registerTransactionViewModel = registerTransactionViewModel,
                                 transaction = transaction,
+                                maxQuantity = maxQuantity,
                             )
                         },
                     )
@@ -102,6 +94,7 @@ private fun RegisterTransactionBody(
     registerTransactionViewModel: RegisterTransactionViewModel,
     listOfProducts: List<Product>,
     transaction: Transaction,
+    maxQuantity: Int,
 ) {
     Column {
         var selectedTextTransaction: String by remember { mutableStateOf("") }
@@ -139,6 +132,26 @@ private fun RegisterTransactionBody(
                     )
                     registerTransactionViewModel.setTotalValue(newTransaction.transactionAmount)
                     registerTransactionViewModel.setTransactionValue(newTransaction)
+                    registerTransactionViewModel.setMaxQuantity(
+                        if (selectedTextTransaction.toTransactionType() == TransactionType
+                                .SALE && maxQuantity > newTransaction.product.quantity
+                        ) {
+                            newTransaction.product.quantity + 1
+                        } else if (selectedTextTransaction.toTransactionType() == TransactionType
+                                .PURCHASE
+                        ) {
+                            newTransaction.product.maxQuantityToBuy
+                        } else {
+                            newTransaction.product.quantity
+                        },
+                    )
+                    registerTransactionViewModel.setQuantity(
+                        if (quantity > newTransaction.product.quantity){
+                            newTransaction.product.quantity
+                        } else {
+                            quantity
+                        },
+                    )
                 },
             )
         }
@@ -172,13 +185,30 @@ private fun RegisterTransactionBody(
 
                     registerTransactionViewModel.setTotalValue(newTransaction.transactionAmount)
                     registerTransactionViewModel.setTransactionValue(newTransaction)
+                    registerTransactionViewModel.setMaxQuantity(
+                        if (selectedTextTransaction.toTransactionType() == TransactionType
+                                .SALE && maxQuantity > newTransaction.product.quantity
+                        ) {
+                            newTransaction.product.quantity + 1
+                        } else if (selectedTextTransaction.toTransactionType() == TransactionType
+                                .PURCHASE
+                        ) {
+                            newTransaction.product.maxQuantityToBuy
+                        } else {
+                            newTransaction.product.quantity
+                        },
+                    )
                 },
             )
 
             Quantifier(
-                maxValue = setMaxValue(selectedTextTransaction, transaction, quantity),
+                maxValue = setMaxValue(
+                    selectedTextTransaction = selectedTextTransaction,
+                    transaction = transaction,
+                    maxQuantity = maxQuantity,
+                ),
                 width = setItemSize(screenWidth),
-                quantifier = quantity,
+                textQuantity = quantity,
                 onQuantifierChange = {
                     registerTransactionViewModel.setQuantity(it)
                     val newTransaction = createTransaction(
@@ -191,6 +221,19 @@ private fun RegisterTransactionBody(
                     )
                     registerTransactionViewModel.setTotalValue(newTransaction.transactionAmount)
                     registerTransactionViewModel.setTransactionValue(newTransaction)
+                    registerTransactionViewModel.setMaxQuantity(
+                        if (selectedTextTransaction.toTransactionType() == TransactionType
+                                .SALE && maxQuantity > newTransaction.product.quantity
+                        ) {
+                            newTransaction.product.quantity + 1
+                        } else if (selectedTextTransaction.toTransactionType() == TransactionType
+                                .PURCHASE
+                        ) {
+                            newTransaction.product.maxQuantityToBuy
+                        } else {
+                            newTransaction.product.quantity
+                        },
+                    )
                 },
             )
         }
@@ -241,11 +284,11 @@ private fun RegisterTransactionBody(
 private fun setMaxValue(
     selectedTextTransaction: String,
     transaction: Transaction,
-    quantity: Int,
+    maxQuantity: Int,
 ) = if (selectedTextTransaction.toTransactionType() == TransactionType.SALE) {
     transaction.product.quantity
 } else {
-    9
+    maxQuantity
 }
 
 private fun stringToProduct(
