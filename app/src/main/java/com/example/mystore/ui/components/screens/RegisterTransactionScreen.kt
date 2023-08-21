@@ -40,7 +40,7 @@ import com.example.mystore.ui.components.commons.ValidateSection
 import com.example.mystore.viewmodel.screen.RegisterTransactionViewModel
 import java.util.Calendar
 
-// Todo - Quando navegar para fora, para outra tela, limpar os states
+// Todo - Quando navegar para fora, para outra tela, limpar os states - ok
 // Todo - Bug to Total. Quando seleciona o tipo de transação, o total não é atualizado.
 // Todo - Fazer testes regressivos
 // Todo - dar continuidade nas outras funcionalidades
@@ -48,7 +48,17 @@ import java.util.Calendar
 fun RegisterTransactionScreen(
     registerTransactionViewModel: RegisterTransactionViewModel,
     shouldItemBeVisible: Boolean,
+    clearAllStates: Boolean = false,
+    onClearAllStates: (Boolean) -> Unit = {},
 ) {
+    if (clearAllStates) {
+        clearStates(
+            registerTransactionViewModel = registerTransactionViewModel,
+            onChangeSelectedTextTransaction = {},
+            onChangeSelectedTextProduct = {},
+        )
+    }
+    onClearAllStates(false)
     registerTransactionViewModel.setScreenWidth(LocalConfiguration.current.screenWidthDp)
 
     val listOfProducts by registerTransactionViewModel.listOfProducts.collectAsState()
