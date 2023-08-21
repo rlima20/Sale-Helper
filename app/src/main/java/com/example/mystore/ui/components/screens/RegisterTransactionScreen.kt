@@ -41,6 +41,9 @@ import com.example.mystore.viewmodel.screen.RegisterTransactionViewModel
 import java.util.Calendar
 
 // Todo - Quando navegar para fora, para outra tela, limpar os states
+// Todo - Bug to Total. Quando seleciona o tipo de transação, o total não é atualizado.
+// Todo - Fazer testes regressivos
+// Todo - dar continuidade nas outras funcionalidades
 @Composable
 fun RegisterTransactionScreen(
     registerTransactionViewModel: RegisterTransactionViewModel,
@@ -226,14 +229,26 @@ private fun RegisterTransactionBody(
                         )
 
                         // Clear all fields
-                        registerTransactionViewModel.clearAll()
-                        selectedTextTransaction = ""
-                        selectedTextProduct = ""
+                        clearStates(
+                            registerTransactionViewModel = registerTransactionViewModel,
+                            onChangeSelectedTextTransaction = { selectedTextTransaction = it },
+                            onChangeSelectedTextProduct = { selectedTextProduct = it },
+                        )
                     },
                 )
             }
         }
     }
+}
+
+private fun clearStates(
+    registerTransactionViewModel: RegisterTransactionViewModel,
+    onChangeSelectedTextTransaction: (String) -> Unit = {},
+    onChangeSelectedTextProduct: (String) -> Unit = {},
+) {
+    registerTransactionViewModel.clearAll()
+    onChangeSelectedTextTransaction("")
+    onChangeSelectedTextProduct("")
 }
 
 private fun setMaxQuantityByTransactionType(
@@ -320,9 +335,10 @@ private fun setScreenStates(
     itemSelected: String = "",
     onSelectedTextTransaction: (String) -> Unit = {},
     onSetQuantity: (Int, Transaction) -> Unit = { _, _ -> },
-    quantifierQuantity: Int = 0,
+    quantifierQuantity: Int? = null,
     onQuantifierQuantity: (Int) -> Unit = {},
 ) {
+    onQuantifierQuantity(quantifierQuantity ?: 0)
     onSelectedTextTransaction(itemSelected)
 
     val newTransaction = createTransaction(
@@ -331,7 +347,7 @@ private fun setScreenStates(
             productName = productName,
         ),
         transactionType = selectedTextTransaction.toTransactionType(),
-        quantity = quantity,
+        quantity = quantifierQuantity ?: quantity,
     )
     setStates(
         registerTransactionViewModel = registerTransactionViewModel,
@@ -339,6 +355,6 @@ private fun setScreenStates(
         newTransaction = newTransaction,
         maxQuantity = maxQuantity,
     )
+
     onSetQuantity(quantity, newTransaction)
-    onQuantifierQuantity(quantifierQuantity)
 }
