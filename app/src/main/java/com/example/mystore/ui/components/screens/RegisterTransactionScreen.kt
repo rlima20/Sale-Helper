@@ -40,10 +40,6 @@ import com.example.mystore.ui.components.commons.ValidateSection
 import com.example.mystore.viewmodel.screen.RegisterTransactionViewModel
 import java.util.Calendar
 
-// Todo - Quando navegar para fora, para outra tela, limpar os states - ok
-// Todo - Bug to Total. Quando seleciona o tipo de transação, o total não é atualizado.
-// Todo - Fazer testes regressivos
-// Todo - dar continuidade nas outras funcionalidades
 @Composable
 fun RegisterTransactionScreen(
     registerTransactionViewModel: RegisterTransactionViewModel,
@@ -132,15 +128,17 @@ private fun RegisterTransactionBody(
                 onTrailingIconClicked = { isExpandedTransaction = !isExpandedTransaction },
                 onDropdownMenuDismissRequest = { isExpandedTransaction = false },
                 onDropdownMenuItemClicked = { itemSelected ->
+                    selectedTextTransaction = itemSelected
+
                     setScreenStates(
                         listOfProducts = listOfProducts,
+                        onSelectedTextTransaction = { selectedTextTransaction = it },
                         selectedTextTransaction = selectedTextTransaction,
                         quantity = quantity,
-                        productName = selectedTextProduct,
                         maxQuantity = maxQuantity,
+                        productName = selectedTextProduct,
                         registerTransactionViewModel = registerTransactionViewModel,
                         itemSelected = itemSelected,
-                        onSelectedTextTransaction = { selectedTextTransaction = it },
                         onSetQuantity = { quantity, newTransaction ->
                             registerTransactionViewModel.setQuantity(
                                 if (quantity > newTransaction.product.quantity) {
@@ -261,24 +259,6 @@ private fun clearStates(
     onChangeSelectedTextProduct("")
 }
 
-private fun setMaxQuantityByTransactionType(
-    selectedTextTransaction: String,
-    maxQuantity: Int,
-    newTransaction: Transaction,
-): Int {
-    return if (selectedTextTransaction.toTransactionType() == TransactionType
-            .SALE && maxQuantity > newTransaction.product.quantity
-    ) {
-        newTransaction.product.quantity + 1
-    } else if (selectedTextTransaction.toTransactionType() == TransactionType
-            .PURCHASE
-    ) {
-        newTransaction.product.maxQuantityToBuy
-    } else {
-        newTransaction.product.quantity
-    }
-}
-
 @Composable
 private fun setMaxValue(
     selectedTextTransaction: String,
@@ -297,23 +277,6 @@ private fun stringToProduct(
     return listOfProducts.find {
         it.title.limitTo(20) == productName
     } ?: Product()
-}
-
-private fun setStates(
-    registerTransactionViewModel: RegisterTransactionViewModel,
-    selectedTextTransaction: String,
-    newTransaction: Transaction,
-    maxQuantity: Int,
-) {
-    registerTransactionViewModel.setTotalValue(newTransaction.transactionAmount)
-    registerTransactionViewModel.setTransactionValue(newTransaction)
-    registerTransactionViewModel.setMaxQuantity(
-        setMaxQuantityByTransactionType(
-            selectedTextTransaction = selectedTextTransaction,
-            maxQuantity = maxQuantity,
-            newTransaction = newTransaction,
-        ),
-    )
 }
 
 private fun createTransaction(
@@ -367,4 +330,39 @@ private fun setScreenStates(
     )
 
     onSetQuantity(quantity, newTransaction)
+}
+
+private fun setStates(
+    registerTransactionViewModel: RegisterTransactionViewModel,
+    selectedTextTransaction: String,
+    newTransaction: Transaction,
+    maxQuantity: Int,
+) {
+    registerTransactionViewModel.setTotalValue(newTransaction.transactionAmount)
+    registerTransactionViewModel.setTransactionValue(newTransaction)
+    registerTransactionViewModel.setMaxQuantity(
+        setMaxQuantityByTransactionType(
+            selectedTextTransaction = selectedTextTransaction,
+            maxQuantity = maxQuantity,
+            newTransaction = newTransaction,
+        ),
+    )
+}
+
+private fun setMaxQuantityByTransactionType(
+    selectedTextTransaction: String,
+    maxQuantity: Int,
+    newTransaction: Transaction,
+): Int {
+    return if (selectedTextTransaction.toTransactionType() == TransactionType
+            .SALE && maxQuantity > newTransaction.product.quantity
+    ) {
+        newTransaction.product.quantity + 1
+    } else if (selectedTextTransaction.toTransactionType() == TransactionType
+            .PURCHASE
+    ) {
+        newTransaction.product.maxQuantityToBuy
+    } else {
+        newTransaction.product.quantity
+    }
 }
