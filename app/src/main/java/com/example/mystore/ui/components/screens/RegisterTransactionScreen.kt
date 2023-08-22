@@ -116,6 +116,7 @@ private fun RegisterTransactionBody(
         Row(
             modifier = Modifier.padding(start = 8.dp, end = 8.dp, bottom = 8.dp),
         ) {
+            // Dropdown TransactionType
             DropdownComponent(
                 isExpanded = isExpandedTransaction,
                 items = listOfTransactionTypes.map { it.name },
@@ -142,7 +143,11 @@ private fun RegisterTransactionBody(
                         onSetQuantity = { quantity, newTransaction ->
                             registerTransactionViewModel.setQuantity(
                                 if (quantity > newTransaction.product.quantity) {
-                                    newTransaction.product.quantity
+                                    if (newTransaction.product.quantity == 0) {
+                                        1
+                                    } else {
+                                        newTransaction.product.quantity
+                                    }
                                 } else {
                                     quantity
                                 },
@@ -157,6 +162,7 @@ private fun RegisterTransactionBody(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.padding(start = 8.dp, end = 8.dp, bottom = 8.dp),
         ) {
+            // Dropdown Product
             DropdownComponent(
                 isExpanded = isExpandedProduct,
                 items = listOfProducts.map { it.title.limitTo(20) },
