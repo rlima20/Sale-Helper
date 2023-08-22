@@ -1,6 +1,11 @@
 package com.example.mystore.ui.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -29,6 +34,7 @@ fun MyStoreNavHost(
     onProductLongClick: () -> Unit = {},
     onProductDoubleClick: () -> Unit = {},
 ) {
+    var clearStates = false
     NavHost(
         navController = navController,
         startDestination = HomeScreen.route,
@@ -36,6 +42,7 @@ fun MyStoreNavHost(
     ) {
         // Navega para a HomeScreen
         composable(route = HomeScreen.route) {
+            clearStates = true
             onExpandBottomBar(false)
             HomeScreen(
                 homeViewModel = homeViewModel,
@@ -51,12 +58,14 @@ fun MyStoreNavHost(
 
         // Navega para a RegisterProductScreen
         composable(route = RegisterProductScreen.route) {
+            clearStates = true
             onExpandBottomBar(false)
             RegisterScreen()
         }
 
         // Navega para a ConsolidatedPositionScreen
         composable(route = ConsolidatedPositionScreen.route) {
+            clearStates = true
             onExpandBottomBar(true)
             ConsolidatedPositionScreen(
                 consolidatedPosViewModel = consolidatedPosViewModel,
@@ -81,6 +90,8 @@ fun MyStoreNavHost(
             RegisterTransactionScreen(
                 registerTransactionViewModel = registerTransactionViewModel,
                 shouldItemBeVisible = shouldItemBeVisible,
+                clearAllStates = clearStates,
+                onClearAllStates = { clearStates = it },
             )
         }
     }
