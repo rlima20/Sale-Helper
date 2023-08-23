@@ -17,9 +17,8 @@ class HomeViewModel : CommonViewModel() {
         getListOfProducts()
     }
 
+    // Todo - Aqui eu vou pegar as transações e produtos e manipular os dados para criar um objeto Resume
     private fun getResume() {
-        // Todo - Aqui eu vou pegar as transações e produtos e manipular os dados para criar um
-        //  objeto Resume
         resume.value = Resume()
     }
 

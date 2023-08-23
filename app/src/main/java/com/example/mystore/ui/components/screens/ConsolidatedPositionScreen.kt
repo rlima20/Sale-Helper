@@ -29,11 +29,11 @@ import com.example.mystore.ui.components.commons.SectionInfo
 import com.example.mystore.ui.components.commons.TextCurrencyComponent
 import com.example.mystore.ui.components.commons.ValidateSection
 import com.example.mystore.ui.components.commons.validateSection
-import com.example.mystore.viewmodel.screen.ConsolidatedPosViewModel
+import com.example.mystore.viewmodel.screen.HomeViewModel
 
 @Composable
 fun ConsolidatedPositionScreen(
-    consolidatedPosViewModel: ConsolidatedPosViewModel,
+    homeViewModel: HomeViewModel,
     shouldItemBeVisible: Boolean,
     onEmptyStateImageClicked: (route: String) -> Unit = {},
     onShowBottomBarExpanded: (shouldSee: Boolean) -> Unit = {},
@@ -49,14 +49,14 @@ fun ConsolidatedPositionScreen(
                     title = "Vendas",
                     body = {
                         ConsolidatedPosBody(
-                            consolidatedPosViewModel.listOfSales.value,
+                            homeViewModel.listOfSales.value,
                             shouldItemBeVisible,
                         )
                     },
                 )
             },
             sectionEmptyStateInfo = SectionEmptyStateInfo(
-                data = consolidatedPosViewModel.listOfSales.value,
+                data = homeViewModel.listOfSales.value,
                 emptySectionTitle = stringResource(R.string.my_store_no_sales_done),
                 emptySectionPainter = painterResource(id = R.drawable.my_store_plus_icon),
                 onEmptyStateImageClicked = {
@@ -75,14 +75,14 @@ fun ConsolidatedPositionScreen(
                     title = "Compras",
                     body = {
                         ConsolidatedPosBody(
-                            consolidatedPosViewModel.listOfPurchases.value,
+                            homeViewModel.listOfPurchases.value,
                             shouldItemBeVisible,
                         )
                     },
                 )
             },
             sectionEmptyStateInfo = SectionEmptyStateInfo(
-                data = consolidatedPosViewModel.listOfPurchases.value,
+                data = homeViewModel.listOfPurchases.value,
                 emptySectionTitle = stringResource(R.string.my_store_no_sales_done),
                 emptySectionPainter = painterResource(id = R.drawable.my_store_plus_icon),
                 onEmptyStateImageClicked = {

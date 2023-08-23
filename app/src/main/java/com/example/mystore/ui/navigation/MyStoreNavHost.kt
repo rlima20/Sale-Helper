@@ -1,11 +1,6 @@
 package com.example.mystore.ui.navigation
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -16,8 +11,6 @@ import com.example.mystore.ui.components.screens.ConsolidatedPositionScreen
 import com.example.mystore.ui.components.screens.HomeScreen
 import com.example.mystore.ui.components.screens.RegisterScreen
 import com.example.mystore.ui.components.screens.RegisterTransactionScreen
-import com.example.mystore.viewmodel.screen.CommonViewModel
-import com.example.mystore.viewmodel.screen.ConsolidatedPosViewModel
 import com.example.mystore.viewmodel.screen.HomeViewModel
 import com.example.mystore.viewmodel.screen.RegisterTransactionViewModel
 
@@ -26,7 +19,6 @@ fun MyStoreNavHost(
     navController: NavHostController,
     modifier: Modifier = Modifier,
     homeViewModel: HomeViewModel,
-    consolidatedPosViewModel: ConsolidatedPosViewModel,
     registerTransactionViewModel: RegisterTransactionViewModel,
     shouldItemBeVisible: Boolean,
     onExpandBottomBar: (Boolean) -> Unit = {},
@@ -64,22 +56,20 @@ fun MyStoreNavHost(
             RegisterScreen()
         }
 
-
-
         // Navega para a ConsolidatedPositionScreen
         composable(route = ConsolidatedPositionScreen.route) {
-            consolidatedPosViewModel.getListOfSales()
-            consolidatedPosViewModel.getListOfPurchases()
+            homeViewModel.getListOfSales()
+            homeViewModel.getListOfPurchases()
             clearStates = true
             onExpandBottomBar(true)
             ConsolidatedPositionScreen(
-                consolidatedPosViewModel = consolidatedPosViewModel,
+                homeViewModel = homeViewModel,
                 shouldItemBeVisible = shouldItemBeVisible,
                 onShowBottomBarExpanded = {
-                    val sales = consolidatedPosViewModel.getSalesValue()
-                    val purchases = consolidatedPosViewModel.getPurchasesValue()
-                    val listOfSales = consolidatedPosViewModel.listOfSales.value
-                    val listOfPurchases = consolidatedPosViewModel.listOfPurchases.value
+                    val sales = homeViewModel.getSalesValue()
+                    val purchases = homeViewModel.getPurchasesValue()
+                    val listOfSales = homeViewModel.listOfSales.value
+                    val listOfPurchases = homeViewModel.listOfPurchases.value
 
                     if (listOfSales.isNotEmpty() && listOfPurchases.isNotEmpty()) {
                         onExpandBottomBar(true)

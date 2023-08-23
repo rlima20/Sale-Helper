@@ -31,7 +31,6 @@ import com.example.mystore.ui.navigation.RegisterProductScreen
 import com.example.mystore.ui.navigation.RegisterTransactionScreen
 import com.example.mystore.ui.theme.MyStoreTheme
 import com.example.mystore.viewmodel.global.MyStoreViewModel
-import com.example.mystore.viewmodel.screen.ConsolidatedPosViewModel
 import com.example.mystore.viewmodel.screen.HomeViewModel
 import com.example.mystore.viewmodel.screen.RegisterTransactionViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -41,7 +40,6 @@ class MainActivity : ComponentActivity() {
     private val application = AppApplication.instance
     private val viewModel: MyStoreViewModel by viewModel()
     private val homeViewModel: HomeViewModel by viewModel()
-    private val consolidatedPosViewModel: ConsolidatedPosViewModel by viewModel()
     private val registerTransactionViewModel: RegisterTransactionViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,7 +49,6 @@ class MainActivity : ComponentActivity() {
                 application,
                 viewModel,
                 homeViewModel,
-                consolidatedPosViewModel,
                 registerTransactionViewModel,
             )
         }
@@ -63,7 +60,6 @@ fun MyStoreApp(
     application: AppApplication,
     myStoreViewModel: MyStoreViewModel,
     homeViewModel: HomeViewModel,
-    consolidatedPosViewModel: ConsolidatedPosViewModel,
     registerTransactionViewModel: RegisterTransactionViewModel,
 ) {
     MyStoreTheme {
@@ -114,7 +110,6 @@ fun MyStoreApp(
                         .background(colorResource(id = R.color.color_400))
                         .padding(it),
                     homeViewModel = homeViewModel,
-                    consolidatedPosViewModel = consolidatedPosViewModel,
                     registerTransactionViewModel = registerTransactionViewModel,
                     shouldItemBeVisible = shouldItemBeVisible,
                     onExpandBottomBar = { shouldExpandBottomBar ->
@@ -187,7 +182,6 @@ fun MyStoreAppPreview() {
         application = AppApplication.instance,
         myStoreViewModel = MyStoreViewModel(),
         homeViewModel = HomeViewModel(),
-        consolidatedPosViewModel = ConsolidatedPosViewModel(),
         registerTransactionViewModel = RegisterTransactionViewModel(),
     )
 }

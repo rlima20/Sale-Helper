@@ -40,13 +40,6 @@ open class CommonViewModel : ViewModel() {
             .sumOf { transaction -> transaction.transactionAmount }
     }
 
-    fun getListOfPurchases() {
-        listOfPurchases.value = listOfTransactions.filter {
-            it.transactionType == TransactionType
-                .PURCHASE
-        }
-    }
-
     private fun getListOfTransactions() {
         _transactions.value = listOfTransactions
     }
@@ -57,16 +50,22 @@ open class CommonViewModel : ViewModel() {
         }
     }
 
-    fun incrementListOfTransactions(transactions: Transaction) {
-        _transactions.value.add(transactions)
-        val tr = _transactions.value
-        val i = 0
+    fun getListOfPurchases() {
+        listOfPurchases.value = listOfTransactions.filter {
+            it.transactionType == TransactionType
+                .PURCHASE
+        }
     }
-
-    fun getSalesValue(): Double = getTotalValueByTransactionType(TransactionType.SALE)
-    fun getPurchasesValue(): Double = getTotalValueByTransactionType(TransactionType.PURCHASE)
 
     fun getListOfProducts() {
         listOfProducts.value = listOfProductsLocal
     }
+
+    fun incrementListOfTransactions(transactions: Transaction) {
+        _transactions.value.add(transactions)
+    }
+
+    fun getSalesValue(): Double = getTotalValueByTransactionType(TransactionType.SALE)
+
+    fun getPurchasesValue(): Double = getTotalValueByTransactionType(TransactionType.PURCHASE)
 }
