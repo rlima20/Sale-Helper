@@ -57,7 +57,7 @@ val listOfProductsLocal = listOf(
     ),
 )
 
-val listOfTransactions = listOf(
+val listOfTransactions = mutableListOf(
     Transaction(
         product = listOfProductsLocal[4],
         transactionType = TransactionType.SALE,

@@ -16,6 +16,7 @@ import com.example.mystore.ui.components.screens.ConsolidatedPositionScreen
 import com.example.mystore.ui.components.screens.HomeScreen
 import com.example.mystore.ui.components.screens.RegisterScreen
 import com.example.mystore.ui.components.screens.RegisterTransactionScreen
+import com.example.mystore.viewmodel.screen.CommonViewModel
 import com.example.mystore.viewmodel.screen.ConsolidatedPosViewModel
 import com.example.mystore.viewmodel.screen.HomeViewModel
 import com.example.mystore.viewmodel.screen.RegisterTransactionViewModel
@@ -63,8 +64,12 @@ fun MyStoreNavHost(
             RegisterScreen()
         }
 
+
+
         // Navega para a ConsolidatedPositionScreen
         composable(route = ConsolidatedPositionScreen.route) {
+            consolidatedPosViewModel.getListOfSales()
+            consolidatedPosViewModel.getListOfPurchases()
             clearStates = true
             onExpandBottomBar(true)
             ConsolidatedPositionScreen(
