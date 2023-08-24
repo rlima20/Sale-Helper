@@ -113,10 +113,10 @@ private fun RegisterTransactionBody(
         var isExpandedProduct: Boolean by remember { mutableStateOf(false) }
         var textFieldSizeProduct: Size by remember { mutableStateOf(Size.Zero) }
 
+        // Dropdown TransactionType
         Row(
             modifier = Modifier.padding(start = 8.dp, end = 8.dp, bottom = 8.dp),
         ) {
-            // Dropdown TransactionType
             DropdownComponent(
                 isExpanded = isExpandedTransaction,
                 items = listOfTransactionTypes.map { it.name },
@@ -158,11 +158,11 @@ private fun RegisterTransactionBody(
             )
         }
 
+        // Dropdown Product
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.padding(start = 8.dp, end = 8.dp, bottom = 8.dp),
         ) {
-            // Dropdown Product
             DropdownComponent(
                 isExpanded = isExpandedProduct,
                 items = listOfProducts.map { it.title.limitTo(20) },
@@ -219,7 +219,11 @@ private fun RegisterTransactionBody(
                 leftSideText = stringResource(id = R.string.my_store_total),
                 rightSide = {
                     TextCurrencyComponent(
-                        value = total.toString(),
+                        value = if (transaction.product.quantity == 0) {
+                            "0"
+                        } else {
+                            total.toString()
+                        },
                         shouldItemBeVisible = shouldItemBeVisible,
                         type = Type.CURRENCY,
                     )
@@ -227,9 +231,13 @@ private fun RegisterTransactionBody(
             )
             Box(modifier = Modifier.padding(end = 22.dp)) {
                 FloatingActionButton(
-                    enabled = total > 0.0,
+                    enabled = ((total > 0.0) && (transaction.product.quantity > 0)),
                     modifier = Modifier.size(36.dp),
-                    colorId = if (total > 0.0) R.color.color_50 else R.color.color_400,
+                    colorId = if ((total > 0.0) && (transaction.product.quantity > 0)) {
+                        R.color.color_50
+                    } else {
+                        R.color.color_400
+                    },
                     onClick = {
                         registerTransactionViewModel.saveTransaction(
                             registerTransactionViewModel
