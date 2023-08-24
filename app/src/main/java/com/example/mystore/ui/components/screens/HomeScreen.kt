@@ -34,6 +34,10 @@ fun HomeScreen(
     onProductDoubleClick: () -> Unit = {},
     onEmptyStateImageClicked: (route: String) -> Unit = {},
 ) {
+    homeViewModel.getResume()
+    homeViewModel.getListOfSales()
+    homeViewModel.getListOfPurchases()
+
     val resume by homeViewModel.resume.collectAsState()
     val listOfProducts by homeViewModel.listOfProducts.collectAsState()
 
@@ -53,7 +57,7 @@ fun HomeScreen(
                 },
             ),
             sectionEmptyStateInfo = SectionEmptyStateInfo(
-                data = listOf(resume),
+                data = listOf(resume), // listOf()
                 emptySectionTitle = stringResource(R.string.my_store_no_transactions_done),
                 emptySectionPainter = painterResource(id = R.drawable.my_store_plus_icon),
                 onEmptyStateImageClicked = {
@@ -88,7 +92,7 @@ fun HomeScreen(
             },
             sectionEmptyStateInfo =
             SectionEmptyStateInfo(
-                data = listOfProducts,
+                data = listOfProducts, // listOfProducts,
                 emptySectionTitle = stringResource(R.string.my_store_no_products),
                 emptySectionPainter = painterResource(id = R.drawable.my_store_plus_icon),
                 onEmptyStateImageClicked = {

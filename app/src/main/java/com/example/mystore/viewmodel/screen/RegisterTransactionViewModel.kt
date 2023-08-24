@@ -6,14 +6,11 @@ import com.example.mystore.model.Product
 import com.example.mystore.model.Transaction
 import kotlinx.coroutines.flow.MutableStateFlow
 
-class RegisterTransactionViewModel : CommomViewModel() {
+class RegisterTransactionViewModel : CommonViewModel() {
 
     private var _transactionType: MutableStateFlow<List<TransactionType>> =
         MutableStateFlow(listOf(TransactionType.SALE, TransactionType.PURCHASE))
     val listOfTransactionType: MutableStateFlow<List<TransactionType>> = _transactionType
-
-    private var _listOfProducts: MutableStateFlow<List<Product>> = MutableStateFlow(listOf())
-    val listOfProducts: MutableStateFlow<List<Product>> = _listOfProducts
 
     private val _quantity: MutableStateFlow<Int> = MutableStateFlow(1)
     val quantity: MutableStateFlow<Int> = _quantity

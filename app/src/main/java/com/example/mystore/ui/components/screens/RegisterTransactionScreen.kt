@@ -236,6 +236,11 @@ private fun RegisterTransactionBody(
                                 .transactionValue.value,
                         )
 
+                        registerTransactionViewModel.incrementListOfTransactions(
+                            registerTransactionViewModel
+                                .transactionValue.value,
+                        )
+
                         registerTransactionViewModel.updateProductQuantity(
                             registerTransactionViewModel.transactionValue.value.product,
                             quantity,
