@@ -34,6 +34,10 @@ fun HomeScreen(
     onProductDoubleClick: () -> Unit = {},
     onEmptyStateImageClicked: (route: String) -> Unit = {},
 ) {
+    homeViewModel.getResume()
+    homeViewModel.getListOfSales()
+    homeViewModel.getListOfPurchases()
+
     val resume by homeViewModel.resume.collectAsState()
     val listOfProducts by homeViewModel.listOfProducts.collectAsState()
 

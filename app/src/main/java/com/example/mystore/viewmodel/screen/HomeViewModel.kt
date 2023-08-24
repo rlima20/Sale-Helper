@@ -17,13 +17,7 @@ class HomeViewModel : CommonViewModel() {
         getListOfProducts()
     }
 
-//    val debits: Double = 100.0,
-//    val grossRevenue: Double = 200.0,
-//    val netRevenue: Double = 0.0,
-//    val stockValue: Double = 2000.0,
-
-    // Todo - Aqui eu vou pegar as transações e produtos e manipular os dados para criar um objeto Resume
-    private fun getResume() {
+    fun getResume() {
         val debits = listOfPurchases.value.sumOf { transaction ->
             transaction.transactionAmount
         }

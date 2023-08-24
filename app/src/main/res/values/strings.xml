@@ -18,6 +18,7 @@
     <string name="my_store_quantity">Quantidade: </string>
     <string name="my_store_amount">Montante: </string>
     <string name="my_store_sale_value">Valor da venda: </string>
+    <string name="my_store_purchase_value">Valor da compra: </string>
     <string name="my_store_total_sales">Total de vendas: </string>
     <string name="my_store_total_purchases">Total de compras: </string>
     <string name="my_store_total">Total: </string>

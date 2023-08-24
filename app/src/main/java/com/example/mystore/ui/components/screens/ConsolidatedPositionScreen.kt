@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.dp
 import com.example.mystore.R
 import com.example.mystore.Screens
 import com.example.mystore.Section
+import com.example.mystore.TransactionType
 import com.example.mystore.Type
 import com.example.mystore.model.Transaction
 import com.example.mystore.toShortString
@@ -157,7 +158,7 @@ fun ConsolidatedPosBody(
                         },
                     )
                     RowComponent(
-                        leftSideText = stringResource(id = R.string.my_store_sale_value),
+                        leftSideText = setLeftSideText(transaction),
                         rightSide = {
                             TextCurrencyComponent(
                                 value = transaction.transactionAmount.toString(),
@@ -171,3 +172,11 @@ fun ConsolidatedPosBody(
         }
     }
 }
+
+@Composable
+private fun setLeftSideText(transaction: Transaction) =
+    if (transaction.transactionType == TransactionType.PURCHASE) {
+        stringResource(id = R.string.my_store_purchase_value)
+    } else {
+        stringResource(id = R.string.my_store_sale_value)
+    }
