@@ -48,16 +48,18 @@ fun HomeScreen(
                     ScreenSectionComponent(
                         title = stringResource(id = R.string.my_store_overall_total),
                         body = {
-                            HomeBody(
-                                resume,
-                                shouldItemBeVisible,
-                            )
+                            resume?.let {
+                                HomeBody(
+                                    it,
+                                    shouldItemBeVisible,
+                                )
+                            }
                         },
                     )
                 },
             ),
             sectionEmptyStateInfo = SectionEmptyStateInfo(
-                data = listOf(resume), // listOf()
+                data = if (resume == null) emptyList() else listOf(resume),
                 emptySectionTitle = stringResource(R.string.my_store_no_transactions_done),
                 emptySectionPainter = painterResource(id = R.drawable.my_store_plus_icon),
                 onEmptyStateImageClicked = {

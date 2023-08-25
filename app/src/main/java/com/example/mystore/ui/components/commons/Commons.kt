@@ -23,7 +23,7 @@ data class SectionInfo(
 )
 
 data class SectionEmptyStateInfo(
-    val data: List<Any> = listOf(),
+    val data: List<Any?> = listOf(),
     val emptySectionTitle: String = "",
     val emptySectionPainter: Painter,
     val onEmptyStateImageClicked: () -> Unit = {},
