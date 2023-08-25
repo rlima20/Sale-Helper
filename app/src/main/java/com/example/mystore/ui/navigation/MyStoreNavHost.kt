@@ -61,7 +61,6 @@ fun MyStoreNavHost(
             homeViewModel.getListOfSales()
             homeViewModel.getListOfPurchases()
             clearStates = true
-            onExpandBottomBar(true)
             ConsolidatedPositionScreen(
                 homeViewModel = homeViewModel,
                 shouldItemBeVisible = shouldItemBeVisible,
@@ -71,7 +70,7 @@ fun MyStoreNavHost(
                     val listOfSales = homeViewModel.listOfSales.value
                     val listOfPurchases = homeViewModel.listOfPurchases.value
 
-                    if (listOfSales.isNotEmpty() && listOfPurchases.isNotEmpty()) {
+                    if (listOfSales.isNotEmpty() || listOfPurchases.isNotEmpty()) {
                         onExpandBottomBar(true)
                         onShowBottomBarExpanded(sales, purchases)
                     }
