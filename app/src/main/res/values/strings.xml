@@ -37,6 +37,7 @@
     <string name="my_store_name">Nome</string>
     <string name="my_store_no_transactions_done">"Você não tem transações realizadas. "</string>
     <string name="my_store_no_sales_done">"Você não tem vendas realizadas. "</string>
+    <string name="my_store_no_purchases_done">"Você não tem compras realizadas. "</string>
     <string name="my_store_no_products">"Você não tem produtos cadastrados. </string>
     <string name="my_store_out_of_stock">Fora de estoque</string>
 </resources>

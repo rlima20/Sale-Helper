@@ -75,6 +75,9 @@ fun MyStoreNavHost(
                         onShowBottomBarExpanded(sales, purchases)
                     }
                 },
+                onEmptyStateImageClicked = {
+                    navController.navigateSingleTopTo(it)
+                },
             )
         }
 

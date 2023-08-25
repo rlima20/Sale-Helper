@@ -63,7 +63,7 @@ fun ConsolidatedPositionScreen(
                 onEmptyStateImageClicked = {
                     onEmptyStateImageClicked(
                         validateSection(
-                            Section.REGISTER,
+                            Section.TRANSACTIONS,
                         ),
                     )
                 },
@@ -84,12 +84,12 @@ fun ConsolidatedPositionScreen(
             },
             sectionEmptyStateInfo = SectionEmptyStateInfo(
                 data = homeViewModel.listOfPurchases.value,
-                emptySectionTitle = stringResource(R.string.my_store_no_sales_done),
+                emptySectionTitle = stringResource(R.string.my_store_no_purchases_done),
                 emptySectionPainter = painterResource(id = R.drawable.my_store_plus_icon),
                 onEmptyStateImageClicked = {
                     onEmptyStateImageClicked(
                         validateSection(
-                            Section.REGISTER,
+                            Section.TRANSACTIONS,
                         ),
                     )
                 },
