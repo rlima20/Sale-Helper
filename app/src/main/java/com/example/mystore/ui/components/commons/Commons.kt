@@ -36,6 +36,7 @@ fun setUnit(
     shouldItemBeVisible: Boolean,
 ) = when (type) {
     Type.CURRENCY -> value.toDouble().toCurrency(shouldItemBeVisible)
+    Type.CURRENCY_DEBIT_ONLY -> value.toDouble().toCurrency(shouldItemBeVisible)
     Type.PURCHASE_CURRENCY -> value.toDouble().toCurrency(shouldItemBeVisible)
     Type.QUANTITY -> value.toInt().toUnity(shouldItemBeVisible)
     Type.QUANTITY_OOS -> value.toInt().toUnityOutOfStock(shouldItemBeVisible)

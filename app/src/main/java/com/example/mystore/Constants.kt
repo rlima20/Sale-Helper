@@ -30,6 +30,7 @@ enum class States {
 enum class Type {
     PURCHASE_CURRENCY,
     CURRENCY,
+    CURRENCY_DEBIT_ONLY,
     QUANTITY,
     QUANTITY_OOS,
     DATE,

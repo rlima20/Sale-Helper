@@ -1,13 +1,19 @@
 package com.example.mystore.ui.components.screens
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.Divider
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.mystore.R
 import com.example.mystore.Screens
 import com.example.mystore.Section
@@ -121,6 +127,17 @@ fun HomeBody(
             TextCurrencyComponent(
                 value = resume.debits.toString(),
                 shouldItemBeVisible = shouldItemBeVisible,
+                type = Type.CURRENCY_DEBIT_ONLY,
+            )
+        },
+    )
+
+    RowComponent(
+        leftSideText = stringResource(id = R.string.my_store_stock_value),
+        rightSide = {
+            TextCurrencyComponent(
+                value = resume.stockValue.toString(),
+                shouldItemBeVisible = shouldItemBeVisible,
                 type = Type.CURRENCY,
             )
         },
@@ -137,24 +154,22 @@ fun HomeBody(
         },
     )
 
+    // Horizontal divider
+    Divider(
+        color = colorResource(id = R.color.color_300),
+        thickness = 1.dp,
+        modifier = Modifier.padding(8.dp),
+    )
+
     RowComponent(
         leftSideText = stringResource(id = R.string.my_store_net_revenue),
+        fontSize = 20.sp,
         rightSide = {
             TextCurrencyComponent(
                 value = resume.netRevenue.toString(),
                 shouldItemBeVisible = shouldItemBeVisible,
                 type = Type.CURRENCY,
-            )
-        },
-    )
-
-    RowComponent(
-        leftSideText = stringResource(id = R.string.my_store_stock_value),
-        rightSide = {
-            TextCurrencyComponent(
-                value = resume.stockValue.toString(),
-                shouldItemBeVisible = shouldItemBeVisible,
-                type = Type.CURRENCY,
+                fontSize = 20.sp,
             )
         },
     )

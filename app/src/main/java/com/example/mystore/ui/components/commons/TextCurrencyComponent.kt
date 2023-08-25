@@ -7,6 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.mystore.R
@@ -19,19 +20,20 @@ internal fun TextCurrencyComponent(
     value: String,
     shouldItemBeVisible: Boolean,
     type: Type,
+    fontSize: TextUnit = 18.sp,
 ) {
     Text(
         modifier = Modifier.padding(
             start = 8.dp,
             end = 8.dp,
         ),
-        fontSize = 18.sp,
+        fontSize = fontSize,
         fontWeight = MaterialTheme.typography.h5.fontWeight,
         color = colorResource(
-            if (type == Type.STRING) {
-                R.color.color_50
-            } else {
-                setTextColor(value.toDouble())
+            when (type) {
+                Type.CURRENCY_DEBIT_ONLY -> R.color.color_red_A1000
+                Type.STRING -> R.color.color_50
+                else -> setTextColor(value.toDouble())
             },
         ),
         text = setUnit(type, value, shouldItemBeVisible).limitTo(14),
