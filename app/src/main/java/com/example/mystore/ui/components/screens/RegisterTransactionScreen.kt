@@ -219,11 +219,7 @@ private fun RegisterTransactionBody(
                 leftSideText = stringResource(id = R.string.my_store_total),
                 rightSide = {
                     TextCurrencyComponent(
-                        value = if (transaction.product.quantity == 0) {
-                            "0"
-                        } else {
-                            total.toString()
-                        },
+                        value = setText(transaction, total),
                         shouldItemBeVisible = shouldItemBeVisible,
                         type = Type.CURRENCY,
                     )
@@ -231,9 +227,9 @@ private fun RegisterTransactionBody(
             )
             Box(modifier = Modifier.padding(end = 22.dp)) {
                 FloatingActionButton(
-                    enabled = ((total > 0.0) && (transaction.product.quantity > 0)),
+                    enabled = setEnabled(total, transaction),
                     modifier = Modifier.size(36.dp),
-                    colorId = if ((total > 0.0) && (transaction.product.quantity > 0)) {
+                    colorId = if (setEnabled(total, transaction)) {
                         R.color.color_50
                     } else {
                         R.color.color_400
@@ -266,6 +262,32 @@ private fun RegisterTransactionBody(
             }
         }
     }
+}
+
+@Composable
+private fun setEnabled(
+    total: Double,
+    transaction: Transaction,
+) = (
+    (total > 0.0) && (
+        if (transaction.transactionType == TransactionType.SALE) {
+            transaction.product.quantity > 0
+        } else {
+            true
+        }
+        )
+    )
+
+@Composable
+private fun setText(
+    transaction: Transaction,
+    total: Double,
+) = if ((transaction.product.quantity == 0) &&
+    (transaction.transactionType == TransactionType.SALE)
+) {
+    "0"
+} else {
+    total.toString()
 }
 
 private fun clearStates(
