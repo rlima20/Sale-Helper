@@ -29,6 +29,7 @@ import com.example.mystore.limitTo
 import com.example.mystore.model.Product
 import com.example.mystore.model.Transaction
 import com.example.mystore.toTransactionType
+import com.example.mystore.ui.components.commons.AlertDialogComponent
 import com.example.mystore.ui.components.commons.DropdownComponent
 import com.example.mystore.ui.components.commons.FloatingActionButton
 import com.example.mystore.ui.components.commons.Quantifier
@@ -36,6 +37,7 @@ import com.example.mystore.ui.components.commons.RowComponent
 import com.example.mystore.ui.components.commons.ScreenSectionComponent
 import com.example.mystore.ui.components.commons.SectionInfo
 import com.example.mystore.ui.components.commons.TextCurrencyComponent
+import com.example.mystore.ui.components.commons.ToastComponent
 import com.example.mystore.ui.components.commons.ValidateSection
 import com.example.mystore.viewmodel.screen.RegisterTransactionViewModel
 import java.util.Calendar
@@ -64,6 +66,8 @@ fun RegisterTransactionScreen(
     val maxQuantity by registerTransactionViewModel.maxQuantity.collectAsState()
     val total by registerTransactionViewModel.totalValue.collectAsState()
     val transaction by registerTransactionViewModel.transactionValue.collectAsState()
+    val showAlertDialog by registerTransactionViewModel.showAlertDialog.collectAsState()
+    val showToast by registerTransactionViewModel.showToast.collectAsState()
 
     Column {
         ValidateSection(
@@ -83,6 +87,16 @@ fun RegisterTransactionScreen(
                                 total = total,
                                 transaction = transaction,
                                 registerTransactionViewModel = registerTransactionViewModel,
+                                showAlertDialog = showAlertDialog,
+                                onShowAlertDialog = {
+                                    registerTransactionViewModel
+                                        .setShowAlertDialog(it)
+                                },
+                                showToast = showToast,
+                                onShowToast = {
+                                    registerTransactionViewModel
+                                        .setShowToast(it)
+                                },
                             )
                         },
                     )
@@ -103,7 +117,14 @@ private fun RegisterTransactionBody(
     total: Double,
     transaction: Transaction,
     registerTransactionViewModel: RegisterTransactionViewModel,
+    showAlertDialog: Boolean = false,
+    onShowAlertDialog: (Boolean) -> Unit = {},
+    showToast: Boolean = false,
+    onShowToast: (Boolean) -> Unit = {},
 ) {
+    if (showToast) {
+        ToastComponent()
+    }
     Column {
         var selectedTextTransaction: String by remember { mutableStateOf("") }
         var isExpandedTransaction: Boolean by remember { mutableStateOf(false) }
@@ -113,6 +134,44 @@ private fun RegisterTransactionBody(
         var isExpandedProduct: Boolean by remember { mutableStateOf(false) }
         var textFieldSizeProduct: Size by remember { mutableStateOf(Size.Zero) }
 
+        if (showAlertDialog) {
+            AlertDialogComponent(
+                title = stringResource(R.string.my_store_confirmation_transaction),
+                text = stringResource(R.string.my_store_confirmation_message),
+                onConfirmButtonClicked = {
+                    onShowToast(true)
+
+                    registerTransactionViewModel.saveTransaction(
+                        registerTransactionViewModel
+                            .transactionValue.value,
+                    )
+
+                    registerTransactionViewModel.incrementListOfTransactions(
+                        registerTransactionViewModel
+                            .transactionValue.value,
+                    )
+
+                    registerTransactionViewModel.updateProductQuantity(
+                        registerTransactionViewModel.transactionValue.value.product,
+                        quantity,
+                        registerTransactionViewModel.transactionValue.value,
+                    )
+
+                    clearStates(
+                        registerTransactionViewModel = registerTransactionViewModel,
+                        onChangeSelectedTextTransaction = { selectedTextTransaction = it },
+                        onChangeSelectedTextProduct = { selectedTextProduct = it },
+                    )
+                    onShowAlertDialog(false)
+                },
+                onCancelButtonClicked = {
+                    onShowAlertDialog(false)
+                },
+                onDismissRequest = {
+                    onShowAlertDialog(false)
+                },
+            )
+        }
         // Dropdown TransactionType
         Row(
             modifier = Modifier.padding(start = 8.dp, end = 8.dp, bottom = 8.dp),
@@ -235,31 +294,11 @@ private fun RegisterTransactionBody(
                         R.color.color_400
                     },
                     onClick = {
-                        registerTransactionViewModel.saveTransaction(
-                            registerTransactionViewModel
-                                .transactionValue.value,
-                        )
-
-                        registerTransactionViewModel.incrementListOfTransactions(
-                            registerTransactionViewModel
-                                .transactionValue.value,
-                        )
-
-                        registerTransactionViewModel.updateProductQuantity(
-                            registerTransactionViewModel.transactionValue.value.product,
-                            quantity,
-                            registerTransactionViewModel.transactionValue.value,
-                        )
-
-                        // Clear all fields
-                        clearStates(
-                            registerTransactionViewModel = registerTransactionViewModel,
-                            onChangeSelectedTextTransaction = { selectedTextTransaction = it },
-                            onChangeSelectedTextProduct = { selectedTextProduct = it },
-                        )
+                        onShowAlertDialog(true)
                     },
                 )
             }
+            onShowToast(false)
         }
     }
 }

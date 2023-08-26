@@ -40,4 +40,9 @@
     <string name="my_store_no_purchases_done">"Você não tem compras realizadas. "</string>
     <string name="my_store_no_products">"Você não tem produtos cadastrados. </string>
     <string name="my_store_out_of_stock">Fora de estoque</string>
+    <string name="my_store_confirmation_transaction">Registro de transação</string>
+    <string name="my_store_confirmation_message">Deseja confirmar essa transação?</string>
+    <string name="my_store_cancel">Cancelar</string>
+    <string name="my_store_ok">Ok</string>
+    <string name="my_store_successfull_transaction_saved">Transação salva com sucesso</string>
 </resources>
