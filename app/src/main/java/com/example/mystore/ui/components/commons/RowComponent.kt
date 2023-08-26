@@ -15,7 +15,10 @@ fun RowComponent(
     rightSide: @Composable () -> Unit,
 ) {
     Row(modifier = Modifier.padding(start = 8.dp)) {
-        TextFormattedComponent(leftSideText, fontSize)
+        TextFormattedComponent(
+            leftSideText = leftSideText,
+            fontSize = fontSize,
+        )
         rightSide()
     }
 }

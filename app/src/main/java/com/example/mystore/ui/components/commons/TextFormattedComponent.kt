@@ -11,11 +11,12 @@ import com.example.mystore.R
 
 @Composable
 fun TextFormattedComponent(
+    modifier: Modifier = Modifier,
     leftSideText: String,
     fontSize: TextUnit,
 ) {
     Text(
-        modifier = Modifier.padding(
+        modifier = modifier.padding(
             start = 8.dp,
             end = 8.dp,
         ),
