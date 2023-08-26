@@ -21,6 +21,7 @@ import com.example.mystore.Type
 import com.example.mystore.listOfProductsLocal
 import com.example.mystore.model.Product
 import com.example.mystore.model.Resume
+import com.example.mystore.ui.components.commons.AlertDialogComponent
 import com.example.mystore.ui.components.commons.ProductCarouselComponent
 import com.example.mystore.ui.components.commons.RowComponent
 import com.example.mystore.ui.components.commons.ScreenSectionComponent
@@ -40,6 +41,19 @@ fun HomeScreen(
     onProductDoubleClick: () -> Unit = {},
     onEmptyStateImageClicked: (route: String) -> Unit = {},
 ) {
+    AlertDialogComponent(
+        title = stringResource(R.string.my_store_confirmation_transaction),
+        text = stringResource(R.string.my_store_confirmation_message),
+        onConfirmButtonClicked = {
+            // homeViewModel.confirmTransaction()
+        },
+        onCancelButtonClicked = {
+            // homeViewModel.cancelTransaction()
+        },
+        onDismissRequest = {
+            // homeViewModel.cancelTransaction()
+        },
+    )
     homeViewModel.getResume()
     homeViewModel.getListOfSales()
     homeViewModel.getListOfPurchases()

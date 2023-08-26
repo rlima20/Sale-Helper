@@ -1,4 +1,4 @@
-package com.example.mystore.ui.components.topbar
+package com.example.mystore.ui.components.commons
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
