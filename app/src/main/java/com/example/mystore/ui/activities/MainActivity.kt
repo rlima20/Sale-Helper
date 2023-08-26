@@ -80,10 +80,6 @@ fun MyStoreApp(
                     shouldItemBeVisible = shouldItemBeVisible,
                     isMenuExpanded = isMenuExpanded,
                     textFieldSize = textFieldSize,
-                    onHomeIconClicked = {
-                        myStoreViewModel.setScreenTitle(application.getString(R.string.my_store_home))
-                        navController.navigateSingleTopTo(HomeScreen.route)
-                    },
                     onIconVisibilityClicked = {
                         myStoreViewModel.setValueVisibility(!shouldItemBeVisible)
                     },
@@ -157,6 +153,10 @@ fun MyStoreApp(
                             purchasesValue = totalAmountOfPurchases,
                             shouldItemBeVisible = shouldItemBeVisible,
                         )
+                    },
+                    onHomeIconClicked = {
+                        myStoreViewModel.setScreenTitle(application.getString(R.string.my_store_home))
+                        navController.navigateSingleTopTo(HomeScreen.route)
                     },
                 )
             },

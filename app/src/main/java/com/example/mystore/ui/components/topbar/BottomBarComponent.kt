@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material.Icon
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Add
+import androidx.compose.material.icons.rounded.Home
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -26,6 +27,7 @@ internal fun BottomBarComponent(
     onPositionConsolidateIconClicked: () -> Unit,
     onRegisterTransactionIconClicked: () -> Unit,
     onRegisterProductIconClicked: () -> Unit,
+    onHomeIconClicked: () -> Unit,
     expandedBottomBar: Boolean = false,
     expandedBottomBarContent: @Composable () -> Unit = {},
 ) {
@@ -47,6 +49,18 @@ internal fun BottomBarComponent(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween,
         ) {
+            Icon(
+                modifier = Modifier
+                    .padding(end = 16.dp)
+                    .clickable(
+                        onClick = {
+                            onHomeIconClicked()
+                        },
+                    ),
+                imageVector = Icons.Rounded.Home,
+                contentDescription = null,
+                tint = Color.White,
+            )
             Icon(
                 modifier = Modifier
                     .padding(start = 16.dp)

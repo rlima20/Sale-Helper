@@ -9,8 +9,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Home
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -29,7 +27,6 @@ internal fun TopBarComponent(
     shouldItemBeVisible: Boolean,
     isMenuExpanded: Boolean,
     textFieldSize: Size,
-    onHomeIconClicked: () -> Unit,
     onIconVisibilityClicked: () -> Unit,
     onMenuIconClicked: () -> Unit,
     onDismissRequest: () -> Unit,
@@ -43,56 +40,51 @@ internal fun TopBarComponent(
             .fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween,
-    ) {
-        Icon(
-            modifier = Modifier
-                .padding(end = 16.dp)
-                .clickable(
-                    onClick = {
-                        onHomeIconClicked()
-                    },
-                ),
-            imageVector = Icons.Rounded.Home,
-            contentDescription = null,
-            tint = Color.White,
-        )
-
+        ) {
         Text(
             text = screenTitle,
             color = Color.White,
             fontSize = 18.sp,
         )
-
-        Icon(
+        Row(
             modifier = Modifier
-                .size(20.dp)
-                .clickable(
-                    onClick = {
-                        onIconVisibilityClicked()
-                    },
-                ),
-            painter = setPainter(shouldItemBeVisible),
-            contentDescription = null,
-            tint = Color.White,
-        )
+                .background(primary)
+                .padding(top = 12.dp, bottom = 12.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween,
+        ) {
+            Icon(
+                modifier = Modifier
+                    .padding(end = 16.dp)
+                    .size(20.dp)
+                    .clickable(
+                        onClick = {
+                            onIconVisibilityClicked()
+                        },
+                    ),
+                painter = setPainter(shouldItemBeVisible),
+                contentDescription = null,
+                tint = Color.White,
+            )
 
-        MenuComponent(
-            screens = screenList,
-            isMenuExpanded = isMenuExpanded,
-            textFieldSize = textFieldSize,
-            onMenuIconClicked = {
-                onMenuIconClicked()
-            },
-            onDismissRequest = {
-                onDismissRequest()
-            },
-            onDropDownMenuItemClicked = { screen ->
-                onDropDownMenuItemClicked(screen)
-            },
-            onChangeTextFieldSize = { size ->
-                onChangeTextFieldSize(size)
-            },
-        )
+            MenuComponent(
+                screens = screenList,
+                isMenuExpanded = isMenuExpanded,
+                textFieldSize = textFieldSize,
+                onMenuIconClicked = {
+                    onMenuIconClicked()
+                },
+                onDismissRequest = {
+                    onDismissRequest()
+                },
+                onDropDownMenuItemClicked = { screen ->
+                    onDropDownMenuItemClicked(screen)
+                },
+                onChangeTextFieldSize = { size ->
+                    onChangeTextFieldSize(size)
+                },
+            )
+        }
     }
 }
 
