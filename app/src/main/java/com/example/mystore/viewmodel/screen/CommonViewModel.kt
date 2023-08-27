@@ -68,4 +68,8 @@ open class CommonViewModel : ViewModel() {
     fun getSalesValue(): Double = getTotalValueByTransactionType(TransactionType.SALE)
 
     fun getPurchasesValue(): Double = getTotalValueByTransactionType(TransactionType.PURCHASE)
+
+    fun deleteTransaction(transaction: Transaction) {
+        _transactions.value.removeAt(_transactions.value.indexOf(transaction))
+    }
 }

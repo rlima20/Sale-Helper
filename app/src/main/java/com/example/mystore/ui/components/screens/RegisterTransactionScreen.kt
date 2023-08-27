@@ -123,7 +123,7 @@ private fun RegisterTransactionBody(
     onShowToast: (Boolean) -> Unit = {},
 ) {
     if (showToast) {
-        ToastComponent()
+        ToastComponent(stringResource(R.string.my_store_successfull_transaction_saved))
     }
     Column {
         var selectedTextTransaction: String by remember { mutableStateOf("") }

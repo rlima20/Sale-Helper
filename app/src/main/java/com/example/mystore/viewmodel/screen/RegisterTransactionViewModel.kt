@@ -70,7 +70,7 @@ class RegisterTransactionViewModel : CommonViewModel() {
         maxQuantity.value = _maxQuantity.value
     }
 
-    fun getShowAlertDialog() {
+    private fun getShowAlertDialog() {
         showAlertDialog.value = _showAlertDialog.value
     }
 

@@ -1,8 +1,11 @@
 package com.example.mystore.ui.components.commons
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -22,10 +25,13 @@ import com.example.mystore.colorTransactionType
 import com.example.mystore.limitTo
 import com.example.mystore.model.Transaction
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun TransactionComponent(
     transaction: Transaction,
     shouldItemBeVisible: Boolean,
+    onClick: () -> Unit = {},
+    onLongClick: (Transaction) -> Unit = {},
 ) {
     Surface(
         elevation = 4.dp,
@@ -37,34 +43,42 @@ fun TransactionComponent(
         ),
         color = colorResource(id = R.color.color_800),
     ) {
-        Box(
-            contentAlignment = Alignment.CenterStart,
-            modifier = Modifier
-                .padding(4.dp)
-                .background(color = colorResource(id = R.color.color_800)),
+        Column(
+            modifier = Modifier.combinedClickable(
+                enabled = true,
+                onClick = { onClick() },
+                onLongClick = { onLongClick(transaction) },
+            ),
         ) {
-            Row(
+            Box(
+                contentAlignment = Alignment.CenterStart,
                 modifier = Modifier
-                    .padding(start = 8.dp),
-                verticalAlignment = Alignment.CenterVertically,
-            ) { TextTransactionType(transaction.transactionType) }
-            Row(
-                modifier = Modifier
-                    .padding(start = 8.dp, end = 8.dp)
-                    .fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically,
+                    .padding(4.dp)
+                    .background(color = colorResource(id = R.color.color_800)),
             ) {
-                TextFormattedComponent(
-                    modifier = Modifier.padding(start = 24.dp),
-                    leftSideText = transaction.product.title.limitTo(20),
-                    fontSize = 16.sp,
-                )
-                TextCurrencyComponent(
-                    value = transaction.transactionAmount.toString(),
-                    shouldItemBeVisible = shouldItemBeVisible,
-                    type = Type.CURRENCY,
-                )
+                Row(
+                    modifier = Modifier
+                        .padding(start = 8.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) { TextTransactionType(transaction.transactionType) }
+                Row(
+                    modifier = Modifier
+                        .padding(start = 8.dp, end = 8.dp)
+                        .fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    TextFormattedComponent(
+                        modifier = Modifier.padding(start = 24.dp),
+                        leftSideText = transaction.product.title.limitTo(20),
+                        fontSize = 16.sp,
+                    )
+                    TextCurrencyComponent(
+                        value = transaction.transactionAmount.toString(),
+                        shouldItemBeVisible = shouldItemBeVisible,
+                        type = Type.STRING,
+                    )
+                }
             }
         }
     }
