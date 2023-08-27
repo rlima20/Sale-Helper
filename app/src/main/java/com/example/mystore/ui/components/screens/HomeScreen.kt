@@ -2,6 +2,7 @@ package com.example.mystore.ui.components.screens
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
@@ -15,6 +16,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -24,11 +27,13 @@ import androidx.compose.ui.unit.sp
 import com.example.mystore.R
 import com.example.mystore.Screens
 import com.example.mystore.Section
+import com.example.mystore.TransactionType
 import com.example.mystore.Type
 import com.example.mystore.listOfProductsLocal
 import com.example.mystore.model.Product
 import com.example.mystore.model.Resume
 import com.example.mystore.model.Transaction
+import com.example.mystore.ui.components.TransactionDetailsComponent
 import com.example.mystore.ui.components.commons.AlertDialogComponent
 import com.example.mystore.ui.components.commons.ProductCarouselComponent
 import com.example.mystore.ui.components.commons.RowComponent
@@ -41,6 +46,7 @@ import com.example.mystore.ui.components.commons.TransactionComponent
 import com.example.mystore.ui.components.commons.ValidateSection
 import com.example.mystore.ui.components.commons.validateSection
 import com.example.mystore.viewmodel.screen.HomeViewModel
+import java.util.Date
 
 @Composable
 fun HomeScreen(
@@ -63,6 +69,17 @@ fun HomeScreen(
 
     var transaction by remember { mutableStateOf(Transaction()) }
 
+    val transactionTest = Transaction(
+        product = Product(
+            description = "Product description",
+        ),
+        transactionType = TransactionType.SALE,
+        unitValue = 0.0,
+        transactionDate = Date(),
+        quantity = 0,
+        transactionAmount = 0.0,
+    )
+
     if (showToast) {
         ToastComponent(stringResource(R.string.my_store_successfull_transaction_removed))
     }
@@ -72,10 +89,26 @@ fun HomeScreen(
             .padding(top = 8.dp, bottom = 8.dp)
             .verticalScroll(rememberScrollState()),
     ) {
+        AlertDialogComponent(
+            size = Size(
+                width = LocalConfiguration.current.screenWidthDp.dp.value * 0.85f,
+                height = 600f,
+            ),
+            content = { TransactionDetailsComponent(transaction = transactionTest) },
+            onDismissRequest = { },
+            onConfirmButtonClicked = { },
+            onCancelButtonClicked = { },
+        )
+
         if (showAlertDialog) {
             AlertDialogComponent(
                 title = stringResource(R.string.my_store_registry_removal),
-                text = stringResource(R.string.my_store_removal_confirmation),
+                content = {
+                    Text(
+                        text = stringResource(R.string.my_store_removal_confirmation),
+                        color = colorResource(id = R.color.color_700),
+                    )
+                },
                 onDismissRequest = { homeViewModel.setShowAlertDialogState(false) },
                 onConfirmButtonClicked = {
                     homeViewModel.setShowToastState(true)
