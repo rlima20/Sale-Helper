@@ -92,6 +92,35 @@ fun HomeScreen(
         )
 
         ValidateSection(
+            sectionInfo = SectionInfo(
+                section = {
+                    ScreenSectionComponent(
+                        title = stringResource(id = R.string.my_store_transactions),
+                        body = {
+                            HomeTransactions(
+                                listOfTransactions = listOfTransaction,
+                                shouldItemBeVisible = shouldItemBeVisible,
+                            )
+                        },
+                    )
+                },
+            ),
+            sectionEmptyStateInfo = SectionEmptyStateInfo(
+                data = listOf(listOfTransactions),
+                emptySectionTitle = stringResource(R.string.my_store_no_transactions_done),
+                emptySectionPainter = painterResource(id = R.drawable.my_store_plus_icon),
+                onEmptyStateImageClicked = {
+                    onEmptyStateImageClicked(
+                        validateSection(
+                            Section.TRANSACTIONS,
+                        ),
+                    )
+                },
+            ),
+            screen = Screens.HOME,
+        )
+
+        ValidateSection(
             sectionInfo = SectionInfo {
                 ScreenSectionComponent(
                     title = stringResource(id = R.string.my_store_products),
@@ -124,35 +153,6 @@ fun HomeScreen(
             ),
             screen = Screens.HOME,
         )
-
-        ValidateSection(
-            sectionInfo = SectionInfo(
-                section = {
-                    ScreenSectionComponent(
-                        title = stringResource(id = R.string.my_store_transactions),
-                        body = {
-                            HomeTransactions(
-                                listOfTransactions = listOfTransaction,
-                                shouldItemBeVisible = shouldItemBeVisible,
-                            )
-                        },
-                    )
-                },
-            ),
-            sectionEmptyStateInfo = SectionEmptyStateInfo(
-                data = listOf(listOfTransactions),
-                emptySectionTitle = stringResource(R.string.my_store_no_transactions_done),
-                emptySectionPainter = painterResource(id = R.drawable.my_store_plus_icon),
-                onEmptyStateImageClicked = {
-                    onEmptyStateImageClicked(
-                        validateSection(
-                            Section.TRANSACTIONS,
-                        ),
-                    )
-                },
-            ),
-            screen = Screens.HOME,
-        )
     }
 }
 
@@ -163,6 +163,7 @@ fun HomeTransactions(
 ) {
     Column(
         modifier = Modifier
+            .padding(bottom = 8.dp)
             .height(200.dp)
             .verticalScroll(rememberScrollState()),
         verticalArrangement = Arrangement.spacedBy(4.dp),
