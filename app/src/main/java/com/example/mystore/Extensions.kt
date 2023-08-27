@@ -2,6 +2,7 @@ package com.example.mystore
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
@@ -100,4 +101,12 @@ fun NavHostController.navigateSingleTopTo(route: String) =
 
         launchSingleTop = true
         restoreState = true
+    }
+
+@Composable
+fun TransactionType.colorTransactionType() =
+    if (this == TransactionType.SALE) {
+        colorResource(id = R.color.color_green_A900)
+    } else {
+        colorResource(id = R.color.color_red_A1000)
     }

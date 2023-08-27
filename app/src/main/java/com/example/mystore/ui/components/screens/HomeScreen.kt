@@ -1,5 +1,6 @@
 package com.example.mystore.ui.components.screens
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -132,6 +133,7 @@ fun HomeScreen(
                         body = {
                             HomeTransactions(
                                 listOfTransactions = listOfTransaction,
+                                shouldItemBeVisible = shouldItemBeVisible,
                             )
                         },
                     )
@@ -157,15 +159,18 @@ fun HomeScreen(
 @Composable
 fun HomeTransactions(
     listOfTransactions: List<Transaction> = listOf(),
+    shouldItemBeVisible: Boolean,
 ) {
     Column(
         modifier = Modifier
             .height(200.dp)
             .verticalScroll(rememberScrollState()),
+        verticalArrangement = Arrangement.spacedBy(4.dp),
     ) {
         listOfTransactions.forEach { transaction ->
             TransactionComponent(
                 transaction = transaction,
+                shouldItemBeVisible = shouldItemBeVisible,
             )
         }
     }
