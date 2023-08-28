@@ -4,7 +4,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Divider
+import androidx.compose.material.Button
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Size
@@ -17,96 +18,169 @@ import com.example.mystore.TransactionType
 import com.example.mystore.Type
 import com.example.mystore.model.Product
 import com.example.mystore.model.Transaction
+import com.example.mystore.toShortString
+import com.example.mystore.ui.components.commons.DividerComponent
 import com.example.mystore.ui.components.commons.DropdownComponent
 import com.example.mystore.ui.components.commons.RowComponent
 import com.example.mystore.ui.components.commons.ScreenSectionComponent
 import com.example.mystore.ui.components.commons.TextCurrencyComponent
 import java.util.Date
 
-val transaction = Transaction(
-    product = Product(
-        description = "Product description",
-    ),
-    transactionType = TransactionType.SALE,
-    unitValue = 0.0,
-    transactionDate = Date(),
-    quantity = 0,
-    transactionAmount = 0.0,
-)
-
 @Composable
 fun TransactionDetailsComponent(
     transaction: Transaction,
     shouldItemBeVisible: Boolean = true,
+    onCloseAlertDialogTransactionDetail: () -> Unit = {},
 ) {
     ScreenSectionComponent(
         title = stringResource(id = R.string.my_store_transactions_details),
+        textColor = R.color.color_900,
+        backgroundColor = R.color.color_50,
         body = {
             Column(modifier = Modifier.fillMaxSize()) {
                 Body(
                     transaction = transaction,
                     shouldItemBeVisible = shouldItemBeVisible,
+                    onCloseAlertDialogTransactionDetail = onCloseAlertDialogTransactionDetail,
                 )
             }
         },
     )
 }
 
-/*val product: Product = Product(),
-val transactionType: TransactionType = TransactionType.SALE,
-val unitValue: Double = 0.0,
-val transactionDate: Date = Date(),
-val quantity: Int = 0,
-val transactionAmount: Double = 0.0,*/
-
 @Composable
 fun Body(
     transaction: Transaction,
     shouldItemBeVisible: Boolean,
+    onCloseAlertDialogTransactionDetail: () -> Unit = {},
 ) {
     Column {
         // Dropdown Produto
         DropdownComponent(
             isExpanded = false,
-            modifier = Modifier.fillMaxWidth(),
-            label = "Produce",
+            modifier = Modifier
+                .padding(bottom = 8.dp)
+                .fillMaxWidth(),
+            label = transaction.product.title,
             items = listOf(transaction.product.title),
             textFieldSize = Size.Zero,
             selectedText = transaction.product.title,
+            transactionDetailColors = Pair(R.color.color_900, R.color.color_50),
         )
 
         // Dropdwon Type
         DropdownComponent(
             isExpanded = false,
-            modifier = Modifier.fillMaxWidth(),
-            label = "Produce",
+            modifier = Modifier
+                .padding(bottom = 8.dp)
+                .fillMaxWidth(),
+            label = transaction.transactionType.toString(),
             items = listOf(transaction.product.title),
             textFieldSize = Size.Zero,
             selectedText = transaction.product.title,
+            transactionDetailColors = Pair(R.color.color_900, R.color.color_50),
         )
+
+        // Unit value
+        RowComponent(
+            leftSideText = stringResource(id = R.string.my_store_unit_value),
+            rightSide = {
+                TextCurrencyComponent(
+                    value = transaction.unitValue.toString(),
+                    shouldItemBeVisible = shouldItemBeVisible,
+                    type = Type.CURRENCY_TRANSACTION_DETAIL,
+                    color = R.color.color_900,
+                    paddings = Pair(0.dp, 0.dp),
+                )
+            },
+            transactionDetailColors = Pair(R.color.color_900, R.color.color_50),
+        )
+
+        DividerComponent()
 
         // Date
         RowComponent(
-            leftSideText = "ABC",
+            leftSideText = stringResource(id = R.string.my_store_date),
             rightSide = {
                 TextCurrencyComponent(
-                    value = 10.toString(),
+                    value = Date().toShortString(),
                     shouldItemBeVisible = shouldItemBeVisible,
                     type = Type.DATE,
+                    color = R.color.color_900,
+                    paddings = Pair(0.dp, 0.dp),
                 )
             },
+            transactionDetailColors = Pair(R.color.color_900, R.color.color_50),
         )
 
-        Divider(
-            color = colorResource(id = R.color.color_300),
-            thickness = 1.dp,
-            modifier = Modifier.padding(8.dp),
+        DividerComponent()
+
+        // Quantity
+        RowComponent(
+            leftSideText = stringResource(id = R.string.my_store_quantity),
+            rightSide = {
+                TextCurrencyComponent(
+                    value = transaction.quantity.toString(),
+                    shouldItemBeVisible = shouldItemBeVisible,
+                    type = Type.QUANTITY,
+                    color = R.color.color_900,
+                    paddings = Pair(0.dp, 0.dp),
+                )
+            },
+            transactionDetailColors = Pair(R.color.color_900, R.color.color_50),
         )
+
+        DividerComponent()
+
+        // Total Amount
+        RowComponent(
+            leftSideText = stringResource(id = R.string.my_store_amount),
+            rightSide = {
+                TextCurrencyComponent(
+                    value = transaction.transactionAmount.toString(),
+                    shouldItemBeVisible = shouldItemBeVisible,
+                    type = Type.CURRENCY_TRANSACTION_DETAIL,
+                    color = R.color.color_900,
+                    paddings = Pair(0.dp, 0.dp),
+                )
+            },
+            transactionDetailColors = Pair(R.color.color_900, R.color.color_50),
+        )
+
+        DividerComponent()
+
+        Button(
+            modifier = Modifier
+                .padding(
+                    top = 32.dp,
+                    end = 16.dp,
+                ),
+            onClick = {
+                onCloseAlertDialogTransactionDetail()
+            },
+        ) {
+            Text(
+                text = "Fechar",
+                color = colorResource(id = R.color.color_50),
+            )
+        }
     }
 }
 
 @Preview
 @Composable
 fun TransactionDetailsComponentPreview() {
+    val transaction = Transaction(
+        product = Product(
+            description = "Product description",
+            purchasePrice = 10.0,
+            salePrice = 20.0,
+        ),
+        transactionType = TransactionType.SALE,
+        unitValue = 10.0,
+        transactionDate = Date(),
+        quantity = 10,
+        transactionAmount = 100.0,
+    )
     TransactionDetailsComponent(transaction = transaction)
 }

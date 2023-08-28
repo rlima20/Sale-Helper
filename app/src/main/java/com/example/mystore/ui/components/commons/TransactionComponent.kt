@@ -30,7 +30,7 @@ import com.example.mystore.model.Transaction
 fun TransactionComponent(
     transaction: Transaction,
     shouldItemBeVisible: Boolean,
-    onClick: () -> Unit = {},
+    onClick: (Transaction) -> Unit = {},
     onLongClick: (Transaction) -> Unit = {},
 ) {
     Surface(
@@ -46,7 +46,7 @@ fun TransactionComponent(
         Column(
             modifier = Modifier.combinedClickable(
                 enabled = true,
-                onClick = { onClick() },
+                onClick = { onClick(transaction) },
                 onLongClick = { onLongClick(transaction) },
             ),
         ) {

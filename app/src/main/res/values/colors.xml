@@ -17,5 +17,5 @@
     <color name="color_A800">#747474</color>
     <color name="color_green_A900">#B5D78D</color>
     <color name="color_red_A1000">#E6633A</color>
-    <color name="color_transaparent">#51FFFFFF</color>
+    <color name="color_transaparent">#00FFFFFF</color>
 </resources>

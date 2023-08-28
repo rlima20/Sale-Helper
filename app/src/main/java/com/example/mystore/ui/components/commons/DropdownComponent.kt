@@ -33,6 +33,10 @@ fun DropdownComponent(
     textFieldSize: Size,
     label: String,
     modifier: Modifier = Modifier,
+    transactionDetailColors: Pair<Int, Int> = Pair(
+        first = R.color.color_50,
+        second = R.color.color_900,
+    ),
     onOutLinedTextFieldSize: (size: Size) -> Unit = {},
     onOutLinedTextFieldValueChanged: (String) -> Unit = {},
     onTrailingIconClicked: () -> Unit = {},
@@ -51,11 +55,16 @@ fun DropdownComponent(
             value = selectedText,
             onValueChange = { onOutLinedTextFieldValueChanged(selectedText) },
             modifier = modifier
-                .background(colorResource(id = R.color.color_900))
+                .background(colorResource(id = transactionDetailColors.second))
                 .onGloballyPositioned { coordinates ->
                     onOutLinedTextFieldSize(coordinates.size.toSize())
                 },
-            label = { Text(label) },
+            label = {
+                Text(
+                    color = colorResource(id = transactionDetailColors.first),
+                    text = label,
+                )
+            },
             trailingIcon = {
                 Icon(
                     icon,

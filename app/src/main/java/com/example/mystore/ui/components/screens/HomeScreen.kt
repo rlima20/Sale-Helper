@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
-import androidx.compose.material.Divider
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -27,7 +26,6 @@ import androidx.compose.ui.unit.sp
 import com.example.mystore.R
 import com.example.mystore.Screens
 import com.example.mystore.Section
-import com.example.mystore.TransactionType
 import com.example.mystore.Type
 import com.example.mystore.listOfProductsLocal
 import com.example.mystore.model.Product
@@ -35,6 +33,7 @@ import com.example.mystore.model.Resume
 import com.example.mystore.model.Transaction
 import com.example.mystore.ui.components.TransactionDetailsComponent
 import com.example.mystore.ui.components.commons.AlertDialogComponent
+import com.example.mystore.ui.components.commons.DividerComponent
 import com.example.mystore.ui.components.commons.ProductCarouselComponent
 import com.example.mystore.ui.components.commons.RowComponent
 import com.example.mystore.ui.components.commons.ScreenSectionComponent
@@ -46,7 +45,6 @@ import com.example.mystore.ui.components.commons.TransactionComponent
 import com.example.mystore.ui.components.commons.ValidateSection
 import com.example.mystore.ui.components.commons.validateSection
 import com.example.mystore.viewmodel.screen.HomeViewModel
-import java.util.Date
 
 @Composable
 fun HomeScreen(
@@ -70,18 +68,8 @@ fun HomeScreen(
         .collectAsState()
     val showToast by homeViewModel.showToast.collectAsState()
 
+    // Todo - Passar a atualização dessa variável para o ViewModel
     var transaction by remember { mutableStateOf(Transaction()) }
-
-    val transactionTest = Transaction(
-        product = Product(
-            description = "Product description",
-        ),
-        transactionType = TransactionType.SALE,
-        unitValue = 0.0,
-        transactionDate = Date(),
-        quantity = 0,
-        transactionAmount = 0.0,
-    )
 
     if (showToast) {
         ToastComponent(stringResource(R.string.my_store_successfull_transaction_removed))
@@ -95,20 +83,17 @@ fun HomeScreen(
         if (showAlertDialogTransactionDetail) {
             AlertDialogComponent(
                 size = Size(
-                    width = LocalConfiguration.current.screenWidthDp.dp.value * 0.85f,
+                    width = LocalConfiguration.current.screenWidthDp.dp.value * 1f,
                     height = 600f,
                 ),
                 color = colorResource(id = R.color.color_transaparent),
-                content = { TransactionDetailsComponent(transaction = transactionTest) },
-                dismissButton = {
-                    Button(onClick = {
-                        homeViewModel.setShowAlertDialogTransactionDetail(false)
-                    }) {
-                        Text(
-                            text = "Fechar",
-                            color = colorResource(id = R.color.color_50),
-                        )
-                    }
+                content = {
+                    TransactionDetailsComponent(
+                        transaction = transaction,
+                        onCloseAlertDialogTransactionDetail = {
+                            homeViewModel.setShowAlertDialogTransactionDetail(false)
+                        },
+                    )
                 },
                 onDismissRequest = { homeViewModel.setShowAlertDialogTransactionDetail(false) },
             )
@@ -217,6 +202,7 @@ fun HomeScreen(
             screen = Screens.HOME,
         )
 
+        // Transactions Section
         ValidateSection(
             sectionInfo = SectionInfo(
                 section = {
@@ -228,6 +214,7 @@ fun HomeScreen(
                                 shouldItemBeVisible = shouldItemBeVisible,
                                 onClick = {
                                     homeViewModel.setShowAlertDialogTransactionDetail(true)
+                                    transaction = it
                                 },
                                 onLongClick = {
                                     transaction = it
@@ -294,7 +281,7 @@ fun HomeScreen(
 fun HomeTransactions(
     listOfTransactions: List<Transaction> = listOf(),
     shouldItemBeVisible: Boolean,
-    onClick: () -> Unit = {},
+    onClick: (Transaction) -> Unit = {},
     onLongClick: (Transaction) -> Unit = {},
 ) {
     Column(
@@ -308,7 +295,7 @@ fun HomeTransactions(
             TransactionComponent(
                 transaction = transaction,
                 shouldItemBeVisible = shouldItemBeVisible,
-                onClick = { onClick() },
+                onClick = { onClick(it) },
                 onLongClick = { onLongClick(it) },
             )
         }
@@ -353,12 +340,7 @@ fun HomeBody(
         },
     )
 
-    // Horizontal divider
-    Divider(
-        color = colorResource(id = R.color.color_300),
-        thickness = 1.dp,
-        modifier = Modifier.padding(8.dp),
-    )
+    DividerComponent()
 
     RowComponent(
         leftSideText = stringResource(id = R.string.my_store_net_revenue),
