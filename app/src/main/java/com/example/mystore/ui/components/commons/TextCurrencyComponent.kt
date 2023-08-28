@@ -34,6 +34,7 @@ internal fun TextCurrencyComponent(
                 Type.CURRENCY_DEBIT_ONLY -> R.color.color_red_A1000
                 Type.STRING -> color
                 Type.CURRENCY_TRANSACTION_DETAIL -> R.color.color_900
+                Type.QUANTITY_TRANSACTION_DETAIL -> R.color.color_900
                 Type.DATE -> color
                 else -> setTextColor(value.toDouble())
             },

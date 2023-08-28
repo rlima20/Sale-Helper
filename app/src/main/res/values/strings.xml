@@ -50,4 +50,5 @@
     <string name="my_store_successfull_transaction_removed">Transação excluída com sucesso</string>
     <string name="my_store_registry_removal">Exclusão de registro</string>
     <string name="my_store_removal_confirmation">Deseja realmente excluir essa transação?</string>
+    <string name="my_store_type">Tipo de transação</string>
 </resources>

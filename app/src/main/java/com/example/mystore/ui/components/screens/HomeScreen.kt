@@ -90,6 +90,7 @@ fun HomeScreen(
                 content = {
                     TransactionDetailsComponent(
                         transaction = transaction,
+                        shouldItemBeVisible = shouldItemBeVisible,
                         onCloseAlertDialogTransactionDetail = {
                             homeViewModel.setShowAlertDialogTransactionDetail(false)
                         },

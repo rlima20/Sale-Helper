@@ -40,8 +40,9 @@ fun setUnit(
     Type.PURCHASE_CURRENCY -> value.toDouble().toCurrency(shouldItemBeVisible)
     Type.QUANTITY -> value.toInt().toUnity(shouldItemBeVisible)
     Type.QUANTITY_OOS -> value.toInt().toUnityOutOfStock(shouldItemBeVisible)
-    Type.STRING -> value
+    Type.STRING -> value.toDouble().toCurrency(shouldItemBeVisible)
     Type.CURRENCY_TRANSACTION_DETAIL -> value.toDouble().toCurrency(shouldItemBeVisible)
+    Type.QUANTITY_TRANSACTION_DETAIL -> value.toInt().toUnity(shouldItemBeVisible)
     Type.DATE -> value
 }
 

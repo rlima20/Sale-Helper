@@ -61,7 +61,7 @@ fun Body(
             modifier = Modifier
                 .padding(bottom = 8.dp)
                 .fillMaxWidth(),
-            label = "Produto",
+            label = stringResource(R.string.my_store_product_2),
             items = listOf(transaction.product.title),
             textFieldSize = Size.Zero,
             selectedText = transaction.product.title,
@@ -78,7 +78,7 @@ fun Body(
             modifier = Modifier
                 .padding(bottom = 8.dp)
                 .fillMaxWidth(),
-            label = "Tipo de transação",
+            label = stringResource(R.string.my_store_type),
             items = listOf(transaction.transactionType.toString()),
             textFieldSize = Size.Zero,
             selectedText = transaction.transactionType.toString(),
@@ -130,7 +130,7 @@ fun Body(
                 TextCurrencyComponent(
                     value = transaction.quantity.toString(),
                     shouldItemBeVisible = shouldItemBeVisible,
-                    type = Type.STRING,
+                    type = Type.QUANTITY_TRANSACTION_DETAIL,
                     color = R.color.color_500,
                     paddings = Pair(0.dp, 0.dp),
                 )
@@ -142,7 +142,7 @@ fun Body(
 
         // Total Amount
         RowComponent(
-            leftSideText = stringResource(id = R.string.my_store_amount),
+            leftSideText = stringResource(id = R.string.my_store_total),
             rightSide = {
                 TextCurrencyComponent(
                     value = transaction.transactionAmount.toString(),
