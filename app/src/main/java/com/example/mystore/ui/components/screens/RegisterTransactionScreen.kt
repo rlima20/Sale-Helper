@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -68,7 +69,7 @@ fun RegisterTransactionScreen(
     val maxQuantity by registerTransactionViewModel.maxQuantity.collectAsState()
     val total by registerTransactionViewModel.totalValue.collectAsState()
     val transaction by registerTransactionViewModel.transactionValue.collectAsState()
-    val showAlertDialog by registerTransactionViewModel.showAlertDialog.collectAsState()
+    val showAlertDialog by registerTransactionViewModel.showAlertDialogOnRegisterTransaction.collectAsState()
     val showToast by registerTransactionViewModel.showToast.collectAsState()
 
     Column {
@@ -92,7 +93,7 @@ fun RegisterTransactionScreen(
                                 showAlertDialog = showAlertDialog,
                                 onShowAlertDialog = {
                                     registerTransactionViewModel
-                                        .setShowAlertDialog(it)
+                                        .setShowAlertDialogOnRegisterTransaction(it)
                                 },
                                 showToast = showToast,
                                 onShowToast = {
@@ -138,6 +139,7 @@ private fun RegisterTransactionBody(
 
         if (showAlertDialog) {
             AlertDialogComponent(
+                size = null,
                 title = stringResource(R.string.my_store_confirmation_transaction),
                 content = {
                     Text(
@@ -145,34 +147,48 @@ private fun RegisterTransactionBody(
                         color = colorResource(id = R.color.color_700),
                     )
                 },
-                onConfirmButtonClicked = {
-                    onShowToast(true)
+                confirmButton = {
+                    Button(onClick = {
+                        onShowToast(true)
 
-                    registerTransactionViewModel.saveTransaction(
-                        registerTransactionViewModel
-                            .transactionValue.value,
-                    )
+                        registerTransactionViewModel.saveTransaction(
+                            registerTransactionViewModel
+                                .transactionValue.value,
+                        )
 
-                    registerTransactionViewModel.incrementListOfTransactions(
-                        registerTransactionViewModel
-                            .transactionValue.value,
-                    )
+                        registerTransactionViewModel.incrementListOfTransactions(
+                            registerTransactionViewModel
+                                .transactionValue.value,
+                        )
 
-                    registerTransactionViewModel.updateProductQuantity(
-                        registerTransactionViewModel.transactionValue.value.product,
-                        quantity,
-                        registerTransactionViewModel.transactionValue.value,
-                    )
+                        registerTransactionViewModel.updateProductQuantity(
+                            registerTransactionViewModel.transactionValue.value.product,
+                            quantity,
+                            registerTransactionViewModel.transactionValue.value,
+                        )
 
-                    clearStates(
-                        registerTransactionViewModel = registerTransactionViewModel,
-                        onChangeSelectedTextTransaction = { selectedTextTransaction = it },
-                        onChangeSelectedTextProduct = { selectedTextProduct = it },
-                    )
-                    onShowAlertDialog(false)
+                        clearStates(
+                            registerTransactionViewModel = registerTransactionViewModel,
+                            onChangeSelectedTextTransaction = { selectedTextTransaction = it },
+                            onChangeSelectedTextProduct = { selectedTextProduct = it },
+                        )
+                        onShowAlertDialog(false)
+                    }) {
+                        Text(
+                            text = stringResource(R.string.my_store_ok),
+                            color = colorResource(id = R.color.color_50),
+                        )
+                    }
                 },
-                onCancelButtonClicked = {
-                    onShowAlertDialog(false)
+                dismissButton = {
+                    Button(onClick = {
+                        onShowAlertDialog(false)
+                    }) {
+                        Text(
+                            text = stringResource(R.string.my_store_cancel),
+                            color = colorResource(id = R.color.color_50),
+                        )
+                    }
                 },
                 onDismissRequest = {
                     onShowAlertDialog(false)

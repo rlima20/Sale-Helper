@@ -2,11 +2,11 @@ package com.example.mystore.ui.components.screens
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.Button
 import androidx.compose.material.Divider
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -60,11 +60,14 @@ fun HomeScreen(
     homeViewModel.getResume()
     homeViewModel.getListOfSales()
     homeViewModel.getListOfPurchases()
+    homeViewModel.getShowAlertDialogHomeScreen()
 
     val resume by homeViewModel.resume.collectAsState()
     val listOfProducts by homeViewModel.listOfProducts.collectAsState()
     val listOfTransaction by homeViewModel.transactions.collectAsState()
-    val showAlertDialog by homeViewModel.showAlertDialog.collectAsState()
+    val showAlertDialogHomeScreen by homeViewModel.showAlertDialogHomeScreen.collectAsState()
+    val showAlertDialogTransactionDetail by homeViewModel.showAlertDialogTransactionDetail
+        .collectAsState()
     val showToast by homeViewModel.showToast.collectAsState()
 
     var transaction by remember { mutableStateOf(Transaction()) }
@@ -89,18 +92,29 @@ fun HomeScreen(
             .padding(top = 8.dp, bottom = 8.dp)
             .verticalScroll(rememberScrollState()),
     ) {
-        AlertDialogComponent(
-            size = Size(
-                width = LocalConfiguration.current.screenWidthDp.dp.value * 0.85f,
-                height = 600f,
-            ),
-            content = { TransactionDetailsComponent(transaction = transactionTest) },
-            onDismissRequest = { },
-            onConfirmButtonClicked = { },
-            onCancelButtonClicked = { },
-        )
+        if (showAlertDialogTransactionDetail) {
+            AlertDialogComponent(
+                size = Size(
+                    width = LocalConfiguration.current.screenWidthDp.dp.value * 0.85f,
+                    height = 600f,
+                ),
+                color = colorResource(id = R.color.color_transaparent),
+                content = { TransactionDetailsComponent(transaction = transactionTest) },
+                dismissButton = {
+                    Button(onClick = {
+                        homeViewModel.setShowAlertDialogTransactionDetail(false)
+                    }) {
+                        Text(
+                            text = "Fechar",
+                            color = colorResource(id = R.color.color_50),
+                        )
+                    }
+                },
+                onDismissRequest = { homeViewModel.setShowAlertDialogTransactionDetail(false) },
+            )
+        }
 
-        if (showAlertDialog) {
+        if (showAlertDialogHomeScreen) {
             AlertDialogComponent(
                 title = stringResource(R.string.my_store_registry_removal),
                 content = {
@@ -109,14 +123,67 @@ fun HomeScreen(
                         color = colorResource(id = R.color.color_700),
                     )
                 },
-                onDismissRequest = { homeViewModel.setShowAlertDialogState(false) },
-                onConfirmButtonClicked = {
-                    homeViewModel.setShowToastState(true)
-                    homeViewModel.deleteTransaction(transaction)
-                    homeViewModel.setShowAlertDialogState(false)
-                    homeViewModel.getTransactions()
+                onDismissRequest = { homeViewModel.setShowAlertDialogHomeScreen(false) },
+                confirmButton = {
+                    Button(onClick = {
+                        homeViewModel.setShowToastState(true)
+                        homeViewModel.deleteTransaction(transaction)
+                        homeViewModel.setShowAlertDialogHomeScreen(false)
+                        homeViewModel.getTransactions()
+                    }) {
+                        Text(
+                            text = stringResource(R.string.my_store_ok),
+                            color = colorResource(id = R.color.color_50),
+                        )
+                    }
                 },
-                onCancelButtonClicked = { homeViewModel.setShowAlertDialogState(false) },
+                dismissButton = {
+                    Button(onClick = {
+                        homeViewModel.setShowAlertDialogHomeScreen(false)
+                    }) {
+                        Text(
+                            text = stringResource(R.string.my_store_cancel),
+                            color = colorResource(id = R.color.color_50),
+                        )
+                    }
+                },
+            )
+        }
+
+        if (showAlertDialogHomeScreen) {
+            AlertDialogComponent(
+                title = stringResource(R.string.my_store_registry_removal),
+                content = {
+                    Text(
+                        text = stringResource(R.string.my_store_removal_confirmation),
+                        color = colorResource(id = R.color.color_700),
+                    )
+                },
+                onDismissRequest = { homeViewModel.setShowAlertDialogHomeScreen(false) },
+                confirmButton = {
+                    Button(onClick = {
+                        homeViewModel.setShowToastState(true)
+                        homeViewModel.deleteTransaction(transaction)
+                        homeViewModel.setShowAlertDialogHomeScreen(false)
+                        homeViewModel.getTransactions()
+                    }) {
+                        // TODO - Fix ok/ confirm
+                        Text(
+                            text = stringResource(R.string.my_store_ok),
+                            color = colorResource(id = R.color.color_50),
+                        )
+                    }
+                },
+                dismissButton = {
+                    Button(onClick = {
+                        homeViewModel.setShowAlertDialogHomeScreen(false)
+                    }) {
+                        Text(
+                            text = stringResource(R.string.my_store_cancel),
+                            color = colorResource(id = R.color.color_50),
+                        )
+                    }
+                },
             )
         }
         ValidateSection(
@@ -159,10 +226,12 @@ fun HomeScreen(
                             HomeTransactions(
                                 listOfTransactions = listOfTransaction,
                                 shouldItemBeVisible = shouldItemBeVisible,
-                                onClick = { },
+                                onClick = {
+                                    homeViewModel.setShowAlertDialogTransactionDetail(true)
+                                },
                                 onLongClick = {
                                     transaction = it
-                                    homeViewModel.setShowAlertDialogState(true)
+                                    homeViewModel.setShowAlertDialogHomeScreen(true)
                                 },
                             )
                         },

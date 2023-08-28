@@ -13,8 +13,13 @@ class HomeViewModel : CommonViewModel() {
     private val _resume: MutableStateFlow<Resume?> = MutableStateFlow(Resume())
     val resume: MutableStateFlow<Resume?> = _resume
 
-    private val _showAlertDialog: MutableStateFlow<Boolean> = MutableStateFlow(false)
-    val showAlertDialog: MutableStateFlow<Boolean> = _showAlertDialog
+    private val _showAlertDialogHomeScreen: MutableStateFlow<Boolean> = MutableStateFlow(false)
+    val showAlertDialogHomeScreen: MutableStateFlow<Boolean> = _showAlertDialogHomeScreen
+
+    private val _showAlertDialogTransactionDetail: MutableStateFlow<Boolean> =
+        MutableStateFlow(false)
+    val showAlertDialogTransactionDetail: MutableStateFlow<Boolean> =
+        _showAlertDialogTransactionDetail
 
     private val _showToast: MutableStateFlow<Boolean> = MutableStateFlow(false)
     val showToast: MutableStateFlow<Boolean> = _showToast
@@ -22,10 +27,12 @@ class HomeViewModel : CommonViewModel() {
     init {
         getResume()
         getListOfProducts()
-        getShowAlertDialogState()
+        getShowAlertDialogHomeScreen()
+        getShowAlertDialogTransactionDetail()
+        getShowToastState()
     }
 
-    fun getShowToastState(): Boolean {
+    private fun getShowToastState(): Boolean {
         return showToast.value
     }
 
@@ -58,12 +65,20 @@ class HomeViewModel : CommonViewModel() {
         _imageRequestState.value = state
     }
 
-    fun getShowAlertDialogState(): Boolean {
-        return showAlertDialog.value
+    fun getShowAlertDialogHomeScreen(): Boolean {
+        return showAlertDialogHomeScreen.value
     }
 
-    fun setShowAlertDialogState(state: Boolean) {
-        _showAlertDialog.value = state
+    fun setShowAlertDialogHomeScreen(state: Boolean) {
+        _showAlertDialogHomeScreen.value = state
+    }
+
+    fun getShowAlertDialogTransactionDetail(): Boolean {
+        return showAlertDialogTransactionDetail.value
+    }
+
+    fun setShowAlertDialogTransactionDetail(state: Boolean) {
+        _showAlertDialogTransactionDetail.value = state
     }
 
     fun getTransactions(): List<Transaction> = transactions.value

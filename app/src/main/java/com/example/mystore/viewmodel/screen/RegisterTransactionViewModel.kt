@@ -27,8 +27,10 @@ class RegisterTransactionViewModel : CommonViewModel() {
     private val _transactionValue: MutableStateFlow<Transaction> = MutableStateFlow(Transaction())
     val transactionValue: MutableStateFlow<Transaction> = _transactionValue
 
-    private val _showAlertDialog: MutableStateFlow<Boolean> = MutableStateFlow(false)
-    val showAlertDialog: MutableStateFlow<Boolean> = _showAlertDialog
+    private val _showAlertDialogOnRegisterTransaction: MutableStateFlow<Boolean> =
+        MutableStateFlow(false)
+    val showAlertDialogOnRegisterTransaction: MutableStateFlow<Boolean> =
+        _showAlertDialogOnRegisterTransaction
 
     private val _showToast: MutableStateFlow<Boolean> = MutableStateFlow(false)
     val showToast: MutableStateFlow<Boolean> = _showToast
@@ -43,7 +45,7 @@ class RegisterTransactionViewModel : CommonViewModel() {
         getScreenWidth()
         getQuantity()
         getMaxQuantity()
-        getShowAlertDialog()
+        getShowAlertDialogOnRegisterTransaction()
         getShowToast()
     }
 
@@ -70,12 +72,12 @@ class RegisterTransactionViewModel : CommonViewModel() {
         maxQuantity.value = _maxQuantity.value
     }
 
-    private fun getShowAlertDialog() {
-        showAlertDialog.value = _showAlertDialog.value
+    private fun getShowAlertDialogOnRegisterTransaction() {
+        showAlertDialogOnRegisterTransaction.value = _showAlertDialogOnRegisterTransaction.value
     }
 
-    fun setShowAlertDialog(show: Boolean) {
-        _showAlertDialog.value = show
+    fun setShowAlertDialogOnRegisterTransaction(show: Boolean) {
+        _showAlertDialogOnRegisterTransaction.value = show
     }
 
     fun getShowToast() {
