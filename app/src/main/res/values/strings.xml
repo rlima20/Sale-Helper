@@ -45,6 +45,7 @@
     <string name="my_store_confirmation_message">Deseja confirmar essa transação?</string>
     <string name="my_store_cancel">Cancelar</string>
     <string name="my_store_ok">Ok</string>
+    <string name="my_store_close">Fechar</string>
     <string name="my_store_successfull_transaction_saved">Transação salva com sucesso</string>
     <string name="my_store_successfull_transaction_removed">Transação excluída com sucesso</string>
     <string name="my_store_registry_removal">Exclusão de registro</string>

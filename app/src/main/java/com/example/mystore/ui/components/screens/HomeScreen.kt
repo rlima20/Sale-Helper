@@ -84,7 +84,7 @@ fun HomeScreen(
             AlertDialogComponent(
                 size = Size(
                     width = LocalConfiguration.current.screenWidthDp.dp.value * 1f,
-                    height = 600f,
+                    height = LocalConfiguration.current.screenHeightDp.dp.value * 0.7f,
                 ),
                 color = colorResource(id = R.color.color_transaparent),
                 content = {

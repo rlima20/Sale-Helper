@@ -33,9 +33,10 @@ fun DropdownComponent(
     textFieldSize: Size,
     label: String,
     modifier: Modifier = Modifier,
-    transactionDetailColors: Pair<Int, Int> = Pair(
+    transactionDetailColors: Triple<Int, Int, Int> = Triple(
         first = R.color.color_50,
         second = R.color.color_900,
+        third = R.color.color_50,
     ),
     onOutLinedTextFieldSize: (size: Size) -> Unit = {},
     onOutLinedTextFieldValueChanged: (String) -> Unit = {},
@@ -82,7 +83,7 @@ fun DropdownComponent(
                 disabledLabelColor = colorResource(id = R.color.color_50),
                 cursorColor = colorResource(id = R.color.color_50),
                 textColor = colorResource(id = R.color.color_50),
-                disabledTextColor = colorResource(id = R.color.color_50),
+                disabledTextColor = colorResource(id = transactionDetailColors.third),
                 placeholderColor = colorResource(id = R.color.color_50),
             ),
             shape = RoundedCornerShape(15.dp),

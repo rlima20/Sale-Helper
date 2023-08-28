@@ -34,7 +34,7 @@ fun TransactionDetailsComponent(
 ) {
     ScreenSectionComponent(
         title = stringResource(id = R.string.my_store_transactions_details),
-        textColor = R.color.color_900,
+        textColor = R.color.color_500,
         backgroundColor = R.color.color_50,
         body = {
             Column(modifier = Modifier.fillMaxSize()) {
@@ -61,11 +61,15 @@ fun Body(
             modifier = Modifier
                 .padding(bottom = 8.dp)
                 .fillMaxWidth(),
-            label = transaction.product.title,
+            label = "Produto",
             items = listOf(transaction.product.title),
             textFieldSize = Size.Zero,
             selectedText = transaction.product.title,
-            transactionDetailColors = Pair(R.color.color_900, R.color.color_50),
+            transactionDetailColors = Triple(
+                R.color.color_500,
+                R.color.color_50,
+                R.color.color_500,
+            ),
         )
 
         // Dropdwon Type
@@ -74,29 +78,16 @@ fun Body(
             modifier = Modifier
                 .padding(bottom = 8.dp)
                 .fillMaxWidth(),
-            label = transaction.transactionType.toString(),
-            items = listOf(transaction.product.title),
+            label = "Tipo de transação",
+            items = listOf(transaction.transactionType.toString()),
             textFieldSize = Size.Zero,
-            selectedText = transaction.product.title,
-            transactionDetailColors = Pair(R.color.color_900, R.color.color_50),
+            selectedText = transaction.transactionType.toString(),
+            transactionDetailColors = Triple(
+                R.color.color_500,
+                R.color.color_50,
+                R.color.color_500,
+            ),
         )
-
-        // Unit value
-        RowComponent(
-            leftSideText = stringResource(id = R.string.my_store_unit_value),
-            rightSide = {
-                TextCurrencyComponent(
-                    value = transaction.unitValue.toString(),
-                    shouldItemBeVisible = shouldItemBeVisible,
-                    type = Type.CURRENCY_TRANSACTION_DETAIL,
-                    color = R.color.color_900,
-                    paddings = Pair(0.dp, 0.dp),
-                )
-            },
-            transactionDetailColors = Pair(R.color.color_900, R.color.color_50),
-        )
-
-        DividerComponent()
 
         // Date
         RowComponent(
@@ -106,11 +97,28 @@ fun Body(
                     value = Date().toShortString(),
                     shouldItemBeVisible = shouldItemBeVisible,
                     type = Type.DATE,
-                    color = R.color.color_900,
+                    color = R.color.color_500,
                     paddings = Pair(0.dp, 0.dp),
                 )
             },
-            transactionDetailColors = Pair(R.color.color_900, R.color.color_50),
+            transactionDetailColors = Pair(R.color.color_500, R.color.color_50),
+        )
+
+        DividerComponent()
+
+        // Unit value
+        RowComponent(
+            leftSideText = stringResource(id = R.string.my_store_unit_value),
+            rightSide = {
+                TextCurrencyComponent(
+                    value = transaction.unitValue.toString(),
+                    shouldItemBeVisible = shouldItemBeVisible,
+                    type = Type.CURRENCY_TRANSACTION_DETAIL,
+                    color = R.color.color_500,
+                    paddings = Pair(0.dp, 0.dp),
+                )
+            },
+            transactionDetailColors = Pair(R.color.color_500, R.color.color_50),
         )
 
         DividerComponent()
@@ -122,12 +130,12 @@ fun Body(
                 TextCurrencyComponent(
                     value = transaction.quantity.toString(),
                     shouldItemBeVisible = shouldItemBeVisible,
-                    type = Type.QUANTITY,
-                    color = R.color.color_900,
+                    type = Type.STRING,
+                    color = R.color.color_500,
                     paddings = Pair(0.dp, 0.dp),
                 )
             },
-            transactionDetailColors = Pair(R.color.color_900, R.color.color_50),
+            transactionDetailColors = Pair(R.color.color_500, R.color.color_50),
         )
 
         DividerComponent()
@@ -140,27 +148,23 @@ fun Body(
                     value = transaction.transactionAmount.toString(),
                     shouldItemBeVisible = shouldItemBeVisible,
                     type = Type.CURRENCY_TRANSACTION_DETAIL,
-                    color = R.color.color_900,
+                    color = R.color.color_500,
                     paddings = Pair(0.dp, 0.dp),
                 )
             },
-            transactionDetailColors = Pair(R.color.color_900, R.color.color_50),
+            transactionDetailColors = Pair(R.color.color_500, R.color.color_50),
         )
 
         DividerComponent()
 
         Button(
-            modifier = Modifier
-                .padding(
-                    top = 32.dp,
-                    end = 16.dp,
-                ),
+            modifier = Modifier.padding(start = 8.dp, end = 16.dp),
             onClick = {
                 onCloseAlertDialogTransactionDetail()
             },
         ) {
             Text(
-                text = "Fechar",
+                text = stringResource(id = R.string.my_store_close),
                 color = colorResource(id = R.color.color_50),
             )
         }
