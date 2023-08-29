@@ -86,8 +86,8 @@ fun ProductItemComponent(
                     fontWeight = MaterialTheme.typography.h5.fontWeight,
                     color = colorResource(setTextColor(product.quantity.toDouble())),
                     text = setUnit(
-                        Type.QUANTITY_OOS,
                         product.quantity.toString(),
+                        Type.QUANTITY_OOS,
                         shouldItemBeVisible,
                     ),
                 )

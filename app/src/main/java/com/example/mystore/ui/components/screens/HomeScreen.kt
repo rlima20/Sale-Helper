@@ -288,7 +288,7 @@ private fun HomeBody(
             TextCurrencyComponent(
                 value = resume.stockValue.toString(),
                 shouldItemBeVisible = shouldItemBeVisible,
-                type = Type.CURRENCY,
+                type = Type.CURRENCY_ONLY,
             )
         },
     )
@@ -299,7 +299,7 @@ private fun HomeBody(
             TextCurrencyComponent(
                 value = resume.grossRevenue.toString(),
                 shouldItemBeVisible = shouldItemBeVisible,
-                type = Type.CURRENCY,
+                type = Type.CURRENCY_ONLY,
             )
         },
     )
@@ -313,7 +313,7 @@ private fun HomeBody(
             TextCurrencyComponent(
                 value = resume.netRevenue.toString(),
                 shouldItemBeVisible = shouldItemBeVisible,
-                type = Type.CURRENCY,
+                type = Type.CURRENCY_ONLY,
                 fontSize = 20.sp,
             )
         },

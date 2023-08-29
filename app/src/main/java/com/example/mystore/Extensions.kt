@@ -73,7 +73,7 @@ fun ImageRequest.getAsyncImagePainter(
     }
 }
 
-// Limit the number of characters in a string
+// Limits the number of characters in a string
 fun String.limitTo(maxLength: Int): String {
     return if (this.length > maxLength) {
         this.substring(0, maxLength - 3) + "..."

@@ -63,11 +63,7 @@ fun ConsolidatedPositionScreen(
                 emptySectionTitle = stringResource(R.string.my_store_no_sales_done),
                 emptySectionPainter = painterResource(id = R.drawable.my_store_plus_icon),
                 onEmptyStateImageClicked = {
-                    onEmptyStateImageClicked(
-                        validateSection(
-                            Section.TRANSACTIONS,
-                        ),
-                    )
+                    onEmptyStateImageClicked(validateSection(Section.TRANSACTIONS))
                 },
             ),
         )
@@ -80,7 +76,7 @@ fun ConsolidatedPositionScreen(
                     title = stringResource(id = R.string.my_store_purchases),
                     body = {
                         ConsolidatedPosBody(
-                            transactions =  homeViewModel.listOfPurchases.value,
+                            transactions = homeViewModel.listOfPurchases.value,
                             shouldItemBeVisible = shouldItemBeVisible,
                         )
                     },
@@ -156,7 +152,7 @@ fun ConsolidatedPosBody(
                             TextCurrencyComponent(
                                 value = transaction.unitValue.toString(),
                                 shouldItemBeVisible = shouldItemBeVisible,
-                                type = Type.CURRENCY,
+                                type = Type.CURRENCY_ONLY,
                             )
                         },
                     )
@@ -166,7 +162,7 @@ fun ConsolidatedPosBody(
                             TextCurrencyComponent(
                                 value = transaction.transactionAmount.toString(),
                                 shouldItemBeVisible = shouldItemBeVisible,
-                                type = Type.CURRENCY,
+                                type = Type.CURRENCY_ONLY,
                             )
                         },
                     )

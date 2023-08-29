@@ -29,25 +29,16 @@ data class SectionEmptyStateInfo(
     val onEmptyStateImageClicked: () -> Unit = {},
 )
 
-// Todo - Essa função está ficando muito grande, quebrar em funções menores e refatorar
-// Todo - Transaformar uma string em um Double é uma má prática, refatorar
 @Composable
-fun setUnit(
-    type: Type,
-    value: String,
-    shouldItemBeVisible: Boolean,
-) = when (type) {
-    Type.CURRENCY -> value.toDouble().toCurrency(shouldItemBeVisible)
-    Type.CURRENCY_DEBIT_ONLY -> value.toDouble().toCurrency(shouldItemBeVisible)
-    Type.PURCHASE_CURRENCY -> value.toDouble().toCurrency(shouldItemBeVisible)
-    Type.QUANTITY -> value.toInt().toUnity(shouldItemBeVisible)
-    Type.QUANTITY_OOS -> value.toInt().toUnityOutOfStock(shouldItemBeVisible)
-    Type.STRING -> value.toDouble().toCurrency(shouldItemBeVisible)
-    Type.STRING_ONLY -> value
-    Type.CURRENCY_TRANSACTION_DETAIL -> value.toDouble().toCurrency(shouldItemBeVisible)
-    Type.QUANTITY_TRANSACTION_DETAIL -> value.toInt().toUnity(shouldItemBeVisible)
-    Type.DATE -> value
-}
+fun setUnit(text: String, type: Type, shouldItemBeVisible: Boolean) =
+    when (type) {
+        Type.QUANTITY -> text.toInt().toUnity(shouldItemBeVisible)
+        Type.QUANTITY_OOS -> text.toInt().toUnityOutOfStock(shouldItemBeVisible)
+        Type.QUANTITY_TRANSACTION_DETAIL -> text.toInt().toUnity(shouldItemBeVisible)
+        Type.STRING_ONLY -> text
+        Type.DATE -> text
+        else -> text.toDouble().toCurrency(shouldItemBeVisible)
+    }
 
 fun validateSection(section: Section): String {
     return when (section) {
@@ -113,7 +104,7 @@ fun TotalComponent(
                 TextCurrencyComponent(
                     value = purchasesValue.toString(),
                     shouldItemBeVisible = shouldItemBeVisible,
-                    type = Type.CURRENCY,
+                    type = Type.CURRENCY_ONLY,
                 )
             },
         )
@@ -123,7 +114,7 @@ fun TotalComponent(
                 TextCurrencyComponent(
                     value = salesValue.toString(),
                     shouldItemBeVisible = shouldItemBeVisible,
-                    type = Type.CURRENCY,
+                    type = Type.CURRENCY_ONLY,
                 )
             },
         )
@@ -133,7 +124,7 @@ fun TotalComponent(
                 TextCurrencyComponent(
                     value = (salesValue - purchasesValue).toString(),
                     shouldItemBeVisible = shouldItemBeVisible,
-                    type = Type.PURCHASE_CURRENCY,
+                    type = Type.CURRENCY_PURCHASE,
                 )
             },
         )

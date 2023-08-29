@@ -16,12 +16,11 @@ import com.example.mystore.Type
 import com.example.mystore.limitTo
 import com.example.mystore.setTextColor
 
-// Todo - Refatorar essa função também
 @Composable
 internal fun TextCurrencyComponent(
     value: String,
-    shouldItemBeVisible: Boolean,
     type: Type,
+    shouldItemBeVisible: Boolean,
     fontSize: TextUnit = 18.sp,
     color: Int = R.color.color_50,
     paddings: Pair<Dp, Dp> = Pair(8.dp, 8.dp),
@@ -30,19 +29,21 @@ internal fun TextCurrencyComponent(
         modifier = Modifier.padding(start = paddings.first, end = paddings.second),
         fontSize = fontSize,
         fontWeight = MaterialTheme.typography.h5.fontWeight,
-        color = colorResource(
-            when (type) {
-                Type.CURRENCY_DEBIT_ONLY -> R.color.color_red_A1000
-                Type.STRING -> color
-                Type.CURRENCY_TRANSACTION_DETAIL -> R.color.color_900
-                Type.QUANTITY_TRANSACTION_DETAIL -> R.color.color_900
-                Type.DATE -> color
-                Type.STRING_ONLY -> color
-                else -> setTextColor(value.toDouble())
-            },
-        ),
-        text = setUnit(type, value, shouldItemBeVisible).limitTo(14),
+        color = colorResource(setColorBasedType(type, color, value)),
+        text = setUnit(value, type, shouldItemBeVisible).limitTo(14),
         overflow = TextOverflow.Ellipsis,
         maxLines = 1,
     )
 }
+
+@Composable
+private fun setColorBasedType(type: Type, color: Int, value: String) =
+    when (type) {
+        Type.CURRENCY_DEBIT_ONLY -> R.color.color_red_A1000
+        Type.STRING -> color
+        Type.CURRENCY_TRANSACTION_DETAIL -> R.color.color_900
+        Type.QUANTITY_TRANSACTION_DETAIL -> R.color.color_900
+        Type.DATE -> color
+        Type.STRING_ONLY -> color
+        else -> setTextColor(value.toDouble())
+    }
