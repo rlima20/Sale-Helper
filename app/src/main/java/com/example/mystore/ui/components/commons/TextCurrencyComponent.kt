@@ -16,6 +16,7 @@ import com.example.mystore.Type
 import com.example.mystore.limitTo
 import com.example.mystore.setTextColor
 
+// Todo - Refatorar essa função também
 @Composable
 internal fun TextCurrencyComponent(
     value: String,
@@ -36,6 +37,7 @@ internal fun TextCurrencyComponent(
                 Type.CURRENCY_TRANSACTION_DETAIL -> R.color.color_900
                 Type.QUANTITY_TRANSACTION_DETAIL -> R.color.color_900
                 Type.DATE -> color
+                Type.STRING_ONLY -> color
                 else -> setTextColor(value.toDouble())
             },
         ),

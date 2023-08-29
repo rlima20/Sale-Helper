@@ -22,7 +22,7 @@ import com.example.mystore.Section
 import com.example.mystore.TransactionType
 import com.example.mystore.Type
 import com.example.mystore.model.Transaction
-import com.example.mystore.toShortString
+import com.example.mystore.toShortDateString
 import com.example.mystore.ui.components.commons.RowComponent
 import com.example.mystore.ui.components.commons.ScreenSectionComponent
 import com.example.mystore.ui.components.commons.SectionEmptyStateInfo
@@ -44,14 +44,16 @@ fun ConsolidatedPositionScreen(
             .padding(bottom = 1.dp)
             .verticalScroll(rememberScrollState()),
     ) {
+        // Sale Section
         ValidateSection(
+            screen = Screens.CONSOLIDATED_POSITION,
             sectionInfo = SectionInfo {
                 ScreenSectionComponent(
-                    title = "Vendas",
+                    title = stringResource(id = R.string.my_store_sales),
                     body = {
                         ConsolidatedPosBody(
-                            homeViewModel.listOfSales.value,
-                            shouldItemBeVisible,
+                            transactions = homeViewModel.listOfSales.value,
+                            shouldItemBeVisible = shouldItemBeVisible,
                         )
                     },
                 )
@@ -68,16 +70,18 @@ fun ConsolidatedPositionScreen(
                     )
                 },
             ),
-            screen = Screens.CONSOLIDATED_POSITION,
         )
+
+        // Purchase Section
         ValidateSection(
+            screen = Screens.CONSOLIDATED_POSITION,
             sectionInfo = SectionInfo {
                 ScreenSectionComponent(
-                    title = "Compras",
+                    title = stringResource(id = R.string.my_store_purchases),
                     body = {
                         ConsolidatedPosBody(
-                            homeViewModel.listOfPurchases.value,
-                            shouldItemBeVisible,
+                            transactions =  homeViewModel.listOfPurchases.value,
+                            shouldItemBeVisible = shouldItemBeVisible,
                         )
                     },
                 )
@@ -94,7 +98,6 @@ fun ConsolidatedPositionScreen(
                     )
                 },
             ),
-            screen = Screens.CONSOLIDATED_POSITION,
         )
         onShowBottomBarExpanded(true)
     }
@@ -123,7 +126,7 @@ fun ConsolidatedPosBody(
                             TextCurrencyComponent(
                                 value = transaction.product.title,
                                 shouldItemBeVisible = shouldItemBeVisible,
-                                type = Type.STRING,
+                                type = Type.STRING_ONLY,
                             )
                         },
                     )
@@ -131,9 +134,9 @@ fun ConsolidatedPosBody(
                         leftSideText = stringResource(id = R.string.my_store_date),
                         rightSide = {
                             TextCurrencyComponent(
-                                value = transaction.transactionDate.toShortString(),
+                                value = transaction.transactionDate.toShortDateString(),
                                 shouldItemBeVisible = shouldItemBeVisible,
-                                type = Type.STRING,
+                                type = Type.DATE,
                             )
                         },
                     )

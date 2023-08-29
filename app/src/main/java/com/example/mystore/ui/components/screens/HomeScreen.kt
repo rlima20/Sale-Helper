@@ -11,9 +11,6 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.platform.LocalConfiguration
@@ -67,9 +64,7 @@ fun HomeScreen(
     val showAlertDialogTransactionDetail by homeViewModel.showAlertDialogTransactionDetail
         .collectAsState()
     val showToast by homeViewModel.showToast.collectAsState()
-
-    // Todo - Passar a atualização dessa variável para o ViewModel
-    var transaction by remember { mutableStateOf(Transaction()) }
+    val transaction by homeViewModel.transaction.collectAsState()
 
     if (showToast) {
         ToastComponent(stringResource(R.string.my_store_successfull_transaction_removed))
@@ -80,6 +75,7 @@ fun HomeScreen(
             .padding(top = 8.dp, bottom = 8.dp)
             .verticalScroll(rememberScrollState()),
     ) {
+        // AlertDialog with transaction details
         if (showAlertDialogTransactionDetail) {
             AlertDialogComponent(
                 size = Size(
@@ -100,6 +96,7 @@ fun HomeScreen(
             )
         }
 
+        // AlertDialog with delete confirmation
         if (showAlertDialogHomeScreen) {
             AlertDialogComponent(
                 title = stringResource(R.string.my_store_registry_removal),
@@ -136,42 +133,7 @@ fun HomeScreen(
             )
         }
 
-        if (showAlertDialogHomeScreen) {
-            AlertDialogComponent(
-                title = stringResource(R.string.my_store_registry_removal),
-                content = {
-                    Text(
-                        text = stringResource(R.string.my_store_removal_confirmation),
-                        color = colorResource(id = R.color.color_700),
-                    )
-                },
-                onDismissRequest = { homeViewModel.setShowAlertDialogHomeScreen(false) },
-                confirmButton = {
-                    Button(onClick = {
-                        homeViewModel.setShowToastState(true)
-                        homeViewModel.deleteTransaction(transaction)
-                        homeViewModel.setShowAlertDialogHomeScreen(false)
-                        homeViewModel.getTransactions()
-                    }) {
-                        // TODO - Fix ok/ confirm
-                        Text(
-                            text = stringResource(R.string.my_store_ok),
-                            color = colorResource(id = R.color.color_50),
-                        )
-                    }
-                },
-                dismissButton = {
-                    Button(onClick = {
-                        homeViewModel.setShowAlertDialogHomeScreen(false)
-                    }) {
-                        Text(
-                            text = stringResource(R.string.my_store_cancel),
-                            color = colorResource(id = R.color.color_50),
-                        )
-                    }
-                },
-            )
-        }
+        // Total geral Section
         ValidateSection(
             sectionInfo = SectionInfo(
                 section = {
@@ -215,10 +177,10 @@ fun HomeScreen(
                                 shouldItemBeVisible = shouldItemBeVisible,
                                 onClick = {
                                     homeViewModel.setShowAlertDialogTransactionDetail(true)
-                                    transaction = it
+                                    homeViewModel.setTransaction(it)
                                 },
                                 onLongClick = {
-                                    transaction = it
+                                    homeViewModel.setTransaction(it)
                                     homeViewModel.setShowAlertDialogHomeScreen(true)
                                 },
                             )
@@ -241,6 +203,7 @@ fun HomeScreen(
             screen = Screens.HOME,
         )
 
+        // Products Section
         ValidateSection(
             sectionInfo = SectionInfo {
                 ScreenSectionComponent(
@@ -279,7 +242,7 @@ fun HomeScreen(
 }
 
 @Composable
-fun HomeTransactions(
+private fun HomeTransactions(
     listOfTransactions: List<Transaction> = listOf(),
     shouldItemBeVisible: Boolean,
     onClick: (Transaction) -> Unit = {},
@@ -304,7 +267,7 @@ fun HomeTransactions(
 }
 
 @Composable
-fun HomeBody(
+private fun HomeBody(
     resume: Resume,
     shouldItemBeVisible: Boolean,
 ) {

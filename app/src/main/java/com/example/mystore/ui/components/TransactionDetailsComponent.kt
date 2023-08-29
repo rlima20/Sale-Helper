@@ -18,7 +18,7 @@ import com.example.mystore.TransactionType
 import com.example.mystore.Type
 import com.example.mystore.model.Product
 import com.example.mystore.model.Transaction
-import com.example.mystore.toShortString
+import com.example.mystore.toShortDateString
 import com.example.mystore.ui.components.commons.DividerComponent
 import com.example.mystore.ui.components.commons.DropdownComponent
 import com.example.mystore.ui.components.commons.RowComponent
@@ -28,17 +28,18 @@ import java.util.Date
 
 @Composable
 fun TransactionDetailsComponent(
-    transaction: Transaction,
+    transaction: Transaction = Transaction(),
     shouldItemBeVisible: Boolean = true,
     onCloseAlertDialogTransactionDetail: () -> Unit = {},
 ) {
+    // Transaction details Section
     ScreenSectionComponent(
         title = stringResource(id = R.string.my_store_transactions_details),
         textColor = R.color.color_500,
         backgroundColor = R.color.color_50,
         body = {
             Column(modifier = Modifier.fillMaxSize()) {
-                Body(
+                TransactionDetailsBody(
                     transaction = transaction,
                     shouldItemBeVisible = shouldItemBeVisible,
                     onCloseAlertDialogTransactionDetail = onCloseAlertDialogTransactionDetail,
@@ -49,18 +50,16 @@ fun TransactionDetailsComponent(
 }
 
 @Composable
-fun Body(
+private fun TransactionDetailsBody(
     transaction: Transaction,
     shouldItemBeVisible: Boolean,
-    onCloseAlertDialogTransactionDetail: () -> Unit = {},
+    onCloseAlertDialogTransactionDetail: () -> Unit,
 ) {
     Column {
         // Dropdown Produto
         DropdownComponent(
             isExpanded = false,
-            modifier = Modifier
-                .padding(bottom = 8.dp)
-                .fillMaxWidth(),
+            modifier = Modifier.padding(bottom = 8.dp).fillMaxWidth(),
             label = stringResource(R.string.my_store_product_2),
             items = listOf(transaction.product.title),
             textFieldSize = Size.Zero,
@@ -75,9 +74,7 @@ fun Body(
         // Dropdwon Type
         DropdownComponent(
             isExpanded = false,
-            modifier = Modifier
-                .padding(bottom = 8.dp)
-                .fillMaxWidth(),
+            modifier = Modifier.padding(bottom = 8.dp).fillMaxWidth(),
             label = stringResource(R.string.my_store_type),
             items = listOf(transaction.transactionType.toString()),
             textFieldSize = Size.Zero,
@@ -92,16 +89,16 @@ fun Body(
         // Date
         RowComponent(
             leftSideText = stringResource(id = R.string.my_store_date),
+            transactionDetailColors = Pair(R.color.color_500, R.color.color_50),
             rightSide = {
                 TextCurrencyComponent(
-                    value = Date().toShortString(),
+                    value = Date().toShortDateString(),
                     shouldItemBeVisible = shouldItemBeVisible,
                     type = Type.DATE,
                     color = R.color.color_500,
                     paddings = Pair(0.dp, 0.dp),
                 )
             },
-            transactionDetailColors = Pair(R.color.color_500, R.color.color_50),
         )
 
         DividerComponent()
@@ -109,6 +106,7 @@ fun Body(
         // Unit value
         RowComponent(
             leftSideText = stringResource(id = R.string.my_store_unit_value),
+            transactionDetailColors = Pair(R.color.color_500, R.color.color_50),
             rightSide = {
                 TextCurrencyComponent(
                     value = transaction.unitValue.toString(),
@@ -118,7 +116,6 @@ fun Body(
                     paddings = Pair(0.dp, 0.dp),
                 )
             },
-            transactionDetailColors = Pair(R.color.color_500, R.color.color_50),
         )
 
         DividerComponent()
@@ -126,6 +123,7 @@ fun Body(
         // Quantity
         RowComponent(
             leftSideText = stringResource(id = R.string.my_store_quantity),
+            transactionDetailColors = Pair(R.color.color_500, R.color.color_50),
             rightSide = {
                 TextCurrencyComponent(
                     value = transaction.quantity.toString(),
@@ -135,7 +133,6 @@ fun Body(
                     paddings = Pair(0.dp, 0.dp),
                 )
             },
-            transactionDetailColors = Pair(R.color.color_500, R.color.color_50),
         )
 
         DividerComponent()
@@ -143,6 +140,7 @@ fun Body(
         // Total Amount
         RowComponent(
             leftSideText = stringResource(id = R.string.my_store_total),
+            transactionDetailColors = Pair(R.color.color_500, R.color.color_50),
             rightSide = {
                 TextCurrencyComponent(
                     value = transaction.transactionAmount.toString(),
@@ -152,7 +150,6 @@ fun Body(
                     paddings = Pair(0.dp, 0.dp),
                 )
             },
-            transactionDetailColors = Pair(R.color.color_500, R.color.color_50),
         )
 
         DividerComponent()
