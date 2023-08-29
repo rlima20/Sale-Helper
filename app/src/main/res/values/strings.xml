@@ -24,6 +24,7 @@
     <string name="my_store_total">Total: </string>
     <string name="my_store_overall_total">Total geral</string>
     <string name="my_store_transactions">Transações</string>
+    <string name="my_store_transactions_details">Detalhes da transação</string>
     <string name="my_store_debits">Débitos: </string>
     <string name="my_store_gross_revenue">Receita bruta: </string>
     <string name="my_store_unit_value">Valor unitário: </string>
@@ -44,5 +45,10 @@
     <string name="my_store_confirmation_message">Deseja confirmar essa transação?</string>
     <string name="my_store_cancel">Cancelar</string>
     <string name="my_store_ok">Ok</string>
+    <string name="my_store_close">Fechar</string>
     <string name="my_store_successfull_transaction_saved">Transação salva com sucesso</string>
+    <string name="my_store_successfull_transaction_removed">Transação excluída com sucesso</string>
+    <string name="my_store_registry_removal">Exclusão de registro</string>
+    <string name="my_store_removal_confirmation">Deseja realmente excluir essa transação?</string>
+    <string name="my_store_type">Tipo de transação</string>
 </resources>

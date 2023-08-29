@@ -20,6 +20,8 @@ import com.example.mystore.R
 @Composable
 fun ScreenSectionComponent(
     title: String,
+    textColor: Int = R.color.color_50,
+    backgroundColor: Int = R.color.color_900,
     body: @Composable () -> Unit,
 ) {
     Column(
@@ -35,7 +37,7 @@ fun ScreenSectionComponent(
         ) {
             Box(
                 modifier = Modifier
-                    .background(colorResource(id = R.color.color_900)),
+                    .background(colorResource(backgroundColor)),
             ) {
                 Column(
                     modifier = Modifier.padding(8.dp),
@@ -50,7 +52,7 @@ fun ScreenSectionComponent(
                             ),
                         fontWeight = FontWeight.ExtraBold,
                         fontSize = 18.sp,
-                        color = colorResource(id = R.color.color_50),
+                        color = colorResource(textColor),
                         text = title,
                     )
                     body()

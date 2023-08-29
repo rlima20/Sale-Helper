@@ -8,6 +8,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.material.Button
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -18,6 +20,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -66,7 +69,7 @@ fun RegisterTransactionScreen(
     val maxQuantity by registerTransactionViewModel.maxQuantity.collectAsState()
     val total by registerTransactionViewModel.totalValue.collectAsState()
     val transaction by registerTransactionViewModel.transactionValue.collectAsState()
-    val showAlertDialog by registerTransactionViewModel.showAlertDialog.collectAsState()
+    val showAlertDialog by registerTransactionViewModel.showAlertDialogOnRegisterTransaction.collectAsState()
     val showToast by registerTransactionViewModel.showToast.collectAsState()
 
     Column {
@@ -90,7 +93,7 @@ fun RegisterTransactionScreen(
                                 showAlertDialog = showAlertDialog,
                                 onShowAlertDialog = {
                                     registerTransactionViewModel
-                                        .setShowAlertDialog(it)
+                                        .setShowAlertDialogOnRegisterTransaction(it)
                                 },
                                 showToast = showToast,
                                 onShowToast = {
@@ -123,7 +126,7 @@ private fun RegisterTransactionBody(
     onShowToast: (Boolean) -> Unit = {},
 ) {
     if (showToast) {
-        ToastComponent()
+        ToastComponent(stringResource(R.string.my_store_successfull_transaction_saved))
     }
     Column {
         var selectedTextTransaction: String by remember { mutableStateOf("") }
@@ -136,36 +139,56 @@ private fun RegisterTransactionBody(
 
         if (showAlertDialog) {
             AlertDialogComponent(
+                size = null,
                 title = stringResource(R.string.my_store_confirmation_transaction),
-                text = stringResource(R.string.my_store_confirmation_message),
-                onConfirmButtonClicked = {
-                    onShowToast(true)
-
-                    registerTransactionViewModel.saveTransaction(
-                        registerTransactionViewModel
-                            .transactionValue.value,
+                content = {
+                    Text(
+                        text = stringResource(R.string.my_store_confirmation_message),
+                        color = colorResource(id = R.color.color_700),
                     )
-
-                    registerTransactionViewModel.incrementListOfTransactions(
-                        registerTransactionViewModel
-                            .transactionValue.value,
-                    )
-
-                    registerTransactionViewModel.updateProductQuantity(
-                        registerTransactionViewModel.transactionValue.value.product,
-                        quantity,
-                        registerTransactionViewModel.transactionValue.value,
-                    )
-
-                    clearStates(
-                        registerTransactionViewModel = registerTransactionViewModel,
-                        onChangeSelectedTextTransaction = { selectedTextTransaction = it },
-                        onChangeSelectedTextProduct = { selectedTextProduct = it },
-                    )
-                    onShowAlertDialog(false)
                 },
-                onCancelButtonClicked = {
-                    onShowAlertDialog(false)
+                confirmButton = {
+                    Button(onClick = {
+                        onShowToast(true)
+
+                        registerTransactionViewModel.saveTransaction(
+                            registerTransactionViewModel
+                                .transactionValue.value,
+                        )
+
+                        registerTransactionViewModel.incrementListOfTransactions(
+                            registerTransactionViewModel
+                                .transactionValue.value,
+                        )
+
+                        registerTransactionViewModel.updateProductQuantity(
+                            registerTransactionViewModel.transactionValue.value.product,
+                            quantity,
+                            registerTransactionViewModel.transactionValue.value,
+                        )
+
+                        clearStates(
+                            registerTransactionViewModel = registerTransactionViewModel,
+                            onChangeSelectedTextTransaction = { selectedTextTransaction = it },
+                            onChangeSelectedTextProduct = { selectedTextProduct = it },
+                        )
+                        onShowAlertDialog(false)
+                    }) {
+                        Text(
+                            text = stringResource(R.string.my_store_ok),
+                            color = colorResource(id = R.color.color_50),
+                        )
+                    }
+                },
+                dismissButton = {
+                    Button(onClick = {
+                        onShowAlertDialog(false)
+                    }) {
+                        Text(
+                            text = stringResource(R.string.my_store_cancel),
+                            color = colorResource(id = R.color.color_50),
+                        )
+                    }
                 },
                 onDismissRequest = {
                     onShowAlertDialog(false)

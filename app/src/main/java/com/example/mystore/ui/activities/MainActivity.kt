@@ -20,9 +20,9 @@ import androidx.navigation.compose.rememberNavController
 import com.example.mystore.AppApplication
 import com.example.mystore.R
 import com.example.mystore.navigateSingleTopTo
-import com.example.mystore.ui.components.commons.TotalComponent
 import com.example.mystore.ui.components.commons.BottomBarComponent
 import com.example.mystore.ui.components.commons.TopBarComponent
+import com.example.mystore.ui.components.commons.TotalComponent
 import com.example.mystore.ui.navigation.ConsolidatedPositionScreen
 import com.example.mystore.ui.navigation.HomeScreen
 import com.example.mystore.ui.navigation.MyStoreDestinationInterface

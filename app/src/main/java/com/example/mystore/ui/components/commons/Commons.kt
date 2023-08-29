@@ -29,6 +29,8 @@ data class SectionEmptyStateInfo(
     val onEmptyStateImageClicked: () -> Unit = {},
 )
 
+// Todo - Essa função está ficando muito grande, quebrar em funções menores e refatorar
+// Todo - Transaformar uma string em um Double é uma má prática, refatorar
 @Composable
 fun setUnit(
     type: Type,
@@ -40,7 +42,10 @@ fun setUnit(
     Type.PURCHASE_CURRENCY -> value.toDouble().toCurrency(shouldItemBeVisible)
     Type.QUANTITY -> value.toInt().toUnity(shouldItemBeVisible)
     Type.QUANTITY_OOS -> value.toInt().toUnityOutOfStock(shouldItemBeVisible)
-    Type.STRING -> value
+    Type.STRING -> value.toDouble().toCurrency(shouldItemBeVisible)
+    Type.STRING_ONLY -> value
+    Type.CURRENCY_TRANSACTION_DETAIL -> value.toDouble().toCurrency(shouldItemBeVisible)
+    Type.QUANTITY_TRANSACTION_DETAIL -> value.toInt().toUnity(shouldItemBeVisible)
     Type.DATE -> value
 }
 

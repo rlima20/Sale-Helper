@@ -33,6 +33,11 @@ fun DropdownComponent(
     textFieldSize: Size,
     label: String,
     modifier: Modifier = Modifier,
+    transactionDetailColors: Triple<Int, Int, Int> = Triple(
+        first = R.color.color_50,
+        second = R.color.color_900,
+        third = R.color.color_50,
+    ),
     onOutLinedTextFieldSize: (size: Size) -> Unit = {},
     onOutLinedTextFieldValueChanged: (String) -> Unit = {},
     onTrailingIconClicked: () -> Unit = {},
@@ -51,11 +56,16 @@ fun DropdownComponent(
             value = selectedText,
             onValueChange = { onOutLinedTextFieldValueChanged(selectedText) },
             modifier = modifier
-                .background(colorResource(id = R.color.color_900))
+                .background(colorResource(id = transactionDetailColors.second))
                 .onGloballyPositioned { coordinates ->
                     onOutLinedTextFieldSize(coordinates.size.toSize())
                 },
-            label = { Text(label) },
+            label = {
+                Text(
+                    color = colorResource(id = transactionDetailColors.first),
+                    text = label,
+                )
+            },
             trailingIcon = {
                 Icon(
                     icon,
@@ -73,7 +83,7 @@ fun DropdownComponent(
                 disabledLabelColor = colorResource(id = R.color.color_50),
                 cursorColor = colorResource(id = R.color.color_50),
                 textColor = colorResource(id = R.color.color_50),
-                disabledTextColor = colorResource(id = R.color.color_50),
+                disabledTextColor = colorResource(id = transactionDetailColors.third),
                 placeholderColor = colorResource(id = R.color.color_50),
             ),
             shape = RoundedCornerShape(15.dp),

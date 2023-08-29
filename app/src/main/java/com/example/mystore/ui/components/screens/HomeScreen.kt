@@ -1,13 +1,19 @@
 package com.example.mystore.ui.components.screens
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Divider
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -21,12 +27,18 @@ import com.example.mystore.Type
 import com.example.mystore.listOfProductsLocal
 import com.example.mystore.model.Product
 import com.example.mystore.model.Resume
+import com.example.mystore.model.Transaction
+import com.example.mystore.ui.components.TransactionDetailsComponent
+import com.example.mystore.ui.components.commons.AlertDialogComponent
+import com.example.mystore.ui.components.commons.DividerComponent
 import com.example.mystore.ui.components.commons.ProductCarouselComponent
 import com.example.mystore.ui.components.commons.RowComponent
 import com.example.mystore.ui.components.commons.ScreenSectionComponent
 import com.example.mystore.ui.components.commons.SectionEmptyStateInfo
 import com.example.mystore.ui.components.commons.SectionInfo
 import com.example.mystore.ui.components.commons.TextCurrencyComponent
+import com.example.mystore.ui.components.commons.ToastComponent
+import com.example.mystore.ui.components.commons.TransactionComponent
 import com.example.mystore.ui.components.commons.ValidateSection
 import com.example.mystore.ui.components.commons.validateSection
 import com.example.mystore.viewmodel.screen.HomeViewModel
@@ -43,11 +55,85 @@ fun HomeScreen(
     homeViewModel.getResume()
     homeViewModel.getListOfSales()
     homeViewModel.getListOfPurchases()
+    homeViewModel.getShowAlertDialogHomeScreen()
 
     val resume by homeViewModel.resume.collectAsState()
     val listOfProducts by homeViewModel.listOfProducts.collectAsState()
+    val listOfTransaction by homeViewModel.transactions.collectAsState()
+    val showAlertDialogHomeScreen by homeViewModel.showAlertDialogHomeScreen.collectAsState()
+    val showAlertDialogTransactionDetail by homeViewModel.showAlertDialogTransactionDetail
+        .collectAsState()
+    val showToast by homeViewModel.showToast.collectAsState()
+    val transaction by homeViewModel.transaction.collectAsState()
 
-    Column {
+    if (showToast) {
+        ToastComponent(stringResource(R.string.my_store_successfull_transaction_removed))
+    }
+
+    Column(
+        modifier = Modifier
+            .padding(top = 8.dp, bottom = 8.dp)
+            .verticalScroll(rememberScrollState()),
+    ) {
+        // AlertDialog with transaction details
+        if (showAlertDialogTransactionDetail) {
+            AlertDialogComponent(
+                size = Size(
+                    width = LocalConfiguration.current.screenWidthDp.dp.value * 1f,
+                    height = LocalConfiguration.current.screenHeightDp.dp.value * 0.7f,
+                ),
+                color = colorResource(id = R.color.color_transaparent),
+                content = {
+                    TransactionDetailsComponent(
+                        transaction = transaction,
+                        shouldItemBeVisible = shouldItemBeVisible,
+                        onCloseAlertDialogTransactionDetail = {
+                            homeViewModel.setShowAlertDialogTransactionDetail(false)
+                        },
+                    )
+                },
+                onDismissRequest = { homeViewModel.setShowAlertDialogTransactionDetail(false) },
+            )
+        }
+
+        // AlertDialog with delete confirmation
+        if (showAlertDialogHomeScreen) {
+            AlertDialogComponent(
+                title = stringResource(R.string.my_store_registry_removal),
+                content = {
+                    Text(
+                        text = stringResource(R.string.my_store_removal_confirmation),
+                        color = colorResource(id = R.color.color_700),
+                    )
+                },
+                onDismissRequest = { homeViewModel.setShowAlertDialogHomeScreen(false) },
+                confirmButton = {
+                    Button(onClick = {
+                        homeViewModel.setShowToastState(true)
+                        homeViewModel.deleteTransaction(transaction)
+                        homeViewModel.setShowAlertDialogHomeScreen(false)
+                        homeViewModel.getTransactions()
+                    }) {
+                        Text(
+                            text = stringResource(R.string.my_store_ok),
+                            color = colorResource(id = R.color.color_50),
+                        )
+                    }
+                },
+                dismissButton = {
+                    Button(onClick = {
+                        homeViewModel.setShowAlertDialogHomeScreen(false)
+                    }) {
+                        Text(
+                            text = stringResource(R.string.my_store_cancel),
+                            color = colorResource(id = R.color.color_50),
+                        )
+                    }
+                },
+            )
+        }
+
+        // Total geral Section
         ValidateSection(
             sectionInfo = SectionInfo(
                 section = {
@@ -79,8 +165,46 @@ fun HomeScreen(
             screen = Screens.HOME,
         )
 
+        // Transactions Section
         ValidateSection(
-            // data = listOfProductsLocal,
+            sectionInfo = SectionInfo(
+                section = {
+                    ScreenSectionComponent(
+                        title = stringResource(id = R.string.my_store_transactions),
+                        body = {
+                            HomeTransactions(
+                                listOfTransactions = listOfTransaction,
+                                shouldItemBeVisible = shouldItemBeVisible,
+                                onClick = {
+                                    homeViewModel.setShowAlertDialogTransactionDetail(true)
+                                    homeViewModel.setTransaction(it)
+                                },
+                                onLongClick = {
+                                    homeViewModel.setTransaction(it)
+                                    homeViewModel.setShowAlertDialogHomeScreen(true)
+                                },
+                            )
+                        },
+                    )
+                },
+            ),
+            sectionEmptyStateInfo = SectionEmptyStateInfo(
+                data = if (listOfTransaction.isEmpty()) listOf() else listOfTransaction,
+                emptySectionTitle = stringResource(R.string.my_store_no_transactions_done),
+                emptySectionPainter = painterResource(id = R.drawable.my_store_plus_icon),
+                onEmptyStateImageClicked = {
+                    onEmptyStateImageClicked(
+                        validateSection(
+                            Section.TRANSACTIONS,
+                        ),
+                    )
+                },
+            ),
+            screen = Screens.HOME,
+        )
+
+        // Products Section
+        ValidateSection(
             sectionInfo = SectionInfo {
                 ScreenSectionComponent(
                     title = stringResource(id = R.string.my_store_products),
@@ -100,7 +224,7 @@ fun HomeScreen(
             },
             sectionEmptyStateInfo =
             SectionEmptyStateInfo(
-                data = listOfProducts, // listOfProducts,
+                data = listOfProducts,
                 emptySectionTitle = stringResource(R.string.my_store_no_products),
                 emptySectionPainter = painterResource(id = R.drawable.my_store_plus_icon),
                 onEmptyStateImageClicked = {
@@ -113,11 +237,37 @@ fun HomeScreen(
             ),
             screen = Screens.HOME,
         )
+        homeViewModel.setShowToastState(false)
     }
 }
 
 @Composable
-fun HomeBody(
+private fun HomeTransactions(
+    listOfTransactions: List<Transaction> = listOf(),
+    shouldItemBeVisible: Boolean,
+    onClick: (Transaction) -> Unit = {},
+    onLongClick: (Transaction) -> Unit = {},
+) {
+    Column(
+        modifier = Modifier
+            .padding(bottom = 8.dp)
+            .height(200.dp)
+            .verticalScroll(rememberScrollState()),
+        verticalArrangement = Arrangement.spacedBy(4.dp),
+    ) {
+        listOfTransactions.forEach { transaction ->
+            TransactionComponent(
+                transaction = transaction,
+                shouldItemBeVisible = shouldItemBeVisible,
+                onClick = { onClick(it) },
+                onLongClick = { onLongClick(it) },
+            )
+        }
+    }
+}
+
+@Composable
+private fun HomeBody(
     resume: Resume,
     shouldItemBeVisible: Boolean,
 ) {
@@ -154,12 +304,7 @@ fun HomeBody(
         },
     )
 
-    // Horizontal divider
-    Divider(
-        color = colorResource(id = R.color.color_300),
-        thickness = 1.dp,
-        modifier = Modifier.padding(8.dp),
-    )
+    DividerComponent()
 
     RowComponent(
         leftSideText = stringResource(id = R.string.my_store_net_revenue),

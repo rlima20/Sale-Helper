@@ -2,19 +2,59 @@ package com.example.mystore.viewmodel.screen
 
 import com.example.mystore.States
 import com.example.mystore.model.Resume
+import com.example.mystore.model.Transaction
 import kotlinx.coroutines.flow.MutableStateFlow
 
 class HomeViewModel : CommonViewModel() {
 
-    private var _imageRequestState: MutableStateFlow<States> = MutableStateFlow(States.LOADING)
-    val imageRequestState: MutableStateFlow<States> = _imageRequestState
-
     private val _resume: MutableStateFlow<Resume?> = MutableStateFlow(Resume())
     val resume: MutableStateFlow<Resume?> = _resume
+
+    private val _showAlertDialogHomeScreen: MutableStateFlow<Boolean> = MutableStateFlow(false)
+    val showAlertDialogHomeScreen: MutableStateFlow<Boolean> = _showAlertDialogHomeScreen
+
+    private val _showAlertDialogTransactionDetail: MutableStateFlow<Boolean> =
+        MutableStateFlow(false)
+    val showAlertDialogTransactionDetail: MutableStateFlow<Boolean> =
+        _showAlertDialogTransactionDetail
+
+    private val _showToast: MutableStateFlow<Boolean> = MutableStateFlow(false)
+    val showToast: MutableStateFlow<Boolean> = _showToast
+
+    private val _transaction: MutableStateFlow<Transaction> = MutableStateFlow(Transaction())
+    val transaction: MutableStateFlow<Transaction> = _transaction
+
+    private var _imageRequestState: MutableStateFlow<States> = MutableStateFlow(States.LOADING)
 
     init {
         getResume()
         getListOfProducts()
+        getShowAlertDialogHomeScreen()
+        getShowAlertDialogTransactionDetail()
+        getShowToastState()
+        getTransaction()
+    }
+
+    // Private functions
+    private fun getShowToastState() = showToast.value
+
+    private fun getShowAlertDialogTransactionDetail() = showAlertDialogTransactionDetail.value
+
+    private fun getTransaction(): Transaction = transaction.value
+
+    // Public functions
+    fun setShowAlertDialogTransactionDetail(state: Boolean) {
+        _showAlertDialogTransactionDetail.value = state
+    }
+
+    fun getTransactions(): List<Transaction> = transactions.value
+
+    fun setTransaction(transaction: Transaction) {
+        _transaction.value = transaction
+    }
+
+    fun setShowToastState(state: Boolean) {
+        _showToast.value = state
     }
 
     fun getResume() {
@@ -40,5 +80,11 @@ class HomeViewModel : CommonViewModel() {
 
     fun setImageRequestState(state: States) {
         _imageRequestState.value = state
+    }
+
+    fun getShowAlertDialogHomeScreen() = showAlertDialogHomeScreen.value
+
+    fun setShowAlertDialogHomeScreen(state: Boolean) {
+        _showAlertDialogHomeScreen.value = state
     }
 }

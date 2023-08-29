@@ -35,6 +35,9 @@ enum class Type {
     QUANTITY_OOS,
     DATE,
     STRING,
+    STRING_ONLY,
+    CURRENCY_TRANSACTION_DETAIL,
+    QUANTITY_TRANSACTION_DETAIL,
 }
 
 enum class Section {
