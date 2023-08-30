@@ -2,9 +2,12 @@ package com.example.mystore.ui.components.commons
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.Button
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -126,6 +129,45 @@ fun TotalComponent(
                     shouldItemBeVisible = shouldItemBeVisible,
                     type = Type.CURRENCY_PURCHASE,
                 )
+            },
+        )
+    }
+}
+
+@Composable
+fun showAlertDialogComponent(
+    showAlert: Boolean,
+    title: String,
+    alertDialogMessage: String,
+    onDismissButtonClicked: () -> Unit = {},
+    onConfirmButtonClicked: () -> Unit = {},
+    onDismissRequest: () -> Unit = {},
+) {
+    if (showAlert) {
+        AlertDialogComponent(
+            title = title,
+            content = {
+                Text(
+                    text = alertDialogMessage,
+                    color = colorResource(id = R.color.color_700),
+                )
+            },
+            onDismissRequest = { onDismissRequest() },
+            confirmButton = {
+                Button(onClick = { onConfirmButtonClicked() }) {
+                    Text(
+                        text = stringResource(R.string.my_store_ok),
+                        color = colorResource(id = R.color.color_50),
+                    )
+                }
+            },
+            dismissButton = {
+                Button(onClick = { onDismissButtonClicked() }) {
+                    Text(
+                        text = stringResource(R.string.my_store_cancel),
+                        color = colorResource(id = R.color.color_50),
+                    )
+                }
             },
         )
     }

@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -40,6 +39,7 @@ import com.example.mystore.ui.components.commons.TextCurrencyComponent
 import com.example.mystore.ui.components.commons.ToastComponent
 import com.example.mystore.ui.components.commons.TransactionComponent
 import com.example.mystore.ui.components.commons.ValidateSection
+import com.example.mystore.ui.components.commons.showAlertDialogComponent
 import com.example.mystore.ui.components.commons.validateSection
 import com.example.mystore.viewmodel.screen.HomeViewModel
 
@@ -98,78 +98,34 @@ fun HomeScreen(
         }
 
         // AlertDialog with delete confirmation
-        if (showAlertDialogHomeScreen) {
-            AlertDialogComponent(
-                title = stringResource(R.string.my_store_registry_removal),
-                content = {
-                    Text(
-                        text = stringResource(R.string.my_store_removal_confirmation),
-                        color = colorResource(id = R.color.color_700),
-                    )
-                },
-                onDismissRequest = { homeViewModel.setShowAlertDialogHomeScreen(false) },
-                confirmButton = {
-                    Button(onClick = {
-                        homeViewModel.setShowToastState(true)
-                        homeViewModel.deleteTransaction(transaction)
-                        homeViewModel.setShowAlertDialogHomeScreen(false)
-                        homeViewModel.getTransactions()
-                    }) {
-                        Text(
-                            text = stringResource(R.string.my_store_ok),
-                            color = colorResource(id = R.color.color_50),
-                        )
-                    }
-                },
-                dismissButton = {
-                    Button(onClick = {
-                        homeViewModel.setShowAlertDialogHomeScreen(false)
-                    }) {
-                        Text(
-                            text = stringResource(R.string.my_store_cancel),
-                            color = colorResource(id = R.color.color_50),
-                        )
-                    }
-                },
-            )
-        }
+        showAlertDialogComponent(
+            showAlert = showAlertDialogHomeScreen,
+            title = stringResource(R.string.my_store_registry_removal),
+            alertDialogMessage = stringResource(R.string.my_store_removal_confirmation),
+            onDismissRequest = { homeViewModel.setShowAlertDialogHomeScreen(false) },
+            onDismissButtonClicked = { homeViewModel.setShowAlertDialogHomeScreen(false) },
+            onConfirmButtonClicked = {
+                homeViewModel.setShowToastState(true)
+                homeViewModel.deleteTransaction(transaction)
+                homeViewModel.setShowAlertDialogHomeScreen(false)
+                homeViewModel.getTransactions()
+            },
+        )
 
         // AlertDialog with delete confirmation
-        if (showAlertDialogHomeScreenProduct) {
-            AlertDialogComponent(
-                title = stringResource(R.string.my_store_registry_removal),
-                content = {
-                    Text(
-                        text = stringResource(R.string.my_store_removal_product_confirmation),
-                        color = colorResource(id = R.color.color_700),
-                    )
-                },
-                onDismissRequest = { homeViewModel.setShowAlertDialogHomeScreen(false) },
-                confirmButton = {
-                    Button(onClick = {
-                        homeViewModel.setShowToastState(true) // TODO: Passar mensagem para o Toast
-                        homeViewModel.deleteProduct(product)
-                        homeViewModel.setShowAlertDialogHomeScreenProduct(false)
-                        homeViewModel.getListOfProducts()
-                    }) {
-                        Text(
-                            text = stringResource(R.string.my_store_ok),
-                            color = colorResource(id = R.color.color_50),
-                        )
-                    }
-                },
-                dismissButton = {
-                    Button(onClick = {
-                        homeViewModel.setShowAlertDialogHomeScreenProduct(false)
-                    }) {
-                        Text(
-                            text = stringResource(R.string.my_store_cancel),
-                            color = colorResource(id = R.color.color_50),
-                        )
-                    }
-                },
-            )
-        }
+        showAlertDialogComponent(
+            showAlert = showAlertDialogHomeScreenProduct,
+            title = stringResource(R.string.my_store_registry_removal),
+            alertDialogMessage = stringResource(R.string.my_store_removal_confirmation),
+            onDismissRequest = { homeViewModel.setShowAlertDialogHomeScreenProduct(false) },
+            onDismissButtonClicked = { homeViewModel.setShowAlertDialogHomeScreenProduct(false) },
+            onConfirmButtonClicked = {
+                homeViewModel.setShowToastState(true) // TODO: Passar mensagem para o Toast
+                homeViewModel.deleteProduct(product)
+                homeViewModel.setShowAlertDialogHomeScreenProduct(false)
+                homeViewModel.getListOfProducts()
+            },
+        )
 
         // Total geral Section
         ValidateSection(
