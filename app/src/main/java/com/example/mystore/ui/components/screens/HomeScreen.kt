@@ -48,7 +48,6 @@ fun HomeScreen(
     homeViewModel: HomeViewModel,
     shouldItemBeVisible: Boolean,
     onProductClick: (product: Product) -> Unit = {},
-    onProductLongClick: () -> Unit = {},
     onProductDoubleClick: () -> Unit = {},
     onEmptyStateImageClicked: (route: String) -> Unit = {},
 ) {
@@ -61,10 +60,12 @@ fun HomeScreen(
     val listOfProducts by homeViewModel.listOfProducts.collectAsState()
     val listOfTransaction by homeViewModel.transactions.collectAsState()
     val showAlertDialogHomeScreen by homeViewModel.showAlertDialogHomeScreen.collectAsState()
+    val showAlertDialogHomeScreenProduct by homeViewModel.showAlertDialogHomeScreenProduct.collectAsState()
     val showAlertDialogTransactionDetail by homeViewModel.showAlertDialogTransactionDetail
         .collectAsState()
     val showToast by homeViewModel.showToast.collectAsState()
     val transaction by homeViewModel.transaction.collectAsState()
+    val product by homeViewModel.product.collectAsState()
 
     if (showToast) {
         ToastComponent(stringResource(R.string.my_store_successfull_transaction_removed))
@@ -123,6 +124,43 @@ fun HomeScreen(
                 dismissButton = {
                     Button(onClick = {
                         homeViewModel.setShowAlertDialogHomeScreen(false)
+                    }) {
+                        Text(
+                            text = stringResource(R.string.my_store_cancel),
+                            color = colorResource(id = R.color.color_50),
+                        )
+                    }
+                },
+            )
+        }
+
+        // AlertDialog with delete confirmation
+        if (showAlertDialogHomeScreenProduct) {
+            AlertDialogComponent(
+                title = stringResource(R.string.my_store_registry_removal),
+                content = {
+                    Text(
+                        text = stringResource(R.string.my_store_removal_product_confirmation),
+                        color = colorResource(id = R.color.color_700),
+                    )
+                },
+                onDismissRequest = { homeViewModel.setShowAlertDialogHomeScreen(false) },
+                confirmButton = {
+                    Button(onClick = {
+                        homeViewModel.setShowToastState(true) // TODO: Passar mensagem para o Toast
+                        homeViewModel.deleteProduct(product)
+                        homeViewModel.setShowAlertDialogHomeScreenProduct(false)
+                        homeViewModel.getListOfProducts()
+                    }) {
+                        Text(
+                            text = stringResource(R.string.my_store_ok),
+                            color = colorResource(id = R.color.color_50),
+                        )
+                    }
+                },
+                dismissButton = {
+                    Button(onClick = {
+                        homeViewModel.setShowAlertDialogHomeScreenProduct(false)
                     }) {
                         Text(
                             text = stringResource(R.string.my_store_cancel),
@@ -216,7 +254,10 @@ fun HomeScreen(
                                 homeViewModel.setImageRequestState(state)
                             },
                             onProductClick = { onProductClick(it) },
-                            onProductLongClick = { onProductLongClick() },
+                            onProductLongClick = {
+                                homeViewModel.setShowAlertDialogHomeScreenProduct(true)
+                                homeViewModel.setProduct(it)
+                            },
                             onProductDoubleClick = { onProductDoubleClick() },
                         )
                     },

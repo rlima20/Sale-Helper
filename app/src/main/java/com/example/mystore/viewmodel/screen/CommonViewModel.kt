@@ -12,8 +12,9 @@ import kotlinx.coroutines.flow.MutableStateFlow
 
 open class CommonViewModel : ViewModel() {
 
-    private var _listOfProducts: MutableStateFlow<List<Product>> = MutableStateFlow(listOf())
-    val listOfProducts: MutableStateFlow<List<Product>> = _listOfProducts
+    private var _listOfProducts: MutableStateFlow<MutableList<Product>> =
+        MutableStateFlow(mutableListOf())
+    val listOfProducts: MutableStateFlow<MutableList<Product>> = _listOfProducts
 
     private val _listOfSales: MutableState<List<Transaction>> =
         mutableStateOf(listOf())
@@ -71,5 +72,9 @@ open class CommonViewModel : ViewModel() {
 
     fun deleteTransaction(transaction: Transaction) {
         _transactions.value.removeAt(_transactions.value.indexOf(transaction))
+    }
+
+    fun deleteProduct(product: Product) {
+        _listOfProducts.value.removeAt(listOfProducts.value.indexOf(product))
     }
 }

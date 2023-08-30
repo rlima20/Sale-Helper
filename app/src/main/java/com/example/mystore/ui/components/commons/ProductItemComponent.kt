@@ -35,7 +35,7 @@ fun ProductItemComponent(
     productPainter: Painter,
     shouldItemBeVisible: Boolean,
     onProductClick: () -> Unit,
-    onProductLongClick: () -> Unit,
+    onProductLongClick: (Product) -> Unit,
     onProductDoubleClick: () -> Unit,
 ) {
     Surface(
@@ -55,7 +55,7 @@ fun ProductItemComponent(
                     .combinedClickable(
                         enabled = true,
                         onClick = { onProductClick() },
-                        onLongClick = { onProductLongClick() },
+                        onLongClick = { onProductLongClick(product) },
                         onDoubleClick = { onProductDoubleClick() },
                     ),
             ) {

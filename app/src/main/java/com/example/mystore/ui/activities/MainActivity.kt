@@ -116,7 +116,6 @@ fun MyStoreApp(
                         totalAmountOfPurchases = purchases
                     },
                     onProductClick = { navController.navigateSingleTopTo(RegisterProductScreen.route) },
-                    onProductLongClick = {},
                     onProductDoubleClick = {},
                 )
             },

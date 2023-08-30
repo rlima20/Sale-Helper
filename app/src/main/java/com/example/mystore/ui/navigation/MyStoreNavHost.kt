@@ -24,7 +24,6 @@ fun MyStoreNavHost(
     onExpandBottomBar: (Boolean) -> Unit = {},
     onShowBottomBarExpanded: (sales: Double, purchase: Double) -> Unit = { _: Double, _: Double -> },
     onProductClick: (product: Product) -> Unit = {},
-    onProductLongClick: () -> Unit = {},
     onProductDoubleClick: () -> Unit = {},
 ) {
     var clearStates = false
@@ -41,7 +40,6 @@ fun MyStoreNavHost(
                 homeViewModel = homeViewModel,
                 shouldItemBeVisible = shouldItemBeVisible,
                 onProductClick = { onProductClick(it) },
-                onProductLongClick = { onProductLongClick() },
                 onProductDoubleClick = { onProductDoubleClick() },
                 onEmptyStateImageClicked = {
                     navController.navigateSingleTopTo(it)

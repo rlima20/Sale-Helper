@@ -23,7 +23,7 @@ fun ProductCarouselComponent(
     shouldItemBeVisible: Boolean,
     onImageRequestState: (state: States) -> Unit,
     onProductClick: (product: Product) -> Unit,
-    onProductLongClick: () -> Unit,
+    onProductLongClick: (product: Product) -> Unit,
     onProductDoubleClick: () -> Unit,
 ) {
     LazyRow(
@@ -45,7 +45,7 @@ fun ProductCarouselComponent(
                 ),
                 shouldItemBeVisible = shouldItemBeVisible,
                 onProductClick = { onProductClick(product) },
-                onProductLongClick = { onProductLongClick() },
+                onProductLongClick = { onProductLongClick(product) },
                 onProductDoubleClick = { onProductDoubleClick() },
             )
         }
