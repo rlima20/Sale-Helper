@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImagePainter
@@ -110,3 +111,5 @@ fun TransactionType.colorTransactionType() =
     } else {
         colorResource(id = R.color.color_red_A1000)
     }
+
+fun Int.setItemSize() = ((this - 16) / 2).dp

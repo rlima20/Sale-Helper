@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.material.TextFieldDefaults
@@ -13,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.platform.SoftwareKeyboardController
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.example.mystore.R
 
@@ -23,8 +25,10 @@ fun OutLinedTextFieldComponent(
     enabled: Boolean = true,
     selectedText: String = "",
     label: String = "",
-    transactionDetailColors: Triple<Int, Int, Int>,
+    transactionDetailColors: Triple<Int, Int, Int> =
+        Triple(R.color.color_50, R.color.color_900, R.color.color_50),
     keyboardController: SoftwareKeyboardController? = null,
+    keyboardOptions: KeyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
     focusManager: FocusManager,
     onValueChanged: (String) -> Unit = {},
     trailingIcon: @Composable () -> Unit = {},
@@ -50,6 +54,7 @@ fun OutLinedTextFieldComponent(
                 focusManager.clearFocus()
             },
         ),
+        keyboardOptions = keyboardOptions,
         colors = TextFieldDefaults.outlinedTextFieldColors(
             focusedBorderColor = colorResource(id = R.color.color_50),
             unfocusedBorderColor = colorResource(id = R.color.color_100),

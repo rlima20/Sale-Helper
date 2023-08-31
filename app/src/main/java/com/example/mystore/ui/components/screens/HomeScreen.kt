@@ -73,7 +73,7 @@ fun HomeScreen(
 
     Column(
         modifier = Modifier
-            .padding(top = 8.dp, bottom = 8.dp)
+            .padding(bottom = 8.dp)
             .verticalScroll(rememberScrollState()),
     ) {
         // AlertDialog with transaction details

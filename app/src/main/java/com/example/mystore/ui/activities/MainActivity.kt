@@ -32,6 +32,7 @@ import com.example.mystore.ui.navigation.RegisterTransactionScreen
 import com.example.mystore.ui.theme.MyStoreTheme
 import com.example.mystore.viewmodel.global.MyStoreViewModel
 import com.example.mystore.viewmodel.screen.HomeViewModel
+import com.example.mystore.viewmodel.screen.RegisterProductViewModel
 import com.example.mystore.viewmodel.screen.RegisterTransactionViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -41,6 +42,7 @@ class MainActivity : ComponentActivity() {
     private val viewModel: MyStoreViewModel by viewModel()
     private val homeViewModel: HomeViewModel by viewModel()
     private val registerTransactionViewModel: RegisterTransactionViewModel by viewModel()
+    private val registerProductViewModel: RegisterProductViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,6 +52,7 @@ class MainActivity : ComponentActivity() {
                 viewModel,
                 homeViewModel,
                 registerTransactionViewModel,
+                registerProductViewModel,
             )
         }
     }
@@ -61,6 +64,7 @@ fun MyStoreApp(
     myStoreViewModel: MyStoreViewModel,
     homeViewModel: HomeViewModel,
     registerTransactionViewModel: RegisterTransactionViewModel,
+    registerProductViewModel: RegisterProductViewModel,
 ) {
     MyStoreTheme {
         val navController = rememberNavController()
@@ -107,6 +111,7 @@ fun MyStoreApp(
                         .padding(it),
                     homeViewModel = homeViewModel,
                     registerTransactionViewModel = registerTransactionViewModel,
+                    registerProductViewModel = registerProductViewModel,
                     shouldItemBeVisible = shouldItemBeVisible,
                     onExpandBottomBar = { shouldExpandBottomBar ->
                         expandedBottomBar = shouldExpandBottomBar
@@ -182,5 +187,6 @@ fun MyStoreAppPreview() {
         myStoreViewModel = MyStoreViewModel(),
         homeViewModel = HomeViewModel(),
         registerTransactionViewModel = RegisterTransactionViewModel(),
+        registerProductViewModel = RegisterProductViewModel(),
     )
 }

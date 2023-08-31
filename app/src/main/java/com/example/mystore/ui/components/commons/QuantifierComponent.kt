@@ -28,23 +28,21 @@ import com.example.mystore.R
 
 @Composable
 internal fun Quantifier(
-    width: Dp,
+    modifier: Modifier = Modifier,
+    enabled: Boolean = true,
     maxQuantity: Int = 9,
     quantity: Int,
     onQuantifierChange: (Int) -> Unit,
 ) {
-    val isLeftIconEnabled = quantity > 1
-    val isRightIconEnabled = quantity < maxQuantity
+    var isLeftIconEnabled = false
+    var isRightIconEnabled = false
+    if (enabled) {
+        isLeftIconEnabled = quantity > 1
+        isRightIconEnabled = quantity < maxQuantity
+    }
 
     Surface(
-        modifier = Modifier
-            .height(48.dp)
-            .width(width)
-            .padding(
-                start = 16.dp,
-                top = 8.dp,
-                end = 16.dp,
-            ),
+        modifier = modifier.height(40.dp),
         elevation = 4.dp,
         shape = setRoundedCornersShape(),
         color = colorResource(id = R.color.color_50),
@@ -110,7 +108,8 @@ private fun QuantifierPreview() {
         modifier = Modifier.fillMaxWidth(),
     ) {
         Quantifier(
-            150.dp,
+            Modifier,
+            true,
             9,
             1,
         ) {}

@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -22,7 +23,6 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.example.mystore.R
 import com.example.mystore.Screens
@@ -31,6 +31,7 @@ import com.example.mystore.Type
 import com.example.mystore.limitTo
 import com.example.mystore.model.Product
 import com.example.mystore.model.Transaction
+import com.example.mystore.setItemSize
 import com.example.mystore.toTransactionType
 import com.example.mystore.ui.components.commons.AlertDialogComponent
 import com.example.mystore.ui.components.commons.DropdownComponent
@@ -251,7 +252,7 @@ private fun RegisterTransactionBody(
                 selectedText = selectedTextProduct,
                 textFieldSize = textFieldSizeProduct,
                 label = stringResource(id = R.string.my_store_product_2),
-                modifier = Modifier.width(setItemSize(screenWidth)),
+                modifier = Modifier.width(screenWidth.setItemSize()),
                 onOutLinedTextFieldSize = { textFieldSizeProduct = it },
                 onOutLinedTextFieldValueChanged = { selectedTextProduct = it },
                 onTrailingIconClicked = { isExpandedProduct = !isExpandedProduct },
@@ -271,12 +272,14 @@ private fun RegisterTransactionBody(
             )
 
             Quantifier(
+                modifier = Modifier
+                    .padding(start = 16.dp, top = 8.dp, end = 16.dp)
+                    .width(screenWidth.setItemSize()),
                 maxQuantity = setMaxValue(
                     selectedTextTransaction = selectedTextTransaction,
                     transaction = transaction,
                     maxQuantity = maxQuantity,
                 ),
-                width = setItemSize(screenWidth),
                 quantity = quantity,
                 onQuantifierChange = { quantifierQuantity ->
                     setScreenStates(
@@ -398,8 +401,6 @@ private fun createTransaction(
         transactionAmount = quantity * unitValue,
     )
 }
-
-private fun setItemSize(screenWidth: Int): Dp = ((screenWidth - 16) / 2).dp
 
 private fun setScreenStates(
     listOfProducts: List<Product>,
