@@ -9,7 +9,7 @@ import com.example.mystore.model.Product
 import com.example.mystore.navigateSingleTopTo
 import com.example.mystore.ui.components.screens.ConsolidatedPositionScreen
 import com.example.mystore.ui.components.screens.HomeScreen
-import com.example.mystore.ui.components.screens.RegisterScreen
+import com.example.mystore.ui.components.screens.RegisterProductScreen
 import com.example.mystore.ui.components.screens.RegisterTransactionScreen
 import com.example.mystore.viewmodel.screen.HomeViewModel
 import com.example.mystore.viewmodel.screen.RegisterTransactionViewModel
@@ -51,7 +51,7 @@ fun MyStoreNavHost(
         composable(route = RegisterProductScreen.route) {
             clearStates = true
             onExpandBottomBar(false)
-            RegisterScreen()
+            RegisterProductScreen()
         }
 
         // Navega para a ConsolidatedPositionScreen
