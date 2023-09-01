@@ -32,6 +32,7 @@ fun OutLinedTextFieldComponent(
     focusManager: FocusManager,
     onValueChanged: (String) -> Unit = {},
     trailingIcon: @Composable () -> Unit = {},
+    onDone: () -> Unit = {},
 ) {
     OutlinedTextField(
         enabled = enabled,
@@ -52,6 +53,7 @@ fun OutLinedTextFieldComponent(
             onDone = {
                 keyboardController?.hide()
                 focusManager.clearFocus()
+                onDone()
             },
         ),
         keyboardOptions = keyboardOptions,

@@ -17,6 +17,7 @@
     <string name="my_store_products">Produtos</string>
     <string name="my_store_date">Data: </string>
     <string name="my_store_quantity">Quantidade: </string>
+    <string name="my_store_product_quantity">Quantidade</string>
     <string name="my_store_amount">Montante: </string>
     <string name="my_store_sale_value">Valor da venda: </string>
     <string name="my_store_purchase_value">Valor da compra: </string>
@@ -37,7 +38,8 @@
     <string name="my_store_product_update">Alteração de produto</string>
     <string name="my_store_description">Descrição</string>
     <string name="my_store_product_description">Descrição do produto</string>
-    <string name="my_store_product_purchase_price_description">Preço de compra</string>
+    <string name="my_store_product_purchase_price">(R$) Compra</string>
+    <string name="my_store_product_sell_price">(R$) Venda</string>
     <string name="my_store_name">Nome</string>
     <string name="my_store_no_transactions_done">"Você não tem transações realizadas. "</string>
     <string name="my_store_no_sales_done">"Você não tem vendas realizadas. "</string>
@@ -47,7 +49,7 @@
     <string name="my_store_confirmation_transaction">Registro de transação</string>
     <string name="my_store_confirmation_message">Deseja confirmar essa transação?</string>
     <string name="my_store_cancel">Cancelar</string>
-    <string name="my_store_ok">Ok</string>
+    <string name="my_store_ok">OK</string>
     <string name="my_store_close">Fechar</string>
     <string name="my_store_successfull_transaction_saved">Transação salva com sucesso</string>
     <string name="my_store_successfull_transaction_removed">Transação excluída com sucesso</string>
@@ -55,5 +57,4 @@
     <string name="my_store_removal_confirmation">Deseja realmente excluir essa transação?</string>
     <string name="my_store_removal_product_confirmation">Deseja realmente excluir esse produto?</string>
     <string name="my_store_type">Tipo de transação</string>
-    <string name="my_store_tyAKLSXSAXLAJpe">Cadastro de produtos %s</string>
 </resources>

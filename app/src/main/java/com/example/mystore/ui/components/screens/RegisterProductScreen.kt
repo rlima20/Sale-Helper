@@ -31,8 +31,8 @@ import com.example.mystore.viewmodel.screen.RegisterProductViewModel
 
 @Composable
 fun RegisterProductScreen(
-    product: Product = Product(),
-    isEditMode: Boolean = false,
+    product: Product,
+    isEditMode: Boolean = true,
     registerProductViewModel: RegisterProductViewModel,
 ) {
     registerProductViewModel.setScreenWidth(LocalConfiguration.current.screenWidthDp)
@@ -60,7 +60,7 @@ fun RegisterProductScreenBody(
     isEditMode: Boolean = false,
 ) {
     // Title
-    var titleSelectedText by remember { mutableStateOf("") }
+    var titleSelectedText by remember { mutableStateOf(if (isEditMode) product.title else "") }
     val titleLabel = stringResource(id = R.string.my_store_product_title)
     val titleKeyboardController = LocalSoftwareKeyboardController.current
     val titleFocusManager = LocalFocusManager.current
@@ -73,7 +73,9 @@ fun RegisterProductScreenBody(
     )
 
     // Description
-    var descriptionSelectedText by remember { mutableStateOf("") }
+    var descriptionSelectedText by remember {
+        mutableStateOf(if (isEditMode) product.description else "")
+    }
     val descriptionLabel = stringResource(id = R.string.my_store_product_description)
     val descriptionKeyboardController = LocalSoftwareKeyboardController.current
     val desciptionFocusManager = LocalFocusManager.current
@@ -85,44 +87,55 @@ fun RegisterProductScreenBody(
         onValueChanged = { descriptionSelectedText = it },
     )
 
-    Row() {
+    Row {
         Column {
+            // Image Url
+
             // Quantity
             TextFormattedComponent(
-                leftSideText = "Quantidade",
+                leftSideText = stringResource(id = R.string.my_store_product_quantity),
                 fontSize = 18.sp,
             )
             var quantity by remember { mutableStateOf(product.quantity) }
             Quantifier(
                 modifier = Modifier
                     .width(screenWidth.setItemSize())
-                    .padding(0.dp),
+                    .padding(start = 8.dp, end = 4.dp),
                 enabled = false,
                 quantity = quantity,
                 onQuantifierChange = { quantity = it },
             )
         }
         Column {
-            // todo - paddings
             // Max Quantity To Buy
             TextFormattedComponent(
                 leftSideText = "Qty Max",
                 fontSize = 18.sp,
             )
-            var maxQuantityToBuy by remember { mutableStateOf(0) }
+            var maxQuantityToBuy by remember {
+                mutableStateOf(if (isEditMode) product.maxQuantityToBuy else 0)
+            }
             Quantifier(
                 modifier = Modifier
                     .width(screenWidth.setItemSize())
-                    .padding(0.dp),
+                    .padding(start = 4.dp, end = 8.dp),
                 quantity = maxQuantityToBuy,
                 onQuantifierChange = { maxQuantityToBuy = it },
             )
         }
     }
+
     // Purchase Price
-    var purchasePriceSelectedText by remember { mutableStateOf("") }
-    val purchasePriceLabel =
-        stringResource(id = R.string.my_store_product_purchase_price_description)
+    var purchasePriceSelectedText by remember {
+        mutableStateOf(
+            if (isEditMode) {
+                product.purchasePrice.toString().addCurrency()
+            } else {
+                "R$ 0.00"
+            },
+        )
+    }
+    val purchasePriceLabel = stringResource(id = R.string.my_store_product_purchase_price)
     val purchasePriceKeyboardController = LocalSoftwareKeyboardController.current
     val purchasePriceFocusManager = LocalFocusManager.current
     OutLinedTextFieldComponent(
@@ -131,13 +144,48 @@ fun RegisterProductScreenBody(
         keyboardController = purchasePriceKeyboardController,
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
         focusManager = purchasePriceFocusManager,
-        onValueChanged = { purchasePriceSelectedText = it }, // Todo - Formatar esse valor para
-        // R$ 199,90
+        onValueChanged = {
+            purchasePriceSelectedText = it.removeCurrency()
+        },
+        onDone = {
+            purchasePriceSelectedText = purchasePriceSelectedText.removeCurrency().addCurrency()
+        },
     )
 
     // Sale Price
-
-    // Image Url
+    var salePriceSelectedText by remember {
+        mutableStateOf(
+            if (isEditMode) {
+                product.salePrice.toString().addCurrency()
+            } else {
+                "R$ 0.00"
+            },
+        )
+    }
+    val salePriceLabel = stringResource(id = R.string.my_store_product_sell_price)
+    val salePriceKeyboardController = LocalSoftwareKeyboardController.current
+    val salePriceFocusManager = LocalFocusManager.current
+    OutLinedTextFieldComponent(
+        selectedText = salePriceSelectedText,
+        label = salePriceLabel,
+        keyboardController = salePriceKeyboardController,
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+        focusManager = salePriceFocusManager,
+        onValueChanged = {
+            salePriceSelectedText = it.removeCurrency()
+        },
+        onDone = {
+            salePriceSelectedText = salePriceSelectedText.removeCurrency().addCurrency()
+        },
+    )
 }
 
-fun String.setTitle(editMode: Boolean) = if (editMode) "$this | EDIÇÃO" else "$this | CRIAÇÃO"
+fun String.removeCurrency() = this.replace("R$", "")
+
+fun String.addCurrency() = "R$ ${
+    String.format("%.2f", this.replace(",", ".").toDouble())
+        .replace(".", ",")
+}"
+
+private fun String.setTitle(editMode: Boolean) =
+    if (editMode) "$this | EDIÇÃO" else "$this | CRIAÇÃO"
