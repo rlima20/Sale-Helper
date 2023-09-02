@@ -1,5 +1,6 @@
 package com.example.mystore.ui.components.commons
 
+import android.content.Context
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Button
@@ -7,14 +8,19 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import coil.request.ImageRequest
+import coil.size.Size
 import com.example.mystore.R
 import com.example.mystore.Screens
 import com.example.mystore.Section
+import com.example.mystore.States
 import com.example.mystore.Type
+import com.example.mystore.getAsyncImagePainter
 import com.example.mystore.toCurrency
 import com.example.mystore.toUnity
 import com.example.mystore.toUnityOutOfStock
@@ -90,6 +96,34 @@ fun ValidateSection(
     } else {
         sectionInfo.section()
     }
+}
+
+@Composable
+fun getPainter(
+    imageUrl: String,
+    onImageRequestState: (state: States) -> Unit,
+): Painter {
+    val painter = getAsyncImage(
+        context = LocalContext.current,
+        imageUrl = imageUrl,
+    ).getAsyncImagePainter(
+        onStateChanged = {
+            onImageRequestState(it)
+        },
+    )
+    return painter
+}
+
+@Composable
+fun getAsyncImage(
+    context: Context,
+    imageUrl: String,
+): ImageRequest {
+    return ImageRequest.Builder(context)
+        .data(imageUrl)
+        .size(Size.ORIGINAL)
+        .crossfade(true)
+        .build()
 }
 
 @Composable

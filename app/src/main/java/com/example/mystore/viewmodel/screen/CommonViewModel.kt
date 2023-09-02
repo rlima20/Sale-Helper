@@ -3,6 +3,7 @@ package com.example.mystore.viewmodel.screen
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import com.example.mystore.States
 import com.example.mystore.TransactionType
 import com.example.mystore.listOfProductsLocal
 import com.example.mystore.listOfTransactions
@@ -28,6 +29,8 @@ open class CommonViewModel : ViewModel() {
         MutableStateFlow(listOfTransactions)
     val transactions: MutableStateFlow<MutableList<Transaction>> = _transactions
 
+    private var _imageRequestState: MutableStateFlow<States> = MutableStateFlow(States.LOADING)
+
     init {
         getListOfTransactions()
         getListOfProducts()
@@ -43,6 +46,10 @@ open class CommonViewModel : ViewModel() {
 
     private fun getListOfTransactions() {
         _transactions.value = listOfTransactions
+    }
+
+    fun setImageRequestState(state: States) {
+        _imageRequestState.value = state
     }
 
     fun getListOfSales() {

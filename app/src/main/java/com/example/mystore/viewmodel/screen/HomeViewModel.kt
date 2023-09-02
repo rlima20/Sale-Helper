@@ -1,6 +1,5 @@
 package com.example.mystore.viewmodel.screen
 
-import com.example.mystore.States
 import com.example.mystore.model.Product
 import com.example.mystore.model.Resume
 import com.example.mystore.model.Transaction
@@ -32,8 +31,6 @@ class HomeViewModel : CommonViewModel() {
 
     private val _product: MutableStateFlow<Product> = MutableStateFlow(Product())
     val product: MutableStateFlow<Product> = _product
-
-    private var _imageRequestState: MutableStateFlow<States> = MutableStateFlow(States.LOADING)
 
     init {
         getResume()
@@ -87,10 +84,6 @@ class HomeViewModel : CommonViewModel() {
                 stockValue = stockValue,
             )
         }
-    }
-
-    fun setImageRequestState(state: States) {
-        _imageRequestState.value = state
     }
 
     fun getShowAlertDialogHomeScreen() = showAlertDialogHomeScreen.value
