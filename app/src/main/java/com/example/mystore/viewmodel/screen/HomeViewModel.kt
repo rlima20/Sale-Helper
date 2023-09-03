@@ -23,8 +23,9 @@ class HomeViewModel : CommonViewModel() {
     val showAlertDialogTransactionDetail: MutableStateFlow<Boolean> =
         _showAlertDialogTransactionDetail
 
-    private val _showToast: MutableStateFlow<Boolean> = MutableStateFlow(false)
-    val showToast: MutableStateFlow<Boolean> = _showToast
+    private val _showToast: MutableStateFlow<Pair<String, Boolean>> =
+        MutableStateFlow(Pair("", false))
+    val showToast: MutableStateFlow<Pair<String, Boolean>> = _showToast
 
     private val _transaction: MutableStateFlow<Transaction> = MutableStateFlow(Transaction())
     val transaction: MutableStateFlow<Transaction> = _transaction
@@ -61,8 +62,8 @@ class HomeViewModel : CommonViewModel() {
         _transaction.value = transaction
     }
 
-    fun setShowToastState(state: Boolean) {
-        _showToast.value = state
+    fun setShowToastState(message: String, state: Boolean) {
+        _showToast.value = Pair(message, state)
     }
 
     fun getResume() {

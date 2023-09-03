@@ -69,8 +69,12 @@ fun HomeScreen(
         val transaction by transaction.collectAsState()
         val product by product.collectAsState()
 
-        if (showToast) {
-            ToastComponent(stringResource(R.string.my_store_successfull_transaction_removed))
+        val transactionToastMessage =
+            stringResource(R.string.my_store_successfull_transaction_removed)
+        val productToastMessage = stringResource(R.string.my_store_successfull_product_removed)
+
+        if (showToast.second) {
+            ToastComponent(showToast.first)
         }
 
         Column(
@@ -107,7 +111,7 @@ fun HomeScreen(
                 onDismissRequest = { setShowAlertDialogHomeScreen(false) },
                 onDismissButtonClicked = { setShowAlertDialogHomeScreen(false) },
                 onConfirmButtonClicked = {
-                    setShowToastState(true)
+                    setShowToastState(transactionToastMessage, true)
                     deleteTransaction(transaction)
                     setShowAlertDialogHomeScreen(false)
                     getTransactions()
@@ -118,11 +122,11 @@ fun HomeScreen(
             showAlertDialogComponent(
                 showAlert = showAlertDialogHomeScreenProduct,
                 title = stringResource(R.string.my_store_registry_removal),
-                alertDialogMessage = stringResource(R.string.my_store_removal_confirmation),
+                alertDialogMessage = stringResource(R.string.my_store_removal_product_confirmation),
                 onDismissRequest = { setShowAlertDialogHomeScreenProduct(false) },
                 onDismissButtonClicked = { setShowAlertDialogHomeScreenProduct(false) },
                 onConfirmButtonClicked = {
-                    setShowToastState(true) // TODO: Passar mensagem para o Toast
+                    setShowToastState(productToastMessage, true)
                     deleteProduct(product)
                     setShowAlertDialogHomeScreenProduct(false)
                     getListOfProducts()
@@ -239,7 +243,7 @@ fun HomeScreen(
                 ),
                 screen = Screens.HOME,
             )
-            setShowToastState(false)
+            setShowToastState(productToastMessage, false)
         }
     }
 }

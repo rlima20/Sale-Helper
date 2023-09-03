@@ -43,15 +43,6 @@ import com.example.mystore.ui.components.commons.TextFormattedComponent
 import com.example.mystore.ui.components.commons.getPainter
 import com.example.mystore.viewmodel.screen.RegisterProductViewModel
 
-// Todo - limpar estados ao sair da tela
-// Todo - Quando clicar na imagem (placeholder) abrir um Dialog para digitar a URL da imagem
-// Todo - Tratar erro de URL inválida. Quando a URL for inválida, exibir uma mensagem de erro no AlertDialog
-// Todo - Remover o ícone de olho quando está na tela de cadastro de produto
-// Todo - Botão de salvar (Fazer o update)
-// Todo - OnlongClick no produto (Corrigir a mensagem no AlertDialog)
-// Todo - Aumentar em 8.dp o padding bottom da seção de Produto
-// Todo - Refactoring
-
 @Composable
 fun RegisterProductScreen(
     product: Product = Product(),
