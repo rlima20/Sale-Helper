@@ -113,3 +113,6 @@ fun TransactionType.colorTransactionType() =
     }
 
 fun Int.setItemSize() = ((this - 16) / 2).dp
+
+fun Int.setQuantifierSize() = ((this - 74) / 2).dp
+

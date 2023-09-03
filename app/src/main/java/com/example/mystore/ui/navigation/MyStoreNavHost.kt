@@ -22,12 +22,14 @@ fun MyStoreNavHost(
     homeViewModel: HomeViewModel,
     registerTransactionViewModel: RegisterTransactionViewModel,
     registerProductViewModel: RegisterProductViewModel,
-
+    isEditMode: Boolean,
+    product: Product,
     shouldItemBeVisible: Boolean,
     onExpandBottomBar: (Boolean) -> Unit = {},
     onShowBottomBarExpanded: (sales: Double, purchase: Double) -> Unit = { _: Double, _: Double -> },
     onProductClick: (product: Product) -> Unit = {},
     onProductDoubleClick: () -> Unit = {},
+    onEditMode: (Boolean, Product) -> Unit = { _, _ -> },
 ) {
     var clearStates = false
     NavHost(
@@ -47,6 +49,9 @@ fun MyStoreNavHost(
                 onEmptyStateImageClicked = {
                     navController.navigateSingleTopTo(it)
                 },
+                onEditMode = { isEditMode, product ->
+                    onEditMode(isEditMode, product)
+                },
             )
         }
 
@@ -55,6 +60,8 @@ fun MyStoreNavHost(
             clearStates = true
             onExpandBottomBar(false)
             RegisterProductScreen(
+                product = product,
+                isEditMode = isEditMode,
                 registerProductViewModel = registerProductViewModel,
             )
         }

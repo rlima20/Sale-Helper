@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -19,6 +20,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
@@ -31,7 +33,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.mystore.R
 import com.example.mystore.model.Product
-import com.example.mystore.setItemSize
+import com.example.mystore.setQuantifierSize
 import com.example.mystore.ui.components.commons.FloatingActionButton
 import com.example.mystore.ui.components.commons.ImageComponent
 import com.example.mystore.ui.components.commons.OutLinedTextFieldComponent
@@ -41,11 +43,19 @@ import com.example.mystore.ui.components.commons.TextFormattedComponent
 import com.example.mystore.ui.components.commons.getPainter
 import com.example.mystore.viewmodel.screen.RegisterProductViewModel
 
+// Todo - limpar estados ao sair da tela
+// Todo - Quando clicar na imagem (placeholder) abrir um Dialog para digitar a URL da imagem
+// Todo - Tratar erro de URL inválida. Quando a URL for inválida, exibir uma mensagem de erro no AlertDialog
+// Todo - Remover o ícone de olho quando está na tela de cadastro de produto
+// Todo - Botão de salvar (Fazer o update)
+// Todo - OnlongClick no produto (Corrigir a mensagem no AlertDialog)
+// Todo - Aumentar em 8.dp o padding bottom da seção de Produto
+// Todo - Refactoring
+
 @Composable
 fun RegisterProductScreen(
     product: Product = Product(),
     isEditMode: Boolean = true,
-    shouldItemBeVisible: Boolean = true,
     registerProductViewModel: RegisterProductViewModel,
 ) {
     registerProductViewModel.setScreenWidth(LocalConfiguration.current.screenWidthDp)
@@ -106,12 +116,12 @@ fun RegisterProductScreenBody(
     }
     val descriptionLabel = stringResource(id = R.string.my_store_product_description)
     val descriptionKeyboardController = LocalSoftwareKeyboardController.current
-    val desciptionFocusManager = LocalFocusManager.current
+    val descriptionFocusManager = LocalFocusManager.current
     OutLinedTextFieldComponent(
         selectedText = descriptionSelectedText,
         label = descriptionLabel,
         keyboardController = descriptionKeyboardController,
-        focusManager = desciptionFocusManager,
+        focusManager = descriptionFocusManager,
         onValueChanged = { descriptionSelectedText = it },
     )
 
@@ -167,7 +177,7 @@ fun RegisterProductScreenBody(
             var quantity by remember { mutableStateOf(product.quantity) }
             Quantifier(
                 modifier = Modifier
-                    .width(screenWidth.setItemSize())
+                    .width(screenWidth.setQuantifierSize())
                     .padding(start = 8.dp, end = 4.dp),
                 enabled = false,
                 quantity = quantity,
@@ -185,26 +195,33 @@ fun RegisterProductScreenBody(
             }
             Quantifier(
                 modifier = Modifier
-                    .width(screenWidth.setItemSize())
+                    .width(screenWidth.setQuantifierSize())
                     .padding(start = 4.dp, end = 8.dp),
                 quantity = maxQuantityToBuy,
                 onQuantifierChange = { maxQuantityToBuy = it },
             )
         }
-    }
 
-    // Save button
-    Box(modifier = Modifier.padding(end = 22.dp)) {
-        FloatingActionButton(
-            enabled = true,
-            modifier = Modifier.size(36.dp),
-            colorId = if (true) {
-                R.color.color_50
-            } else {
-                R.color.color_400
-            },
-            onClick = {},
-        )
+        // Save button
+        Box(
+            contentAlignment = Alignment.BottomEnd,
+            modifier = Modifier
+                .offset(y = (12).dp)
+                .height(56.dp)
+                .fillMaxWidth()
+                .padding(top = 8.dp),
+        ) {
+            FloatingActionButton(
+                enabled = true,
+                modifier = Modifier.size(36.dp),
+                colorId = if (true) {
+                    R.color.color_50
+                } else {
+                    R.color.color_400
+                },
+                onClick = {},
+            )
+        }
     }
 }
 

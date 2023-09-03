@@ -19,6 +19,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
 import com.example.mystore.AppApplication
 import com.example.mystore.R
+import com.example.mystore.model.Product
 import com.example.mystore.navigateSingleTopTo
 import com.example.mystore.ui.components.commons.BottomBarComponent
 import com.example.mystore.ui.components.commons.TopBarComponent
@@ -76,6 +77,8 @@ fun MyStoreApp(
         var expandedBottomBar: Boolean by remember { mutableStateOf(false) }
         var totalAmountOfSales: Double by remember { mutableStateOf(0.0) }
         var totalAmountOfPurchases: Double by remember { mutableStateOf(0.0) }
+        var isEditMode: Boolean by remember { mutableStateOf(false) }
+        var product: Product by remember { mutableStateOf(Product()) }
 
         Scaffold(
             topBar = {
@@ -102,17 +105,19 @@ fun MyStoreApp(
                     onChangeTextFieldSize = { size -> myStoreViewModel.setTextFieldSize(size) },
                 )
             },
-            content = {
+            content = { content ->
                 MyStoreNavHost(
                     navController = navController,
                     modifier = Modifier
                         .fillMaxSize()
                         .background(colorResource(id = R.color.color_400))
-                        .padding(it),
+                        .padding(content),
                     homeViewModel = homeViewModel,
                     registerTransactionViewModel = registerTransactionViewModel,
                     registerProductViewModel = registerProductViewModel,
                     shouldItemBeVisible = shouldItemBeVisible,
+                    isEditMode = isEditMode,
+                    product = product,
                     onExpandBottomBar = { shouldExpandBottomBar ->
                         expandedBottomBar = shouldExpandBottomBar
                     },
@@ -122,6 +127,10 @@ fun MyStoreApp(
                     },
                     onProductClick = { navController.navigateSingleTopTo(RegisterProductScreen.route) },
                     onProductDoubleClick = {},
+                    onEditMode = { first, second ->
+                        isEditMode = first
+                        product = second
+                    },
                 )
             },
             bottomBar = {
