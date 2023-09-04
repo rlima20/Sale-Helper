@@ -1,6 +1,11 @@
 package com.example.mystore.ui.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -31,7 +36,9 @@ fun MyStoreNavHost(
     onProductDoubleClick: () -> Unit = {},
     onEditMode: (Boolean, Product) -> Unit = { _, _ -> },
 ) {
-    var clearStates = false
+    var clearStates by remember { mutableStateOf(false) }
+    var clearProductStates by remember { mutableStateOf(false) }
+
     NavHost(
         navController = navController,
         startDestination = HomeScreen.route,
@@ -40,6 +47,7 @@ fun MyStoreNavHost(
         // Navega para a HomeScreen
         composable(route = HomeScreen.route) {
             clearStates = true
+            clearProductStates = true
             onExpandBottomBar(false)
             HomeScreen(
                 homeViewModel = homeViewModel,
@@ -55,22 +63,12 @@ fun MyStoreNavHost(
             )
         }
 
-        // Navega para a RegisterProductScreen
-        composable(route = RegisterProductScreen.route) {
-            clearStates = true
-            onExpandBottomBar(false)
-            RegisterProductScreen(
-                product = product,
-                isEditMode = isEditMode,
-                registerProductViewModel = registerProductViewModel,
-            )
-        }
-
         // Navega para a ConsolidatedPositionScreen
         composable(route = ConsolidatedPositionScreen.route) {
             homeViewModel.getListOfSales()
             homeViewModel.getListOfPurchases()
             clearStates = true
+            clearProductStates = true
             ConsolidatedPositionScreen(
                 homeViewModel = homeViewModel,
                 shouldItemBeVisible = shouldItemBeVisible,
@@ -94,11 +92,25 @@ fun MyStoreNavHost(
         // Navega para a RegisterTransactionScreen
         composable(route = RegisterTransactionScreen.route) {
             onExpandBottomBar(false)
+            clearProductStates = true
             RegisterTransactionScreen(
                 registerTransactionViewModel = registerTransactionViewModel,
                 shouldItemBeVisible = shouldItemBeVisible,
                 clearAllStates = clearStates,
                 onClearAllStates = { clearStates = it },
+            )
+        }
+
+        // Navega para a RegisterProductScreen
+        composable(route = RegisterProductScreen.route) {
+            clearStates = true
+            onExpandBottomBar(false)
+            RegisterProductScreen(
+                product = product,
+                isEditMode = isEditMode,
+                registerProductViewModel = registerProductViewModel,
+                stateCleared = clearProductStates,
+                onClearStates = { clearProductStates = it },
             )
         }
     }

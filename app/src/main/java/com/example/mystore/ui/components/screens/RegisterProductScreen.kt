@@ -16,10 +16,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -33,6 +29,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.mystore.R
 import com.example.mystore.model.Product
+import com.example.mystore.model.RegisterProductProps
 import com.example.mystore.setQuantifierSize
 import com.example.mystore.ui.components.commons.FloatingActionButton
 import com.example.mystore.ui.components.commons.ImageComponent
@@ -48,21 +45,46 @@ fun RegisterProductScreen(
     product: Product = Product(),
     isEditMode: Boolean = true,
     registerProductViewModel: RegisterProductViewModel,
+    stateCleared: Boolean,
+    onClearStates: (Boolean) -> Unit,
 ) {
     registerProductViewModel.setScreenWidth(LocalConfiguration.current.screenWidthDp)
-    val screenWidth by registerProductViewModel.screenWidth.collectAsState()
 
-    ScreenSectionComponent(
-        title = stringResource(id = R.string.my_store_product_2).setTitle(isEditMode),
-        body = {
-            RegisterProductScreenBody(
-                product = product,
-                screenWidth = screenWidth,
-                isEditMode = isEditMode,
-                registerProductViewModel = registerProductViewModel,
-            )
-        },
-    )
+    with(registerProductViewModel) {
+        val props = RegisterProductProps(
+            screenWidth = screenWidth.collectAsState().value,
+            titleSelectedText = titleSelectedText.collectAsState().value,
+            descriptionSelectedText = descriptionSelectedText.collectAsState().value,
+            purchasePriceSelectedText = purchasePriceSelectedText.collectAsState().value,
+            salePriceSelectedText = salePriceSelectedText.collectAsState().value,
+            quantity = quantity.collectAsState().value,
+            maxQuantityToBuy = maxQuantityToBuy.collectAsState().value,
+        )
+
+        ScreenSectionComponent(
+            title = stringResource(id = R.string.my_store_product_2).setTitle(isEditMode),
+            body = {
+                setInitialState(stateCleared)
+                RegisterProductScreenBody(
+                    product = product,
+                    screenWidth = props.screenWidth,
+                    isEditMode = isEditMode,
+                    registerProductViewModel = registerProductViewModel,
+                    props = RegisterProductProps(
+                        screenWidth = screenWidth.collectAsState().value,
+                        titleSelectedText = titleSelectedText.collectAsState().value,
+                        descriptionSelectedText = descriptionSelectedText.collectAsState().value,
+                        purchasePriceSelectedText = purchasePriceSelectedText.collectAsState().value,
+                        salePriceSelectedText = salePriceSelectedText.collectAsState().value,
+                        quantity = quantity.collectAsState().value,
+                        maxQuantityToBuy = maxQuantityToBuy.collectAsState().value,
+                    ),
+                    stateCleared = stateCleared,
+                    onClearStates = { onClearStates(it) },
+                )
+            },
+        )
+    }
 }
 
 // Dropdown TransactionType
@@ -73,6 +95,9 @@ fun RegisterProductScreenBody(
     screenWidth: Int,
     isEditMode: Boolean = false,
     registerProductViewModel: RegisterProductViewModel,
+    props: RegisterProductProps,
+    stateCleared: Boolean,
+    onClearStates: (Boolean) -> Unit,
 ) {
     // Image Section
     ImageSection(
@@ -89,72 +114,78 @@ fun RegisterProductScreenBody(
     )
 
     // Title
-    var titleSelectedText by remember { mutableStateOf(if (isEditMode) product.title else "") }
     val titleLabel = stringResource(id = R.string.my_store_product_title)
     val titleKeyboardController = LocalSoftwareKeyboardController.current
     val titleFocusManager = LocalFocusManager.current
     OutLinedTextFieldComponent(
-        selectedText = titleSelectedText,
+        selectedText = if (isEditMode && !stateCleared) product.title else props.titleSelectedText,
         label = titleLabel,
         keyboardController = titleKeyboardController,
         focusManager = titleFocusManager,
-        onValueChanged = { titleSelectedText = it },
+        onValueChanged = { registerProductViewModel.setTitleSelectedText(it) },
     )
 
     // Description
-    var descriptionSelectedText by remember {
-        mutableStateOf(if (isEditMode) product.description else "")
-    }
     val descriptionLabel = stringResource(id = R.string.my_store_product_description)
     val descriptionKeyboardController = LocalSoftwareKeyboardController.current
     val descriptionFocusManager = LocalFocusManager.current
     OutLinedTextFieldComponent(
-        selectedText = descriptionSelectedText,
+        selectedText = if (isEditMode && !stateCleared) {
+            product.description
+        } else {
+            props
+                .descriptionSelectedText
+        },
         label = descriptionLabel,
         keyboardController = descriptionKeyboardController,
         focusManager = descriptionFocusManager,
-        onValueChanged = { descriptionSelectedText = it },
+        onValueChanged = { registerProductViewModel.setDescriptionSelectedText(it) },
     )
 
     // Purchase Price
-    var purchasePriceSelectedText by remember {
-        mutableStateOf(setInitialState(isEditMode, product.purchasePrice))
-    }
     val purchasePriceLabel = stringResource(id = R.string.my_store_product_purchase_price)
     val purchasePriceKeyboardController = LocalSoftwareKeyboardController.current
     val purchasePriceFocusManager = LocalFocusManager.current
     OutLinedTextFieldComponent(
-        selectedText = purchasePriceSelectedText,
+        selectedText = if (isEditMode && !stateCleared) {
+            product.purchasePrice.toString()
+        } else {
+            props
+                .purchasePriceSelectedText
+        },
         label = purchasePriceLabel,
         keyboardController = purchasePriceKeyboardController,
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
         focusManager = purchasePriceFocusManager,
-        onValueChanged = {
-            purchasePriceSelectedText = it.removeCurrency()
-        },
+        onValueChanged = { registerProductViewModel.setPurchasePriceSelectedText(it.removeCurrency()) },
         onDone = {
-            purchasePriceSelectedText = purchasePriceSelectedText.removeCurrency().addCurrency()
+            registerProductViewModel.setPurchasePriceSelectedText(
+                props.purchasePriceSelectedText.removeCurrency()
+                    .addCurrency(),
+            )
         },
     )
 
     // Sale Price
-    var salePriceSelectedText by remember {
-        mutableStateOf(setInitialState(isEditMode, product.salePrice))
-    }
     val salePriceLabel = stringResource(id = R.string.my_store_product_sell_price)
     val salePriceKeyboardController = LocalSoftwareKeyboardController.current
     val salePriceFocusManager = LocalFocusManager.current
     OutLinedTextFieldComponent(
-        selectedText = salePriceSelectedText,
+        selectedText = if (isEditMode && !stateCleared) {
+            product.salePrice.toString()
+        } else {
+            props
+                .salePriceSelectedText
+        },
         label = salePriceLabel,
         keyboardController = salePriceKeyboardController,
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
         focusManager = salePriceFocusManager,
-        onValueChanged = {
-            salePriceSelectedText = it.removeCurrency()
-        },
+        onValueChanged = { registerProductViewModel.setSalePriceSelectedText(it.removeCurrency()) },
         onDone = {
-            salePriceSelectedText = salePriceSelectedText.removeCurrency().addCurrency()
+            registerProductViewModel.setSalePriceSelectedText(
+                props.salePriceSelectedText.removeCurrency().addCurrency(),
+            )
         },
     )
 
@@ -165,14 +196,13 @@ fun RegisterProductScreenBody(
                 leftSideText = stringResource(id = R.string.my_store_product_quantity),
                 fontSize = 18.sp,
             )
-            var quantity by remember { mutableStateOf(product.quantity) }
             Quantifier(
                 modifier = Modifier
                     .width(screenWidth.setQuantifierSize())
                     .padding(start = 8.dp, end = 4.dp),
                 enabled = false,
-                quantity = quantity,
-                onQuantifierChange = { quantity = it },
+                quantity = props.quantity,
+                onQuantifierChange = { registerProductViewModel.setQuantity(it) },
             )
         }
         Column {
@@ -181,15 +211,20 @@ fun RegisterProductScreenBody(
                 leftSideText = "Qty Max",
                 fontSize = 18.sp,
             )
-            var maxQuantityToBuy by remember {
-                mutableStateOf(if (isEditMode) product.maxQuantityToBuy else 0)
-            }
+            registerProductViewModel.setMaxQuantityToBuy(
+                if (isEditMode && !stateCleared) {
+                    product
+                        .maxQuantityToBuy
+                } else {
+                    0
+                },
+            )
             Quantifier(
                 modifier = Modifier
                     .width(screenWidth.setQuantifierSize())
                     .padding(start = 4.dp, end = 8.dp),
-                quantity = maxQuantityToBuy,
-                onQuantifierChange = { maxQuantityToBuy = it },
+                quantity = props.maxQuantityToBuy,
+                onQuantifierChange = { registerProductViewModel.setMaxQuantityToBuy(it) },
             )
         }
 
@@ -210,10 +245,13 @@ fun RegisterProductScreenBody(
                 } else {
                     R.color.color_400
                 },
-                onClick = {},
+                onClick = {
+                    // todo - clearAll
+                },
             )
         }
     }
+    onClearStates(false)
 }
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -240,6 +278,36 @@ fun ImageSection(
                     registerProductViewModel.setImageRequestState(it)
                 },
             ),
+        )
+    }
+}
+
+private fun clearAllFields(
+    onClearTitleSelectedText: () -> Unit,
+    onClearDescriptionSelectedText: () -> Unit,
+    onClearPurchasePriceSelectedText: () -> Unit,
+    onClearSalePriceSelectedText: () -> Unit,
+    onClearQuantity: () -> Unit,
+    onClearMaxQuantityToBuy: () -> Unit,
+) {
+    onClearTitleSelectedText()
+    onClearDescriptionSelectedText()
+    onClearPurchasePriceSelectedText()
+    onClearSalePriceSelectedText()
+    onClearQuantity()
+    onClearMaxQuantityToBuy()
+}
+
+@Composable
+fun setInitialState(clearAllStates: Boolean = false) {
+    if (clearAllStates) {
+        clearAllFields(
+            onClearTitleSelectedText = { "" },
+            onClearDescriptionSelectedText = {},
+            onClearPurchasePriceSelectedText = {},
+            onClearSalePriceSelectedText = {},
+            onClearQuantity = {},
+            onClearMaxQuantityToBuy = {},
         )
     }
 }
