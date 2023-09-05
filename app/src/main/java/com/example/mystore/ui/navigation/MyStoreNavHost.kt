@@ -34,6 +34,7 @@ fun MyStoreNavHost(
     onProductClick: (product: Product) -> Unit = {},
     onProductDoubleClick: () -> Unit = {},
     onEditMode: (Boolean, Product) -> Unit = { _, _ -> },
+    onShouldDisplayIcon: (Boolean) -> Unit = {},
 ) {
     var transactionClearStates by remember { mutableStateOf(false) }
     var productClearStates by remember { mutableStateOf(false) }
@@ -48,6 +49,7 @@ fun MyStoreNavHost(
             transactionClearStates = true
             productClearStates = true
             onExpandBottomBar(false)
+            onShouldDisplayIcon(true)
             HomeScreen(
                 homeViewModel = homeViewModel,
                 shouldItemBeVisible = shouldItemBeVisible,
@@ -68,6 +70,7 @@ fun MyStoreNavHost(
             homeViewModel.getListOfPurchases()
             transactionClearStates = true
             productClearStates = true
+            onShouldDisplayIcon(true)
             ConsolidatedPositionScreen(
                 homeViewModel = homeViewModel,
                 shouldItemBeVisible = shouldItemBeVisible,
@@ -92,6 +95,7 @@ fun MyStoreNavHost(
         composable(route = RegisterTransactionScreen.route) {
             onExpandBottomBar(false)
             productClearStates = true
+            onShouldDisplayIcon(true)
             RegisterTransactionScreen(
                 registerTransactionViewModel = registerTransactionViewModel,
                 shouldItemBeVisible = shouldItemBeVisible,
@@ -104,6 +108,7 @@ fun MyStoreNavHost(
         composable(route = RegisterProductScreen.route) {
             transactionClearStates = true
             onExpandBottomBar(false)
+            onShouldDisplayIcon(false)
             RegisterProductScreen(
                 product = product,
                 isEditMode = isEditMode,

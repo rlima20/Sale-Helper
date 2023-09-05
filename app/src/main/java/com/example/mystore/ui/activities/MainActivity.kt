@@ -79,6 +79,7 @@ fun MyStoreApp(
         var totalAmountOfPurchases: Double by remember { mutableStateOf(0.0) }
         var isEditMode: Boolean by remember { mutableStateOf(false) }
         var product: Product by remember { mutableStateOf(Product()) }
+        var shouldDisplayIcon: Boolean by remember { mutableStateOf(true) }
 
         Scaffold(
             topBar = {
@@ -87,6 +88,7 @@ fun MyStoreApp(
                     shouldItemBeVisible = shouldItemBeVisible,
                     isMenuExpanded = isMenuExpanded,
                     textFieldSize = textFieldSize,
+                    shouldDisplayIcon = shouldDisplayIcon,
                     onIconVisibilityClicked = {
                         myStoreViewModel.setValueVisibility(!shouldItemBeVisible)
                     },
@@ -130,6 +132,9 @@ fun MyStoreApp(
                     onEditMode = { first, second ->
                         isEditMode = first
                         product = second
+                    },
+                    onShouldDisplayIcon = { shouldDisplay ->
+                        shouldDisplayIcon = shouldDisplay
                     },
                 )
             },
