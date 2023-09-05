@@ -215,9 +215,9 @@ fun HomeScreen(
                                 onImageRequestState = { state ->
                                     setImageRequestState(state)
                                 },
-                                onProductClick = {
-                                    onEditMode(true, it)
-                                    onProductClick(it)
+                                onProductClick = { product ->
+                                    onEditMode(true, product)
+                                    onProductClick(product)
                                 },
                                 onProductLongClick = {
                                     setShowAlertDialogHomeScreenProduct(true)

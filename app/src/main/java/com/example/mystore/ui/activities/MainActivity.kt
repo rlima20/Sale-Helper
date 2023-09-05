@@ -149,6 +149,8 @@ fun MyStoreApp(
                         myStoreViewModel.setScreenTitle(
                             application.getString(R.string.my_store_register_product),
                         )
+                        isEditMode = false
+                        product = Product()
                         navController.navigateSingleTopTo(RegisterProductScreen.route)
                     },
                     onRegisterTransactionIconClicked = {

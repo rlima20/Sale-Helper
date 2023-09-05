@@ -43,12 +43,24 @@ import com.example.mystore.viewmodel.screen.RegisterProductViewModel
 @Composable
 fun RegisterProductScreen(
     product: Product = Product(),
-    isEditMode: Boolean = true,
+    isEditMode: Boolean,
     registerProductViewModel: RegisterProductViewModel,
     stateCleared: Boolean,
     onClearStates: (Boolean) -> Unit,
+    onEditMode: (Boolean, Product) -> Unit,
 ) {
+/*    if (stateCleared) {
+        registerProductViewModel.setTitleSelectedText("")
+        registerProductViewModel.setDescriptionSelectedText("")
+        registerProductViewModel.setPurchasePriceSelectedText("")
+        registerProductViewModel.setPurchasePriceSelectedText("")
+        registerProductViewModel.setQuantity(0)
+        registerProductViewModel.setMaxQuantityToBuy(9)
+    }*/
+    // onClearStates(false)
+
     registerProductViewModel.setScreenWidth(LocalConfiguration.current.screenWidthDp)
+    // setInitialState(stateCleared, registerProductViewModel)
 
     with(registerProductViewModel) {
         val props = RegisterProductProps(
@@ -64,7 +76,6 @@ fun RegisterProductScreen(
         ScreenSectionComponent(
             title = stringResource(id = R.string.my_store_product_2).setTitle(isEditMode),
             body = {
-                setInitialState(stateCleared)
                 RegisterProductScreenBody(
                     product = product,
                     screenWidth = props.screenWidth,
@@ -79,8 +90,8 @@ fun RegisterProductScreen(
                         quantity = quantity.collectAsState().value,
                         maxQuantityToBuy = maxQuantityToBuy.collectAsState().value,
                     ),
-                    stateCleared = stateCleared,
-                    onClearStates = { onClearStates(it) },
+                    onClearStates = { onClearStates(false) },
+                    // onClearStates = { onClearStates(false) },
                 )
             },
         )
@@ -96,7 +107,6 @@ fun RegisterProductScreenBody(
     isEditMode: Boolean = false,
     registerProductViewModel: RegisterProductViewModel,
     props: RegisterProductProps,
-    stateCleared: Boolean,
     onClearStates: (Boolean) -> Unit,
 ) {
     // Image Section
@@ -118,7 +128,7 @@ fun RegisterProductScreenBody(
     val titleKeyboardController = LocalSoftwareKeyboardController.current
     val titleFocusManager = LocalFocusManager.current
     OutLinedTextFieldComponent(
-        selectedText = if (isEditMode && !stateCleared) product.title else props.titleSelectedText,
+        selectedText = if (isEditMode) product.title else props.titleSelectedText,
         label = titleLabel,
         keyboardController = titleKeyboardController,
         focusManager = titleFocusManager,
@@ -130,7 +140,7 @@ fun RegisterProductScreenBody(
     val descriptionKeyboardController = LocalSoftwareKeyboardController.current
     val descriptionFocusManager = LocalFocusManager.current
     OutLinedTextFieldComponent(
-        selectedText = if (isEditMode && !stateCleared) {
+        selectedText = if (isEditMode) {
             product.description
         } else {
             props
@@ -147,7 +157,7 @@ fun RegisterProductScreenBody(
     val purchasePriceKeyboardController = LocalSoftwareKeyboardController.current
     val purchasePriceFocusManager = LocalFocusManager.current
     OutLinedTextFieldComponent(
-        selectedText = if (isEditMode && !stateCleared) {
+        selectedText = if (isEditMode) {
             product.purchasePrice.toString()
         } else {
             props
@@ -171,7 +181,7 @@ fun RegisterProductScreenBody(
     val salePriceKeyboardController = LocalSoftwareKeyboardController.current
     val salePriceFocusManager = LocalFocusManager.current
     OutLinedTextFieldComponent(
-        selectedText = if (isEditMode && !stateCleared) {
+        selectedText = if (isEditMode) {
             product.salePrice.toString()
         } else {
             props
@@ -201,7 +211,7 @@ fun RegisterProductScreenBody(
                     .width(screenWidth.setQuantifierSize())
                     .padding(start = 8.dp, end = 4.dp),
                 enabled = false,
-                quantity = props.quantity,
+                quantity = if (isEditMode) product.quantity else props.quantity,
                 onQuantifierChange = { registerProductViewModel.setQuantity(it) },
             )
         }
@@ -212,7 +222,7 @@ fun RegisterProductScreenBody(
                 fontSize = 18.sp,
             )
             registerProductViewModel.setMaxQuantityToBuy(
-                if (isEditMode && !stateCleared) {
+                if (isEditMode) {
                     product
                         .maxQuantityToBuy
                 } else {
@@ -251,7 +261,7 @@ fun RegisterProductScreenBody(
             )
         }
     }
-    onClearStates(false)
+    // onClearStates(false) // todo - esse não é o melhor lugar de chamar esse lambda
 }
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -299,16 +309,21 @@ private fun clearAllFields(
 }
 
 @Composable
-fun setInitialState(clearAllStates: Boolean = false) {
-    if (clearAllStates) {
-        clearAllFields(
-            onClearTitleSelectedText = { "" },
-            onClearDescriptionSelectedText = {},
-            onClearPurchasePriceSelectedText = {},
-            onClearSalePriceSelectedText = {},
-            onClearQuantity = {},
-            onClearMaxQuantityToBuy = {},
-        )
+fun setInitialState(
+    statesCleared: Boolean,
+    registerProductViewModel: RegisterProductViewModel,
+) {
+    with(registerProductViewModel) {
+        if (statesCleared) {
+            clearAllFields(
+                onClearTitleSelectedText = { setTitleSelectedText("") },
+                onClearDescriptionSelectedText = { setDescriptionSelectedText("") },
+                onClearPurchasePriceSelectedText = { setPurchasePriceSelectedText("") },
+                onClearSalePriceSelectedText = { setPurchasePriceSelectedText("") },
+                onClearQuantity = { setQuantity(0) },
+                onClearMaxQuantityToBuy = { setMaxQuantityToBuy(9) },
+            )
+        }
     }
 }
 
