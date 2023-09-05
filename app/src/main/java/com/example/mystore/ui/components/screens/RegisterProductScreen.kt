@@ -45,24 +45,11 @@ fun RegisterProductScreen(
     product: Product = Product(),
     isEditMode: Boolean,
     registerProductViewModel: RegisterProductViewModel,
-    stateCleared: Boolean,
     onClearStates: (Boolean) -> Unit,
-    onEditMode: (Boolean, Product) -> Unit,
 ) {
-/*    if (stateCleared) {
-        registerProductViewModel.setTitleSelectedText("")
-        registerProductViewModel.setDescriptionSelectedText("")
-        registerProductViewModel.setPurchasePriceSelectedText("")
-        registerProductViewModel.setPurchasePriceSelectedText("")
-        registerProductViewModel.setQuantity(0)
-        registerProductViewModel.setMaxQuantityToBuy(9)
-    }*/
-    // onClearStates(false)
-
-    registerProductViewModel.setScreenWidth(LocalConfiguration.current.screenWidthDp)
-    // setInitialState(stateCleared, registerProductViewModel)
-
     with(registerProductViewModel) {
+        setScreenWidth(LocalConfiguration.current.screenWidthDp)
+
         val props = RegisterProductProps(
             screenWidth = screenWidth.collectAsState().value,
             titleSelectedText = titleSelectedText.collectAsState().value,
@@ -90,9 +77,8 @@ fun RegisterProductScreen(
                         quantity = quantity.collectAsState().value,
                         maxQuantityToBuy = maxQuantityToBuy.collectAsState().value,
                     ),
-                    onClearStates = { onClearStates(false) },
-                    // onClearStates = { onClearStates(false) },
                 )
+                onClearStates(false)
             },
         )
     }
@@ -107,7 +93,6 @@ fun RegisterProductScreenBody(
     isEditMode: Boolean = false,
     registerProductViewModel: RegisterProductViewModel,
     props: RegisterProductProps,
-    onClearStates: (Boolean) -> Unit,
 ) {
     // Image Section
     ImageSection(
@@ -140,12 +125,7 @@ fun RegisterProductScreenBody(
     val descriptionKeyboardController = LocalSoftwareKeyboardController.current
     val descriptionFocusManager = LocalFocusManager.current
     OutLinedTextFieldComponent(
-        selectedText = if (isEditMode) {
-            product.description
-        } else {
-            props
-                .descriptionSelectedText
-        },
+        selectedText = product.description,
         label = descriptionLabel,
         keyboardController = descriptionKeyboardController,
         focusManager = descriptionFocusManager,
@@ -157,21 +137,18 @@ fun RegisterProductScreenBody(
     val purchasePriceKeyboardController = LocalSoftwareKeyboardController.current
     val purchasePriceFocusManager = LocalFocusManager.current
     OutLinedTextFieldComponent(
-        selectedText = if (isEditMode) {
-            product.purchasePrice.toString()
-        } else {
-            props
-                .purchasePriceSelectedText
-        },
+        selectedText = product.purchasePrice.toString(),
         label = purchasePriceLabel,
         keyboardController = purchasePriceKeyboardController,
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
         focusManager = purchasePriceFocusManager,
-        onValueChanged = { registerProductViewModel.setPurchasePriceSelectedText(it.removeCurrency()) },
+        onValueChanged = {
+            registerProductViewModel.setPurchasePriceSelectedText(it.removeCurrencyToProductValue())
+        },
         onDone = {
             registerProductViewModel.setPurchasePriceSelectedText(
-                props.purchasePriceSelectedText.removeCurrency()
-                    .addCurrency(),
+                props.purchasePriceSelectedText.removeCurrencyToProductValue()
+                    .addCurrencyToProductValue(),
             )
         },
     )
@@ -181,20 +158,18 @@ fun RegisterProductScreenBody(
     val salePriceKeyboardController = LocalSoftwareKeyboardController.current
     val salePriceFocusManager = LocalFocusManager.current
     OutLinedTextFieldComponent(
-        selectedText = if (isEditMode) {
-            product.salePrice.toString()
-        } else {
-            props
-                .salePriceSelectedText
-        },
+        selectedText = product.salePrice.toString(),
         label = salePriceLabel,
         keyboardController = salePriceKeyboardController,
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
         focusManager = salePriceFocusManager,
-        onValueChanged = { registerProductViewModel.setSalePriceSelectedText(it.removeCurrency()) },
+        onValueChanged = {
+            registerProductViewModel.setSalePriceSelectedText(it.removeCurrencyToProductValue())
+        },
         onDone = {
             registerProductViewModel.setSalePriceSelectedText(
-                props.salePriceSelectedText.removeCurrency().addCurrency(),
+                props.salePriceSelectedText.removeCurrencyToProductValue()
+                    .addCurrencyToProductValue(),
             )
         },
     )
@@ -211,24 +186,17 @@ fun RegisterProductScreenBody(
                     .width(screenWidth.setQuantifierSize())
                     .padding(start = 8.dp, end = 4.dp),
                 enabled = false,
-                quantity = if (isEditMode) product.quantity else props.quantity,
+                quantity = product.quantity,
                 onQuantifierChange = { registerProductViewModel.setQuantity(it) },
             )
         }
         Column {
             // Max Quantity To Buy
             TextFormattedComponent(
-                leftSideText = "Qty Max",
+                leftSideText = stringResource(id = R.string.my_store_product_max_quantity),
                 fontSize = 18.sp,
             )
-            registerProductViewModel.setMaxQuantityToBuy(
-                if (isEditMode) {
-                    product
-                        .maxQuantityToBuy
-                } else {
-                    0
-                },
-            )
+            registerProductViewModel.setMaxQuantityToBuy(product.maxQuantityToBuy)
             Quantifier(
                 modifier = Modifier
                     .width(screenWidth.setQuantifierSize())
@@ -261,7 +229,6 @@ fun RegisterProductScreenBody(
             )
         }
     }
-    // onClearStates(false) // todo - esse não é o melhor lugar de chamar esse lambda
 }
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -292,52 +259,12 @@ fun ImageSection(
     }
 }
 
-private fun clearAllFields(
-    onClearTitleSelectedText: () -> Unit,
-    onClearDescriptionSelectedText: () -> Unit,
-    onClearPurchasePriceSelectedText: () -> Unit,
-    onClearSalePriceSelectedText: () -> Unit,
-    onClearQuantity: () -> Unit,
-    onClearMaxQuantityToBuy: () -> Unit,
-) {
-    onClearTitleSelectedText()
-    onClearDescriptionSelectedText()
-    onClearPurchasePriceSelectedText()
-    onClearSalePriceSelectedText()
-    onClearQuantity()
-    onClearMaxQuantityToBuy()
-}
-
-@Composable
-fun setInitialState(
-    statesCleared: Boolean,
-    registerProductViewModel: RegisterProductViewModel,
-) {
-    with(registerProductViewModel) {
-        if (statesCleared) {
-            clearAllFields(
-                onClearTitleSelectedText = { setTitleSelectedText("") },
-                onClearDescriptionSelectedText = { setDescriptionSelectedText("") },
-                onClearPurchasePriceSelectedText = { setPurchasePriceSelectedText("") },
-                onClearSalePriceSelectedText = { setPurchasePriceSelectedText("") },
-                onClearQuantity = { setQuantity(0) },
-                onClearMaxQuantityToBuy = { setMaxQuantityToBuy(9) },
-            )
-        }
-    }
-}
-
 private fun String.setTitle(editMode: Boolean) =
     if (editMode) "$this | EDIÇÃO" else "$this | CRIAÇÃO"
 
-private fun setInitialState(
-    isEditMode: Boolean,
-    price: Double,
-) = if (isEditMode) price.toString().addCurrency() else "R$ 0.00"
+private fun String.removeCurrencyToProductValue() = this.replace("R$", "")
 
-fun String.removeCurrency() = this.replace("R$", "")
-
-fun String.addCurrency() = "R$ ${
+private fun String.addCurrencyToProductValue() = "R$ ${
     String.format("%.2f", this.replace(",", ".").toDouble())
         .replace(".", ",")
 }"

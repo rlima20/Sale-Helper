@@ -45,7 +45,6 @@ fun MyStoreNavHost(
     ) {
         // Navega para a HomeScreen
         composable(route = HomeScreen.route) {
-            // onEditMode(false, Product())
             transactionClearStates = true
             productClearStates = true
             onExpandBottomBar(false)
@@ -65,7 +64,6 @@ fun MyStoreNavHost(
 
         // Navega para a ConsolidatedPositionScreen
         composable(route = ConsolidatedPositionScreen.route) {
-            // onEditMode(false, Product())
             homeViewModel.getListOfSales()
             homeViewModel.getListOfPurchases()
             transactionClearStates = true
@@ -92,7 +90,6 @@ fun MyStoreNavHost(
 
         // Navega para a RegisterTransactionScreen
         composable(route = RegisterTransactionScreen.route) {
-            // onEditMode(false, Product())
             onExpandBottomBar(false)
             productClearStates = true
             RegisterTransactionScreen(
@@ -105,16 +102,13 @@ fun MyStoreNavHost(
 
         // Navega para a RegisterProductScreen
         composable(route = RegisterProductScreen.route) {
-            // onEditMode(true, Product()) // todo - o caminho é esse
             transactionClearStates = true
             onExpandBottomBar(false)
             RegisterProductScreen(
                 product = product,
                 isEditMode = isEditMode,
                 registerProductViewModel = registerProductViewModel,
-                stateCleared = productClearStates,
                 onClearStates = { productClearStates = it },
-                onEditMode = { isEditMode, product -> onEditMode(isEditMode, product) },
             )
         }
     }

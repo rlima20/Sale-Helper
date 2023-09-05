@@ -18,6 +18,7 @@
     <string name="my_store_date">Data: </string>
     <string name="my_store_quantity">Quantidade: </string>
     <string name="my_store_product_quantity">Quantidade</string>
+    <string name="my_store_product_max_quantity">Qte Max</string>
     <string name="my_store_amount">Montante: </string>
     <string name="my_store_sale_value">Valor da venda: </string>
     <string name="my_store_purchase_value">Valor da compra: </string>
