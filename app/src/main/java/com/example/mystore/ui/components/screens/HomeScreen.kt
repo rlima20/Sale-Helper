@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -40,6 +39,7 @@ import com.example.mystore.ui.components.commons.TextCurrencyComponent
 import com.example.mystore.ui.components.commons.ToastComponent
 import com.example.mystore.ui.components.commons.TransactionComponent
 import com.example.mystore.ui.components.commons.ValidateSection
+import com.example.mystore.ui.components.commons.showAlertDialogComponent
 import com.example.mystore.ui.components.commons.validateSection
 import com.example.mystore.viewmodel.screen.HomeViewModel
 
@@ -48,196 +48,203 @@ fun HomeScreen(
     homeViewModel: HomeViewModel,
     shouldItemBeVisible: Boolean,
     onProductClick: (product: Product) -> Unit = {},
-    onProductLongClick: () -> Unit = {},
     onProductDoubleClick: () -> Unit = {},
     onEmptyStateImageClicked: (route: String) -> Unit = {},
+    onEditMode: (Boolean, Product) -> Unit = { _, _ -> },
 ) {
-    homeViewModel.getResume()
-    homeViewModel.getListOfSales()
-    homeViewModel.getListOfPurchases()
-    homeViewModel.getShowAlertDialogHomeScreen()
+    with(homeViewModel) {
+        getResume()
+        getListOfSales()
+        getListOfPurchases()
+        getShowAlertDialogHomeScreen()
 
-    val resume by homeViewModel.resume.collectAsState()
-    val listOfProducts by homeViewModel.listOfProducts.collectAsState()
-    val listOfTransaction by homeViewModel.transactions.collectAsState()
-    val showAlertDialogHomeScreen by homeViewModel.showAlertDialogHomeScreen.collectAsState()
-    val showAlertDialogTransactionDetail by homeViewModel.showAlertDialogTransactionDetail
-        .collectAsState()
-    val showToast by homeViewModel.showToast.collectAsState()
-    val transaction by homeViewModel.transaction.collectAsState()
+        val resume by resume.collectAsState()
+        val listOfProducts by listOfProducts.collectAsState()
+        val listOfTransaction by transactions.collectAsState()
+        val showAlertDialogHomeScreen by showAlertDialogHomeScreen.collectAsState()
+        val showAlertDialogHomeScreenProduct by showAlertDialogHomeScreenProduct.collectAsState()
+        val showAlertDialogTransactionDetail by showAlertDialogTransactionDetail
+            .collectAsState()
+        val showToast by showToast.collectAsState()
+        val transaction by transaction.collectAsState()
+        val product by product.collectAsState()
 
-    if (showToast) {
-        ToastComponent(stringResource(R.string.my_store_successfull_transaction_removed))
-    }
+        val transactionToastMessage =
+            stringResource(R.string.my_store_successfull_transaction_removed)
+        val productToastMessage = stringResource(R.string.my_store_successfull_product_removed)
 
-    Column(
-        modifier = Modifier
-            .padding(top = 8.dp, bottom = 8.dp)
-            .verticalScroll(rememberScrollState()),
-    ) {
-        // AlertDialog with transaction details
-        if (showAlertDialogTransactionDetail) {
-            AlertDialogComponent(
-                size = Size(
-                    width = LocalConfiguration.current.screenWidthDp.dp.value * 1f,
-                    height = LocalConfiguration.current.screenHeightDp.dp.value * 0.7f,
-                ),
-                color = colorResource(id = R.color.color_transaparent),
-                content = {
-                    TransactionDetailsComponent(
-                        transaction = transaction,
-                        shouldItemBeVisible = shouldItemBeVisible,
-                        onCloseAlertDialogTransactionDetail = {
-                            homeViewModel.setShowAlertDialogTransactionDetail(false)
-                        },
-                    )
-                },
-                onDismissRequest = { homeViewModel.setShowAlertDialogTransactionDetail(false) },
-            )
+        if (showToast.second) {
+            ToastComponent(showToast.first)
         }
 
-        // AlertDialog with delete confirmation
-        if (showAlertDialogHomeScreen) {
-            AlertDialogComponent(
+        Column(
+            modifier = Modifier
+                .padding(bottom = 8.dp)
+                .verticalScroll(rememberScrollState()),
+        ) {
+            // AlertDialog with transaction details
+            if (showAlertDialogTransactionDetail) {
+                AlertDialogComponent(
+                    size = Size(
+                        width = LocalConfiguration.current.screenWidthDp.dp.value * 1f,
+                        height = LocalConfiguration.current.screenHeightDp.dp.value * 0.7f,
+                    ),
+                    color = colorResource(id = R.color.color_transaparent),
+                    content = {
+                        TransactionDetailsComponent(
+                            transaction = transaction,
+                            shouldItemBeVisible = shouldItemBeVisible,
+                            onCloseAlertDialogTransactionDetail = {
+                                setShowAlertDialogTransactionDetail(false)
+                            },
+                        )
+                    },
+                    onDismissRequest = { setShowAlertDialogTransactionDetail(false) },
+                )
+            }
+
+            // AlertDialog Transaction delete confirmation
+            showAlertDialogComponent(
+                showAlert = showAlertDialogHomeScreen,
                 title = stringResource(R.string.my_store_registry_removal),
-                content = {
-                    Text(
-                        text = stringResource(R.string.my_store_removal_confirmation),
-                        color = colorResource(id = R.color.color_700),
-                    )
-                },
-                onDismissRequest = { homeViewModel.setShowAlertDialogHomeScreen(false) },
-                confirmButton = {
-                    Button(onClick = {
-                        homeViewModel.setShowToastState(true)
-                        homeViewModel.deleteTransaction(transaction)
-                        homeViewModel.setShowAlertDialogHomeScreen(false)
-                        homeViewModel.getTransactions()
-                    }) {
-                        Text(
-                            text = stringResource(R.string.my_store_ok),
-                            color = colorResource(id = R.color.color_50),
-                        )
-                    }
-                },
-                dismissButton = {
-                    Button(onClick = {
-                        homeViewModel.setShowAlertDialogHomeScreen(false)
-                    }) {
-                        Text(
-                            text = stringResource(R.string.my_store_cancel),
-                            color = colorResource(id = R.color.color_50),
-                        )
-                    }
+                alertDialogMessage = stringResource(R.string.my_store_removal_confirmation),
+                onDismissRequest = { setShowAlertDialogHomeScreen(false) },
+                onDismissButtonClicked = { setShowAlertDialogHomeScreen(false) },
+                onConfirmButtonClicked = {
+                    setShowToastState(transactionToastMessage, true)
+                    deleteTransaction(transaction)
+                    setShowAlertDialogHomeScreen(false)
+                    getTransactions()
                 },
             )
-        }
 
-        // Total geral Section
-        ValidateSection(
-            sectionInfo = SectionInfo(
-                section = {
-                    ScreenSectionComponent(
-                        title = stringResource(id = R.string.my_store_overall_total),
-                        body = {
-                            resume?.let {
-                                HomeBody(
-                                    it,
-                                    shouldItemBeVisible,
+            // AlertDialog Product delete confirmation
+            showAlertDialogComponent(
+                showAlert = showAlertDialogHomeScreenProduct,
+                title = stringResource(R.string.my_store_registry_removal),
+                alertDialogMessage = stringResource(R.string.my_store_removal_product_confirmation),
+                onDismissRequest = { setShowAlertDialogHomeScreenProduct(false) },
+                onDismissButtonClicked = { setShowAlertDialogHomeScreenProduct(false) },
+                onConfirmButtonClicked = {
+                    setShowToastState(productToastMessage, true)
+                    deleteProduct(product)
+                    setShowAlertDialogHomeScreenProduct(false)
+                    getListOfProducts()
+                },
+            )
+
+            // Total geral Section
+            ValidateSection(
+                sectionInfo = SectionInfo(
+                    section = {
+                        ScreenSectionComponent(
+                            title = stringResource(id = R.string.my_store_overall_total),
+                            body = {
+                                resume?.let {
+                                    HomeBody(
+                                        it,
+                                        shouldItemBeVisible,
+                                    )
+                                }
+                            },
+                        )
+                    },
+                ),
+                sectionEmptyStateInfo = SectionEmptyStateInfo(
+                    data = if (resume == null) emptyList() else listOf(resume),
+                    emptySectionTitle = stringResource(R.string.my_store_no_transactions_done),
+                    emptySectionPainter = painterResource(id = R.drawable.my_store_plus_icon),
+                    onEmptyStateImageClicked = {
+                        onEmptyStateImageClicked(
+                            validateSection(
+                                Section.RESUME,
+                            ),
+                        )
+                    },
+                ),
+                screen = Screens.HOME,
+            )
+
+            // Transactions Section
+            ValidateSection(
+                sectionInfo = SectionInfo(
+                    section = {
+                        ScreenSectionComponent(
+                            title = stringResource(id = R.string.my_store_transactions),
+                            body = {
+                                HomeTransactions(
+                                    listOfTransactions = listOfTransaction,
+                                    shouldItemBeVisible = shouldItemBeVisible,
+                                    onClick = {
+                                        setShowAlertDialogTransactionDetail(true)
+                                        setTransaction(it)
+                                    },
+                                    onLongClick = {
+                                        setTransaction(it)
+                                        setShowAlertDialogHomeScreen(true)
+                                    },
                                 )
-                            }
-                        },
-                    )
-                },
-            ),
-            sectionEmptyStateInfo = SectionEmptyStateInfo(
-                data = if (resume == null) emptyList() else listOf(resume),
-                emptySectionTitle = stringResource(R.string.my_store_no_transactions_done),
-                emptySectionPainter = painterResource(id = R.drawable.my_store_plus_icon),
-                onEmptyStateImageClicked = {
-                    onEmptyStateImageClicked(
-                        validateSection(
-                            Section.RESUME,
-                        ),
-                    )
-                },
-            ),
-            screen = Screens.HOME,
-        )
+                            },
+                        )
+                    },
+                ),
+                sectionEmptyStateInfo = SectionEmptyStateInfo(
+                    data = if (listOfTransaction.isEmpty()) listOf() else listOfTransaction,
+                    emptySectionTitle = stringResource(R.string.my_store_no_transactions_done),
+                    emptySectionPainter = painterResource(id = R.drawable.my_store_plus_icon),
+                    onEmptyStateImageClicked = {
+                        onEmptyStateImageClicked(
+                            validateSection(
+                                Section.TRANSACTIONS,
+                            ),
+                        )
+                    },
+                ),
+                screen = Screens.HOME,
+            )
 
-        // Transactions Section
-        ValidateSection(
-            sectionInfo = SectionInfo(
-                section = {
+            // Products Section
+            ValidateSection(
+                sectionInfo = SectionInfo {
                     ScreenSectionComponent(
-                        title = stringResource(id = R.string.my_store_transactions),
+                        title = stringResource(id = R.string.my_store_products),
                         body = {
-                            HomeTransactions(
-                                listOfTransactions = listOfTransaction,
+                            ProductCarouselComponent(
+                                listOfProductsLocal = listOfProductsLocal,
                                 shouldItemBeVisible = shouldItemBeVisible,
-                                onClick = {
-                                    homeViewModel.setShowAlertDialogTransactionDetail(true)
-                                    homeViewModel.setTransaction(it)
+                                onImageRequestState = { state ->
+                                    setImageRequestState(state)
                                 },
-                                onLongClick = {
-                                    homeViewModel.setTransaction(it)
-                                    homeViewModel.setShowAlertDialogHomeScreen(true)
+                                onProductClick = { product ->
+                                    onEditMode(true, product)
+                                    onProductClick(product)
                                 },
+                                onProductLongClick = {
+                                    setShowAlertDialogHomeScreenProduct(true)
+                                    setProduct(it)
+                                },
+                                onProductDoubleClick = { onProductDoubleClick() },
                             )
                         },
                     )
                 },
-            ),
-            sectionEmptyStateInfo = SectionEmptyStateInfo(
-                data = if (listOfTransaction.isEmpty()) listOf() else listOfTransaction,
-                emptySectionTitle = stringResource(R.string.my_store_no_transactions_done),
-                emptySectionPainter = painterResource(id = R.drawable.my_store_plus_icon),
-                onEmptyStateImageClicked = {
-                    onEmptyStateImageClicked(
-                        validateSection(
-                            Section.TRANSACTIONS,
-                        ),
-                    )
-                },
-            ),
-            screen = Screens.HOME,
-        )
-
-        // Products Section
-        ValidateSection(
-            sectionInfo = SectionInfo {
-                ScreenSectionComponent(
-                    title = stringResource(id = R.string.my_store_products),
-                    body = {
-                        ProductCarouselComponent(
-                            listOfProductsLocal = listOfProductsLocal,
-                            shouldItemBeVisible = shouldItemBeVisible,
-                            onImageRequestState = { state ->
-                                homeViewModel.setImageRequestState(state)
-                            },
-                            onProductClick = { onProductClick(it) },
-                            onProductLongClick = { onProductLongClick() },
-                            onProductDoubleClick = { onProductDoubleClick() },
+                sectionEmptyStateInfo =
+                SectionEmptyStateInfo(
+                    data = listOfProducts,
+                    emptySectionTitle = stringResource(R.string.my_store_no_products),
+                    emptySectionPainter = painterResource(id = R.drawable.my_store_plus_icon),
+                    onEmptyStateImageClicked = {
+                        onEmptyStateImageClicked(
+                            validateSection(
+                                Section.PRODUCTS,
+                            ),
                         )
                     },
-                )
-            },
-            sectionEmptyStateInfo =
-            SectionEmptyStateInfo(
-                data = listOfProducts,
-                emptySectionTitle = stringResource(R.string.my_store_no_products),
-                emptySectionPainter = painterResource(id = R.drawable.my_store_plus_icon),
-                onEmptyStateImageClicked = {
-                    onEmptyStateImageClicked(
-                        validateSection(
-                            Section.PRODUCTS,
-                        ),
-                    )
-                },
-            ),
-            screen = Screens.HOME,
-        )
-        homeViewModel.setShowToastState(false)
+                ),
+                screen = Screens.HOME,
+            )
+            setShowToastState(productToastMessage, false)
+        }
     }
 }
 

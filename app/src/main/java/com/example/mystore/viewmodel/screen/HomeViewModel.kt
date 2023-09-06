@@ -1,6 +1,6 @@
 package com.example.mystore.viewmodel.screen
 
-import com.example.mystore.States
+import com.example.mystore.model.Product
 import com.example.mystore.model.Resume
 import com.example.mystore.model.Transaction
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -13,26 +13,35 @@ class HomeViewModel : CommonViewModel() {
     private val _showAlertDialogHomeScreen: MutableStateFlow<Boolean> = MutableStateFlow(false)
     val showAlertDialogHomeScreen: MutableStateFlow<Boolean> = _showAlertDialogHomeScreen
 
+    private val _showAlertDialogHomeScreenProduct: MutableStateFlow<Boolean> =
+        MutableStateFlow(false)
+    val showAlertDialogHomeScreenProduct: MutableStateFlow<Boolean> =
+        _showAlertDialogHomeScreenProduct
+
     private val _showAlertDialogTransactionDetail: MutableStateFlow<Boolean> =
         MutableStateFlow(false)
     val showAlertDialogTransactionDetail: MutableStateFlow<Boolean> =
         _showAlertDialogTransactionDetail
 
-    private val _showToast: MutableStateFlow<Boolean> = MutableStateFlow(false)
-    val showToast: MutableStateFlow<Boolean> = _showToast
+    private val _showToast: MutableStateFlow<Pair<String, Boolean>> =
+        MutableStateFlow(Pair("", false))
+    val showToast: MutableStateFlow<Pair<String, Boolean>> = _showToast
 
     private val _transaction: MutableStateFlow<Transaction> = MutableStateFlow(Transaction())
     val transaction: MutableStateFlow<Transaction> = _transaction
 
-    private var _imageRequestState: MutableStateFlow<States> = MutableStateFlow(States.LOADING)
+    private val _product: MutableStateFlow<Product> = MutableStateFlow(Product())
+    val product: MutableStateFlow<Product> = _product
 
     init {
         getResume()
         getListOfProducts()
         getShowAlertDialogHomeScreen()
         getShowAlertDialogTransactionDetail()
+        getShowAlertDialogHomeScreenProduct()
         getShowToastState()
         getTransaction()
+        getProduct()
     }
 
     // Private functions
@@ -53,8 +62,8 @@ class HomeViewModel : CommonViewModel() {
         _transaction.value = transaction
     }
 
-    fun setShowToastState(state: Boolean) {
-        _showToast.value = state
+    fun setShowToastState(message: String, state: Boolean) {
+        _showToast.value = Pair(message, state)
     }
 
     fun getResume() {
@@ -78,13 +87,21 @@ class HomeViewModel : CommonViewModel() {
         }
     }
 
-    fun setImageRequestState(state: States) {
-        _imageRequestState.value = state
-    }
-
     fun getShowAlertDialogHomeScreen() = showAlertDialogHomeScreen.value
 
     fun setShowAlertDialogHomeScreen(state: Boolean) {
         _showAlertDialogHomeScreen.value = state
+    }
+
+    fun getShowAlertDialogHomeScreenProduct() = showAlertDialogHomeScreenProduct.value
+
+    fun setShowAlertDialogHomeScreenProduct(state: Boolean) {
+        _showAlertDialogHomeScreenProduct.value = state
+    }
+
+    private fun getProduct() = product.value
+
+    fun setProduct(product: Product) {
+        _product.value = product
     }
 }

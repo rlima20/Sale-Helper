@@ -19,6 +19,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
 import com.example.mystore.AppApplication
 import com.example.mystore.R
+import com.example.mystore.model.Product
 import com.example.mystore.navigateSingleTopTo
 import com.example.mystore.ui.components.commons.BottomBarComponent
 import com.example.mystore.ui.components.commons.TopBarComponent
@@ -32,6 +33,7 @@ import com.example.mystore.ui.navigation.RegisterTransactionScreen
 import com.example.mystore.ui.theme.MyStoreTheme
 import com.example.mystore.viewmodel.global.MyStoreViewModel
 import com.example.mystore.viewmodel.screen.HomeViewModel
+import com.example.mystore.viewmodel.screen.RegisterProductViewModel
 import com.example.mystore.viewmodel.screen.RegisterTransactionViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -41,6 +43,7 @@ class MainActivity : ComponentActivity() {
     private val viewModel: MyStoreViewModel by viewModel()
     private val homeViewModel: HomeViewModel by viewModel()
     private val registerTransactionViewModel: RegisterTransactionViewModel by viewModel()
+    private val registerProductViewModel: RegisterProductViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,6 +53,7 @@ class MainActivity : ComponentActivity() {
                 viewModel,
                 homeViewModel,
                 registerTransactionViewModel,
+                registerProductViewModel,
             )
         }
     }
@@ -61,6 +65,7 @@ fun MyStoreApp(
     myStoreViewModel: MyStoreViewModel,
     homeViewModel: HomeViewModel,
     registerTransactionViewModel: RegisterTransactionViewModel,
+    registerProductViewModel: RegisterProductViewModel,
 ) {
     MyStoreTheme {
         val navController = rememberNavController()
@@ -72,6 +77,9 @@ fun MyStoreApp(
         var expandedBottomBar: Boolean by remember { mutableStateOf(false) }
         var totalAmountOfSales: Double by remember { mutableStateOf(0.0) }
         var totalAmountOfPurchases: Double by remember { mutableStateOf(0.0) }
+        var isEditMode: Boolean by remember { mutableStateOf(false) }
+        var product: Product by remember { mutableStateOf(Product()) }
+        var shouldDisplayIcon: Boolean by remember { mutableStateOf(true) }
 
         Scaffold(
             topBar = {
@@ -80,6 +88,7 @@ fun MyStoreApp(
                     shouldItemBeVisible = shouldItemBeVisible,
                     isMenuExpanded = isMenuExpanded,
                     textFieldSize = textFieldSize,
+                    shouldDisplayIcon = shouldDisplayIcon,
                     onIconVisibilityClicked = {
                         myStoreViewModel.setValueVisibility(!shouldItemBeVisible)
                     },
@@ -98,16 +107,19 @@ fun MyStoreApp(
                     onChangeTextFieldSize = { size -> myStoreViewModel.setTextFieldSize(size) },
                 )
             },
-            content = {
+            content = { content ->
                 MyStoreNavHost(
                     navController = navController,
                     modifier = Modifier
                         .fillMaxSize()
                         .background(colorResource(id = R.color.color_400))
-                        .padding(it),
+                        .padding(content),
                     homeViewModel = homeViewModel,
                     registerTransactionViewModel = registerTransactionViewModel,
+                    registerProductViewModel = registerProductViewModel,
                     shouldItemBeVisible = shouldItemBeVisible,
+                    isEditMode = isEditMode,
+                    product = product,
                     onExpandBottomBar = { shouldExpandBottomBar ->
                         expandedBottomBar = shouldExpandBottomBar
                     },
@@ -116,8 +128,14 @@ fun MyStoreApp(
                         totalAmountOfPurchases = purchases
                     },
                     onProductClick = { navController.navigateSingleTopTo(RegisterProductScreen.route) },
-                    onProductLongClick = {},
                     onProductDoubleClick = {},
+                    onEditMode = { first, second ->
+                        isEditMode = first
+                        product = second
+                    },
+                    onShouldDisplayIcon = { shouldDisplay ->
+                        shouldDisplayIcon = shouldDisplay
+                    },
                 )
             },
             bottomBar = {
@@ -136,6 +154,8 @@ fun MyStoreApp(
                         myStoreViewModel.setScreenTitle(
                             application.getString(R.string.my_store_register_product),
                         )
+                        isEditMode = false
+                        product = Product()
                         navController.navigateSingleTopTo(RegisterProductScreen.route)
                     },
                     onRegisterTransactionIconClicked = {
@@ -183,5 +203,6 @@ fun MyStoreAppPreview() {
         myStoreViewModel = MyStoreViewModel(),
         homeViewModel = HomeViewModel(),
         registerTransactionViewModel = RegisterTransactionViewModel(),
+        registerProductViewModel = RegisterProductViewModel(),
     )
 }

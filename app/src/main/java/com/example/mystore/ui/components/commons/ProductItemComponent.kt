@@ -35,7 +35,7 @@ fun ProductItemComponent(
     productPainter: Painter,
     shouldItemBeVisible: Boolean,
     onProductClick: () -> Unit,
-    onProductLongClick: () -> Unit,
+    onProductLongClick: (Product) -> Unit,
     onProductDoubleClick: () -> Unit,
 ) {
     Surface(
@@ -55,17 +55,17 @@ fun ProductItemComponent(
                     .combinedClickable(
                         enabled = true,
                         onClick = { onProductClick() },
-                        onLongClick = { onProductLongClick() },
+                        onLongClick = { onProductLongClick(product) },
                         onDoubleClick = { onProductDoubleClick() },
                     ),
             ) {
                 Image(
-                    modifier = Modifier
-                        .width(140.dp)
-                        .height(100.dp),
                     painter = productPainter,
                     contentDescription = null,
                     contentScale = ContentScale.FillWidth,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(100.dp),
                 )
                 Text(
                     overflow = TextOverflow.Ellipsis,

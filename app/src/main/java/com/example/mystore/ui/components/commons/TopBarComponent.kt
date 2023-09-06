@@ -27,6 +27,7 @@ internal fun TopBarComponent(
     shouldItemBeVisible: Boolean,
     isMenuExpanded: Boolean,
     textFieldSize: Size,
+    shouldDisplayIcon: Boolean = true,
     onIconVisibilityClicked: () -> Unit,
     onMenuIconClicked: () -> Unit,
     onDismissRequest: () -> Unit,
@@ -40,7 +41,7 @@ internal fun TopBarComponent(
             .fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween,
-        ) {
+    ) {
         Text(
             text = screenTitle,
             color = Color.White,
@@ -53,19 +54,21 @@ internal fun TopBarComponent(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween,
         ) {
-            Icon(
-                modifier = Modifier
-                    .padding(end = 16.dp)
-                    .size(20.dp)
-                    .clickable(
-                        onClick = {
-                            onIconVisibilityClicked()
-                        },
-                    ),
-                painter = setPainter(shouldItemBeVisible),
-                contentDescription = null,
-                tint = Color.White,
-            )
+            if (shouldDisplayIcon) {
+                Icon(
+                    modifier = Modifier
+                        .padding(end = 16.dp)
+                        .size(20.dp)
+                        .clickable(
+                            onClick = {
+                                onIconVisibilityClicked()
+                            },
+                        ),
+                    painter = setPainter(shouldItemBeVisible),
+                    contentDescription = null,
+                    tint = Color.White,
+                )
+            }
 
             MenuComponent(
                 screens = screenList,

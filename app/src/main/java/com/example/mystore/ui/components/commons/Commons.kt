@@ -1,17 +1,26 @@
 package com.example.mystore.ui.components.commons
 
+import android.content.Context
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.Button
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import coil.request.ImageRequest
+import coil.size.Size
 import com.example.mystore.R
 import com.example.mystore.Screens
 import com.example.mystore.Section
+import com.example.mystore.States
 import com.example.mystore.Type
+import com.example.mystore.getAsyncImagePainter
 import com.example.mystore.toCurrency
 import com.example.mystore.toUnity
 import com.example.mystore.toUnityOutOfStock
@@ -90,6 +99,34 @@ fun ValidateSection(
 }
 
 @Composable
+fun getPainter(
+    imageUrl: String,
+    onImageRequestState: (state: States) -> Unit,
+): Painter {
+    val painter = getAsyncImage(
+        context = LocalContext.current,
+        imageUrl = imageUrl,
+    ).getAsyncImagePainter(
+        onStateChanged = {
+            onImageRequestState(it)
+        },
+    )
+    return painter
+}
+
+@Composable
+fun getAsyncImage(
+    context: Context,
+    imageUrl: String,
+): ImageRequest {
+    return ImageRequest.Builder(context)
+        .data(imageUrl)
+        .size(Size.ORIGINAL)
+        .crossfade(true)
+        .build()
+}
+
+@Composable
 fun TotalComponent(
     salesValue: Double,
     purchasesValue: Double,
@@ -126,6 +163,45 @@ fun TotalComponent(
                     shouldItemBeVisible = shouldItemBeVisible,
                     type = Type.CURRENCY_PURCHASE,
                 )
+            },
+        )
+    }
+}
+
+@Composable
+fun showAlertDialogComponent(
+    showAlert: Boolean,
+    title: String,
+    alertDialogMessage: String,
+    onDismissButtonClicked: () -> Unit = {},
+    onConfirmButtonClicked: () -> Unit = {},
+    onDismissRequest: () -> Unit = {},
+) {
+    if (showAlert) {
+        AlertDialogComponent(
+            title = title,
+            content = {
+                Text(
+                    text = alertDialogMessage,
+                    color = colorResource(id = R.color.color_700),
+                )
+            },
+            onDismissRequest = { onDismissRequest() },
+            confirmButton = {
+                Button(onClick = { onConfirmButtonClicked() }) {
+                    Text(
+                        text = stringResource(R.string.my_store_ok),
+                        color = colorResource(id = R.color.color_50),
+                    )
+                }
+            },
+            dismissButton = {
+                Button(onClick = { onDismissButtonClicked() }) {
+                    Text(
+                        text = stringResource(R.string.my_store_cancel),
+                        color = colorResource(id = R.color.color_50),
+                    )
+                }
             },
         )
     }

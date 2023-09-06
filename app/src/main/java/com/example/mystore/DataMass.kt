@@ -17,7 +17,7 @@ import java.util.Date
     )
 )*/
 
-val listOfProductsLocal = listOf(
+val listOfProductsLocal = mutableListOf(
     Product(
         id = 0,
         title = "Samsung A30S",

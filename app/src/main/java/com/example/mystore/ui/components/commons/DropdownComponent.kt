@@ -5,26 +5,28 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.DropdownMenu
 import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material.Icon
-import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.toSize
 import com.example.mystore.R
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun DropdownComponent(
     items: List<String>,
@@ -44,50 +46,31 @@ fun DropdownComponent(
     onDropdownMenuDismissRequest: () -> Unit = {},
     onDropdownMenuItemClicked: (String) -> Unit = {},
 ) {
-    val icon = if (isExpanded) {
-        Icons.Filled.KeyboardArrowUp
-    } else {
-        Icons.Filled.KeyboardArrowDown
-    }
+    val keyboardController = LocalSoftwareKeyboardController.current
+    val focusManager = LocalFocusManager.current
 
     Column {
-        OutlinedTextField(
+        OutLinedTextFieldComponent(
             enabled = false,
-            value = selectedText,
-            onValueChange = { onOutLinedTextFieldValueChanged(selectedText) },
             modifier = modifier
                 .background(colorResource(id = transactionDetailColors.second))
                 .onGloballyPositioned { coordinates ->
                     onOutLinedTextFieldSize(coordinates.size.toSize())
                 },
-            label = {
-                Text(
-                    color = colorResource(id = transactionDetailColors.first),
-                    text = label,
-                )
-            },
+            selectedText = selectedText,
+            label = label,
+            transactionDetailColors = transactionDetailColors,
+            keyboardController = keyboardController,
+            focusManager = focusManager,
+            onValueChanged = { onOutLinedTextFieldValueChanged(selectedText) },
             trailingIcon = {
                 Icon(
-                    icon,
+                    setIcon(isExpanded),
                     "contentDescription",
                     Modifier.clickable { onTrailingIconClicked() },
                     tint = colorResource(id = R.color.color_50),
                 )
             },
-            colors = androidx.compose.material.TextFieldDefaults.outlinedTextFieldColors(
-                focusedBorderColor = colorResource(id = R.color.color_50),
-                unfocusedBorderColor = colorResource(id = R.color.color_100),
-                disabledBorderColor = colorResource(id = R.color.color_200),
-                focusedLabelColor = colorResource(id = R.color.color_50),
-                unfocusedLabelColor = colorResource(id = R.color.color_500),
-                disabledLabelColor = colorResource(id = R.color.color_50),
-                cursorColor = colorResource(id = R.color.color_50),
-                textColor = colorResource(id = R.color.color_50),
-                disabledTextColor = colorResource(id = transactionDetailColors.third),
-                placeholderColor = colorResource(id = R.color.color_50),
-            ),
-            shape = RoundedCornerShape(15.dp),
-            maxLines = 1,
         )
 
         DropdownMenu(
@@ -106,6 +89,13 @@ fun DropdownComponent(
             }
         }
     }
+}
+
+@Composable
+private fun setIcon(isExpanded: Boolean) = if (isExpanded) {
+    Icons.Filled.KeyboardArrowUp
+} else {
+    Icons.Filled.KeyboardArrowDown
 }
 
 @Preview(showBackground = true)

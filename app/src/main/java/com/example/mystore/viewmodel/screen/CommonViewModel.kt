@@ -3,6 +3,7 @@ package com.example.mystore.viewmodel.screen
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import com.example.mystore.States
 import com.example.mystore.TransactionType
 import com.example.mystore.listOfProductsLocal
 import com.example.mystore.listOfTransactions
@@ -12,8 +13,9 @@ import kotlinx.coroutines.flow.MutableStateFlow
 
 open class CommonViewModel : ViewModel() {
 
-    private var _listOfProducts: MutableStateFlow<List<Product>> = MutableStateFlow(listOf())
-    val listOfProducts: MutableStateFlow<List<Product>> = _listOfProducts
+    private var _listOfProducts: MutableStateFlow<MutableList<Product>> =
+        MutableStateFlow(mutableListOf())
+    val listOfProducts: MutableStateFlow<MutableList<Product>> = _listOfProducts
 
     private val _listOfSales: MutableState<List<Transaction>> =
         mutableStateOf(listOf())
@@ -26,6 +28,8 @@ open class CommonViewModel : ViewModel() {
     private val _transactions: MutableStateFlow<MutableList<Transaction>> =
         MutableStateFlow(listOfTransactions)
     val transactions: MutableStateFlow<MutableList<Transaction>> = _transactions
+
+    private var _imageRequestState: MutableStateFlow<States> = MutableStateFlow(States.LOADING)
 
     init {
         getListOfTransactions()
@@ -42,6 +46,10 @@ open class CommonViewModel : ViewModel() {
 
     private fun getListOfTransactions() {
         _transactions.value = listOfTransactions
+    }
+
+    fun setImageRequestState(state: States) {
+        _imageRequestState.value = state
     }
 
     fun getListOfSales() {
@@ -71,5 +79,17 @@ open class CommonViewModel : ViewModel() {
 
     fun deleteTransaction(transaction: Transaction) {
         _transactions.value.removeAt(_transactions.value.indexOf(transaction))
+    }
+
+    fun deleteProduct(product: Product) {
+        _listOfProducts.value.removeAt(listOfProducts.value.indexOf(product))
+    }
+
+    fun addProduct(product: Product) {
+        _listOfProducts.value.add(product)
+    }
+
+    fun updateProduct(product: Product) {
+        _listOfProducts.value[_listOfProducts.value.indexOf(product)] = product
     }
 }
