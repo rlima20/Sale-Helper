@@ -103,7 +103,7 @@ fun HomeScreen(
                 )
             }
 
-            // AlertDialog with delete confirmation
+            // AlertDialog Transaction delete confirmation
             showAlertDialogComponent(
                 showAlert = showAlertDialogHomeScreen,
                 title = stringResource(R.string.my_store_registry_removal),
@@ -118,7 +118,7 @@ fun HomeScreen(
                 },
             )
 
-            // AlertDialog with delete confirmation
+            // AlertDialog Product delete confirmation
             showAlertDialogComponent(
                 showAlert = showAlertDialogHomeScreenProduct,
                 title = stringResource(R.string.my_store_registry_removal),

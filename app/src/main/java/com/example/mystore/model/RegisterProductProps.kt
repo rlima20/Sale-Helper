@@ -8,4 +8,6 @@ data class RegisterProductProps(
     val salePriceSelectedText: String,
     val quantity: Int,
     val maxQuantityToBuy: Int,
+    val showAlertDialogProductScreen: Boolean,
+    val showToastProductScreen: Boolean,
 )

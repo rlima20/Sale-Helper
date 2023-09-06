@@ -29,7 +29,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.mystore.R
 import com.example.mystore.model.Product
-import com.example.mystore.model.RegisterProductProps
 import com.example.mystore.setQuantifierSize
 import com.example.mystore.ui.components.commons.FloatingActionButton
 import com.example.mystore.ui.components.commons.ImageComponent
@@ -37,7 +36,9 @@ import com.example.mystore.ui.components.commons.OutLinedTextFieldComponent
 import com.example.mystore.ui.components.commons.Quantifier
 import com.example.mystore.ui.components.commons.ScreenSectionComponent
 import com.example.mystore.ui.components.commons.TextFormattedComponent
+import com.example.mystore.ui.components.commons.ToastComponent
 import com.example.mystore.ui.components.commons.getPainter
+import com.example.mystore.ui.components.commons.showAlertDialogComponent
 import com.example.mystore.viewmodel.screen.RegisterProductViewModel
 
 @Composable
@@ -49,34 +50,31 @@ fun RegisterProductScreen(
 ) {
     with(registerProductViewModel) {
         setScreenWidth(LocalConfiguration.current.screenWidthDp)
-
-        val props = RegisterProductProps(
-            screenWidth = screenWidth.collectAsState().value,
-            titleSelectedText = titleSelectedText.collectAsState().value,
-            descriptionSelectedText = descriptionSelectedText.collectAsState().value,
-            purchasePriceSelectedText = purchasePriceSelectedText.collectAsState().value,
-            salePriceSelectedText = salePriceSelectedText.collectAsState().value,
-            quantity = quantity.collectAsState().value,
-            maxQuantityToBuy = maxQuantityToBuy.collectAsState().value,
-        )
+        setTitleSelectedText(product.title)
+        setDescriptionSelectedText(product.description)
+        setPurchasePriceSelectedText(product.purchasePrice.toString())
+        setSalePriceSelectedText(product.salePrice.toString())
+        setQuantity(product.quantity)
+        setMaxQuantityToBuy(product.maxQuantityToBuy)
+        setShowToastProductScreen(false)
 
         ScreenSectionComponent(
             title = stringResource(id = R.string.my_store_product_2).setTitle(isEditMode),
             body = {
                 RegisterProductScreenBody(
                     product = product,
-                    screenWidth = props.screenWidth,
                     isEditMode = isEditMode,
                     registerProductViewModel = registerProductViewModel,
-                    props = RegisterProductProps(
-                        screenWidth = screenWidth.collectAsState().value,
-                        titleSelectedText = titleSelectedText.collectAsState().value,
-                        descriptionSelectedText = descriptionSelectedText.collectAsState().value,
-                        purchasePriceSelectedText = purchasePriceSelectedText.collectAsState().value,
-                        salePriceSelectedText = salePriceSelectedText.collectAsState().value,
-                        quantity = quantity.collectAsState().value,
-                        maxQuantityToBuy = maxQuantityToBuy.collectAsState().value,
-                    ),
+                    screenWidth = screenWidth.collectAsState().value,
+                    titleSelectedText = titleSelectedText.collectAsState().value,
+                    descriptionSelectedText = descriptionSelectedText.collectAsState().value,
+                    purchasePriceSelectedText = purchasePriceSelectedText.collectAsState().value,
+                    salePriceSelectedText = salePriceSelectedText.collectAsState().value,
+                    quantity = quantity.collectAsState().value,
+                    maxQuantityToBuy = maxQuantityToBuy.collectAsState().value,
+                    showAlertDialogProductScreen = showAlertDialogProductScreen.collectAsState()
+                        .value,
+                    showToastProductScreen = showToastProductScreen.collectAsState().value,
                 )
                 onClearStates(false)
             },
@@ -92,8 +90,49 @@ fun RegisterProductScreenBody(
     screenWidth: Int,
     isEditMode: Boolean = false,
     registerProductViewModel: RegisterProductViewModel,
-    props: RegisterProductProps,
+    titleSelectedText: String,
+    descriptionSelectedText: String,
+    purchasePriceSelectedText: String,
+    salePriceSelectedText: String,
+    quantity: Int,
+    maxQuantityToBuy: Int,
+    showAlertDialogProductScreen: Boolean,
+    showToastProductScreen: Boolean,
 ) {
+    if (showToastProductScreen) {
+        ToastComponent("Produto cadastrado com sucesso!")
+    }
+
+    // AlertDialog with delete confirmation
+    showAlertDialogComponent(
+        showAlert = showAlertDialogProductScreen,
+        title = if (isEditMode) {
+            stringResource(R.string.my_store_registry_update)
+        } else {
+            stringResource(R.string.my_store_registry_creation)
+        },
+        alertDialogMessage = stringResource(R.string.my_store_creation_confirmation),
+        onDismissRequest = { registerProductViewModel.setShowAlertDialogProductScreen(false) },
+        onDismissButtonClicked = {
+            registerProductViewModel.setShowAlertDialogProductScreen(false)
+        },
+        onConfirmButtonClicked = {
+            registerProductViewModel.setShowToastProductScreen(true)
+            /*registerProductViewModel.saveProduct(
+                product = Product(
+                    title = titleSelectedText,
+                    description = descriptionSelectedText,
+                    purchasePrice = purchasePriceSelectedText.toDouble(),
+                    salePrice = salePriceSelectedText.toDouble(),
+                    quantity = quantity,
+                    maxQuantityToBuy = maxQuantityToBuy,
+                ),
+                isEditMode = isEditMode,
+            )*/
+            registerProductViewModel.setShowAlertDialogProductScreen(false)
+        },
+    )
+
     // Image Section
     ImageSection(
         modifier = Modifier
@@ -113,11 +152,13 @@ fun RegisterProductScreenBody(
     val titleKeyboardController = LocalSoftwareKeyboardController.current
     val titleFocusManager = LocalFocusManager.current
     OutLinedTextFieldComponent(
-        selectedText = if (isEditMode) product.title else props.titleSelectedText,
+        selectedText = titleSelectedText,
         label = titleLabel,
         keyboardController = titleKeyboardController,
         focusManager = titleFocusManager,
-        onValueChanged = { registerProductViewModel.setTitleSelectedText(it) },
+        onValueChanged = {
+            registerProductViewModel.setTitleSelectedText(it)
+        },
     )
 
     // Description
@@ -125,7 +166,7 @@ fun RegisterProductScreenBody(
     val descriptionKeyboardController = LocalSoftwareKeyboardController.current
     val descriptionFocusManager = LocalFocusManager.current
     OutLinedTextFieldComponent(
-        selectedText = product.description,
+        selectedText = descriptionSelectedText,
         label = descriptionLabel,
         keyboardController = descriptionKeyboardController,
         focusManager = descriptionFocusManager,
@@ -137,7 +178,7 @@ fun RegisterProductScreenBody(
     val purchasePriceKeyboardController = LocalSoftwareKeyboardController.current
     val purchasePriceFocusManager = LocalFocusManager.current
     OutLinedTextFieldComponent(
-        selectedText = product.purchasePrice.toString(),
+        selectedText = purchasePriceSelectedText,
         label = purchasePriceLabel,
         keyboardController = purchasePriceKeyboardController,
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
@@ -147,7 +188,7 @@ fun RegisterProductScreenBody(
         },
         onDone = {
             registerProductViewModel.setPurchasePriceSelectedText(
-                props.purchasePriceSelectedText.removeCurrencyToProductValue()
+                purchasePriceSelectedText.removeCurrencyToProductValue()
                     .addCurrencyToProductValue(),
             )
         },
@@ -158,7 +199,7 @@ fun RegisterProductScreenBody(
     val salePriceKeyboardController = LocalSoftwareKeyboardController.current
     val salePriceFocusManager = LocalFocusManager.current
     OutLinedTextFieldComponent(
-        selectedText = product.salePrice.toString(),
+        selectedText = salePriceSelectedText,
         label = salePriceLabel,
         keyboardController = salePriceKeyboardController,
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
@@ -168,7 +209,7 @@ fun RegisterProductScreenBody(
         },
         onDone = {
             registerProductViewModel.setSalePriceSelectedText(
-                props.salePriceSelectedText.removeCurrencyToProductValue()
+                salePriceSelectedText.removeCurrencyToProductValue()
                     .addCurrencyToProductValue(),
             )
         },
@@ -186,7 +227,7 @@ fun RegisterProductScreenBody(
                     .width(screenWidth.setQuantifierSize())
                     .padding(start = 8.dp, end = 4.dp),
                 enabled = false,
-                quantity = product.quantity,
+                quantity = quantity,
                 onQuantifierChange = { registerProductViewModel.setQuantity(it) },
             )
         }
@@ -196,12 +237,11 @@ fun RegisterProductScreenBody(
                 leftSideText = stringResource(id = R.string.my_store_product_max_quantity),
                 fontSize = 18.sp,
             )
-            registerProductViewModel.setMaxQuantityToBuy(product.maxQuantityToBuy)
             Quantifier(
                 modifier = Modifier
                     .width(screenWidth.setQuantifierSize())
                     .padding(start = 4.dp, end = 8.dp),
-                quantity = props.maxQuantityToBuy,
+                quantity = maxQuantityToBuy,
                 onQuantifierChange = { registerProductViewModel.setMaxQuantityToBuy(it) },
             )
         }
@@ -218,14 +258,8 @@ fun RegisterProductScreenBody(
             FloatingActionButton(
                 enabled = true,
                 modifier = Modifier.size(36.dp),
-                colorId = if (true) {
-                    R.color.color_50
-                } else {
-                    R.color.color_400
-                },
-                onClick = {
-                    // todo - clearAll
-                },
+                colorId = R.color.color_50,
+                onClick = { registerProductViewModel.setShowAlertDialogProductScreen(true) },
             )
         }
     }

@@ -84,4 +84,12 @@ open class CommonViewModel : ViewModel() {
     fun deleteProduct(product: Product) {
         _listOfProducts.value.removeAt(listOfProducts.value.indexOf(product))
     }
+
+    fun addProduct(product: Product) {
+        _listOfProducts.value.add(product)
+    }
+
+    fun updateProduct(product: Product) {
+        _listOfProducts.value[_listOfProducts.value.indexOf(product)] = product
+    }
 }

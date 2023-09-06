@@ -1,5 +1,6 @@
 package com.example.mystore.viewmodel.screen
 
+import com.example.mystore.model.Product
 import kotlinx.coroutines.flow.MutableStateFlow
 
 class RegisterProductViewModel : CommonViewModel() {
@@ -28,6 +29,12 @@ class RegisterProductViewModel : CommonViewModel() {
     private val _maxQuantityToBuy: MutableStateFlow<Int> = MutableStateFlow(0)
     val maxQuantityToBuy: MutableStateFlow<Int> = _maxQuantityToBuy
 
+    private val _showAlertDialogProductScreen: MutableStateFlow<Boolean> = MutableStateFlow(false)
+    val showAlertDialogProductScreen: MutableStateFlow<Boolean> = _showAlertDialogProductScreen
+
+    private val _showToastProductScreen: MutableStateFlow<Boolean> = MutableStateFlow(false)
+    val showToastProductScreen: MutableStateFlow<Boolean> = _showToastProductScreen
+
     fun getScreenWidth(): Int {
         return screenWidth.value
     }
@@ -44,13 +51,22 @@ class RegisterProductViewModel : CommonViewModel() {
         _isEditMode.value = isEditMode
     }
 
-    fun clearAllStates() {
+    private fun clearAllStates() {
         _titleSelectedText.value = ""
         _descriptionSelectedText.value = ""
         _purchasePriceSelectedText.value = ""
         _salePriceSelectedText.value = ""
         _quantity.value = 0
         _maxQuantityToBuy.value = 0
+    }
+
+    fun saveProduct(product: Product, isEditMode: Boolean) {
+        if (isEditMode) updateProduct(product) else addProduct(product)
+        clearAllStates()
+    }
+
+    fun getTitleSelectedText(): String {
+        return titleSelectedText.value
     }
 
     fun setTitleSelectedText(titleSelectedText: String) {
@@ -75,5 +91,21 @@ class RegisterProductViewModel : CommonViewModel() {
 
     fun setMaxQuantityToBuy(maxQuantityToBuy: Int) {
         _maxQuantityToBuy.value = maxQuantityToBuy
+    }
+
+    fun getShowAlertDialogProductScreen(): Boolean {
+        return showAlertDialogProductScreen.value
+    }
+
+    fun setShowAlertDialogProductScreen(showAlertDialogProductScreen: Boolean) {
+        _showAlertDialogProductScreen.value = showAlertDialogProductScreen
+    }
+
+    fun getShowToastProductScreen(): Boolean {
+        return showToastProductScreen.value
+    }
+
+    fun setShowToastProductScreen(showToastProductScreen: Boolean) {
+        _showToastProductScreen.value = showToastProductScreen
     }
 }
