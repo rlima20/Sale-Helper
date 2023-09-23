@@ -62,4 +62,6 @@
     <string name="my_store_creation_confirmation">Deseja salvar esse produto?</string>
     <string name="my_store_removal_product_confirmation">Deseja realmente excluir esse produto?</string>
     <string name="my_store_type">Tipo de transação</string>
+    <string name="my_store_successful_registry">Produto cadastrado com sucesso!</string>
+    <string name="my_store_successful_edit">Produto editado com sucesso!"</string>
 </resources>

@@ -103,7 +103,15 @@ fun RegisterProductScreenBody(
     onNavigateToHome: () -> Unit,
 ) {
     if (showToastProductScreen) {
-        ToastComponent("Produto cadastrado com sucesso!")
+        ToastComponent(
+            stringResource(
+                id = if (isEditMode) {
+                    R.string.my_store_successful_edit
+                } else {
+                    R.string.my_store_successful_registry
+                },
+            ),
+        )
         onNavigateToHome()
     }
 
@@ -192,8 +200,7 @@ fun RegisterProductScreenBody(
         },
         onDone = {
             registerProductViewModel.setPurchasePriceSelectedText(
-                purchasePriceSelectedText.removeCurrencyToProductValue()
-                    .addCurrencyToProductValue(),
+                purchasePriceSelectedText.removeCurrencyToProductValue(),
             )
         },
     )
@@ -213,8 +220,7 @@ fun RegisterProductScreenBody(
         },
         onDone = {
             registerProductViewModel.setSalePriceSelectedText(
-                salePriceSelectedText.removeCurrencyToProductValue()
-                    .addCurrencyToProductValue(),
+                salePriceSelectedText.removeCurrencyToProductValue(),
             )
         },
     )
