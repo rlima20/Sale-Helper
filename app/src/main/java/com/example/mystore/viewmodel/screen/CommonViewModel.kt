@@ -89,7 +89,5 @@ open class CommonViewModel : ViewModel() {
         _listOfProducts.value.add(product)
     }
 
-    fun updateProduct(product: Product) {
-        _listOfProducts.value[_listOfProducts.value.indexOf(product)] = product
-    }
+    fun updateProduct(product: Product) {}
 }

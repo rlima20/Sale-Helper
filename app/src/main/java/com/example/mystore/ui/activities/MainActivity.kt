@@ -136,6 +136,7 @@ fun MyStoreApp(
                     onShouldDisplayIcon = { shouldDisplay ->
                         shouldDisplayIcon = shouldDisplay
                     },
+                    onNavigateToHome = { navController.navigateSingleTopTo(HomeScreen.route) },
                 )
             },
             bottomBar = {

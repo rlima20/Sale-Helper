@@ -47,6 +47,7 @@ fun RegisterProductScreen(
     isEditMode: Boolean,
     registerProductViewModel: RegisterProductViewModel,
     onClearStates: (Boolean) -> Unit,
+    onNavigateToHome: () -> Unit,
 ) {
     with(registerProductViewModel) {
         setScreenWidth(LocalConfiguration.current.screenWidthDp)
@@ -75,6 +76,7 @@ fun RegisterProductScreen(
                     showAlertDialogProductScreen = showAlertDialogProductScreen.collectAsState()
                         .value,
                     showToastProductScreen = showToastProductScreen.collectAsState().value,
+                    onNavigateToHome = { onNavigateToHome() },
                 )
                 onClearStates(false)
             },
@@ -98,9 +100,11 @@ fun RegisterProductScreenBody(
     maxQuantityToBuy: Int,
     showAlertDialogProductScreen: Boolean,
     showToastProductScreen: Boolean,
+    onNavigateToHome: () -> Unit,
 ) {
     if (showToastProductScreen) {
         ToastComponent("Produto cadastrado com sucesso!")
+        onNavigateToHome()
     }
 
     // AlertDialog with delete confirmation
@@ -117,8 +121,7 @@ fun RegisterProductScreenBody(
             registerProductViewModel.setShowAlertDialogProductScreen(false)
         },
         onConfirmButtonClicked = {
-            registerProductViewModel.setShowToastProductScreen(true)
-            /*registerProductViewModel.saveProduct(
+            registerProductViewModel.saveProduct(
                 product = Product(
                     title = titleSelectedText,
                     description = descriptionSelectedText,
@@ -128,7 +131,8 @@ fun RegisterProductScreenBody(
                     maxQuantityToBuy = maxQuantityToBuy,
                 ),
                 isEditMode = isEditMode,
-            )*/
+            )
+            registerProductViewModel.setShowToastProductScreen(true)
             registerProductViewModel.setShowAlertDialogProductScreen(false)
         },
     )
@@ -226,7 +230,7 @@ fun RegisterProductScreenBody(
                 modifier = Modifier
                     .width(screenWidth.setQuantifierSize())
                     .padding(start = 8.dp, end = 4.dp),
-                enabled = false,
+                enabled = !isEditMode,
                 quantity = quantity,
                 onQuantifierChange = { registerProductViewModel.setQuantity(it) },
             )

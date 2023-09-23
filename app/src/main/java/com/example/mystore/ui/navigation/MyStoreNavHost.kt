@@ -35,6 +35,7 @@ fun MyStoreNavHost(
     onProductDoubleClick: () -> Unit = {},
     onEditMode: (Boolean, Product) -> Unit = { _, _ -> },
     onShouldDisplayIcon: (Boolean) -> Unit = {},
+    onNavigateToHome: () -> Unit = {},
 ) {
     var transactionClearStates by remember { mutableStateOf(false) }
     var productClearStates by remember { mutableStateOf(false) }
@@ -114,6 +115,7 @@ fun MyStoreNavHost(
                 isEditMode = isEditMode,
                 registerProductViewModel = registerProductViewModel,
                 onClearStates = { productClearStates = it },
+                onNavigateToHome = { onNavigateToHome() },
             )
         }
     }
