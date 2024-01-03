@@ -65,7 +65,7 @@ fun OutLinedTextFieldComponent(
             unfocusedLabelColor = colorResource(id = R.color.color_500),
             disabledLabelColor = colorResource(id = R.color.color_50),
             cursorColor = colorResource(id = R.color.color_50),
-            textColor = colorResource(id = R.color.color_50),
+            textColor = colorResource(id = transactionDetailColors.third),
             disabledTextColor = colorResource(id = transactionDetailColors.third),
             placeholderColor = colorResource(id = R.color.color_50),
         ),

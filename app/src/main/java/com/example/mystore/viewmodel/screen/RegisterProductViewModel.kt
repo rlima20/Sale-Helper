@@ -32,6 +32,9 @@ class RegisterProductViewModel : CommonViewModel() {
     private val _showAlertDialogProductScreen: MutableStateFlow<Boolean> = MutableStateFlow(false)
     val showAlertDialogProductScreen: MutableStateFlow<Boolean> = _showAlertDialogProductScreen
 
+    private val _showAlertDialogImageUrl: MutableStateFlow<Boolean> = MutableStateFlow(false)
+    val showAlertDialogImageUrl: MutableStateFlow<Boolean> = _showAlertDialogImageUrl
+
     private val _showToastProductScreen: MutableStateFlow<Boolean> = MutableStateFlow(false)
     val showToastProductScreen: MutableStateFlow<Boolean> = _showToastProductScreen
 
@@ -108,4 +111,14 @@ class RegisterProductViewModel : CommonViewModel() {
     fun setShowToastProductScreen(showToastProductScreen: Boolean) {
         _showToastProductScreen.value = showToastProductScreen
     }
+
+
+    fun getShowAlertDialogImageUrl(): Boolean {
+        return showAlertDialogImageUrl.value
+    }
+
+    fun setShowAlertDialogImageUrl(showAlertDialogImageUrl: Boolean) {
+        _showAlertDialogImageUrl.value = showAlertDialogImageUrl
+    }
+
 }

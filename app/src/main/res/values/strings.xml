@@ -28,6 +28,8 @@
     <string name="my_store_overall_total">Total geral</string>
     <string name="my_store_transactions">Transações</string>
     <string name="my_store_transactions_details">Detalhes da transação</string>
+    <string name="my_store_image_url">Url da imagem</string>
+    <string name="my_store_image_product">Imagem do produto</string>
     <string name="my_store_debits">Débitos: </string>
     <string name="my_store_gross_revenue">Receita bruta: </string>
     <string name="my_store_unit_value">Valor unitário: </string>

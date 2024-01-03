@@ -169,7 +169,7 @@ fun TotalComponent(
 }
 
 @Composable
-fun showAlertDialogComponent(
+fun ShowAlertDialogComponent(
     showAlert: Boolean,
     title: String,
     alertDialogMessage: String,
