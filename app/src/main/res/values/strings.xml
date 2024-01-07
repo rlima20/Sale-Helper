@@ -25,7 +25,7 @@
     <string name="my_store_total_sales">Total de vendas: </string>
     <string name="my_store_total_purchases">Total de compras: </string>
     <string name="my_store_total">Total: </string>
-    <string name="my_store_overall_total">Total geral</string>
+    <string name="my_store_overall_total">Resumo</string>
     <string name="my_store_transactions">Transações</string>
     <string name="my_store_transactions_details">Detalhes da transação</string>
     <string name="my_store_image_url">Url da imagem</string>

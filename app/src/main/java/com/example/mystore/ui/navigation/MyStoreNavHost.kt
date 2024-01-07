@@ -56,12 +56,8 @@ fun MyStoreNavHost(
                 shouldItemBeVisible = shouldItemBeVisible,
                 onProductClick = { onProductClick(it) },
                 onProductDoubleClick = { onProductDoubleClick() },
-                onEmptyStateImageClicked = {
-                    navController.navigateSingleTopTo(it)
-                },
-                onEditMode = { isEditMode, product ->
-                    onEditMode(isEditMode, product)
-                },
+                onEmptyStateImageClicked = { navController.navigateSingleTopTo(it) },
+                onEditMode = { isEditMode, product -> onEditMode(isEditMode, product) },
             )
         }
 

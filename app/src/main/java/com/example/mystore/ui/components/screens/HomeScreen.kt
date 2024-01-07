@@ -135,6 +135,7 @@ fun HomeScreen(
 
             // Total geral Section
             ValidateSection(
+                screen = Screens.HOME,
                 sectionInfo = SectionInfo(
                     section = {
                         ScreenSectionComponent(
@@ -162,12 +163,13 @@ fun HomeScreen(
                         )
                     },
                 ),
-                screen = Screens.HOME,
             )
 
             // Transactions Section
             ValidateSection(
+                screen = Screens.HOME,
                 sectionInfo = SectionInfo(
+                    sectionName = Section.TRANSACTIONS,
                     section = {
                         ScreenSectionComponent(
                             title = stringResource(id = R.string.my_store_transactions),
@@ -200,34 +202,35 @@ fun HomeScreen(
                         )
                     },
                 ),
-                screen = Screens.HOME,
             )
 
             // Products Section
             ValidateSection(
-                sectionInfo = SectionInfo {
-                    ScreenSectionComponent(
-                        title = stringResource(id = R.string.my_store_products),
-                        body = {
-                            ProductCarouselComponent(
-                                listOfProductsLocal = listOfProductsLocal,
-                                shouldItemBeVisible = shouldItemBeVisible,
-                                onImageRequestState = { state ->
-                                    setImageRequestState(state)
-                                },
-                                onProductClick = { product ->
-                                    onEditMode(true, product)
-                                    onProductClick(product)
-                                },
-                                onProductLongClick = {
-                                    setShowAlertDialogHomeScreenProduct(true)
-                                    setProduct(it)
-                                },
-                                onProductDoubleClick = { onProductDoubleClick() },
-                            )
-                        },
-                    )
-                },
+                sectionInfo = SectionInfo(
+                    {
+                        ScreenSectionComponent(
+                            title = stringResource(id = R.string.my_store_products),
+                            body = {
+                                ProductCarouselComponent(
+                                    listOfProductsLocal = listOfProductsLocal,
+                                    shouldItemBeVisible = shouldItemBeVisible,
+                                    onImageRequestState = { state ->
+                                        setImageRequestState(state)
+                                    },
+                                    onProductClick = { product ->
+                                        onEditMode(true, product)
+                                        onProductClick(product)
+                                    },
+                                    onProductLongClick = {
+                                        setShowAlertDialogHomeScreenProduct(true)
+                                        setProduct(it)
+                                    },
+                                    onProductDoubleClick = { onProductDoubleClick() },
+                                )
+                            },
+                        )
+                    },
+                ),
                 sectionEmptyStateInfo =
                 SectionEmptyStateInfo(
                     data = listOfProducts,
@@ -241,7 +244,6 @@ fun HomeScreen(
                         )
                     },
                 ),
-                screen = Screens.HOME,
             )
             setShowToastState(productToastMessage, false)
         }

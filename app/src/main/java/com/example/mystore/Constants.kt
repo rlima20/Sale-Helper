@@ -47,4 +47,5 @@ enum class Section {
     SALE,
     PURCHASE,
     REGISTER,
+    NONE,
 }

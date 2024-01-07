@@ -5,35 +5,36 @@ import com.example.mystore.listOfProductsLocal
 import com.example.mystore.model.Product
 import com.example.mystore.model.Transaction
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 
 class RegisterTransactionViewModel : CommonViewModel() {
 
-    private var _transactionType: MutableStateFlow<List<TransactionType>> =
+    private var _listOfTransactionType: MutableStateFlow<List<TransactionType>> =
         MutableStateFlow(listOf(TransactionType.SALE, TransactionType.PURCHASE))
-    val listOfTransactionType: MutableStateFlow<List<TransactionType>> = _transactionType
+    val listOfTransactionType: StateFlow<List<TransactionType>> = _listOfTransactionType
 
     private val _quantity: MutableStateFlow<Int> = MutableStateFlow(1)
-    val quantity: MutableStateFlow<Int> = _quantity
+    val quantity: StateFlow<Int> = _quantity
 
     private val _maxQuantity: MutableStateFlow<Int> = MutableStateFlow(1)
-    val maxQuantity: MutableStateFlow<Int> = _maxQuantity
+    val maxQuantity: StateFlow<Int> = _maxQuantity
 
     private val _screenWidth: MutableStateFlow<Int> = MutableStateFlow(0)
-    val screenWidth: MutableStateFlow<Int> = _screenWidth
+    val screenWidth: StateFlow<Int> = _screenWidth
 
     private val _totalValue: MutableStateFlow<Double> = MutableStateFlow(0.0)
-    val totalValue: MutableStateFlow<Double> = _totalValue
+    val totalValue: StateFlow<Double> = _totalValue
 
     private val _transactionValue: MutableStateFlow<Transaction> = MutableStateFlow(Transaction())
-    val transactionValue: MutableStateFlow<Transaction> = _transactionValue
+    val transactionValue: StateFlow<Transaction> = _transactionValue
 
     private val _showAlertDialogOnRegisterTransaction: MutableStateFlow<Boolean> =
         MutableStateFlow(false)
-    val showAlertDialogOnRegisterTransaction: MutableStateFlow<Boolean> =
+    val showAlertDialogOnRegisterTransaction: StateFlow<Boolean> =
         _showAlertDialogOnRegisterTransaction
 
     private val _showToast: MutableStateFlow<Boolean> = MutableStateFlow(false)
-    val showToast: MutableStateFlow<Boolean> = _showToast
+    val showToast: StateFlow<Boolean> = _showToast
 
     init {
         getProducts()
@@ -50,30 +51,30 @@ class RegisterTransactionViewModel : CommonViewModel() {
     }
 
     private fun getTransactionTypes() {
-        listOfTransactionType.value = listOf(
+        _listOfTransactionType.value = listOf(
             TransactionType.SALE,
             TransactionType.PURCHASE,
         )
     }
 
     private fun getProducts() {
-        listOfProducts.value = listOfProductsLocal
+        setListOfProducts(listOfProductsLocal)
     }
 
     private fun getScreenWidth() {
-        screenWidth.value = _screenWidth.value
+        _screenWidth.value = screenWidth.value
     }
 
     private fun getQuantity() {
-        quantity.value = _quantity.value
+        _quantity.value = quantity.value
     }
 
     private fun getMaxQuantity() {
-        maxQuantity.value = _maxQuantity.value
+        _maxQuantity.value = maxQuantity.value
     }
 
     private fun getShowAlertDialogOnRegisterTransaction() {
-        showAlertDialogOnRegisterTransaction.value = _showAlertDialogOnRegisterTransaction.value
+        _showAlertDialogOnRegisterTransaction.value = showAlertDialogOnRegisterTransaction.value
     }
 
     fun setShowAlertDialogOnRegisterTransaction(show: Boolean) {
@@ -81,7 +82,7 @@ class RegisterTransactionViewModel : CommonViewModel() {
     }
 
     fun getShowToast() {
-        showToast.value = _showToast.value
+        _showToast.value = showToast.value
     }
 
     fun setShowToast(show: Boolean) {

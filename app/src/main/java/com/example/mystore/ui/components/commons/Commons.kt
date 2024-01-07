@@ -29,6 +29,7 @@ import com.example.mystore.ui.navigation.RegisterTransactionScreen
 
 data class SectionInfo(
     val section: @Composable () -> Unit,
+    val sectionName: Section = Section.NONE,
 )
 
 data class SectionEmptyStateInfo(
@@ -74,27 +75,34 @@ fun validateSection(section: Section): String {
         Section.REGISTER -> {
             RegisterProductScreen.route
         }
+        else -> ""
     }
 }
 
 @Composable
 fun ValidateSection(
     screen: Screens = Screens.NONE,
-    sectionInfo: SectionInfo = SectionInfo { },
+    sectionInfo: SectionInfo = SectionInfo({}, Section.NONE),
     sectionEmptyStateInfo: SectionEmptyStateInfo = SectionEmptyStateInfo(
         emptySectionPainter = painterResource(id = R.drawable.empty_state),
     ),
 ) {
-    if (screen == Screens.REGISTER_PRODUCT || screen == Screens.REGISTER_TRANSACTION) {
+    if (sectionEmptyStateInfo.data.isNotEmpty()) {
         sectionInfo.section()
-    } else if (sectionEmptyStateInfo.data.isEmpty()) {
-        EmptyStateSectionComponent(
-            title = sectionEmptyStateInfo.emptySectionTitle,
-            painter = sectionEmptyStateInfo.emptySectionPainter,
-            onEmptyStateImageClicked = { sectionEmptyStateInfo.onEmptyStateImageClicked() },
-        )
     } else {
-        sectionInfo.section()
+        if (sectionInfo.sectionName != Section.TRANSACTIONS) {
+            if (screen == Screens.REGISTER_PRODUCT || screen == Screens.REGISTER_TRANSACTION) {
+                sectionInfo.section()
+            } else if (sectionEmptyStateInfo.data.isEmpty()) {
+                EmptyStateSectionComponent(
+                    title = sectionEmptyStateInfo.emptySectionTitle,
+                    painter = sectionEmptyStateInfo.emptySectionPainter,
+                    onEmptyStateImageClicked = { sectionEmptyStateInfo.onEmptyStateImageClicked() },
+                )
+            } else {
+                sectionInfo.section()
+            }
+        }
     }
 }
 

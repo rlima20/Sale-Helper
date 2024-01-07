@@ -47,17 +47,19 @@ fun ConsolidatedPositionScreen(
         // Sale Section
         ValidateSection(
             screen = Screens.CONSOLIDATED_POSITION,
-            sectionInfo = SectionInfo {
-                ScreenSectionComponent(
-                    title = stringResource(id = R.string.my_store_sales),
-                    body = {
-                        ConsolidatedPosBody(
-                            transactions = homeViewModel.listOfSales.value,
-                            shouldItemBeVisible = shouldItemBeVisible,
-                        )
-                    },
-                )
-            },
+            sectionInfo = SectionInfo(
+                {
+                    ScreenSectionComponent(
+                        title = stringResource(id = R.string.my_store_sales),
+                        body = {
+                            ConsolidatedPosBody(
+                                transactions = homeViewModel.listOfSales.value,
+                                shouldItemBeVisible = shouldItemBeVisible,
+                            )
+                        },
+                    )
+                },
+            ),
             sectionEmptyStateInfo = SectionEmptyStateInfo(
                 data = homeViewModel.listOfSales.value,
                 emptySectionTitle = stringResource(R.string.my_store_no_sales_done),
@@ -71,17 +73,19 @@ fun ConsolidatedPositionScreen(
         // Purchase Section
         ValidateSection(
             screen = Screens.CONSOLIDATED_POSITION,
-            sectionInfo = SectionInfo {
-                ScreenSectionComponent(
-                    title = stringResource(id = R.string.my_store_purchases),
-                    body = {
-                        ConsolidatedPosBody(
-                            transactions = homeViewModel.listOfPurchases.value,
-                            shouldItemBeVisible = shouldItemBeVisible,
-                        )
-                    },
-                )
-            },
+            sectionInfo = SectionInfo(
+                {
+                    ScreenSectionComponent(
+                        title = stringResource(id = R.string.my_store_purchases),
+                        body = {
+                            ConsolidatedPosBody(
+                                transactions = homeViewModel.listOfPurchases.value,
+                                shouldItemBeVisible = shouldItemBeVisible,
+                            )
+                        },
+                    )
+                },
+            ),
             sectionEmptyStateInfo = SectionEmptyStateInfo(
                 data = homeViewModel.listOfPurchases.value,
                 emptySectionTitle = stringResource(R.string.my_store_no_purchases_done),

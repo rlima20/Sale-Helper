@@ -107,6 +107,8 @@ fun MyStoreApp(
                     onChangeTextFieldSize = { size -> myStoreViewModel.setTextFieldSize(size) },
                 )
             },
+
+            // TODO - PAREI A ANÁLISE AQUI
             content = { content ->
                 MyStoreNavHost(
                     navController = navController,
