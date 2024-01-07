@@ -2,38 +2,42 @@ package com.example.mystore.viewmodel.screen
 
 import com.example.mystore.model.Product
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 
 class RegisterProductViewModel : CommonViewModel() {
 
     private val _screenWidth: MutableStateFlow<Int> = MutableStateFlow(0)
-    val screenWidth: MutableStateFlow<Int> = _screenWidth
+    val screenWidth: StateFlow<Int> = _screenWidth
 
     private val _isEditMode: MutableStateFlow<Boolean> = MutableStateFlow(false)
-    val isEditMode: MutableStateFlow<Boolean> = _isEditMode
+    private val isEditMode: StateFlow<Boolean> = _isEditMode
 
     private val _titleSelectedText: MutableStateFlow<String> = MutableStateFlow("")
-    val titleSelectedText: MutableStateFlow<String> = _titleSelectedText
+    val titleSelectedText: StateFlow<String> = _titleSelectedText
 
     private val _descriptionSelectedText: MutableStateFlow<String> = MutableStateFlow("")
-    val descriptionSelectedText: MutableStateFlow<String> = _descriptionSelectedText
+    val descriptionSelectedText: StateFlow<String> = _descriptionSelectedText
 
     private val _purchasePriceSelectedText: MutableStateFlow<String> = MutableStateFlow("")
-    val purchasePriceSelectedText: MutableStateFlow<String> = _purchasePriceSelectedText
+    val purchasePriceSelectedText: StateFlow<String> = _purchasePriceSelectedText
 
     private val _salePriceSelectedText: MutableStateFlow<String> = MutableStateFlow("")
-    val salePriceSelectedText: MutableStateFlow<String> = _salePriceSelectedText
+    val salePriceSelectedText: StateFlow<String> = _salePriceSelectedText
 
     private val _quantity: MutableStateFlow<Int> = MutableStateFlow(0)
-    val quantity: MutableStateFlow<Int> = _quantity
+    val quantity: StateFlow<Int> = _quantity
 
     private val _maxQuantityToBuy: MutableStateFlow<Int> = MutableStateFlow(0)
-    val maxQuantityToBuy: MutableStateFlow<Int> = _maxQuantityToBuy
+    val maxQuantityToBuy: StateFlow<Int> = _maxQuantityToBuy
 
     private val _showAlertDialogProductScreen: MutableStateFlow<Boolean> = MutableStateFlow(false)
-    val showAlertDialogProductScreen: MutableStateFlow<Boolean> = _showAlertDialogProductScreen
+    val showAlertDialogProductScreen: StateFlow<Boolean> = _showAlertDialogProductScreen
+
+    private val _showAlertDialogImageUrl: MutableStateFlow<Boolean> = MutableStateFlow(false)
+    val showAlertDialogImageUrl: StateFlow<Boolean> = _showAlertDialogImageUrl
 
     private val _showToastProductScreen: MutableStateFlow<Boolean> = MutableStateFlow(false)
-    val showToastProductScreen: MutableStateFlow<Boolean> = _showToastProductScreen
+    val showToastProductScreen: StateFlow<Boolean> = _showToastProductScreen
 
     fun getScreenWidth(): Int {
         return screenWidth.value
@@ -107,5 +111,13 @@ class RegisterProductViewModel : CommonViewModel() {
 
     fun setShowToastProductScreen(showToastProductScreen: Boolean) {
         _showToastProductScreen.value = showToastProductScreen
+    }
+
+    fun getShowAlertDialogImageUrl(): Boolean {
+        return showAlertDialogImageUrl.value
+    }
+
+    fun setShowAlertDialogImageUrl(showAlertDialogImageUrl: Boolean) {
+        _showAlertDialogImageUrl.value = showAlertDialogImageUrl
     }
 }

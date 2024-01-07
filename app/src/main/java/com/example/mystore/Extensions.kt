@@ -59,12 +59,16 @@ fun setTextColor(value: Double): Int =
 fun ImageRequest.getAsyncImagePainter(
     onStateChanged: (state: States) -> Unit = {},
 ): Painter {
-    if (rememberAsyncImagePainter(this).state is AsyncImagePainter.State.Success) {
-        onStateChanged(States.SUCCESS)
-    } else if (rememberAsyncImagePainter(this).state is AsyncImagePainter.State.Loading) {
-        onStateChanged(States.LOADING)
-    } else {
-        onStateChanged(States.ERROR)
+    when (rememberAsyncImagePainter(this).state) {
+        is AsyncImagePainter.State.Success -> {
+            onStateChanged(States.SUCCESS)
+        }
+        is AsyncImagePainter.State.Loading -> {
+            onStateChanged(States.LOADING)
+        }
+        else -> {
+            onStateChanged(States.ERROR)
+        }
     }
 
     return if (rememberAsyncImagePainter(this).state is AsyncImagePainter.State.Success) {

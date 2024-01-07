@@ -35,11 +35,11 @@ import com.example.mystore.ui.components.commons.RowComponent
 import com.example.mystore.ui.components.commons.ScreenSectionComponent
 import com.example.mystore.ui.components.commons.SectionEmptyStateInfo
 import com.example.mystore.ui.components.commons.SectionInfo
+import com.example.mystore.ui.components.commons.ShowAlertDialogComponent
 import com.example.mystore.ui.components.commons.TextCurrencyComponent
 import com.example.mystore.ui.components.commons.ToastComponent
 import com.example.mystore.ui.components.commons.TransactionComponent
 import com.example.mystore.ui.components.commons.ValidateSection
-import com.example.mystore.ui.components.commons.showAlertDialogComponent
 import com.example.mystore.ui.components.commons.validateSection
 import com.example.mystore.viewmodel.screen.HomeViewModel
 
@@ -104,7 +104,7 @@ fun HomeScreen(
             }
 
             // AlertDialog Transaction delete confirmation
-            showAlertDialogComponent(
+            ShowAlertDialogComponent(
                 showAlert = showAlertDialogHomeScreen,
                 title = stringResource(R.string.my_store_registry_removal),
                 alertDialogMessage = stringResource(R.string.my_store_removal_confirmation),
@@ -119,7 +119,7 @@ fun HomeScreen(
             )
 
             // AlertDialog Product delete confirmation
-            showAlertDialogComponent(
+            ShowAlertDialogComponent(
                 showAlert = showAlertDialogHomeScreenProduct,
                 title = stringResource(R.string.my_store_registry_removal),
                 alertDialogMessage = stringResource(R.string.my_store_removal_product_confirmation),
@@ -135,6 +135,7 @@ fun HomeScreen(
 
             // Total geral Section
             ValidateSection(
+                screen = Screens.HOME,
                 sectionInfo = SectionInfo(
                     section = {
                         ScreenSectionComponent(
@@ -162,12 +163,13 @@ fun HomeScreen(
                         )
                     },
                 ),
-                screen = Screens.HOME,
             )
 
             // Transactions Section
             ValidateSection(
+                screen = Screens.HOME,
                 sectionInfo = SectionInfo(
+                    sectionName = Section.TRANSACTIONS,
                     section = {
                         ScreenSectionComponent(
                             title = stringResource(id = R.string.my_store_transactions),
@@ -200,34 +202,35 @@ fun HomeScreen(
                         )
                     },
                 ),
-                screen = Screens.HOME,
             )
 
             // Products Section
             ValidateSection(
-                sectionInfo = SectionInfo {
-                    ScreenSectionComponent(
-                        title = stringResource(id = R.string.my_store_products),
-                        body = {
-                            ProductCarouselComponent(
-                                listOfProductsLocal = listOfProductsLocal,
-                                shouldItemBeVisible = shouldItemBeVisible,
-                                onImageRequestState = { state ->
-                                    setImageRequestState(state)
-                                },
-                                onProductClick = { product ->
-                                    onEditMode(true, product)
-                                    onProductClick(product)
-                                },
-                                onProductLongClick = {
-                                    setShowAlertDialogHomeScreenProduct(true)
-                                    setProduct(it)
-                                },
-                                onProductDoubleClick = { onProductDoubleClick() },
-                            )
-                        },
-                    )
-                },
+                sectionInfo = SectionInfo(
+                    {
+                        ScreenSectionComponent(
+                            title = stringResource(id = R.string.my_store_products),
+                            body = {
+                                ProductCarouselComponent(
+                                    listOfProductsLocal = listOfProductsLocal,
+                                    shouldItemBeVisible = shouldItemBeVisible,
+                                    onImageRequestState = { state ->
+                                        setImageRequestState(state)
+                                    },
+                                    onProductClick = { product ->
+                                        onEditMode(true, product)
+                                        onProductClick(product)
+                                    },
+                                    onProductLongClick = {
+                                        setShowAlertDialogHomeScreenProduct(true)
+                                        setProduct(it)
+                                    },
+                                    onProductDoubleClick = { onProductDoubleClick() },
+                                )
+                            },
+                        )
+                    },
+                ),
                 sectionEmptyStateInfo =
                 SectionEmptyStateInfo(
                     data = listOfProducts,
@@ -241,7 +244,6 @@ fun HomeScreen(
                         )
                     },
                 ),
-                screen = Screens.HOME,
             )
             setShowToastState(productToastMessage, false)
         }

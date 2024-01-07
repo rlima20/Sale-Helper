@@ -4,34 +4,48 @@ import com.example.mystore.model.Product
 import com.example.mystore.model.Resume
 import com.example.mystore.model.Transaction
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+
+/**
+ * Home view model.
+ * Essa classe é responsável por gerenciar os dados da tela Home.
+ * _resume: Dados do resumo.
+ * _showAlertDialogHomeScreen: Estado do alert dialog da tela Home.
+ * _showAlertDialogHomeScreenProduct: Estado do alert dialog da tela Home.
+ * _showAlertDialogTransactionDetail: Estado do alert dialog da tela de Detalhe.
+ * _showToast: Estado do toast.
+ * _transaction: Dados da transação.
+ * _product: Dados do produto.
+ * getResume: Função que retorna os dados do resumo.
+ * @constructor Create empty constructor for home view model
+ */
 
 class HomeViewModel : CommonViewModel() {
 
     private val _resume: MutableStateFlow<Resume?> = MutableStateFlow(Resume())
-    val resume: MutableStateFlow<Resume?> = _resume
+    val resume: StateFlow<Resume?> = _resume
 
     private val _showAlertDialogHomeScreen: MutableStateFlow<Boolean> = MutableStateFlow(false)
-    val showAlertDialogHomeScreen: MutableStateFlow<Boolean> = _showAlertDialogHomeScreen
+    val showAlertDialogHomeScreen: StateFlow<Boolean> = _showAlertDialogHomeScreen
 
     private val _showAlertDialogHomeScreenProduct: MutableStateFlow<Boolean> =
         MutableStateFlow(false)
-    val showAlertDialogHomeScreenProduct: MutableStateFlow<Boolean> =
-        _showAlertDialogHomeScreenProduct
+    val showAlertDialogHomeScreenProduct: StateFlow<Boolean> = _showAlertDialogHomeScreenProduct
 
     private val _showAlertDialogTransactionDetail: MutableStateFlow<Boolean> =
         MutableStateFlow(false)
-    val showAlertDialogTransactionDetail: MutableStateFlow<Boolean> =
+    val showAlertDialogTransactionDetail: StateFlow<Boolean> =
         _showAlertDialogTransactionDetail
 
     private val _showToast: MutableStateFlow<Pair<String, Boolean>> =
         MutableStateFlow(Pair("", false))
-    val showToast: MutableStateFlow<Pair<String, Boolean>> = _showToast
+    val showToast: StateFlow<Pair<String, Boolean>> = _showToast
 
     private val _transaction: MutableStateFlow<Transaction> = MutableStateFlow(Transaction())
-    val transaction: MutableStateFlow<Transaction> = _transaction
+    val transaction: StateFlow<Transaction> = _transaction
 
     private val _product: MutableStateFlow<Product> = MutableStateFlow(Product())
-    val product: MutableStateFlow<Product> = _product
+    val product: StateFlow<Product> = _product
 
     init {
         getResume()
@@ -76,9 +90,9 @@ class HomeViewModel : CommonViewModel() {
                 stockValue.equals(0.0)
                 )
         ) {
-            resume.value = null
+            _resume.value = null
         } else {
-            resume.value = Resume(
+            _resume.value = Resume(
                 debits = debits,
                 grossRevenue = grossRevenue,
                 netRevenue = netRevenue,
@@ -93,7 +107,7 @@ class HomeViewModel : CommonViewModel() {
         _showAlertDialogHomeScreen.value = state
     }
 
-    fun getShowAlertDialogHomeScreenProduct() = showAlertDialogHomeScreenProduct.value
+    private fun getShowAlertDialogHomeScreenProduct() = showAlertDialogHomeScreenProduct.value
 
     fun setShowAlertDialogHomeScreenProduct(state: Boolean) {
         _showAlertDialogHomeScreenProduct.value = state

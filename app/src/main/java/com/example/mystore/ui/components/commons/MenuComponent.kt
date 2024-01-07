@@ -46,9 +46,7 @@ fun MenuComponent(
 
         DropdownMenu(
             expanded = isMenuExpanded,
-            onDismissRequest = {
-                onDismissRequest()
-            },
+            onDismissRequest = { onDismissRequest() },
             modifier = Modifier
                 .fillMaxWidth()
                 .onGloballyPositioned { coordinates ->

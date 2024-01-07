@@ -107,6 +107,8 @@ fun MyStoreApp(
                     onChangeTextFieldSize = { size -> myStoreViewModel.setTextFieldSize(size) },
                 )
             },
+
+            // TODO - PAREI A ANÁLISE AQUI
             content = { content ->
                 MyStoreNavHost(
                     navController = navController,
@@ -136,6 +138,7 @@ fun MyStoreApp(
                     onShouldDisplayIcon = { shouldDisplay ->
                         shouldDisplayIcon = shouldDisplay
                     },
+                    onNavigateToHome = { navController.navigateSingleTopTo(HomeScreen.route) },
                 )
             },
             bottomBar = {

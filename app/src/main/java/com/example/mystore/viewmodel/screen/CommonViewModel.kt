@@ -10,24 +10,30 @@ import com.example.mystore.listOfTransactions
 import com.example.mystore.model.Product
 import com.example.mystore.model.Transaction
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 
+/**
+ * Common view model.
+ * Nessa classe ficam os métodos e variáveis que são compartilhados entre as telas.
+ * Aqui eu carrego os dados de produtos e transações e a lista de vendas e compras, para serem
+ * carregados na HomeScreen e na TransactionScreen.
+ * @constructor Create empty constructor for common view model
+ */
 open class CommonViewModel : ViewModel() {
 
     private var _listOfProducts: MutableStateFlow<MutableList<Product>> =
         MutableStateFlow(mutableListOf())
-    val listOfProducts: MutableStateFlow<MutableList<Product>> = _listOfProducts
+    val listOfProducts: StateFlow<MutableList<Product>> = _listOfProducts
 
-    private val _listOfSales: MutableState<List<Transaction>> =
-        mutableStateOf(listOf())
+    private val _listOfSales: MutableState<List<Transaction>> = mutableStateOf(listOf())
     val listOfSales: MutableState<List<Transaction>> = _listOfSales
 
-    private val _listOfPurchases: MutableState<List<Transaction>> =
-        mutableStateOf(listOf())
+    private val _listOfPurchases: MutableState<List<Transaction>> = mutableStateOf(listOf())
     val listOfPurchases: MutableState<List<Transaction>> = _listOfPurchases
 
     private val _transactions: MutableStateFlow<MutableList<Transaction>> =
         MutableStateFlow(listOfTransactions)
-    val transactions: MutableStateFlow<MutableList<Transaction>> = _transactions
+    val transactions: StateFlow<MutableList<Transaction>> = _transactions
 
     private var _imageRequestState: MutableStateFlow<States> = MutableStateFlow(States.LOADING)
 
@@ -66,7 +72,7 @@ open class CommonViewModel : ViewModel() {
     }
 
     fun getListOfProducts() {
-        listOfProducts.value = listOfProductsLocal
+        _listOfProducts.value = listOfProductsLocal
     }
 
     fun incrementListOfTransactions(transactions: Transaction) {
@@ -89,7 +95,9 @@ open class CommonViewModel : ViewModel() {
         _listOfProducts.value.add(product)
     }
 
-    fun updateProduct(product: Product) {
-        _listOfProducts.value[_listOfProducts.value.indexOf(product)] = product
+    fun updateProduct(product: Product) {}
+
+    fun setListOfProducts(listOfProducts: MutableList<Product>) {
+        _listOfProducts.value = listOfProducts
     }
 }
