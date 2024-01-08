@@ -36,6 +36,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.mystore.R
+import com.example.mystore.listOfProductsLocal
 import com.example.mystore.model.Product
 import com.example.mystore.setQuantifierSize
 import com.example.mystore.ui.components.commons.AlertDialogComponent
@@ -168,12 +169,14 @@ fun RegisterProductScreenBody(
         onConfirmButtonClicked = {
             registerProductViewModel.saveProduct(
                 product = Product(
+                    id = if (!isEditMode) listOfProductsLocal.size + 1.toLong() else product.id,
                     title = titleSelectedText,
                     description = descriptionSelectedText,
                     purchasePrice = purchasePriceSelectedText.toDouble(),
                     salePrice = salePriceSelectedText.toDouble(),
                     quantity = quantity,
                     maxQuantityToBuy = maxQuantityToBuy,
+                    imageUrl = product.imageUrl,
                 ),
                 isEditMode = isEditMode,
             )

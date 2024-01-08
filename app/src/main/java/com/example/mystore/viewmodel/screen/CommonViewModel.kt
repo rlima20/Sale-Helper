@@ -87,17 +87,34 @@ open class CommonViewModel : ViewModel() {
         _transactions.value.removeAt(_transactions.value.indexOf(transaction))
     }
 
+    fun setListOfProducts(listOfProducts: MutableList<Product>) {
+        _listOfProducts.value = listOfProducts
+    }
+
+    /**
+     * Delete product.
+     * This method is used to delete the product in the list of products.
+     * @param product Product
+     */
     fun deleteProduct(product: Product) {
         _listOfProducts.value.removeAt(listOfProducts.value.indexOf(product))
     }
 
-    fun addProduct(product: Product) {
+    /**
+     * Add product.
+     * This method is used to add the product in the list of products.
+     * @param product Product
+     */
+    fun createProduct(product: Product) {
         _listOfProducts.value.add(product)
     }
 
-    fun updateProduct(product: Product) {}
-
-    fun setListOfProducts(listOfProducts: MutableList<Product>) {
-        _listOfProducts.value = listOfProducts
+    /**
+     * Update product.
+     * This method is used to update the product in the list of products.
+     * @param product Product
+     */
+    fun updateProduct(product: Product) {
+        _listOfProducts.value[_listOfProducts.value.indexOfFirst { it.id == product.id }] = product
     }
 }
