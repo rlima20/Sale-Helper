@@ -4,19 +4,6 @@ import com.example.mystore.model.Product
 import com.example.mystore.model.Transaction
 import java.util.Date
 
-/*val listOfProductsLocal: List<Product> = listOf(
-    Product(
-        id = 0,
-        title = "Samsung A30S",
-        description = "O Samsung Galaxy A30s é um smartphone Android completo, que não tem muito a invejar aos mais avançados dispositivos. Surpreendente é sua tela Touchscreen de 6.4 polegadas, que coloca esse Samsung no topo de sua categoria. A resolução também é alta: 1560x720 pixel.",
-        quantity = 0,
-        maxQuantityToBuy = 9,
-        purchasePrice = 100.0,
-        salePrice = 200.0,
-        imageUrl = "https://s2-techtudo.glbimg.com/a-iQhuilJ0254f59X0-Rv8hKRXs=/184x0:1751x1080/1000x0/smart/filters:strip_icc()/i.s3.glbimg.com/v1/AUTH_08fbf48bc0524877943fe86e43087e7a/internal_photos/bs/2020/E/7/oUKdRERJqXVqfkGus4dQ/2.png",
-    )
-)*/
-
 val listOfProductsLocal = mutableListOf(
     Product(
         id = 0,
@@ -59,7 +46,7 @@ val listOfProductsLocal = mutableListOf(
         imageUrl = "https://m.media-amazon.com/images/I/71fzcZQlbqS._AC_SL1500_.jpg",
     ),
     Product(
-        id = 1,
+        id = 4,
         title = "Coca-Cola",
         description = "Refrigerante de cola",
         quantity = 10,

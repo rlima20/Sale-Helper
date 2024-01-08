@@ -65,7 +65,7 @@ class RegisterProductViewModel : CommonViewModel() {
     }
 
     fun saveProduct(product: Product, isEditMode: Boolean) {
-        if (isEditMode) updateProduct(product) else addProduct(product)
+        if (isEditMode) updateProduct(product) else createProduct(product)
         clearAllStates()
     }
 
