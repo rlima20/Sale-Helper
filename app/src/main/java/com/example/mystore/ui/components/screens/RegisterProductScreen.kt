@@ -51,6 +51,16 @@ import com.example.mystore.ui.components.commons.ToastComponent
 import com.example.mystore.ui.components.commons.getPainter
 import com.example.mystore.viewmodel.screen.RegisterProductViewModel
 
+/**
+ * Register product screen.
+ *
+ * @param product Product came from MyStoreNavHost
+ * @param isEditMode Is edit mode
+ * @param registerProductViewModel Register product view model
+ * @param onClearStates On clear states
+ * @param onNavigateToHome On navigate to home
+ */
+
 @Composable
 fun RegisterProductScreen(
     product: Product = Product(),
@@ -68,12 +78,13 @@ fun RegisterProductScreen(
         setQuantity(product.quantity)
         setMaxQuantityToBuy(product.maxQuantityToBuy)
         setShowToastProductScreen(false)
+        setProduct(product)
 
         ScreenSectionComponent(
             title = stringResource(id = R.string.my_store_product_2).setTitle(isEditMode),
             body = {
                 RegisterProductScreenBody(
-                    product = product,
+                    product = this.product.collectAsState().value,
                     isEditMode = isEditMode,
                     registerProductViewModel = registerProductViewModel,
                     screenWidth = screenWidth.collectAsState().value,
@@ -94,7 +105,27 @@ fun RegisterProductScreen(
     }
 }
 
-// Dropdown TransactionType
+/**
+ * Register product screen body.
+ *
+ * This is the entire registerProductScreen. It has all the componente from the ImageSection to
+ * the save button.
+ * @param product Product
+ * @param screenWidth Screen width
+ * @param isEditMode Is edit mode
+ * @param registerProductViewModel Register product view model
+ * @param titleSelectedText Title selected text
+ * @param descriptionSelectedText Description selected text
+ * @param purchasePriceSelectedText Purchase price selected text
+ * @param salePriceSelectedText Sale price selected text
+ * @param quantity Quantity
+ * @param maxQuantityToBuy Max quantity to buy
+ * @param showAlertDialogProductScreen Show alert dialog product screen
+ * @param showAlertDialogImageUrl Show alert dialog image url
+ * @param showToastProductScreen Show toast product screen
+ * @param onNavigateToHome On navigate to home
+ * @return
+ */
 @OptIn(ExperimentalComposeUiApi::class, ExperimentalFoundationApi::class)
 @Composable
 fun RegisterProductScreenBody(
@@ -143,7 +174,10 @@ fun RegisterProductScreenBody(
                         Column(modifier = Modifier.fillMaxSize()) {
                             ImageUrlBody(
                                 registerProductViewModel = registerProductViewModel,
-                                // product = product,
+                                imageUrl = product.imageUrl,
+                                onImageUrl = { imageUrl ->
+                                    registerProductViewModel.setImageUrl(product, imageUrl)
+                                },
                             )
                         }
                     },
@@ -153,7 +187,7 @@ fun RegisterProductScreenBody(
         )
     }
 
-    // AlertDialog with delete confirmation
+    // AlertDialog with product creation or edition
     ShowAlertDialogComponent(
         showAlert = showAlertDialogProductScreen,
         title = if (isEditMode) {
@@ -321,10 +355,11 @@ fun RegisterProductScreenBody(
 fun ImageUrlBody(
     registerProductViewModel: RegisterProductViewModel,
     onImageUrl: (imageUrl: String) -> Unit = {},
+    imageUrl: String,
 ) {
     val titleKeyboardController = LocalSoftwareKeyboardController.current
     val titleFocusManager = LocalFocusManager.current
-    var imageUrl by remember { mutableStateOf("") }
+    var imageUrlInternal by remember { mutableStateOf(imageUrl) }
 
     Column {
         ImageSection(
@@ -351,7 +386,7 @@ fun ImageUrlBody(
                 R.color.color_50,
                 R.color.color_900,
             ),
-            onValueChanged = { imageUrl = it },
+            onValueChanged = { imageUrlInternal = it },
         )
 
         Row {
@@ -383,22 +418,19 @@ fun ImageUrlBody(
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ImageSection(
     modifier: Modifier = Modifier,
     registerProductViewModel: RegisterProductViewModel,
     imageUrl: String = "",
     onProductClick: () -> Unit = {},
-    onProductLongClick: (Product) -> Unit = {},
-    onProductDoubleClick: () -> Unit = {},
 ) {
     Column(
         verticalArrangement = Arrangement.Top,
         modifier = Modifier.background(colorResource(id = R.color.color_800)),
     ) {
         ImageComponent(
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxWidth()
                 .height(100.dp),
             painterResource = getPainter(

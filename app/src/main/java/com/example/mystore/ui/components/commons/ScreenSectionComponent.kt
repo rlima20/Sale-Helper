@@ -17,6 +17,16 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.mystore.R
 
+/**
+ * Screen section component.
+ *
+ * Product creation or edition screen. This is just a container that displayes a title and a body.
+ *
+ * @param title Title
+ * @param textColor Text color
+ * @param backgroundColor Background color
+ * @param body Body
+ */
 @Composable
 fun ScreenSectionComponent(
     title: String,
