@@ -108,7 +108,6 @@ fun MyStoreApp(
                 )
             },
 
-            // TODO - PAREI A ANÁLISE AQUI
             content = { content ->
                 MyStoreNavHost(
                     navController = navController,

@@ -73,3 +73,9 @@ Yapp/src/main/java/com/example/mystore/ui/components/commons/EmptyStateSectionCo
 Yapp/src/main/java/com/example/mystore/ui/components/screens/ConsolidatedPositionScreen.kt,e/0/e0d5a0e06a3498e0b2414aa07fd24efbe6ca81b0
 y
 Iapp/src/main/java/com/example/mystore/ui/components/screens/HomeScreen.kt,d/8/d88e30b8be4043722b1c4de2aeba3807a7d5c21a
+ƒ
+Sapp/src/main/java/com/example/mystore/ui/components/commons/FloatingActionButton.kt,6/2/629bee8a4d83543daa34040fd71a121955ea5263
+…
+Uapp/src/main/java/com/example/mystore/ui/components/commons/ScreenSectionComponent.kt,1/4/1465e2a249a40b11702a1ff1b77da4f0fa5703be
+ƒ
+Sapp/src/main/java/com/example/mystore/ui/components/commons/AlertDialogComponent.kt,2/1/2168d96a9e54d83e3a432bf83c0dd239c2526b8c

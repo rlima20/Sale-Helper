@@ -39,6 +39,31 @@ class RegisterProductViewModel : CommonViewModel() {
     private val _showToastProductScreen: MutableStateFlow<Boolean> = MutableStateFlow(false)
     val showToastProductScreen: StateFlow<Boolean> = _showToastProductScreen
 
+    private val _product: MutableStateFlow<Product> = MutableStateFlow(Product())
+    val product: StateFlow<Product> = _product
+
+    fun getProduct(): Product {
+        return product.value
+    }
+
+    fun setProduct(product: Product) {
+        _product.value = product
+    }
+
+    fun setImageUrl(product: Product, imageUrl: String) {
+        val innerProduct = Product(
+            id = _product.value.id,
+            title = _product.value.title,
+            description = _product.value.description,
+            purchasePrice = _product.value.purchasePrice,
+            salePrice = _product.value.salePrice,
+            quantity = _product.value.quantity,
+            maxQuantityToBuy = _product.value.maxQuantityToBuy,
+            imageUrl = imageUrl,
+        )
+        _product.value = innerProduct
+    }
+
     fun getScreenWidth(): Int {
         return screenWidth.value
     }
