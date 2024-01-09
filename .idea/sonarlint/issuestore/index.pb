@@ -79,3 +79,5 @@ Sapp/src/main/java/com/example/mystore/ui/components/commons/FloatingActionButto
 Uapp/src/main/java/com/example/mystore/ui/components/commons/ScreenSectionComponent.kt,1/4/1465e2a249a40b11702a1ff1b77da4f0fa5703be
 ƒ
 Sapp/src/main/java/com/example/mystore/ui/components/commons/AlertDialogComponent.kt,2/1/2168d96a9e54d83e3a432bf83c0dd239c2526b8c
+‡
+Wapp/src/main/java/com/example/mystore/ui/components/commons/ProductCarouselComponent.kt,3/5/35ad14b6a1aaf7276e665a7a16449b002971c1ee

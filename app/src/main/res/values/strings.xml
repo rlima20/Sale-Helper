@@ -62,6 +62,7 @@
     <string name="my_store_registry_update">Edição de registro</string>
     <string name="my_store_removal_confirmation">Deseja realmente excluir essa transação?</string>
     <string name="my_store_creation_confirmation">Deseja salvar esse produto?</string>
+    <string name="my_store_edition_confirmation">Deseja salvar as alterações?</string>
     <string name="my_store_removal_product_confirmation">Deseja realmente excluir esse produto?</string>
     <string name="my_store_type">Tipo de transação</string>
     <string name="my_store_successful_registry">Produto cadastrado com sucesso!</string>

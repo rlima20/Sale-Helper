@@ -195,7 +195,13 @@ fun RegisterProductScreenBody(
         } else {
             stringResource(R.string.my_store_registry_creation)
         },
-        alertDialogMessage = stringResource(R.string.my_store_creation_confirmation),
+        alertDialogMessage = stringResource(
+            if (isEditMode) {
+                R.string.my_store_edition_confirmation
+            } else {
+                R.string.my_store_creation_confirmation
+            },
+        ),
         onDismissRequest = { registerProductViewModel.setShowAlertDialogProductScreen(false) },
         onDismissButtonClicked = {
             registerProductViewModel.setShowAlertDialogProductScreen(false)

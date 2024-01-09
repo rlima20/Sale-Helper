@@ -87,7 +87,7 @@ fun HomeScreen(
                 AlertDialogComponent(
                     size = Size(
                         width = LocalConfiguration.current.screenWidthDp.dp.value * 1f,
-                        height = LocalConfiguration.current.screenHeightDp.dp.value * 0.7f,
+                        height = LocalConfiguration.current.screenHeightDp.dp.value * 0.58f,
                     ),
                     color = colorResource(id = R.color.color_transaparent),
                     content = {
@@ -260,7 +260,7 @@ private fun HomeTransactions(
     Column(
         modifier = Modifier
             .padding(bottom = 8.dp)
-            .height(200.dp)
+            .height(160.dp)
             .verticalScroll(rememberScrollState()),
         verticalArrangement = Arrangement.spacedBy(4.dp),
     ) {
