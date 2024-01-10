@@ -113,7 +113,7 @@ fun MyStoreApp(
                     navController = navController,
                     modifier = Modifier
                         .fillMaxSize()
-                        .background(colorResource(id = R.color.color_400))
+                        .background(colorResource(id = R.color.color_50))
                         .padding(content),
                     homeViewModel = homeViewModel,
                     registerTransactionViewModel = registerTransactionViewModel,

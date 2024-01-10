@@ -16,11 +16,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.example.mystore.R
-import com.example.mystore.ui.theme.primary
+import com.example.mystore.ui.theme.mcpalette0_A900
 
 @Composable
 internal fun BottomBarComponent(
@@ -35,7 +34,7 @@ internal fun BottomBarComponent(
         if (expandedBottomBar) {
             Row(
                 modifier = Modifier
-                    .background(colorResource(id = R.color.color_700))
+                    .background(mcpalette0_A900)
                     .fillMaxWidth(),
             ) {
                 expandedBottomBarContent()
@@ -43,7 +42,7 @@ internal fun BottomBarComponent(
         }
         Row(
             modifier = Modifier
-                .background(primary)
+                .background(mcpalette0_A900)
                 .padding(12.dp)
                 .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
@@ -59,7 +58,7 @@ internal fun BottomBarComponent(
                     ),
                 imageVector = Icons.Rounded.Home,
                 contentDescription = null,
-                tint = Color.White,
+                tint = Color.Black,
             )
             Icon(
                 modifier = Modifier
@@ -72,7 +71,7 @@ internal fun BottomBarComponent(
                     ),
                 painter = painterResource(id = R.drawable.my_store_consolidated_position_icon),
                 contentDescription = null,
-                tint = Color.White,
+                tint = Color.Black,
             )
             Icon(
                 modifier = Modifier
@@ -84,7 +83,7 @@ internal fun BottomBarComponent(
                     ),
                 painter = painterResource(id = R.drawable.my_store_transaction_icon),
                 contentDescription = null,
-                tint = Color.White,
+                tint = Color.Black,
             )
             Icon(
                 modifier = Modifier
@@ -96,7 +95,7 @@ internal fun BottomBarComponent(
                     ),
                 imageVector = Icons.Rounded.Add,
                 contentDescription = null,
-                tint = Color.White,
+                tint = Color.Black,
             )
         }
     }

@@ -30,18 +30,18 @@ import com.example.mystore.R
 @Composable
 fun ScreenSectionComponent(
     title: String,
-    textColor: Int = R.color.color_50,
-    backgroundColor: Int = R.color.color_900,
+    textColor: Int = R.color.color_900,
+    backgroundColor: Int = R.color.white,
     body: @Composable () -> Unit,
 ) {
     Column(
-        modifier = Modifier.padding(top = 8.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp),
+        modifier = Modifier.padding(top = 10.dp),
+        verticalArrangement = Arrangement.spacedBy(10.dp),
     ) {
         Surface(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(start = 8.dp, end = 8.dp),
+                .padding(start = 10.dp, end = 10.dp),
             shape = RoundedCornerShape(15.dp),
             elevation = 12.dp,
         ) {

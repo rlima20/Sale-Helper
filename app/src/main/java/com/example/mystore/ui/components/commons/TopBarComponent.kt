@@ -19,7 +19,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.mystore.R
 import com.example.mystore.screenList
+import com.example.mystore.ui.theme.mcpalette0_200
+import com.example.mystore.ui.theme.mcpalette0_400
+import com.example.mystore.ui.theme.mcpalette0_50
+import com.example.mystore.ui.theme.mcpalette0_A800
 import com.example.mystore.ui.theme.primary
+import com.example.mystore.ui.theme.secondary
 
 @Composable
 internal fun TopBarComponent(
@@ -36,7 +41,7 @@ internal fun TopBarComponent(
 ) {
     Row(
         modifier = Modifier
-            .background(primary)
+            .background(mcpalette0_A800)
             .padding(12.dp)
             .fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
@@ -49,7 +54,7 @@ internal fun TopBarComponent(
         )
         Row(
             modifier = Modifier
-                .background(primary)
+                .background(mcpalette0_A800)
                 .padding(top = 12.dp, bottom = 12.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween,

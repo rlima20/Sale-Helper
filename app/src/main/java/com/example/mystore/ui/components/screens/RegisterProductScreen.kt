@@ -212,8 +212,8 @@ fun RegisterProductScreenBody(
                     id = if (!isEditMode) listOfProductsLocal.size + 1.toLong() else product.id,
                     title = titleSelectedText,
                     description = descriptionSelectedText,
-                    purchasePrice = purchasePriceSelectedText.toDouble(),
-                    salePrice = salePriceSelectedText.toDouble(),
+                    purchasePrice = purchasePriceSelectedText.replaceCommaFromValue().toDouble(),
+                    salePrice = salePriceSelectedText.replaceCommaFromValue().toDouble(),
                     quantity = quantity,
                     maxQuantityToBuy = maxQuantityToBuy,
                     imageUrl = product.imageUrl,
@@ -454,6 +454,8 @@ private fun String.setTitle(editMode: Boolean) =
     if (editMode) "$this | EDIÇÃO" else "$this | CRIAÇÃO"
 
 private fun String.removeCurrencyToProductValue() = this.replace("R$", "")
+
+private fun String.replaceCommaFromValue() = this.replace(",", ".")
 
 private fun String.addCurrencyToProductValue() = "R$ ${
     String.format("%.2f", this.replace(",", ".").toDouble())
