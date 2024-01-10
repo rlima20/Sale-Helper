@@ -259,10 +259,10 @@ private fun HomeTransactions(
 ) {
     Column(
         modifier = Modifier
-            .padding(bottom = 8.dp)
+            .padding(bottom = 8.dp, start = 8.dp, end = 8.dp)
             .height(160.dp)
             .verticalScroll(rememberScrollState()),
-        verticalArrangement = Arrangement.spacedBy(4.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         listOfTransactions.forEach { transaction ->
             TransactionComponent(

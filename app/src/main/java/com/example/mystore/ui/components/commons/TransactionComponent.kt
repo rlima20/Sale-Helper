@@ -41,7 +41,7 @@ fun TransactionComponent(
             bottomStart = 10.dp,
             bottomEnd = 10.dp,
         ),
-        color = colorResource(id = R.color.color_800),
+        color = colorResource(id = R.color.color_50),
     ) {
         Column(
             modifier = Modifier.combinedClickable(
@@ -54,7 +54,7 @@ fun TransactionComponent(
                 contentAlignment = Alignment.CenterStart,
                 modifier = Modifier
                     .padding(4.dp)
-                    .background(color = colorResource(id = R.color.color_800)),
+                    .background(color = colorResource(id = R.color.color_50)),
             ) {
                 Row(
                     modifier = Modifier

@@ -42,7 +42,7 @@ fun ProductItemComponent(
         modifier = Modifier
             .fillMaxWidth(),
         shape = RoundedCornerShape(15.dp),
-        elevation = 12.dp,
+        elevation = 4.dp,
     ) {
         Row(
             horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -50,7 +50,7 @@ fun ProductItemComponent(
             Column(
                 verticalArrangement = Arrangement.Top,
                 modifier = Modifier
-                    .background(colorResource(id = R.color.color_800))
+                    .background(colorResource(id = R.color.color_50))
                     .width(140.dp)
                     .combinedClickable(
                         enabled = true,

@@ -14,7 +14,7 @@ fun TextFormattedComponent(
     modifier: Modifier = Modifier,
     leftSideText: String,
     fontSize: TextUnit,
-    color: Int = R.color.color_50,
+    color: Int = R.color.color_900,
 ) {
     Text(
         modifier = modifier.padding(

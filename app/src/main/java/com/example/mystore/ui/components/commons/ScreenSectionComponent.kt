@@ -50,7 +50,7 @@ fun ScreenSectionComponent(
                     .background(colorResource(backgroundColor)),
             ) {
                 Column(
-                    modifier = Modifier.padding(8.dp),
+                    modifier = Modifier.padding(bottom = 8.dp),
                 ) {
                     Text(
                         modifier = Modifier
