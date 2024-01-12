@@ -169,7 +169,7 @@ fun RegisterProductScreenBody(
                 ScreenSectionComponent(
                     title = stringResource(id = R.string.my_store_image_product),
                     textColor = R.color.color_500,
-                    backgroundColor = R.color.color_50,
+                    backgroundColor = R.color.white,
                     body = {
                         Column(modifier = Modifier.fillMaxSize()) {
                             ImageUrlBody(
@@ -349,7 +349,7 @@ fun RegisterProductScreenBody(
             FloatingActionButton(
                 enabled = true,
                 modifier = Modifier.size(36.dp),
-                colorId = R.color.color_50,
+                colorId = R.color.color_800,
                 onClick = { registerProductViewModel.setShowAlertDialogProductScreen(true) },
             )
         }
@@ -388,9 +388,9 @@ fun ImageUrlBody(
             keyboardController = titleKeyboardController,
             focusManager = titleFocusManager,
             transactionDetailColors = Triple(
-                R.color.color_900,
-                R.color.color_50,
-                R.color.color_900,
+                R.color.color_500,
+                R.color.color_500,
+                R.color.white,
             ),
             onValueChanged = { imageUrlInternal = it },
         )

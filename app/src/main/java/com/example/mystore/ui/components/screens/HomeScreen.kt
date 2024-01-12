@@ -235,7 +235,7 @@ fun HomeScreen(
                 SectionEmptyStateInfo(
                     data = listOfProducts,
                     emptySectionTitle = stringResource(R.string.my_store_no_products),
-                    emptySectionPainter = painterResource(id = R.drawable.my_store_plus_icon),
+                    emptySectionPainter = painterResource(id = R.drawable.plus_circled_icon),
                     onEmptyStateImageClicked = {
                         onEmptyStateImageClicked(
                             validateSection(

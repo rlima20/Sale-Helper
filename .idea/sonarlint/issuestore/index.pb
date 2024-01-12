@@ -81,3 +81,9 @@ Uapp/src/main/java/com/example/mystore/ui/components/commons/ScreenSectionCompon
 Sapp/src/main/java/com/example/mystore/ui/components/commons/AlertDialogComponent.kt,2/1/2168d96a9e54d83e3a432bf83c0dd239c2526b8c
 ‡
 Wapp/src/main/java/com/example/mystore/ui/components/commons/ProductCarouselComponent.kt,3/5/35ad14b6a1aaf7276e665a7a16449b002971c1ee
+g
+7app/src/main/java/com/example/mystore/ui/theme/Color.kt,0/5/05fbdd8271cb3699a096548b0bbd8d068c2224b0
+ƒ
+Sapp/src/main/java/com/example/mystore/ui/components/commons/TransactionComponent.kt,7/2/72e8061eecf11a58e3f4f69585039b4c9cb46339
+ƒ
+Sapp/src/main/java/com/example/mystore/ui/components/commons/ProductItemComponent.kt,1/c/1cac644a158561f3a62564303d806792a5888680

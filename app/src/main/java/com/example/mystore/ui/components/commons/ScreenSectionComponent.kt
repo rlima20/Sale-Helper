@@ -43,14 +43,14 @@ fun ScreenSectionComponent(
                 .fillMaxWidth()
                 .padding(start = 10.dp, end = 10.dp),
             shape = RoundedCornerShape(15.dp),
-            elevation = 12.dp,
+            elevation = 4.dp,
         ) {
             Box(
                 modifier = Modifier
                     .background(colorResource(backgroundColor)),
             ) {
                 Column(
-                    modifier = Modifier.padding(bottom = 8.dp),
+                    modifier = Modifier.padding(start = 8.dp, bottom = 8.dp, end = 8.dp),
                 ) {
                     Text(
                         modifier = Modifier

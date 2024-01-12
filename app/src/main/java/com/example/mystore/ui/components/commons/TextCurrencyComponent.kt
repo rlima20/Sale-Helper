@@ -22,7 +22,7 @@ internal fun TextCurrencyComponent(
     type: Type,
     shouldItemBeVisible: Boolean,
     fontSize: TextUnit = 18.sp,
-    color: Int = R.color.color_50,
+    color: Int = R.color.color_800,
     paddings: Pair<Dp, Dp> = Pair(8.dp, 8.dp),
 ) {
     Text(
