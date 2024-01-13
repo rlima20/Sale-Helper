@@ -68,7 +68,7 @@ fun DropdownComponent(
                     setIcon(isExpanded),
                     "contentDescription",
                     Modifier.clickable { onTrailingIconClicked() },
-                    tint = colorResource(id = R.color.color_50),
+                    tint = colorResource(id = R.color.color_800),
                 )
             },
         )

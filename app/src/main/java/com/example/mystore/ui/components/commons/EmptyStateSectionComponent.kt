@@ -34,7 +34,7 @@ fun EmptyStateSectionComponent(
 ) {
     Surface(
         modifier = Modifier
-            .padding(top = 8.dp, start = 8.dp, end = 8.dp)
+            .padding(8.dp)
             .fillMaxWidth(),
         shape = RoundedCornerShape(15.dp),
         elevation = 12.dp,
@@ -42,12 +42,13 @@ fun EmptyStateSectionComponent(
         Box(
             contentAlignment = Alignment.Center,
             modifier = Modifier
-                .background(colorResource(id = R.color.color_900)),
+                .background(colorResource(id = R.color.white)),
         ) {
             Surface(
                 modifier = Modifier
-                    .background(color = colorResource(id = R.color.color_900)),
-                color = colorResource(id = R.color.color_900),
+                    .background(color = colorResource(id = R.color.white)),
+                color = colorResource(id = R.color.white),
+                shape = RoundedCornerShape(15.dp),
             ) {
                 Box(
                     contentAlignment = Alignment.Center,
@@ -61,9 +62,9 @@ fun EmptyStateSectionComponent(
                             modifier = Modifier
                                 .padding(top = 16.dp)
                                 .size(100.dp)
-                                .background(color = colorResource(id = R.color.color_900))
+                                .background(color = colorResource(id = R.color.white))
                                 .clickable(onClick = onEmptyStateImageClicked),
-                            painter = painter,
+                            painter = painterResource(id = R.drawable.plus_circled_icon),
                             contentDescription = null,
                         )
                         Text(

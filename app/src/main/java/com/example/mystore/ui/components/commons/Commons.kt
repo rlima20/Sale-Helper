@@ -211,6 +211,7 @@ fun ShowAlertDialogComponent(
                     )
                 }
             },
+            color = colorResource(id = R.color.white),
         )
     }
 }

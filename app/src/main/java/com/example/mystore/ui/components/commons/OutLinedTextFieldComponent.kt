@@ -26,7 +26,7 @@ fun OutLinedTextFieldComponent(
     selectedText: String = "",
     label: String = "",
     transactionDetailColors: Triple<Int, Int, Int> =
-        Triple(R.color.color_50, R.color.color_900, R.color.color_50),
+        Triple(R.color.color_900, R.color.white, R.color.white),
     keyboardController: SoftwareKeyboardController? = null,
     keyboardOptions: KeyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
     focusManager: FocusManager,
@@ -40,7 +40,7 @@ fun OutLinedTextFieldComponent(
         onValueChange = { onValueChanged(it) },
         singleLine = true,
         modifier = modifier
-            .background(colorResource(id = transactionDetailColors.second))
+            .background(colorResource(id = transactionDetailColors.third))
             .fillMaxWidth(),
         label = {
             Text(
@@ -65,8 +65,8 @@ fun OutLinedTextFieldComponent(
             unfocusedLabelColor = colorResource(id = R.color.color_500),
             disabledLabelColor = colorResource(id = R.color.color_50),
             cursorColor = colorResource(id = R.color.color_50),
-            textColor = colorResource(id = transactionDetailColors.third),
-            disabledTextColor = colorResource(id = transactionDetailColors.third),
+            textColor = colorResource(id = transactionDetailColors.first),
+            disabledTextColor = colorResource(id = transactionDetailColors.first),
             placeholderColor = colorResource(id = R.color.color_50),
         ),
         shape = RoundedCornerShape(15.dp),

@@ -79,7 +79,7 @@ fun HomeScreen(
 
         Column(
             modifier = Modifier
-                .padding(bottom = 8.dp)
+                .padding(bottom = 12.dp)
                 .verticalScroll(rememberScrollState()),
         ) {
             // AlertDialog with transaction details
@@ -87,7 +87,7 @@ fun HomeScreen(
                 AlertDialogComponent(
                     size = Size(
                         width = LocalConfiguration.current.screenWidthDp.dp.value * 1f,
-                        height = LocalConfiguration.current.screenHeightDp.dp.value * 0.7f,
+                        height = LocalConfiguration.current.screenHeightDp.dp.value * 0.58f,
                     ),
                     color = colorResource(id = R.color.color_transaparent),
                     content = {
@@ -235,7 +235,7 @@ fun HomeScreen(
                 SectionEmptyStateInfo(
                     data = listOfProducts,
                     emptySectionTitle = stringResource(R.string.my_store_no_products),
-                    emptySectionPainter = painterResource(id = R.drawable.my_store_plus_icon),
+                    emptySectionPainter = painterResource(id = R.drawable.plus_circled_icon),
                     onEmptyStateImageClicked = {
                         onEmptyStateImageClicked(
                             validateSection(
@@ -259,10 +259,10 @@ private fun HomeTransactions(
 ) {
     Column(
         modifier = Modifier
-            .padding(bottom = 8.dp)
-            .height(200.dp)
+            .padding(bottom = 8.dp, start = 8.dp, end = 8.dp)
+            .height(160.dp)
             .verticalScroll(rememberScrollState()),
-        verticalArrangement = Arrangement.spacedBy(4.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         listOfTransactions.forEach { transaction ->
             TransactionComponent(

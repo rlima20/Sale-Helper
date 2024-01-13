@@ -118,7 +118,7 @@ fun ConsolidatedPosBody(
             ) {
                 Column(
                     modifier = Modifier
-                        .background(colorResource(id = R.color.color_800)),
+                        .background(colorResource(id = R.color.white)),
                 ) {
                     RowComponent(
                         leftSideText = stringResource(id = R.string.my_store_product),

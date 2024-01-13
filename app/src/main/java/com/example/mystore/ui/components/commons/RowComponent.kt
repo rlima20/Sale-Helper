@@ -12,7 +12,7 @@ fun RowComponent(
     fontSize: TextUnit = 18.sp,
     rightSide: @Composable () -> Unit,
     transactionDetailColors: Pair<Int, Int> = Pair(
-        first = R.color.color_50,
+        first = R.color.color_900,
         second = R.color.color_900,
     ),
 ) {

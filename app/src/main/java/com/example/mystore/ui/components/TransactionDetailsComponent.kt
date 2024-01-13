@@ -36,7 +36,7 @@ fun TransactionDetailsComponent(
     ScreenSectionComponent(
         title = stringResource(id = R.string.my_store_transactions_details),
         textColor = R.color.color_500,
-        backgroundColor = R.color.color_50,
+        backgroundColor = R.color.white,
         body = {
             Column(modifier = Modifier.fillMaxSize()) {
                 TransactionDetailsBody(
@@ -59,30 +59,30 @@ private fun TransactionDetailsBody(
         // Dropdown Produto
         DropdownComponent(
             isExpanded = false,
-            modifier = Modifier.padding(bottom = 8.dp).fillMaxWidth(),
+            modifier = Modifier.padding(start = 8.dp, end = 8.dp, bottom = 8.dp).fillMaxWidth(),
             label = stringResource(R.string.my_store_product_2),
             items = listOf(transaction.product.title),
             textFieldSize = Size.Zero,
             selectedText = transaction.product.title,
             transactionDetailColors = Triple(
                 R.color.color_500,
-                R.color.color_50,
                 R.color.color_500,
+                R.color.white,
             ),
         )
 
         // Dropdwon Type
         DropdownComponent(
             isExpanded = false,
-            modifier = Modifier.padding(bottom = 8.dp).fillMaxWidth(),
+            modifier = Modifier.padding(start = 8.dp, end = 8.dp, bottom = 8.dp).fillMaxWidth(),
             label = stringResource(R.string.my_store_type),
             items = listOf(transaction.transactionType.toString()),
             textFieldSize = Size.Zero,
             selectedText = transaction.transactionType.toString(),
             transactionDetailColors = Triple(
                 R.color.color_500,
-                R.color.color_50,
                 R.color.color_500,
+                R.color.white,
             ),
         )
 

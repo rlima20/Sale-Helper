@@ -113,7 +113,7 @@ fun MyStoreApp(
                     navController = navController,
                     modifier = Modifier
                         .fillMaxSize()
-                        .background(colorResource(id = R.color.color_400))
+                        .background(colorResource(id = R.color.color_50))
                         .padding(content),
                     homeViewModel = homeViewModel,
                     registerTransactionViewModel = registerTransactionViewModel,
@@ -137,7 +137,12 @@ fun MyStoreApp(
                     onShouldDisplayIcon = { shouldDisplay ->
                         shouldDisplayIcon = shouldDisplay
                     },
-                    onNavigateToHome = { navController.navigateSingleTopTo(HomeScreen.route) },
+                    onNavigateToHome = {
+                        navController.navigateSingleTopTo(HomeScreen.route)
+                        myStoreViewModel.setScreenTitle(
+                            application.getString(R.string.my_store_home),
+                        )
+                    },
                 )
             },
             bottomBar = {

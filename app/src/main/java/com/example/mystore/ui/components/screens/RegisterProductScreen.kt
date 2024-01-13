@@ -169,7 +169,7 @@ fun RegisterProductScreenBody(
                 ScreenSectionComponent(
                     title = stringResource(id = R.string.my_store_image_product),
                     textColor = R.color.color_500,
-                    backgroundColor = R.color.color_50,
+                    backgroundColor = R.color.white,
                     body = {
                         Column(modifier = Modifier.fillMaxSize()) {
                             ImageUrlBody(
@@ -195,7 +195,13 @@ fun RegisterProductScreenBody(
         } else {
             stringResource(R.string.my_store_registry_creation)
         },
-        alertDialogMessage = stringResource(R.string.my_store_creation_confirmation),
+        alertDialogMessage = stringResource(
+            if (isEditMode) {
+                R.string.my_store_edition_confirmation
+            } else {
+                R.string.my_store_creation_confirmation
+            },
+        ),
         onDismissRequest = { registerProductViewModel.setShowAlertDialogProductScreen(false) },
         onDismissButtonClicked = {
             registerProductViewModel.setShowAlertDialogProductScreen(false)
@@ -206,8 +212,8 @@ fun RegisterProductScreenBody(
                     id = if (!isEditMode) listOfProductsLocal.size + 1.toLong() else product.id,
                     title = titleSelectedText,
                     description = descriptionSelectedText,
-                    purchasePrice = purchasePriceSelectedText.toDouble(),
-                    salePrice = salePriceSelectedText.toDouble(),
+                    purchasePrice = purchasePriceSelectedText.replaceCommaFromValue().toDouble(),
+                    salePrice = salePriceSelectedText.replaceCommaFromValue().toDouble(),
                     quantity = quantity,
                     maxQuantityToBuy = maxQuantityToBuy,
                     imageUrl = product.imageUrl,
@@ -343,7 +349,7 @@ fun RegisterProductScreenBody(
             FloatingActionButton(
                 enabled = true,
                 modifier = Modifier.size(36.dp),
-                colorId = R.color.color_50,
+                colorId = R.color.color_800,
                 onClick = { registerProductViewModel.setShowAlertDialogProductScreen(true) },
             )
         }
@@ -382,9 +388,9 @@ fun ImageUrlBody(
             keyboardController = titleKeyboardController,
             focusManager = titleFocusManager,
             transactionDetailColors = Triple(
-                R.color.color_900,
-                R.color.color_50,
-                R.color.color_900,
+                R.color.color_500,
+                R.color.color_500,
+                R.color.white,
             ),
             onValueChanged = { imageUrlInternal = it },
         )
@@ -448,6 +454,8 @@ private fun String.setTitle(editMode: Boolean) =
     if (editMode) "$this | EDIÇÃO" else "$this | CRIAÇÃO"
 
 private fun String.removeCurrencyToProductValue() = this.replace("R$", "")
+
+private fun String.replaceCommaFromValue() = this.replace(",", ".")
 
 private fun String.addCurrencyToProductValue() = "R$ ${
     String.format("%.2f", this.replace(",", ".").toDouble())

@@ -193,6 +193,7 @@ private fun RegisterTransactionBody(
                 onDismissRequest = {
                     onShowAlertDialog(false)
                 },
+                color = colorResource(id = R.color.white),
             )
         }
         // Dropdown TransactionType
@@ -237,6 +238,11 @@ private fun RegisterTransactionBody(
                         },
                     )
                 },
+                transactionDetailColors = Triple(
+                    R.color.color_500,
+                    R.color.color_500,
+                    R.color.white,
+                ),
             )
         }
 
@@ -268,6 +274,11 @@ private fun RegisterTransactionBody(
                         onSelectedTextTransaction = { selectedTextProduct = it },
                     )
                 },
+                transactionDetailColors = Triple(
+                    R.color.color_500,
+                    R.color.color_500,
+                    R.color.white,
+                ),
             )
 
             Quantifier(
@@ -314,9 +325,9 @@ private fun RegisterTransactionBody(
                     enabled = setEnabled(total, transaction),
                     modifier = Modifier.size(36.dp),
                     colorId = if (setEnabled(total, transaction)) {
-                        R.color.color_50
+                        R.color.color_800
                     } else {
-                        R.color.color_400
+                        R.color.color_100
                     },
                     onClick = {
                         onShowAlertDialog(true)
