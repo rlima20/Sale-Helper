@@ -19,12 +19,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.mystore.R
 import com.example.mystore.screenList
-import com.example.mystore.ui.theme.mcpalette0_200
-import com.example.mystore.ui.theme.mcpalette0_400
-import com.example.mystore.ui.theme.mcpalette0_50
 import com.example.mystore.ui.theme.mcpalette0_A800
-import com.example.mystore.ui.theme.primary
-import com.example.mystore.ui.theme.secondary
 
 @Composable
 internal fun TopBarComponent(

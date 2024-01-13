@@ -87,3 +87,13 @@ g
 Sapp/src/main/java/com/example/mystore/ui/components/commons/TransactionComponent.kt,7/2/72e8061eecf11a58e3f4f69585039b4c9cb46339
 ƒ
 Sapp/src/main/java/com/example/mystore/ui/components/commons/ProductItemComponent.kt,1/c/1cac644a158561f3a62564303d806792a5888680
+„
+Tapp/src/main/java/com/example/mystore/ui/components/commons/TextCurrencyComponent.kt,d/9/d96cf185e1dbac87d050f88c71a5c5dc9f401203
+‰
+Yapp/src/main/java/com/example/mystore/ui/components/commons/OutLinedTextFieldComponent.kt,f/5/f5b1029d899f76316ba39119c8dc643a5dd38b7b
+€
+Papp/src/main/java/com/example/mystore/ui/components/commons/DropdownComponent.kt,c/4/c464a6b444e2630684005cf2da8ecb4068404269
+‚
+Rapp/src/main/java/com/example/mystore/ui/components/TransactionDetailsComponent.kt,8/1/813d1f18077f8cb7b9975c22474056e687f4e738
+}
+Mapp/src/main/java/com/example/mystore/ui/components/commons/ImageComponent.kt,4/1/415d6952182356e3e84080c1630e747e3d4cc366
