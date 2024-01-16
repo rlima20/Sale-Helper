@@ -8,10 +8,11 @@ import java.util.Date
 @Entity(tableName = "transactions")
 data class TransactionEntity(
     @PrimaryKey(autoGenerate = true)
-    val id: Long = 0,
+    val id: Long = 0L,
     val productId: Long, // Chave estrangeira referenciando o id do produto
-    val transactionType: TransactionType,
-    val transactionDate: Date,
-    val quantity: Int,
-    val transactionAmount: Double,
+    val transactionType: TransactionType = TransactionType.SALE,
+    val unitValue: Double = 0.0,
+    val transactionDate: Date = Date(),
+    val quantity: Int = 0,
+    val transactionAmount: Double = 0.0,
 )

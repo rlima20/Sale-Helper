@@ -97,3 +97,9 @@ Papp/src/main/java/com/example/mystore/ui/components/commons/DropdownComponent.k
 Rapp/src/main/java/com/example/mystore/ui/components/TransactionDetailsComponent.kt,8/1/813d1f18077f8cb7b9975c22474056e687f4e738
 }
 Mapp/src/main/java/com/example/mystore/ui/components/commons/ImageComponent.kt,4/1/415d6952182356e3e84080c1630e747e3d4cc366
+g
+7app/src/main/java/com/example/mystore/dao/productDao.kt,4/2/42c1c2e349a6811f4e6fbd0dff659465e2abba49
+k
+;app/src/main/java/com/example/mystore/dao/transactionDao.kt,3/8/38a42626509bfa8ffeec44ca1574f9f6e816f795
+l
+<app/src/main/java/com/example/mystore/dao/ProductDatabase.kt,1/e/1e76bec4981682bc04d8e145a167f177aad9e655
