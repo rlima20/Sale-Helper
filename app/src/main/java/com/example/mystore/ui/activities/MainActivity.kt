@@ -202,7 +202,7 @@ private fun transformStringToInterfaceObject(application: AppApplication, screen
     }
 }
 
-@Preview
+/*@Preview
 @Composable
 fun MyStoreAppPreview() {
     MyStoreApp(
@@ -212,4 +212,4 @@ fun MyStoreAppPreview() {
         registerTransactionViewModel = RegisterTransactionViewModel(),
         registerProductViewModel = RegisterProductViewModel(),
     )
-}
+}*/

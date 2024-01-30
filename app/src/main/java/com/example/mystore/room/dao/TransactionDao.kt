@@ -1,4 +1,4 @@
-package com.example.mystore.dao
+package com.example.mystore.room.dao
 
 import androidx.room.Dao
 import androidx.room.Delete

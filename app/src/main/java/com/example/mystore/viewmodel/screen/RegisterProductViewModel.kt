@@ -1,10 +1,13 @@
 package com.example.mystore.viewmodel.screen
 
 import com.example.mystore.model.Product
+import com.example.mystore.repository.ProductRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
-class RegisterProductViewModel : CommonViewModel() {
+class RegisterProductViewModel(
+    // private val productRepository: ProductRepository,
+) : CommonViewModel() {
 
     private val _screenWidth: MutableStateFlow<Int> = MutableStateFlow(0)
     val screenWidth: StateFlow<Int> = _screenWidth

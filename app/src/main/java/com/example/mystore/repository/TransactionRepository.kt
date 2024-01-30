@@ -1,7 +1,7 @@
 package com.example.mystore.repository
 
-import com.example.mystore.dao.TransactionDao
 import com.example.mystore.model.entities.TransactionEntity
+import com.example.mystore.room.dao.TransactionDao
 import kotlinx.coroutines.flow.Flow
 
 class TransactionRepository(transactionDao: TransactionDao) {
