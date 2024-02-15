@@ -1,6 +1,5 @@
 package com.example.mystore.di
 
-import androidx.room.Room
 import com.example.mystore.repository.ProductRepository
 import com.example.mystore.repository.TransactionRepository
 import com.example.mystore.room.AppDatabase
@@ -14,17 +13,22 @@ import org.koin.dsl.module
 
 private const val DATA_BASE_NAME = "mystore_database"
 
-val database = module {
+val databaseDI = module {
     single {
-        Room.databaseBuilder(
-            get(),
-            AppDatabase::class.java,
-            DATA_BASE_NAME,
-        )
-            .build()
+        AppDatabase.getInstance(get())
     }
-    single { get<AppDatabase>().productDao() }
-    single { get<AppDatabase>().transactionDao() }
+}
+
+val productDaoDI = module {
+    factory {
+        get<AppDatabase>().productDao()
+    }
+}
+
+val transactionDaoDI = module {
+    factory {
+        get<AppDatabase>().transactionDao()
+    }
 }
 
 val productRepositoryDI = module {
@@ -39,8 +43,8 @@ val transactionRepositoryDI = module {
     }
 }
 
-val commonViewModel = module {
-    viewModel { CommonViewModel() }
+val commonViewModelDI = module {
+    viewModel { CommonViewModel(get(), get()) }
 }
 
 val myStoreViewModelDI = module {
@@ -48,22 +52,24 @@ val myStoreViewModelDI = module {
 }
 
 val homeViewModelDI = module {
-    viewModel { HomeViewModel() }
+    viewModel { HomeViewModel(get(), get()) }
 }
 
 val registerProductViewModelDI = module {
-    viewModel { RegisterProductViewModel() }
+    viewModel { RegisterProductViewModel(get(), get()) }
 }
 
 val registerTransactionViewModelDI = module {
-    viewModel { RegisterTransactionViewModel() }
+    viewModel { RegisterTransactionViewModel(get(), get()) }
 }
 
 val appModules = listOf(
-    database,
+    databaseDI,
+    productDaoDI,
+    transactionDaoDI,
     productRepositoryDI,
     transactionRepositoryDI,
-    commonViewModel,
+    commonViewModelDI,
     myStoreViewModelDI,
     homeViewModelDI,
     registerTransactionViewModelDI,

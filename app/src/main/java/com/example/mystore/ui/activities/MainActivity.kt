@@ -15,12 +15,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
 import com.example.mystore.AppApplication
 import com.example.mystore.R
 import com.example.mystore.model.Product
 import com.example.mystore.navigateSingleTopTo
+import com.example.mystore.room.AppDatabase
 import com.example.mystore.ui.components.commons.BottomBarComponent
 import com.example.mystore.ui.components.commons.TopBarComponent
 import com.example.mystore.ui.components.commons.TotalComponent
@@ -35,6 +35,10 @@ import com.example.mystore.viewmodel.global.MyStoreViewModel
 import com.example.mystore.viewmodel.screen.HomeViewModel
 import com.example.mystore.viewmodel.screen.RegisterProductViewModel
 import com.example.mystore.viewmodel.screen.RegisterTransactionViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : ComponentActivity() {
@@ -44,6 +48,7 @@ class MainActivity : ComponentActivity() {
     private val homeViewModel: HomeViewModel by viewModel()
     private val registerTransactionViewModel: RegisterTransactionViewModel by viewModel()
     private val registerProductViewModel: RegisterProductViewModel by viewModel()
+    private val database: AppDatabase by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,6 +60,15 @@ class MainActivity : ComponentActivity() {
                 registerTransactionViewModel,
                 registerProductViewModel,
             )
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        // put the code below into a coroutine
+        CoroutineScope(Dispatchers.IO).launch {
+            // database.transactionDao().getAllTransactions()
+            // database.productDao().getAllProducts()
         }
     }
 }

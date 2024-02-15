@@ -134,7 +134,7 @@ fun ConsolidatedPosBody(
                         leftSideText = stringResource(id = R.string.my_store_date),
                         rightSide = {
                             TextCurrencyComponent(
-                                value = transaction.transactionDate.toShortDateString(),
+                                value = transaction.transactionDate,
                                 shouldItemBeVisible = shouldItemBeVisible,
                                 type = Type.DATE,
                             )

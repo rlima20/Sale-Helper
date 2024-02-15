@@ -209,7 +209,7 @@ fun RegisterProductScreenBody(
         onConfirmButtonClicked = {
             registerProductViewModel.saveProduct(
                 product = Product(
-                    id = if (!isEditMode) listOfProductsLocal.size + 1.toLong() else product.id,
+                    productId = if (!isEditMode) listOfProductsLocal.size + 1.toLong() else product.productId,
                     title = titleSelectedText,
                     description = descriptionSelectedText,
                     purchasePrice = purchasePriceSelectedText.replaceCommaFromValue().toDouble(),

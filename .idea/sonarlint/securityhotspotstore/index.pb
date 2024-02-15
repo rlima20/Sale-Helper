@@ -17,12 +17,8 @@ g
 7app/src/main/java/com/example/mystore/AppApplication.kt,b/3/b3d6ba41cf1145d8d68a307b30b283939c3d1210
 <
 build.gradle,f/0/f07866736216be0ee2aba49e392191aeae700a35
-u
-Eapp/src/main/java/com/example/mystore/model/entities/ProductEntity.kt,7/9/790f1a07d6b271c7a8122a4cc23ad59572519cb6
 k
 ;app/src/main/java/com/example/mystore/model/DropdownInfo.kt,f/b/fb7fe4c938a005b9bc645400ef00b817c4092e59
-y
-Iapp/src/main/java/com/example/mystore/model/entities/TransactionEntity.kt,d/9/d9af8db14553148f347ad014a00eaae17c6700a8
 f
 6app/src/main/java/com/example/mystore/model/Product.kt,8/7/87ca3e0a7a3e4728bf9a33db133f578057d6c7e5
 s
@@ -107,3 +103,19 @@ i
 9app/src/main/java/com/example/mystore/room/AppDatabase.kt,9/8/98e9fab9125f520143003d23745f7b0e428525ce
 y
 Iapp/src/main/java/com/example/mystore/repository/TransactionRepository.kt,1/b/1b356edcc4d5512f79189bd84be4654f15487ffb
+F
+app/proguard-rules.pro,9/e/9e08934d811afe28fbc77aaa3c0d747b94348db9
+?
+settings.gradle,0/5/05efc8b1657769a27696d478ded1e95f38737233
+X
+(gradle/wrapper/gradle-wrapper.properties,f/b/fbe448ebfc3eb2d4e308f6b8b043666f5b57235e
+A
+gradle.properties,2/a/2afbb999f001938c88fa43fc2ef52abf0f8213e4
+t
+Dapp/src/main/java/com/example/mystore/room/entities/ProductEntity.kt,e/3/e3317f7c153657011cd187b1be1c3f3905ba2ec3
+x
+Happ/src/main/java/com/example/mystore/room/entities/TransactionEntity.kt,d/c/dcd0d0dcf5826c72e8be96ee0b72a9b920183a83
+r
+Bapp/src/main/java/com/example/mystore/mappers/TransactionMapper.kt,2/d/2deb8b56ee0a1d0c450e54692dc454f40e4a1ee0
+n
+>app/src/main/java/com/example/mystore/mappers/ProductMapper.kt,f/5/f5a21f033426a012284b10bcc2614e5f4ded1dca

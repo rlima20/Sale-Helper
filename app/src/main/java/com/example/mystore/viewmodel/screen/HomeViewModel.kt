@@ -3,6 +3,8 @@ package com.example.mystore.viewmodel.screen
 import com.example.mystore.model.Product
 import com.example.mystore.model.Resume
 import com.example.mystore.model.Transaction
+import com.example.mystore.repository.ProductRepository
+import com.example.mystore.repository.TransactionRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
@@ -20,7 +22,13 @@ import kotlinx.coroutines.flow.StateFlow
  * @constructor Create empty constructor for home view model
  */
 
-class HomeViewModel : CommonViewModel() {
+class HomeViewModel(
+    transactionRepository: TransactionRepository,
+    productRepository: ProductRepository,
+) : CommonViewModel(
+    transactionRepository,
+    productRepository,
+) {
 
     private val _resume: MutableStateFlow<Resume?> = MutableStateFlow(Resume())
     val resume: StateFlow<Resume?> = _resume

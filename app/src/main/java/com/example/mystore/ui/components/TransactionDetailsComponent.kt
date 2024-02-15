@@ -179,7 +179,7 @@ fun TransactionDetailsComponentPreview() {
         ),
         transactionType = TransactionType.SALE,
         unitValue = 10.0,
-        transactionDate = Date(),
+        transactionDate = Date().toShortDateString(),
         quantity = 10,
         transactionAmount = 100.0,
     )

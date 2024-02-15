@@ -3,14 +3,22 @@ package com.example.mystore.viewmodel.screen
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.mystore.States
 import com.example.mystore.TransactionType
 import com.example.mystore.listOfProductsLocal
 import com.example.mystore.listOfTransactions
+import com.example.mystore.mappers.toProduct
+import com.example.mystore.mappers.toProductEntity
+import com.example.mystore.mappers.toTransaction
+import com.example.mystore.mappers.toTransactionEntity
 import com.example.mystore.model.Product
 import com.example.mystore.model.Transaction
+import com.example.mystore.repository.ProductRepository
+import com.example.mystore.repository.TransactionRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
 
 /**
  * Common view model.
@@ -19,7 +27,10 @@ import kotlinx.coroutines.flow.StateFlow
  * carregados na HomeScreen e na TransactionScreen.
  * @constructor Create empty constructor for common view model
  */
-open class CommonViewModel : ViewModel() {
+open class CommonViewModel(
+    private val transactionRepository: TransactionRepository,
+    private val productRepository: ProductRepository,
+) : ViewModel() {
 
     private var _listOfProducts: MutableStateFlow<MutableList<Product>> =
         MutableStateFlow(mutableListOf())
@@ -38,10 +49,14 @@ open class CommonViewModel : ViewModel() {
     private var _imageRequestState: MutableStateFlow<States> = MutableStateFlow(States.LOADING)
 
     init {
+        // Load data from in-memory storage
         getListOfTransactions()
         getListOfProducts()
         getListOfSales()
         getListOfPurchases()
+
+        // Load data from database
+        // getListOfTransactionsRoom()
     }
 
     private fun getTotalValueByTransactionType(type: TransactionType): Double {
@@ -115,6 +130,72 @@ open class CommonViewModel : ViewModel() {
      * @param product Product
      */
     fun updateProduct(product: Product) {
-        _listOfProducts.value[_listOfProducts.value.indexOfFirst { it.id == product.id }] = product
+        _listOfProducts.value[
+            _listOfProducts.value.indexOfFirst {
+                it.productId == product.productId
+            },
+        ] =
+            product
+    }
+
+    /**
+     * Section of database operations
+     */
+    private fun getListOfTransactionsRoom() {
+        viewModelScope.launch {
+            transactionRepository.getAllTransactions().collect { listOfTransactionEntity ->
+                listOfTransactionEntity.forEach { transactionEntity ->
+                    _transactions.value.add(transactionEntity.toTransaction())
+                }
+            }
+        }
+    }
+
+    fun insertTransactionRoom(transaction: Transaction) {
+        viewModelScope.launch {
+            transactionRepository.insertTransaction(transaction.toTransactionEntity())
+        }
+    }
+
+    fun deleteTransactionRoom(transaction: Transaction) {
+        viewModelScope.launch {
+            transactionRepository.deleteTransaction(transaction.toTransactionEntity())
+        }
+    }
+
+    fun updateTransactionRoom(transaction: Transaction) {
+        viewModelScope.launch {
+            transactionRepository.updateTransaction(transaction.toTransactionEntity())
+        }
+    }
+
+    fun getAllProductsRoom() {
+        viewModelScope.launch {
+            productRepository.getAllProducts().collect { listOfProductEntity ->
+                val listOfProducts = mutableListOf<Product>()
+                listOfProductEntity.forEach { productEntity ->
+                    listOfProducts.add(productEntity.toProduct())
+                }
+                setListOfProducts(listOfProducts)
+            }
+        }
+    }
+
+    fun insertProductRoom(product: Product) {
+        viewModelScope.launch {
+            productRepository.insertProduct(product.toProductEntity())
+        }
+    }
+
+    fun deleteProductRoom(product: Product) {
+        viewModelScope.launch {
+            productRepository.deleteProduct(product.toProductEntity())
+        }
+    }
+
+    fun updateProductRoom(product: Product) {
+        viewModelScope.launch {
+            productRepository.updateProduct(product.toProductEntity())
+        }
     }
 }

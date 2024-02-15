@@ -31,6 +31,7 @@ import com.example.mystore.limitTo
 import com.example.mystore.model.Product
 import com.example.mystore.model.Transaction
 import com.example.mystore.setItemSize
+import com.example.mystore.toShortDateString
 import com.example.mystore.toTransactionType
 import com.example.mystore.ui.components.commons.AlertDialogComponent
 import com.example.mystore.ui.components.commons.DropdownComponent
@@ -406,7 +407,7 @@ private fun createTransaction(
         product = product,
         transactionType = transactionType,
         unitValue = unitValue,
-        transactionDate = Calendar.getInstance().time,
+        transactionDate = Calendar.getInstance().time.toShortDateString(),
         quantity = quantity,
         transactionAmount = quantity * unitValue,
     )
