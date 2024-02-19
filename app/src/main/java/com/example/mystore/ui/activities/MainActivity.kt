@@ -15,7 +15,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
 import com.example.mystore.AppApplication
 import com.example.mystore.R
@@ -31,7 +30,7 @@ import com.example.mystore.ui.navigation.MyStoreNavHost
 import com.example.mystore.ui.navigation.RegisterProductScreen
 import com.example.mystore.ui.navigation.RegisterTransactionScreen
 import com.example.mystore.ui.theme.MyStoreTheme
-import com.example.mystore.viewmodel.global.MyStoreViewModel
+import com.example.mystore.viewmodel.global.GlobalViewModel
 import com.example.mystore.viewmodel.screen.HomeViewModel
 import com.example.mystore.viewmodel.screen.RegisterProductViewModel
 import com.example.mystore.viewmodel.screen.RegisterTransactionViewModel
@@ -40,7 +39,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class MainActivity : ComponentActivity() {
 
     private val application = AppApplication.instance
-    private val viewModel: MyStoreViewModel by viewModel()
+    private val viewModel: GlobalViewModel by viewModel()
     private val homeViewModel: HomeViewModel by viewModel()
     private val registerTransactionViewModel: RegisterTransactionViewModel by viewModel()
     private val registerProductViewModel: RegisterProductViewModel by viewModel()
@@ -62,7 +61,7 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun MyStoreApp(
     application: AppApplication,
-    myStoreViewModel: MyStoreViewModel,
+    myStoreViewModel: GlobalViewModel,
     homeViewModel: HomeViewModel,
     registerTransactionViewModel: RegisterTransactionViewModel,
     registerProductViewModel: RegisterProductViewModel,
@@ -200,16 +199,4 @@ private fun transformStringToInterfaceObject(application: AppApplication, screen
         application.getString(R.string.my_store_consolidated_position) -> ConsolidatedPositionScreen
         else -> HomeScreen
     }
-}
-
-@Preview
-@Composable
-fun MyStoreAppPreview() {
-    MyStoreApp(
-        application = AppApplication.instance,
-        myStoreViewModel = MyStoreViewModel(),
-        homeViewModel = HomeViewModel(),
-        registerTransactionViewModel = RegisterTransactionViewModel(),
-        registerProductViewModel = RegisterProductViewModel(),
-    )
 }

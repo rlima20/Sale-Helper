@@ -7,7 +7,7 @@ import com.example.mystore.R
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
-class MyStoreViewModel : ViewModel() {
+class GlobalViewModel : ViewModel() {
 
     private val application = AppApplication.instance
 

@@ -1,13 +1,20 @@
 package com.example.mystore.viewmodel.screen
 
 import com.example.mystore.TransactionType
-import com.example.mystore.listOfProductsLocal
 import com.example.mystore.model.Product
 import com.example.mystore.model.Transaction
+import com.example.mystore.repository.ProductRepositoryImpl
+import com.example.mystore.repository.TransactionRepositoryImpl
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
-class RegisterTransactionViewModel : CommonViewModel() {
+class RegisterTransactionViewModel(
+    transactionRepository: TransactionRepositoryImpl,
+    productRepository: ProductRepositoryImpl,
+) : CommonViewModel(
+    transactionRepository,
+    productRepository,
+) {
 
     private var _listOfTransactionType: MutableStateFlow<List<TransactionType>> =
         MutableStateFlow(listOf(TransactionType.SALE, TransactionType.PURCHASE))
@@ -37,7 +44,7 @@ class RegisterTransactionViewModel : CommonViewModel() {
     val showToast: StateFlow<Boolean> = _showToast
 
     init {
-        getProducts()
+        getListOfProducts()
         getTransactionTypes()
         getSalesValue()
         getPurchasesValue()
@@ -55,10 +62,6 @@ class RegisterTransactionViewModel : CommonViewModel() {
             TransactionType.SALE,
             TransactionType.PURCHASE,
         )
-    }
-
-    private fun getProducts() {
-        setListOfProducts(listOfProductsLocal)
     }
 
     private fun getScreenWidth() {

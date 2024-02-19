@@ -1,10 +1,18 @@
 package com.example.mystore.viewmodel.screen
 
 import com.example.mystore.model.Product
+import com.example.mystore.repository.ProductRepositoryImpl
+import com.example.mystore.repository.TransactionRepositoryImpl
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
-class RegisterProductViewModel : CommonViewModel() {
+class RegisterProductViewModel(
+    transactionRepository: TransactionRepositoryImpl,
+    productRepository: ProductRepositoryImpl,
+) : CommonViewModel(
+    transactionRepository,
+    productRepository,
+) {
 
     private val _screenWidth: MutableStateFlow<Int> = MutableStateFlow(0)
     val screenWidth: StateFlow<Int> = _screenWidth
@@ -52,7 +60,7 @@ class RegisterProductViewModel : CommonViewModel() {
 
     fun setImageUrl(product: Product, imageUrl: String) {
         val innerProduct = Product(
-            id = _product.value.id,
+            productId = _product.value.productId,
             title = _product.value.title,
             description = _product.value.description,
             purchasePrice = _product.value.purchasePrice,
@@ -91,6 +99,7 @@ class RegisterProductViewModel : CommonViewModel() {
 
     fun saveProduct(product: Product, isEditMode: Boolean) {
         if (isEditMode) updateProduct(product) else createProduct(product)
+        getListOfProducts()
         clearAllStates()
     }
 
