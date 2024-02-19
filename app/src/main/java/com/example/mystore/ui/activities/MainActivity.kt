@@ -20,7 +20,6 @@ import com.example.mystore.AppApplication
 import com.example.mystore.R
 import com.example.mystore.model.Product
 import com.example.mystore.navigateSingleTopTo
-import com.example.mystore.room.AppDatabase
 import com.example.mystore.ui.components.commons.BottomBarComponent
 import com.example.mystore.ui.components.commons.TopBarComponent
 import com.example.mystore.ui.components.commons.TotalComponent
@@ -31,24 +30,19 @@ import com.example.mystore.ui.navigation.MyStoreNavHost
 import com.example.mystore.ui.navigation.RegisterProductScreen
 import com.example.mystore.ui.navigation.RegisterTransactionScreen
 import com.example.mystore.ui.theme.MyStoreTheme
-import com.example.mystore.viewmodel.global.MyStoreViewModel
+import com.example.mystore.viewmodel.global.GlobalViewModel
 import com.example.mystore.viewmodel.screen.HomeViewModel
 import com.example.mystore.viewmodel.screen.RegisterProductViewModel
 import com.example.mystore.viewmodel.screen.RegisterTransactionViewModel
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : ComponentActivity() {
 
     private val application = AppApplication.instance
-    private val viewModel: MyStoreViewModel by viewModel()
+    private val viewModel: GlobalViewModel by viewModel()
     private val homeViewModel: HomeViewModel by viewModel()
     private val registerTransactionViewModel: RegisterTransactionViewModel by viewModel()
     private val registerProductViewModel: RegisterProductViewModel by viewModel()
-    private val database: AppDatabase by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,21 +56,12 @@ class MainActivity : ComponentActivity() {
             )
         }
     }
-
-    override fun onStart() {
-        super.onStart()
-        // put the code below into a coroutine
-        CoroutineScope(Dispatchers.IO).launch {
-            // database.transactionDao().getAllTransactions()
-            // database.productDao().getAllProducts()
-        }
-    }
 }
 
 @Composable
 fun MyStoreApp(
     application: AppApplication,
-    myStoreViewModel: MyStoreViewModel,
+    myStoreViewModel: GlobalViewModel,
     homeViewModel: HomeViewModel,
     registerTransactionViewModel: RegisterTransactionViewModel,
     registerProductViewModel: RegisterProductViewModel,
@@ -215,15 +200,3 @@ private fun transformStringToInterfaceObject(application: AppApplication, screen
         else -> HomeScreen
     }
 }
-
-/*@Preview
-@Composable
-fun MyStoreAppPreview() {
-    MyStoreApp(
-        application = AppApplication.instance,
-        myStoreViewModel = MyStoreViewModel(),
-        homeViewModel = HomeViewModel(),
-        registerTransactionViewModel = RegisterTransactionViewModel(),
-        registerProductViewModel = RegisterProductViewModel(),
-    )
-}*/

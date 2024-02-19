@@ -95,14 +95,10 @@ Rapp/src/main/java/com/example/mystore/ui/components/TransactionDetailsComponent
 Mapp/src/main/java/com/example/mystore/ui/components/commons/ImageComponent.kt,4/1/415d6952182356e3e84080c1630e747e3d4cc366
 p
 @app/src/main/java/com/example/mystore/room/dao/TransactionDao.kt,e/d/ed83db4c152cc95b15a67c28a9ed6e325e661efd
-u
-Eapp/src/main/java/com/example/mystore/repository/ProductRepository.kt,f/0/f0fd080ea045714a54a1723337a1d874156b247c
 l
 <app/src/main/java/com/example/mystore/room/dao/ProductDao.kt,c/4/c4f47d2b8fdc2205a617943b561f11d7614e07b4
 i
 9app/src/main/java/com/example/mystore/room/AppDatabase.kt,9/8/98e9fab9125f520143003d23745f7b0e428525ce
-y
-Iapp/src/main/java/com/example/mystore/repository/TransactionRepository.kt,1/b/1b356edcc4d5512f79189bd84be4654f15487ffb
 F
 app/proguard-rules.pro,9/e/9e08934d811afe28fbc77aaa3c0d747b94348db9
 ?
@@ -119,3 +115,7 @@ r
 Bapp/src/main/java/com/example/mystore/mappers/TransactionMapper.kt,2/d/2deb8b56ee0a1d0c450e54692dc454f40e4a1ee0
 n
 >app/src/main/java/com/example/mystore/mappers/ProductMapper.kt,f/5/f5a21f033426a012284b10bcc2614e5f4ded1dca
+~
+Napp/src/main/java/com/example/mystore/repository/ProductRepositoryInterface.kt,9/2/92f0542870edfe546bf5faff3171d43c7bcc368c
+y
+Iapp/src/main/java/com/example/mystore/repository/ProductRepositoryImpl.kt,a/4/a48bd1c174a908887601f2c174dda963048b94fa

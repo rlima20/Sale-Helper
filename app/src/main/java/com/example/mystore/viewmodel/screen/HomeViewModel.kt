@@ -3,8 +3,8 @@ package com.example.mystore.viewmodel.screen
 import com.example.mystore.model.Product
 import com.example.mystore.model.Resume
 import com.example.mystore.model.Transaction
-import com.example.mystore.repository.ProductRepository
-import com.example.mystore.repository.TransactionRepository
+import com.example.mystore.repository.ProductRepositoryImpl
+import com.example.mystore.repository.TransactionRepositoryImpl
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
@@ -23,8 +23,8 @@ import kotlinx.coroutines.flow.StateFlow
  */
 
 class HomeViewModel(
-    transactionRepository: TransactionRepository,
-    productRepository: ProductRepository,
+    transactionRepository: TransactionRepositoryImpl,
+    productRepository: ProductRepositoryImpl,
 ) : CommonViewModel(
     transactionRepository,
     productRepository,
@@ -78,7 +78,7 @@ class HomeViewModel(
         _showAlertDialogTransactionDetail.value = state
     }
 
-    fun getTransactions(): List<Transaction> = transactions.value
+    fun getTransactions(): List<Transaction> = listOfTransactions.value
 
     fun setTransaction(transaction: Transaction) {
         _transaction.value = transaction

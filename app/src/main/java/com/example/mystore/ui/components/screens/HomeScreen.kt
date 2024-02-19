@@ -54,13 +54,14 @@ fun HomeScreen(
 ) {
     with(homeViewModel) {
         getResume()
+        getListOfProducts()
         getListOfSales()
         getListOfPurchases()
         getShowAlertDialogHomeScreen()
 
         val resume by resume.collectAsState()
         val listOfProducts by listOfProducts.collectAsState()
-        val listOfTransaction by transactions.collectAsState()
+        val listOfTransactions by listOfTransactions.collectAsState()
         val showAlertDialogHomeScreen by showAlertDialogHomeScreen.collectAsState()
         val showAlertDialogHomeScreenProduct by showAlertDialogHomeScreenProduct.collectAsState()
         val showAlertDialogTransactionDetail by showAlertDialogTransactionDetail
@@ -175,7 +176,7 @@ fun HomeScreen(
                             title = stringResource(id = R.string.my_store_transactions),
                             body = {
                                 HomeTransactions(
-                                    listOfTransactions = listOfTransaction,
+                                    listOfTransactions = listOfTransactions,
                                     shouldItemBeVisible = shouldItemBeVisible,
                                     onClick = {
                                         setShowAlertDialogTransactionDetail(true)
@@ -191,7 +192,7 @@ fun HomeScreen(
                     },
                 ),
                 sectionEmptyStateInfo = SectionEmptyStateInfo(
-                    data = if (listOfTransaction.isEmpty()) listOf() else listOfTransaction,
+                    data = if (listOfTransactions.isEmpty()) listOf() else listOfTransactions,
                     emptySectionTitle = stringResource(R.string.my_store_no_transactions_done),
                     emptySectionPainter = painterResource(id = R.drawable.my_store_plus_icon),
                     onEmptyStateImageClicked = {
@@ -212,7 +213,7 @@ fun HomeScreen(
                             title = stringResource(id = R.string.my_store_products),
                             body = {
                                 ProductCarouselComponent(
-                                    listOfProductsLocal = listOfProductsLocal,
+                                    listOfProductsLocal = listOfProducts,
                                     shouldItemBeVisible = shouldItemBeVisible,
                                     onImageRequestState = { state ->
                                         setImageRequestState(state)

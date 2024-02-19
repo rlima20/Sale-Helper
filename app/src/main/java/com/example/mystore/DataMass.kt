@@ -2,10 +2,9 @@ package com.example.mystore
 
 import com.example.mystore.model.Product
 import com.example.mystore.model.Transaction
-import java.util.Date
 
-val listOfProductsLocal = mutableListOf(
-    Product(
+val listOfProductsLocal = mutableListOf<Product>()
+/*    Product(
         productId = 0,
         title = "Samsung A30S",
         description = "O Samsung Galaxy A30s é um smartphone Android completo, que não tem muito a invejar aos mais avançados dispositivos. Surpreendente é sua tela Touchscreen de 6.4 polegadas, que coloca esse Samsung no topo de sua categoria. A resolução também é alta: 1560x720 pixel.",
@@ -54,12 +53,11 @@ val listOfProductsLocal = mutableListOf(
         purchasePrice = 100.0,
         salePrice = 200.0,
         imageUrl = "https://veja.abril.com.br/wp-content/uploads/2016/06/logo-coca-cola-caminhao-original4.jpeg?quality=90&strip=info&w=1040&h=585&crop=1",
-    ),
-)
+    ),*/
 
-// val listOfTransactions: MutableList<Transaction> = mutableListOf()
+val listOfTransactions: MutableList<Transaction> = mutableListOf()
 
-val listOfTransactions = mutableListOf(
+/*
     Transaction(
         transactionType = TransactionType.SALE,
         transactionDate = Date().toShortDateString(),
@@ -95,4 +93,4 @@ val listOfTransactions = mutableListOf(
         quantity = 1,
         transactionAmount = 100.0,
     ),
-)
+*/

@@ -1,14 +1,14 @@
 package com.example.mystore.viewmodel.screen
 
 import com.example.mystore.model.Product
-import com.example.mystore.repository.ProductRepository
-import com.example.mystore.repository.TransactionRepository
+import com.example.mystore.repository.ProductRepositoryImpl
+import com.example.mystore.repository.TransactionRepositoryImpl
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
 class RegisterProductViewModel(
-    transactionRepository: TransactionRepository,
-    productRepository: ProductRepository,
+    transactionRepository: TransactionRepositoryImpl,
+    productRepository: ProductRepositoryImpl,
 ) : CommonViewModel(
     transactionRepository,
     productRepository,
@@ -99,6 +99,7 @@ class RegisterProductViewModel(
 
     fun saveProduct(product: Product, isEditMode: Boolean) {
         if (isEditMode) updateProduct(product) else createProduct(product)
+        getListOfProducts()
         clearAllStates()
     }
 
