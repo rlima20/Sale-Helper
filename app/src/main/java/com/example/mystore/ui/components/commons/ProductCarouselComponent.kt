@@ -12,7 +12,7 @@ import com.example.mystore.model.Product
 
 @Composable
 fun ProductCarouselComponent(
-    listOfProductsLocal: List<Product>,
+    listOfProducts: List<Product>,
     shouldItemBeVisible: Boolean,
     onImageRequestState: (state: States) -> Unit,
     onProductClick: (product: Product) -> Unit,
@@ -27,7 +27,7 @@ fun ProductCarouselComponent(
         ),
         horizontalArrangement = Arrangement.spacedBy(8.dp),
     ) {
-        items(listOfProductsLocal) { product ->
+        items(listOfProducts) { product ->
             ProductItemComponent(
                 product = product,
                 productPainter = getPainter(

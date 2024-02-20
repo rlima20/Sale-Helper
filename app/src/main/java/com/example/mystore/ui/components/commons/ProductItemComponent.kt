@@ -34,7 +34,7 @@ fun ProductItemComponent(
     product: Product,
     productPainter: Painter,
     shouldItemBeVisible: Boolean,
-    onProductClick: () -> Unit,
+    onProductClick: (Product) -> Unit,
     onProductLongClick: (Product) -> Unit,
     onProductDoubleClick: () -> Unit,
 ) {
@@ -54,7 +54,7 @@ fun ProductItemComponent(
                     .width(140.dp)
                     .combinedClickable(
                         enabled = true,
-                        onClick = { onProductClick() },
+                        onClick = { onProductClick(product) },
                         onLongClick = { onProductLongClick(product) },
                         onDoubleClick = { onProductDoubleClick() },
                     ),

@@ -36,7 +36,6 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.mystore.R
-import com.example.mystore.listOfProductsLocal
 import com.example.mystore.model.Product
 import com.example.mystore.setQuantifierSize
 import com.example.mystore.ui.components.commons.AlertDialogComponent
@@ -209,7 +208,7 @@ fun RegisterProductScreenBody(
         onConfirmButtonClicked = {
             registerProductViewModel.saveProduct(
                 product = Product(
-                    productId = if (!isEditMode) listOfProductsLocal.size + 1.toLong() else product.productId,
+                    productId = setProductId(isEditMode, registerProductViewModel, product),
                     title = titleSelectedText,
                     description = descriptionSelectedText,
                     purchasePrice = purchasePriceSelectedText.replaceCommaFromValue().toDouble(),
@@ -355,6 +354,12 @@ fun RegisterProductScreenBody(
         }
     }
 }
+
+private fun setProductId(
+    isEditMode: Boolean,
+    registerProductViewModel: RegisterProductViewModel,
+    product: Product,
+) = if (!isEditMode) registerProductViewModel.listOfProducts.value.size + 1 else product.productId
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalComposeUiApi::class)
 @Composable

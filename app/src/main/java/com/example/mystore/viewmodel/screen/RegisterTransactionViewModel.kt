@@ -1,12 +1,17 @@
 package com.example.mystore.viewmodel.screen
 
+import androidx.lifecycle.viewModelScope
 import com.example.mystore.TransactionType
+import com.example.mystore.mappers.toTransactionEntity
 import com.example.mystore.model.Product
 import com.example.mystore.model.Transaction
 import com.example.mystore.repository.ProductRepositoryImpl
 import com.example.mystore.repository.TransactionRepositoryImpl
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
 
 class RegisterTransactionViewModel(
     transactionRepository: TransactionRepositoryImpl,
@@ -113,7 +118,13 @@ class RegisterTransactionViewModel(
     }
 
     fun saveTransaction(transaction: Transaction) {
-        _transactionValue.value = transaction
+        if (shouldUseDatabase.value) {
+            CoroutineScope(Dispatchers.IO).launch {
+                transactionRepository.insertTransaction(transaction.toTransactionEntity())
+            }
+        } else {
+            _transactionValue.value = transaction
+        }
     }
 
     fun clearAll() {

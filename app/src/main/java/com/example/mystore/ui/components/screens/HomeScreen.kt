@@ -23,7 +23,6 @@ import com.example.mystore.R
 import com.example.mystore.Screens
 import com.example.mystore.Section
 import com.example.mystore.Type
-import com.example.mystore.listOfProductsLocal
 import com.example.mystore.model.Product
 import com.example.mystore.model.Resume
 import com.example.mystore.model.Transaction
@@ -115,7 +114,7 @@ fun HomeScreen(
                     setShowToastState(transactionToastMessage, true)
                     deleteTransaction(transaction)
                     setShowAlertDialogHomeScreen(false)
-                    getTransactions()
+                    getListOfTransactions()
                 },
             )
 
@@ -213,7 +212,7 @@ fun HomeScreen(
                             title = stringResource(id = R.string.my_store_products),
                             body = {
                                 ProductCarouselComponent(
-                                    listOfProductsLocal = listOfProducts,
+                                    listOfProducts = listOfProducts,
                                     shouldItemBeVisible = shouldItemBeVisible,
                                     onImageRequestState = { state ->
                                         setImageRequestState(state)
@@ -222,9 +221,9 @@ fun HomeScreen(
                                         onEditMode(true, product)
                                         onProductClick(product)
                                     },
-                                    onProductLongClick = {
+                                    onProductLongClick = { product ->
                                         setShowAlertDialogHomeScreenProduct(true)
-                                        setProduct(it)
+                                        setProduct(product)
                                     },
                                     onProductDoubleClick = { onProductDoubleClick() },
                                 )

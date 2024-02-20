@@ -78,8 +78,6 @@ class HomeViewModel(
         _showAlertDialogTransactionDetail.value = state
     }
 
-    fun getTransactions(): List<Transaction> = listOfTransactions.value
-
     fun setTransaction(transaction: Transaction) {
         _transaction.value = transaction
     }

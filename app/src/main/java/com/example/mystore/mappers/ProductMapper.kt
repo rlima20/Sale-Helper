@@ -6,6 +6,7 @@ import com.example.mystore.room.entities.ProductEntity
 // Mapper Product to ProductEntity
 fun ProductEntity.toProduct(): Product {
     return Product(
+        productId = this.productId,
         title = this.title,
         description = this.description,
         quantity = this.quantity,
@@ -18,6 +19,7 @@ fun ProductEntity.toProduct(): Product {
 
 fun Product.toProductEntity(): ProductEntity {
     return ProductEntity(
+        productId = this.productId,
         title = this.title,
         description = this.description,
         quantity = this.quantity,
