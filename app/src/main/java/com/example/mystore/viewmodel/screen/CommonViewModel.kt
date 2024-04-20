@@ -9,6 +9,8 @@ import com.example.mystore.TransactionType
 import com.example.mystore.listOfProductsLocal
 import com.example.mystore.mappers.toProduct
 import com.example.mystore.mappers.toProductEntity
+import com.example.mystore.mappers.toTransaction
+import com.example.mystore.mappers.toTransactionEntity
 import com.example.mystore.model.Product
 import com.example.mystore.model.Transaction
 import com.example.mystore.repository.ProductRepositoryImpl
@@ -27,7 +29,7 @@ import kotlinx.coroutines.launch
  * @constructor Create empty constructor for common view model
  */
 open class CommonViewModel(
-    private val transactionRepository: TransactionRepositoryImpl,
+    val transactionRepository: TransactionRepositoryImpl,
     private val productRepository: ProductRepositoryImpl,
 ) : ViewModel() {
 
@@ -47,22 +49,14 @@ open class CommonViewModel(
 
     private var _imageRequestState: MutableStateFlow<States> = MutableStateFlow(States.LOADING)
 
-    private val shouldUseDatabase: MutableState<Boolean> = mutableStateOf(true)
+    private val _shouldUseDatabase: MutableState<Boolean> = mutableStateOf(true)
+    val shouldUseDatabase: MutableState<Boolean> = _shouldUseDatabase
 
     init {
         getListOfProducts()
         getListOfTransactions()
         getListOfSales()
         getListOfPurchases()
-    }
-
-    // PRODUCTS
-    private fun getListOfTransactions() {
-        if (shouldUseDatabase.value) {
-            _listOfTransactions.value = listOfTransactions.value
-        } else {
-            _listOfTransactions.value = com.example.mystore.listOfTransactions
-        }
     }
 
     fun getListOfProducts() {
@@ -78,6 +72,22 @@ open class CommonViewModel(
             }
         } else {
             _listOfProducts.value = listOfProductsLocal
+        }
+    }
+
+    fun getListOfTransactions() {
+        if (shouldUseDatabase.value) {
+            viewModelScope.launch {
+                transactionRepository.getAllTransactions().collect { listOfTransactionEntity ->
+                    val listOfTransactions = mutableListOf<Transaction>()
+                    listOfTransactionEntity.forEach { transactionEntity ->
+                        listOfTransactions.add(transactionEntity.toTransaction())
+                    }
+                    setListOfTransactions(listOfTransactions)
+                }
+            }
+        } else {
+            setListOfTransactions(listOfTransactions.value)
         }
     }
 
@@ -143,11 +153,21 @@ open class CommonViewModel(
 
     // TRANSACTIONS
     fun deleteTransaction(transaction: Transaction) {
-        _listOfTransactions.value.removeAt(_listOfTransactions.value.indexOf(transaction))
+        if (shouldUseDatabase.value) {
+            CoroutineScope(Dispatchers.IO).launch {
+                transactionRepository.deleteTransaction(transaction.toTransactionEntity())
+            }
+        } else {
+            _listOfTransactions.value.removeAt(_listOfTransactions.value.indexOf(transaction))
+        }
     }
 
     private fun setListOfProducts(listOfProducts: MutableList<Product>) {
         _listOfProducts.value = listOfProducts
+    }
+
+    private fun setListOfTransactions(listOfTransactions: MutableList<Transaction>) {
+        _listOfTransactions.value = listOfTransactions
     }
 
     private fun getTotalValueByTransactionType(type: TransactionType): Double {
