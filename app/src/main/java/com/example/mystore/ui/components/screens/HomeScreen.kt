@@ -26,6 +26,7 @@ import com.example.mystore.Type
 import com.example.mystore.model.Product
 import com.example.mystore.model.Resume
 import com.example.mystore.model.Transaction
+import com.example.mystore.toStringResource
 import com.example.mystore.ui.components.TransactionDetailsComponent
 import com.example.mystore.ui.components.commons.AlertDialogComponent
 import com.example.mystore.ui.components.commons.DividerComponent
@@ -41,6 +42,7 @@ import com.example.mystore.ui.components.commons.TransactionComponent
 import com.example.mystore.ui.components.commons.ValidateSection
 import com.example.mystore.ui.components.commons.validateSection
 import com.example.mystore.viewmodel.screen.HomeViewModel
+import org.robolectric.res.StringResources
 
 @Composable
 fun HomeScreen(
@@ -48,7 +50,7 @@ fun HomeScreen(
     shouldItemBeVisible: Boolean,
     onProductClick: (product: Product) -> Unit = {},
     onProductDoubleClick: () -> Unit = {},
-    onEmptyStateImageClicked: (route: String) -> Unit = {},
+    onEmptyStateImageClicked: (route: String, screen: String) -> Unit = { _: String, _: String -> },
     onEditMode: (Boolean, Product) -> Unit = { _, _ -> },
 ) {
     with(homeViewModel) {
@@ -160,6 +162,7 @@ fun HomeScreen(
                             validateSection(
                                 Section.RESUME,
                             ),
+                            R.string.my_store_register_transaction.toStringResource()
                         )
                     },
                 ),
@@ -199,6 +202,7 @@ fun HomeScreen(
                             validateSection(
                                 Section.TRANSACTIONS,
                             ),
+                            R.string.my_store_register_transaction.toStringResource()
                         )
                     },
                 ),
@@ -241,6 +245,7 @@ fun HomeScreen(
                             validateSection(
                                 Section.PRODUCTS,
                             ),
+                            R.string.my_store_register_product.toStringResource()
                         )
                     },
                 ),

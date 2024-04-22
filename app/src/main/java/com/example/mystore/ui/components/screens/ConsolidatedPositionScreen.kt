@@ -22,7 +22,7 @@ import com.example.mystore.Section
 import com.example.mystore.TransactionType
 import com.example.mystore.Type
 import com.example.mystore.model.Transaction
-import com.example.mystore.toShortDateString
+import com.example.mystore.toStringResource
 import com.example.mystore.ui.components.commons.RowComponent
 import com.example.mystore.ui.components.commons.ScreenSectionComponent
 import com.example.mystore.ui.components.commons.SectionEmptyStateInfo
@@ -36,7 +36,7 @@ import com.example.mystore.viewmodel.screen.HomeViewModel
 fun ConsolidatedPositionScreen(
     homeViewModel: HomeViewModel,
     shouldItemBeVisible: Boolean,
-    onEmptyStateImageClicked: (route: String) -> Unit = {},
+    onEmptyStateImageClicked: (route: String, screen: String) -> Unit = { _, _ -> },
     onShowBottomBarExpanded: (shouldSee: Boolean) -> Unit = {},
 ) {
     Column(
@@ -65,7 +65,10 @@ fun ConsolidatedPositionScreen(
                 emptySectionTitle = stringResource(R.string.my_store_no_sales_done),
                 emptySectionPainter = painterResource(id = R.drawable.my_store_plus_icon),
                 onEmptyStateImageClicked = {
-                    onEmptyStateImageClicked(validateSection(Section.TRANSACTIONS))
+                    onEmptyStateImageClicked(
+                        validateSection(Section.TRANSACTIONS),
+                        R.string.my_store_register_transaction.toStringResource()
+                    )
                 },
             ),
         )
@@ -95,6 +98,7 @@ fun ConsolidatedPositionScreen(
                         validateSection(
                             Section.TRANSACTIONS,
                         ),
+                        R.string.my_store_register_transaction.toStringResource()
                     )
                 },
             ),

@@ -142,6 +142,7 @@ fun MyStoreApp(
                             application.getString(R.string.my_store_home),
                         )
                     },
+                    onUpdateTopBarText = { myStoreViewModel.setScreenTitle(it) },
                 )
             },
             bottomBar = {
