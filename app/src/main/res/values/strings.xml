@@ -51,6 +51,8 @@
     <string name="my_store_out_of_stock">Fora de estoque</string>
     <string name="my_store_confirmation_transaction">Registro de transação</string>
     <string name="my_store_confirmation_message">Deseja confirmar essa transação?</string>
+    <string name="my_store_confirmation">Confirmar</string>
+    <string name="my_store_cancelation">Cancelar</string>
     <string name="my_store_cancel">Cancelar</string>
     <string name="my_store_ok">OK</string>
     <string name="my_store_close">Fechar</string>

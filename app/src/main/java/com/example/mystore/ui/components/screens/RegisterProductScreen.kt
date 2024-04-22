@@ -383,12 +383,12 @@ fun ImageUrlBody(
                     onDoubleClick = { },
                 ),
             registerProductViewModel = registerProductViewModel,
-            imageUrl = imageUrl,
+            imageUrl = imageUrlInternal,
             onProductClick = { registerProductViewModel.setShowAlertDialogImageUrl(true) },
         )
 
         OutLinedTextFieldComponent(
-            selectedText = imageUrl,
+            selectedText = imageUrlInternal,
             label = stringResource(id = R.string.my_store_image_url),
             keyboardController = titleKeyboardController,
             focusManager = titleFocusManager,
@@ -404,12 +404,12 @@ fun ImageUrlBody(
             Button(
                 modifier = Modifier.padding(start = 8.dp, end = 16.dp),
                 onClick = {
-                    onImageUrl(imageUrl)
+                    onImageUrl(imageUrlInternal)
                     registerProductViewModel.setShowAlertDialogImageUrl(false)
                 },
             ) {
                 Text(
-                    text = "Confirmar", // stringResource(id = R.string.my_store_close),
+                    text = stringResource(id = R.string.my_store_confirmation),
                     color = colorResource(id = R.color.color_50),
                 )
             }
@@ -421,7 +421,7 @@ fun ImageUrlBody(
                 },
             ) {
                 Text(
-                    text = "Cancelar", // stringResource(id = R.string.my_store_close),
+                    text = stringResource(id = R.string.my_store_cancelation),
                     color = colorResource(id = R.color.color_50),
                 )
             }
