@@ -148,5 +148,9 @@ class RegisterTransactionViewModel(
         } else {
             listOfProducts.value[index].quantity += quantity
         }
+
+        CoroutineScope(Dispatchers.IO).launch {
+            updateProduct(listOfProducts.value[index])
+        }
     }
 }
