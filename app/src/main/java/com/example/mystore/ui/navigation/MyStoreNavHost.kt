@@ -36,6 +36,7 @@ fun MyStoreNavHost(
     onEditMode: (Boolean, Product) -> Unit = { _, _ -> },
     onShouldDisplayIcon: (Boolean) -> Unit = {},
     onNavigateToHome: () -> Unit = {},
+    onUpdateTopBarText: (text: String) -> Unit = {},
 ) {
     var transactionClearStates by remember { mutableStateOf(false) }
     var productClearStates by remember { mutableStateOf(false) }
@@ -56,7 +57,10 @@ fun MyStoreNavHost(
                 shouldItemBeVisible = shouldItemBeVisible,
                 onProductClick = { onProductClick(it) },
                 onProductDoubleClick = { onProductDoubleClick() },
-                onEmptyStateImageClicked = { navController.navigateSingleTopTo(it) },
+                onEmptyStateImageClicked = { route, screen ->
+                    navController.navigateSingleTopTo(route)
+                    onUpdateTopBarText(screen)
+                },
                 onEditMode = { isEditMode, product -> onEditMode(isEditMode, product) },
             )
         }
@@ -82,8 +86,9 @@ fun MyStoreNavHost(
                         onShowBottomBarExpanded(sales, purchases)
                     }
                 },
-                onEmptyStateImageClicked = {
-                    navController.navigateSingleTopTo(it)
+                onEmptyStateImageClicked = { route, screen ->
+                    navController.navigateSingleTopTo(route)
+                    onUpdateTopBarText(screen)
                 },
             )
         }
