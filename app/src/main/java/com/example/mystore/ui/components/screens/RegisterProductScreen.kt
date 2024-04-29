@@ -317,6 +317,7 @@ fun RegisterProductScreenBody(
                     .width(screenWidth.setQuantifierSize())
                     .padding(start = 8.dp, end = 4.dp),
                 enabled = !isEditMode,
+                shouldStartWithZero = true,
                 quantity = quantity,
                 onQuantifierChange = { registerProductViewModel.setQuantity(it) },
             )
@@ -331,6 +332,7 @@ fun RegisterProductScreenBody(
                 modifier = Modifier
                     .width(screenWidth.setQuantifierSize())
                     .padding(start = 4.dp, end = 8.dp),
+                shouldStartWithZero = true,
                 quantity = maxQuantityToBuy,
                 onQuantifierChange = { registerProductViewModel.setMaxQuantityToBuy(it) },
             )
