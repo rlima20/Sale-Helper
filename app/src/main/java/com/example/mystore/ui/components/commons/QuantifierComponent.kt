@@ -32,12 +32,13 @@ internal fun Quantifier(
     enabled: Boolean = true,
     maxQuantity: Int = 9,
     quantity: Int,
+    shouldStartWithZero: Boolean = false,
     onQuantifierChange: (Int) -> Unit,
 ) {
     var isLeftIconEnabled = false
     var isRightIconEnabled = false
     if (enabled) {
-        isLeftIconEnabled = quantity > 1
+        isLeftIconEnabled = quantity > if (shouldStartWithZero) 0 else 1
         isRightIconEnabled = quantity < maxQuantity
     }
 
