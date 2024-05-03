@@ -27,7 +27,6 @@ internal fun TopBarComponent(
     shouldItemBeVisible: Boolean,
     isMenuExpanded: Boolean,
     textFieldSize: Size,
-    shouldDisplayIcon: Boolean = true,
     onIconVisibilityClicked: () -> Unit,
     onMenuIconClicked: () -> Unit,
     onDismissRequest: () -> Unit,
@@ -54,49 +53,31 @@ internal fun TopBarComponent(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween,
         ) {
-            if (shouldDisplayIcon) {
-                Icon(
-                    modifier = Modifier
-                        .padding(end = 16.dp)
-                        .size(20.dp)
-                        .clickable(
-                            onClick = {
-                                onIconVisibilityClicked()
-                            },
-                        ),
-                    painter = setPainter(shouldItemBeVisible),
-                    contentDescription = null,
-                    tint = Color.White,
-                )
-            }
+            Icon(
+                modifier = Modifier
+                    .padding(end = 16.dp)
+                    .size(20.dp)
+                    .clickable(onClick = { onIconVisibilityClicked() }),
+                painter = setPainter(shouldItemBeVisible),
+                contentDescription = null,
+                tint = Color.White,
+            )
 
             MenuComponent(
                 screens = screenList,
                 isMenuExpanded = isMenuExpanded,
                 textFieldSize = textFieldSize,
-                onMenuIconClicked = {
-                    onMenuIconClicked()
-                },
-                onDismissRequest = {
-                    onDismissRequest()
-                },
-                onDropDownMenuItemClicked = { screen ->
-                    onDropDownMenuItemClicked(screen)
-                },
-                onChangeTextFieldSize = { size ->
-                    onChangeTextFieldSize(size)
-                },
+                onMenuIconClicked = { onMenuIconClicked() },
+                onDismissRequest = { onDismissRequest() },
+                onDropDownMenuItemClicked = { screen -> onDropDownMenuItemClicked(screen) },
+                onChangeTextFieldSize = { size -> onChangeTextFieldSize(size) },
             )
         }
     }
 }
 
 @Composable
-private fun setPainter(shouldItemBeVisible: Boolean) = if (shouldItemBeVisible) {
-    painterResource(
-        id = R.drawable
-            .my_store_show_icon,
-    )
-} else {
-    painterResource(id = R.drawable.my_store_hidden_icon)
-}
+private fun setPainter(shouldItemBeVisible: Boolean) =
+    if (shouldItemBeVisible) painterResource(id = R.drawable.my_store_show_icon)
+    else painterResource(id = R.drawable.my_store_hidden_icon)
+

@@ -37,11 +37,7 @@ fun MenuComponent(
             imageVector = Icons.Rounded.Menu,
             contentDescription = null,
             tint = Color.White,
-            modifier = Modifier.clickable(
-                onClick = {
-                    onMenuIconClicked()
-                },
-            ),
+            modifier = Modifier.clickable(onClick = { onMenuIconClicked() }),
         )
 
         DropdownMenu(
@@ -56,9 +52,7 @@ fun MenuComponent(
         ) {
             screens.forEach { screenName ->
                 DropdownMenuItem(
-                    onClick = {
-                        onDropDownMenuItemClicked(screenName)
-                    },
+                    onClick = { onDropDownMenuItemClicked(screenName) },
                     content = {
                         Column {
                             Text(
@@ -78,7 +72,7 @@ fun MenuComponent(
 fun DropDownComponentPreview() {
     MenuComponent(
         screens = screenList,
-        isMenuExpanded = false,
-        textFieldSize = Size(0f, 0f),
+        isMenuExpanded = true,
+        textFieldSize = Size(50f, 50f),
     )
 }

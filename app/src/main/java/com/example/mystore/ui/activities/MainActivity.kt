@@ -19,6 +19,10 @@ import androidx.navigation.compose.rememberNavController
 import com.example.mystore.AppApplication
 import com.example.mystore.R
 import com.example.mystore.model.Product
+import com.example.mystore.model.props.GlobalProps
+import com.example.mystore.model.props.NavigationProps
+import com.example.mystore.model.props.ProductProps
+import com.example.mystore.model.props.ViewModels
 import com.example.mystore.navigateSingleTopTo
 import com.example.mystore.ui.components.commons.BottomBarComponent
 import com.example.mystore.ui.components.commons.TopBarComponent
@@ -78,7 +82,6 @@ fun MyStoreApp(
         var totalAmountOfPurchases: Double by remember { mutableStateOf(0.0) }
         var isEditMode: Boolean by remember { mutableStateOf(false) }
         var product: Product by remember { mutableStateOf(Product()) }
-        var shouldDisplayIcon: Boolean by remember { mutableStateOf(true) }
 
         Scaffold(
             topBar = {
@@ -87,7 +90,6 @@ fun MyStoreApp(
                     shouldItemBeVisible = shouldItemBeVisible,
                     isMenuExpanded = isMenuExpanded,
                     textFieldSize = textFieldSize,
-                    shouldDisplayIcon = shouldDisplayIcon,
                     onIconVisibilityClicked = {
                         myStoreViewModel.setValueVisibility(!shouldItemBeVisible)
                     },
@@ -106,43 +108,47 @@ fun MyStoreApp(
                     onChangeTextFieldSize = { size -> myStoreViewModel.setTextFieldSize(size) },
                 )
             },
-
             content = { content ->
                 MyStoreNavHost(
-                    navController = navController,
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .background(colorResource(id = R.color.color_50))
-                        .padding(content),
-                    homeViewModel = homeViewModel,
-                    registerTransactionViewModel = registerTransactionViewModel,
-                    registerProductViewModel = registerProductViewModel,
-                    shouldItemBeVisible = shouldItemBeVisible,
-                    isEditMode = isEditMode,
-                    product = product,
-                    onExpandBottomBar = { shouldExpandBottomBar ->
-                        expandedBottomBar = shouldExpandBottomBar
-                    },
-                    onShowBottomBarExpanded = { sales, purchases ->
-                        totalAmountOfSales = sales
-                        totalAmountOfPurchases = purchases
-                    },
-                    onProductClick = { navController.navigateSingleTopTo(RegisterProductScreen.route) },
-                    onProductDoubleClick = {},
-                    onEditMode = { first, second ->
-                        isEditMode = first
-                        product = second
-                    },
-                    onShouldDisplayIcon = { shouldDisplay ->
-                        shouldDisplayIcon = shouldDisplay
-                    },
-                    onNavigateToHome = {
-                        navController.navigateSingleTopTo(HomeScreen.route)
-                        myStoreViewModel.setScreenTitle(
-                            application.getString(R.string.my_store_home),
-                        )
-                    },
-                    onUpdateTopBarText = { myStoreViewModel.setScreenTitle(it) },
+                    viewModels = ViewModels(
+                        homeViewModel,
+                        registerTransactionViewModel,
+                        registerProductViewModel
+                    ),
+                    globalProps = GlobalProps(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .background(colorResource(id = R.color.color_50))
+                            .padding(content),
+                        shouldItemBeVisible = shouldItemBeVisible,
+                        isEditMode = isEditMode,
+                        onExpandBottomBar = { shouldExpandBottomBar ->
+                            expandedBottomBar = shouldExpandBottomBar
+                        },
+                        onShowBottomBarExpanded = { sales, purchases ->
+                            totalAmountOfSales = sales
+                            totalAmountOfPurchases = purchases
+                        },
+                        onUpdateTopBarText = { myStoreViewModel.setScreenTitle(it) },
+                        onEditMode = { first, second ->
+                            isEditMode = first
+                            product = second
+                        },
+                    ),
+                    productProps = ProductProps(
+                        product = product,
+                        onProductClick = { navController.navigateSingleTopTo(RegisterProductScreen.route) },
+                        onProductDoubleClick = {},
+                    ),
+                    navigationProps = NavigationProps(
+                        navController = navController,
+                        onNavigateToHome = {
+                            navController.navigateSingleTopTo(HomeScreen.route)
+                            myStoreViewModel.setScreenTitle(
+                                application.getString(R.string.my_store_home),
+                            )
+                        }
+                    ),
                 )
             },
             bottomBar = {
@@ -192,7 +198,7 @@ fun MyStoreApp(
 }
 
 private fun transformStringToInterfaceObject(application: AppApplication, screen: String):
-    MyStoreDestinationInterface {
+        MyStoreDestinationInterface {
     return when (screen) {
         application.getString(R.string.my_store_home) -> HomeScreen
         application.getString(R.string.my_store_register_product) -> RegisterProductScreen

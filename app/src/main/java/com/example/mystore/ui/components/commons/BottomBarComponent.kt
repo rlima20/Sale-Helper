@@ -23,11 +23,11 @@ import com.example.mystore.ui.theme.mcpalette0_A900
 
 @Composable
 internal fun BottomBarComponent(
+    expandedBottomBar: Boolean = false,
     onPositionConsolidateIconClicked: () -> Unit,
     onRegisterTransactionIconClicked: () -> Unit,
     onRegisterProductIconClicked: () -> Unit,
     onHomeIconClicked: () -> Unit,
-    expandedBottomBar: Boolean = false,
     expandedBottomBarContent: @Composable () -> Unit = {},
 ) {
     Column {
