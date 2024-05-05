@@ -52,9 +52,6 @@ fun String.toTransactionString(): String {
     }
 }
 
-fun setTextColor(value: Double): Int =
-    if (value > 0) R.color.color_green_A900 else R.color.color_red_A1000
-
 @Composable
 fun ImageRequest.getAsyncImagePainter(
     onStateChanged: (state: States) -> Unit = {},
@@ -63,9 +60,11 @@ fun ImageRequest.getAsyncImagePainter(
         is AsyncImagePainter.State.Success -> {
             onStateChanged(States.SUCCESS)
         }
+
         is AsyncImagePainter.State.Loading -> {
             onStateChanged(States.LOADING)
         }
+
         else -> {
             onStateChanged(States.ERROR)
         }

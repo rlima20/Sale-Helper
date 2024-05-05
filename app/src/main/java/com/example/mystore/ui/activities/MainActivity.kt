@@ -77,7 +77,7 @@ fun MyStoreApp(
         val textFieldSize by myStoreViewModel.textFieldSize.collectAsState()
         val shouldItemBeVisible by myStoreViewModel.shouldItemBeVisible.collectAsState()
         var currentScreen: MyStoreDestinationInterface by remember { mutableStateOf(HomeScreen) }
-        var expandedBottomBar: Boolean by remember { mutableStateOf(false) }
+        var shouldBottomBarBeExpanded: Boolean by remember { mutableStateOf(false) }
         var totalAmountOfSales: Double by remember { mutableStateOf(0.0) }
         var totalAmountOfPurchases: Double by remember { mutableStateOf(0.0) }
         var isEditMode: Boolean by remember { mutableStateOf(false) }
@@ -123,7 +123,7 @@ fun MyStoreApp(
                         shouldItemBeVisible = shouldItemBeVisible,
                         isEditMode = isEditMode,
                         onExpandBottomBar = { shouldExpandBottomBar ->
-                            expandedBottomBar = shouldExpandBottomBar
+                            shouldBottomBarBeExpanded = shouldExpandBottomBar
                         },
                         onShowBottomBarExpanded = { sales, purchases ->
                             totalAmountOfSales = sales
@@ -153,8 +153,8 @@ fun MyStoreApp(
             },
             bottomBar = {
                 BottomBarComponent(
-                    expandedBottomBar = expandedBottomBar,
-                    onPositionConsolidateIconClicked = {
+                    shouldBottomBarBeExpanded = shouldBottomBarBeExpanded,
+                    onConsolidatedPositionIconClicked = {
                         myStoreViewModel.setScreenTitle(
                             application.getString(
                                 R.string

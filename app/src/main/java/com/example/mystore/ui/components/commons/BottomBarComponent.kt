@@ -23,15 +23,15 @@ import com.example.mystore.ui.theme.mcpalette0_A900
 
 @Composable
 internal fun BottomBarComponent(
-    expandedBottomBar: Boolean = false,
-    onPositionConsolidateIconClicked: () -> Unit,
+    shouldBottomBarBeExpanded: Boolean,
+    onConsolidatedPositionIconClicked: () -> Unit,
     onRegisterTransactionIconClicked: () -> Unit,
     onRegisterProductIconClicked: () -> Unit,
     onHomeIconClicked: () -> Unit,
     expandedBottomBarContent: @Composable () -> Unit = {},
 ) {
     Column {
-        if (expandedBottomBar) {
+        if (shouldBottomBarBeExpanded) {
             Row(
                 modifier = Modifier
                     .background(mcpalette0_A900)
@@ -66,7 +66,7 @@ internal fun BottomBarComponent(
                     .size(20.dp)
                     .clickable(
                         onClick = {
-                            onPositionConsolidateIconClicked()
+                            onConsolidatedPositionIconClicked()
                         },
                     ),
                 painter = painterResource(id = R.drawable.my_store_consolidated_position_icon),

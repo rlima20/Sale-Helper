@@ -26,7 +26,6 @@ import androidx.compose.ui.unit.sp
 import com.example.mystore.R
 import com.example.mystore.Type
 import com.example.mystore.model.Product
-import com.example.mystore.setTextColor
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable

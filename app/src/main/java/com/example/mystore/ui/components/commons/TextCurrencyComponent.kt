@@ -13,8 +13,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.mystore.R
 import com.example.mystore.Type
+import com.example.mystore.interfaces.ColorBasedTypeImpl
 import com.example.mystore.limitTo
-import com.example.mystore.setTextColor
 
 @Composable
 internal fun TextCurrencyComponent(
@@ -29,21 +29,19 @@ internal fun TextCurrencyComponent(
         modifier = Modifier.padding(start = paddings.first, end = paddings.second),
         fontSize = fontSize,
         fontWeight = MaterialTheme.typography.h5.fontWeight,
-        color = colorResource(setColorBasedType(type, color, value)),
+        color = colorResource(
+            ColorBasedTypeImpl().setColorBasedType(
+                type = type,
+                color = color,
+                value = value
+            )
+        ),
         text = setUnit(value, type, shouldItemBeVisible).limitTo(14),
         overflow = TextOverflow.Ellipsis,
         maxLines = 1,
     )
 }
 
-@Composable
-private fun setColorBasedType(type: Type, color: Int, value: String) =
-    when (type) {
-        Type.CURRENCY_DEBIT_ONLY -> R.color.color_red_A1000
-        Type.STRING -> color
-        Type.CURRENCY_TRANSACTION_DETAIL -> R.color.color_900
-        Type.QUANTITY_TRANSACTION_DETAIL -> R.color.color_900
-        Type.DATE -> color
-        Type.STRING_ONLY -> color
-        else -> setTextColor(value.toDouble())
-    }
+fun setTextColor(value: Double): Int =
+    if (value > 0) R.color.color_green_A900 else R.color.color_red_A1000
+

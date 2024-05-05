@@ -17,6 +17,7 @@ import com.example.mystore.ui.components.screens.HomeScreen
 import com.example.mystore.ui.components.screens.RegisterProductScreen
 import com.example.mystore.ui.components.screens.RegisterTransactionScreen
 
+// todo continuar qui
 @Composable
 fun MyStoreNavHost(
     viewModels: ViewModels,
