@@ -33,17 +33,20 @@ class HomeViewModel(
     private val _resume: MutableStateFlow<Resume?> = MutableStateFlow(Resume())
     val resume: StateFlow<Resume?> = _resume
 
-    private val _showAlertDialogHomeScreen: MutableStateFlow<Boolean> = MutableStateFlow(false)
-    val showAlertDialogHomeScreen: StateFlow<Boolean> = _showAlertDialogHomeScreen
-
-    private val _showAlertDialogHomeScreenProduct: MutableStateFlow<Boolean> =
+    private val _transactionDeleteConfirmationDialogVisibility: MutableStateFlow<Boolean> =
         MutableStateFlow(false)
-    val showAlertDialogHomeScreenProduct: StateFlow<Boolean> = _showAlertDialogHomeScreenProduct
+    val transactionDeleteConfirmationDialogVisibility: StateFlow<Boolean> =
+        _transactionDeleteConfirmationDialogVisibility
 
-    private val _showAlertDialogTransactionDetail: MutableStateFlow<Boolean> =
+    private val _productDeleteConfirmationDialogVisibility: MutableStateFlow<Boolean> =
         MutableStateFlow(false)
-    val showAlertDialogTransactionDetail: StateFlow<Boolean> =
-        _showAlertDialogTransactionDetail
+    val productDeleteConfirmationDialogVisibility: StateFlow<Boolean> =
+        _productDeleteConfirmationDialogVisibility
+
+    private val _transactionDetailsDialogVisibility: MutableStateFlow<Boolean> =
+        MutableStateFlow(false)
+    val transactionDetailsDialogVisibility: StateFlow<Boolean> =
+        _transactionDetailsDialogVisibility
 
     private val _showToast: MutableStateFlow<Pair<String, Boolean>> =
         MutableStateFlow(Pair("", false))
@@ -69,13 +72,13 @@ class HomeViewModel(
     // Private functions
     private fun getShowToastState() = showToast.value
 
-    private fun getShowAlertDialogTransactionDetail() = showAlertDialogTransactionDetail.value
+    private fun getShowAlertDialogTransactionDetail() = transactionDetailsDialogVisibility.value
 
     private fun getTransaction(): Transaction = transaction.value
 
     // Public functions
     fun setShowAlertDialogTransactionDetail(state: Boolean) {
-        _showAlertDialogTransactionDetail.value = state
+        _transactionDetailsDialogVisibility.value = state
     }
 
     fun setTransaction(transaction: Transaction) {
@@ -93,8 +96,8 @@ class HomeViewModel(
         val stockValue = listOfProducts.value.sumOf { it.purchasePrice * it.quantity }
 
         if ((debits.equals(0.0)) && (grossRevenue.equals(0.0)) && (netRevenue.equals(0.0)) && (
-                stockValue.equals(0.0)
-                )
+                    stockValue.equals(0.0)
+                    )
         ) {
             _resume.value = null
         } else {
@@ -107,16 +110,17 @@ class HomeViewModel(
         }
     }
 
-    fun getShowAlertDialogHomeScreen() = showAlertDialogHomeScreen.value
+    fun getShowAlertDialogHomeScreen() = transactionDeleteConfirmationDialogVisibility.value
 
     fun setShowAlertDialogHomeScreen(state: Boolean) {
-        _showAlertDialogHomeScreen.value = state
+        _transactionDeleteConfirmationDialogVisibility.value = state
     }
 
-    private fun getShowAlertDialogHomeScreenProduct() = showAlertDialogHomeScreenProduct.value
+    private fun getShowAlertDialogHomeScreenProduct() =
+        productDeleteConfirmationDialogVisibility.value
 
     fun setShowAlertDialogHomeScreenProduct(state: Boolean) {
-        _showAlertDialogHomeScreenProduct.value = state
+        _productDeleteConfirmationDialogVisibility.value = state
     }
 
     private fun getProduct() = product.value

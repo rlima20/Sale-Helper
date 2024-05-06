@@ -40,7 +40,7 @@ fun MyStoreNavHost(
             globalProps.onExpandBottomBar(false)
             HomeScreen(
                 homeViewModel = viewModels.homeViewModel,
-                shouldItemBeVisible = globalProps.shouldItemBeVisible,
+                currencyVisibility = globalProps.currencyVisibility,
                 onProductClick = { productProps.onProductClick(it) },
                 onProductDoubleClick = { productProps.onProductDoubleClick() },
                 onEmptyStateImageClicked = { route, screen ->
@@ -61,7 +61,7 @@ fun MyStoreNavHost(
             productClearStates = true
             ConsolidatedPositionScreen(
                 homeViewModel = viewModels.homeViewModel,
-                shouldItemBeVisible = globalProps.shouldItemBeVisible,
+                shouldItemBeVisible = globalProps.currencyVisibility,
                 onShowBottomBarExpanded = {
                     val sales = viewModels.homeViewModel.getSalesValue()
                     val purchases = viewModels.homeViewModel.getPurchasesValue()
@@ -86,7 +86,7 @@ fun MyStoreNavHost(
             productClearStates = true
             RegisterTransactionScreen(
                 registerTransactionViewModel = viewModels.registerTransactionViewModel,
-                shouldItemBeVisible = globalProps.shouldItemBeVisible,
+                shouldItemBeVisible = globalProps.currencyVisibility,
                 clearAllStates = transactionClearStates,
                 onClearAllStates = { transactionClearStates = it },
             )

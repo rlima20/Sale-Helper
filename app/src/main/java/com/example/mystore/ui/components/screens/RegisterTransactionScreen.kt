@@ -316,7 +316,7 @@ private fun RegisterTransactionBody(
                 rightSide = {
                     TextCurrencyComponent(
                         value = setText(transaction, total),
-                        shouldItemBeVisible = shouldItemBeVisible,
+                        currencyVisibility = shouldItemBeVisible,
                         type = Type.CURRENCY_ONLY,
                     )
                 },

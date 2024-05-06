@@ -148,7 +148,7 @@ fun TotalComponent(
             rightSide = {
                 TextCurrencyComponent(
                     value = purchasesValue.toString(),
-                    shouldItemBeVisible = shouldItemBeVisible,
+                    currencyVisibility = shouldItemBeVisible,
                     type = Type.CURRENCY_ONLY,
                 )
             },
@@ -158,7 +158,7 @@ fun TotalComponent(
             rightSide = {
                 TextCurrencyComponent(
                     value = salesValue.toString(),
-                    shouldItemBeVisible = shouldItemBeVisible,
+                    currencyVisibility = shouldItemBeVisible,
                     type = Type.CURRENCY_ONLY,
                 )
             },
@@ -168,7 +168,7 @@ fun TotalComponent(
             rightSide = {
                 TextCurrencyComponent(
                     value = (salesValue - purchasesValue).toString(),
-                    shouldItemBeVisible = shouldItemBeVisible,
+                    currencyVisibility = shouldItemBeVisible,
                     type = Type.CURRENCY_PURCHASE,
                 )
             },

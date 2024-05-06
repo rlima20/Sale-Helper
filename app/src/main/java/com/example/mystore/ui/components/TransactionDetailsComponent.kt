@@ -29,7 +29,7 @@ import java.util.Date
 @Composable
 fun TransactionDetailsComponent(
     transaction: Transaction = Transaction(),
-    shouldItemBeVisible: Boolean = true,
+    currencyVisibility: Boolean = true,
     onCloseAlertDialogTransactionDetail: () -> Unit = {},
 ) {
     // Transaction details Section
@@ -41,7 +41,7 @@ fun TransactionDetailsComponent(
             Column(modifier = Modifier.fillMaxSize()) {
                 TransactionDetailsBody(
                     transaction = transaction,
-                    shouldItemBeVisible = shouldItemBeVisible,
+                    currencyVisibility = currencyVisibility,
                     onCloseAlertDialogTransactionDetail = onCloseAlertDialogTransactionDetail,
                 )
             }
@@ -52,7 +52,7 @@ fun TransactionDetailsComponent(
 @Composable
 private fun TransactionDetailsBody(
     transaction: Transaction,
-    shouldItemBeVisible: Boolean,
+    currencyVisibility: Boolean,
     onCloseAlertDialogTransactionDetail: () -> Unit,
 ) {
     Column {
@@ -93,7 +93,7 @@ private fun TransactionDetailsBody(
             rightSide = {
                 TextCurrencyComponent(
                     value = Date().toShortDateString(),
-                    shouldItemBeVisible = shouldItemBeVisible,
+                    currencyVisibility = currencyVisibility,
                     type = Type.DATE,
                     color = R.color.color_500,
                     paddings = Pair(0.dp, 0.dp),
@@ -110,7 +110,7 @@ private fun TransactionDetailsBody(
             rightSide = {
                 TextCurrencyComponent(
                     value = transaction.unitValue.toString(),
-                    shouldItemBeVisible = shouldItemBeVisible,
+                    currencyVisibility = currencyVisibility,
                     type = Type.CURRENCY_TRANSACTION_DETAIL,
                     color = R.color.color_500,
                     paddings = Pair(0.dp, 0.dp),
@@ -127,7 +127,7 @@ private fun TransactionDetailsBody(
             rightSide = {
                 TextCurrencyComponent(
                     value = transaction.quantity.toString(),
-                    shouldItemBeVisible = shouldItemBeVisible,
+                    currencyVisibility = currencyVisibility,
                     type = Type.QUANTITY_TRANSACTION_DETAIL,
                     color = R.color.color_500,
                     paddings = Pair(0.dp, 0.dp),
@@ -144,7 +144,7 @@ private fun TransactionDetailsBody(
             rightSide = {
                 TextCurrencyComponent(
                     value = transaction.transactionAmount.toString(),
-                    shouldItemBeVisible = shouldItemBeVisible,
+                    currencyVisibility = currencyVisibility,
                     type = Type.CURRENCY_TRANSACTION_DETAIL,
                     color = R.color.color_500,
                     paddings = Pair(0.dp, 0.dp),

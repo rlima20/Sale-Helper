@@ -129,7 +129,7 @@ fun ConsolidatedPosBody(
                         rightSide = {
                             TextCurrencyComponent(
                                 value = transaction.product.title,
-                                shouldItemBeVisible = shouldItemBeVisible,
+                                currencyVisibility = shouldItemBeVisible,
                                 type = Type.STRING_ONLY,
                             )
                         },
@@ -139,7 +139,7 @@ fun ConsolidatedPosBody(
                         rightSide = {
                             TextCurrencyComponent(
                                 value = transaction.transactionDate,
-                                shouldItemBeVisible = shouldItemBeVisible,
+                                currencyVisibility = shouldItemBeVisible,
                                 type = Type.DATE,
                             )
                         },
@@ -149,7 +149,7 @@ fun ConsolidatedPosBody(
                         rightSide = {
                             TextCurrencyComponent(
                                 value = transaction.quantity.toString(),
-                                shouldItemBeVisible = shouldItemBeVisible,
+                                currencyVisibility = shouldItemBeVisible,
                                 type = Type.QUANTITY,
                             )
                         },
@@ -159,7 +159,7 @@ fun ConsolidatedPosBody(
                         rightSide = {
                             TextCurrencyComponent(
                                 value = transaction.unitValue.toString(),
-                                shouldItemBeVisible = shouldItemBeVisible,
+                                currencyVisibility = shouldItemBeVisible,
                                 type = Type.CURRENCY_ONLY,
                             )
                         },
@@ -169,7 +169,7 @@ fun ConsolidatedPosBody(
                         rightSide = {
                             TextCurrencyComponent(
                                 value = transaction.transactionAmount.toString(),
-                                shouldItemBeVisible = shouldItemBeVisible,
+                                currencyVisibility = shouldItemBeVisible,
                                 type = Type.CURRENCY_ONLY,
                             )
                         },

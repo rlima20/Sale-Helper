@@ -120,7 +120,7 @@ fun MyStoreApp(
                             .fillMaxSize()
                             .background(colorResource(id = R.color.color_50))
                             .padding(content),
-                        shouldItemBeVisible = shouldItemBeVisible,
+                        currencyVisibility = shouldItemBeVisible,
                         isEditMode = isEditMode,
                         onExpandBottomBar = { shouldExpandBottomBar ->
                             shouldBottomBarBeExpanded = shouldExpandBottomBar

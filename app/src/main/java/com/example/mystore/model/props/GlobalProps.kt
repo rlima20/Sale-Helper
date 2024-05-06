@@ -5,7 +5,7 @@ import com.example.mystore.model.Product
 
 data class GlobalProps(
     val modifier: Modifier = Modifier,
-    val shouldItemBeVisible: Boolean,
+    val currencyVisibility: Boolean,
     val isEditMode: Boolean,
     val onExpandBottomBar: (Boolean) -> Unit = {},
     val onShowBottomBarExpanded: (sales: Double, purchase: Double) -> Unit = { _: Double, _: Double -> },

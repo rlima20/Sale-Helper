@@ -42,18 +42,18 @@ import com.example.mystore.ui.components.commons.TransactionComponent
 import com.example.mystore.ui.components.commons.ValidateSection
 import com.example.mystore.ui.components.commons.validateSection
 import com.example.mystore.viewmodel.screen.HomeViewModel
-import org.robolectric.res.StringResources
 
 @Composable
 fun HomeScreen(
     homeViewModel: HomeViewModel,
-    shouldItemBeVisible: Boolean,
+    currencyVisibility: Boolean,
     onProductClick: (product: Product) -> Unit = {},
     onProductDoubleClick: () -> Unit = {},
     onEmptyStateImageClicked: (route: String, screen: String) -> Unit = { _: String, _: String -> },
     onEditMode: (Boolean, Product) -> Unit = { _, _ -> },
 ) {
     with(homeViewModel) {
+
         getResume()
         getListOfProducts()
         getListOfSales()
@@ -63,21 +63,18 @@ fun HomeScreen(
         val resume by resume.collectAsState()
         val listOfProducts by listOfProducts.collectAsState()
         val listOfTransactions by listOfTransactions.collectAsState()
-        val showAlertDialogHomeScreen by showAlertDialogHomeScreen.collectAsState()
-        val showAlertDialogHomeScreenProduct by showAlertDialogHomeScreenProduct.collectAsState()
-        val showAlertDialogTransactionDetail by showAlertDialogTransactionDetail
-            .collectAsState()
+        val transactionDeleteConfirmationDialogVisibility by transactionDeleteConfirmationDialogVisibility.collectAsState()
+        val productDeleteConfirmationDialogVisibility by productDeleteConfirmationDialogVisibility.collectAsState()
+        val transactionDetailsDialogVisibility by transactionDetailsDialogVisibility.collectAsState()
         val showToast by showToast.collectAsState()
         val transaction by transaction.collectAsState()
         val product by product.collectAsState()
-
         val transactionToastMessage =
             stringResource(R.string.my_store_successfull_transaction_removed)
         val productToastMessage = stringResource(R.string.my_store_successfull_product_removed)
 
-        if (showToast.second) {
-            ToastComponent(showToast.first)
-        }
+        // todo - Continuar aqui. Ver se o nome das variáveis fazem sentudo e onde são chamadas
+        if (showToast.second) ToastComponent(showToast.first)
 
         Column(
             modifier = Modifier
@@ -85,7 +82,7 @@ fun HomeScreen(
                 .verticalScroll(rememberScrollState()),
         ) {
             // AlertDialog with transaction details
-            if (showAlertDialogTransactionDetail) {
+            if (transactionDetailsDialogVisibility) {
                 AlertDialogComponent(
                     size = Size(
                         width = LocalConfiguration.current.screenWidthDp.dp.value * 1f,
@@ -95,7 +92,7 @@ fun HomeScreen(
                     content = {
                         TransactionDetailsComponent(
                             transaction = transaction,
-                            shouldItemBeVisible = shouldItemBeVisible,
+                            currencyVisibility = currencyVisibility,
                             onCloseAlertDialogTransactionDetail = {
                                 setShowAlertDialogTransactionDetail(false)
                             },
@@ -107,7 +104,7 @@ fun HomeScreen(
 
             // AlertDialog Transaction delete confirmation
             ShowAlertDialogComponent(
-                showAlert = showAlertDialogHomeScreen,
+                showAlert = transactionDeleteConfirmationDialogVisibility,
                 title = stringResource(R.string.my_store_registry_removal),
                 alertDialogMessage = stringResource(R.string.my_store_removal_confirmation),
                 onDismissRequest = { setShowAlertDialogHomeScreen(false) },
@@ -122,7 +119,7 @@ fun HomeScreen(
 
             // AlertDialog Product delete confirmation
             ShowAlertDialogComponent(
-                showAlert = showAlertDialogHomeScreenProduct,
+                showAlert = productDeleteConfirmationDialogVisibility,
                 title = stringResource(R.string.my_store_registry_removal),
                 alertDialogMessage = stringResource(R.string.my_store_removal_product_confirmation),
                 onDismissRequest = { setShowAlertDialogHomeScreenProduct(false) },
@@ -146,7 +143,7 @@ fun HomeScreen(
                                 resume?.let {
                                     HomeBody(
                                         it,
-                                        shouldItemBeVisible,
+                                        currencyVisibility,
                                     )
                                 }
                             },
@@ -179,7 +176,7 @@ fun HomeScreen(
                             body = {
                                 HomeTransactions(
                                     listOfTransactions = listOfTransactions,
-                                    shouldItemBeVisible = shouldItemBeVisible,
+                                    shouldItemBeVisible = currencyVisibility,
                                     onClick = {
                                         setShowAlertDialogTransactionDetail(true)
                                         setTransaction(it)
@@ -217,7 +214,7 @@ fun HomeScreen(
                             body = {
                                 ProductCarouselComponent(
                                     listOfProducts = listOfProducts,
-                                    shouldItemBeVisible = shouldItemBeVisible,
+                                    shouldItemBeVisible = currencyVisibility,
                                     onImageRequestState = { state ->
                                         setImageRequestState(state)
                                     },
@@ -290,7 +287,7 @@ private fun HomeBody(
         rightSide = {
             TextCurrencyComponent(
                 value = resume.debits.toString(),
-                shouldItemBeVisible = shouldItemBeVisible,
+                currencyVisibility = shouldItemBeVisible,
                 type = Type.CURRENCY_DEBIT_ONLY,
             )
         },
@@ -301,7 +298,7 @@ private fun HomeBody(
         rightSide = {
             TextCurrencyComponent(
                 value = resume.stockValue.toString(),
-                shouldItemBeVisible = shouldItemBeVisible,
+                currencyVisibility = shouldItemBeVisible,
                 type = Type.CURRENCY_ONLY,
             )
         },
@@ -312,7 +309,7 @@ private fun HomeBody(
         rightSide = {
             TextCurrencyComponent(
                 value = resume.grossRevenue.toString(),
-                shouldItemBeVisible = shouldItemBeVisible,
+                currencyVisibility = shouldItemBeVisible,
                 type = Type.CURRENCY_ONLY,
             )
         },
@@ -326,7 +323,7 @@ private fun HomeBody(
         rightSide = {
             TextCurrencyComponent(
                 value = resume.netRevenue.toString(),
-                shouldItemBeVisible = shouldItemBeVisible,
+                currencyVisibility = shouldItemBeVisible,
                 type = Type.CURRENCY_ONLY,
                 fontSize = 20.sp,
             )

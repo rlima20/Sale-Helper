@@ -75,7 +75,7 @@ fun TransactionComponent(
                     )
                     TextCurrencyComponent(
                         value = transaction.transactionAmount.toString(),
-                        shouldItemBeVisible = shouldItemBeVisible,
+                        currencyVisibility = shouldItemBeVisible,
                         type = Type.STRING,
                     )
                 }

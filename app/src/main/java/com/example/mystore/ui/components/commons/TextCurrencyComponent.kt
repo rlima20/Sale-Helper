@@ -20,7 +20,7 @@ import com.example.mystore.limitTo
 internal fun TextCurrencyComponent(
     value: String,
     type: Type,
-    shouldItemBeVisible: Boolean,
+    currencyVisibility: Boolean,
     fontSize: TextUnit = 18.sp,
     color: Int = R.color.color_800,
     paddings: Pair<Dp, Dp> = Pair(8.dp, 8.dp),
@@ -36,7 +36,7 @@ internal fun TextCurrencyComponent(
                 value = value
             )
         ),
-        text = setUnit(value, type, shouldItemBeVisible).limitTo(14),
+        text = setUnit(value, type, currencyVisibility).limitTo(14),
         overflow = TextOverflow.Ellipsis,
         maxLines = 1,
     )
