@@ -94,11 +94,11 @@ fun HomeScreen(
                             transaction = transaction,
                             currencyVisibility = currencyVisibility,
                             onCloseAlertDialogTransactionDetail = {
-                                setShowAlertDialogTransactionDetail(false)
+                                setTransactionDetailsDialogVisibility(false)
                             },
                         )
                     },
-                    onDismissRequest = { setShowAlertDialogTransactionDetail(false) },
+                    onDismissRequest = { setTransactionDetailsDialogVisibility(false) },
                 )
             }
 
@@ -178,7 +178,7 @@ fun HomeScreen(
                                     listOfTransactions = listOfTransactions,
                                     shouldItemBeVisible = currencyVisibility,
                                     onClick = {
-                                        setShowAlertDialogTransactionDetail(true)
+                                        setTransactionDetailsDialogVisibility(true)
                                         setTransaction(it)
                                     },
                                     onLongClick = {

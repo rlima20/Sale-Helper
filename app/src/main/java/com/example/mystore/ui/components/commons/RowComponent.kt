@@ -6,6 +6,7 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.sp
 import com.example.mystore.R
 
+// todo - parei aqui. Ver se esse componente e seus nomes fazem sentido
 @Composable
 fun RowComponent(
     leftSideText: String,

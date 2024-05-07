@@ -25,64 +25,56 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.toSize
 import com.example.mystore.R
+import com.example.mystore.model.props.DropdownComponentCallbackProps
+import com.example.mystore.model.props.DropdownComponentVisualProps
+import com.example.mystore.model.props.OutLinedTextFieldComponentCallbackProps
+import com.example.mystore.model.props.OutLinedTextFieldComponentVisualProps
+
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun DropdownComponent(
-    items: List<String>,
-    isExpanded: Boolean,
-    selectedText: String,
-    textFieldSize: Size,
-    label: String,
-    modifier: Modifier = Modifier,
-    transactionDetailColors: Triple<Int, Int, Int> = Triple(
-        first = R.color.color_50,
-        second = R.color.color_900,
-        third = R.color.color_50,
-    ),
-    onOutLinedTextFieldSize: (size: Size) -> Unit = {},
-    onOutLinedTextFieldValueChanged: (String) -> Unit = {},
-    onTrailingIconClicked: () -> Unit = {},
-    onDropdownMenuDismissRequest: () -> Unit = {},
-    onDropdownMenuItemClicked: (String) -> Unit = {},
+    visualProps: DropdownComponentVisualProps,
+    callBack: DropdownComponentCallbackProps
 ) {
-    val keyboardController = LocalSoftwareKeyboardController.current
-    val focusManager = LocalFocusManager.current
-
     Column {
         OutLinedTextFieldComponent(
-            enabled = false,
-            modifier = modifier
-                .background(colorResource(id = transactionDetailColors.second))
-                .onGloballyPositioned { coordinates ->
-                    onOutLinedTextFieldSize(coordinates.size.toSize())
+            OutLinedTextFieldComponentVisualProps(
+                enabled = false,
+                modifier = visualProps.modifier
+                    .background(colorResource(id = visualProps.transactionDetailColors.second))
+                    .onGloballyPositioned { coordinates ->
+                        callBack.onOutLinedTextFieldSize(coordinates.size.toSize())
+                    },
+                selectedText = visualProps.selectedText,
+                label = visualProps.label,
+                transactionDetailColors = visualProps.transactionDetailColors,
+                keyboardController = LocalSoftwareKeyboardController.current,
+                focusManager = LocalFocusManager.current,
+            ),
+            OutLinedTextFieldComponentCallbackProps(
+                onValueChanged = { callBack.onOutLinedTextFieldValueChanged(visualProps.selectedText) },
+                trailingIcon = {
+                    Icon(
+                        setIcon(visualProps.isExpanded),
+                        "contentDescription",
+                        Modifier.clickable { callBack.onTrailingIconClicked() },
+                        tint = colorResource(id = R.color.color_800),
+                    )
                 },
-            selectedText = selectedText,
-            label = label,
-            transactionDetailColors = transactionDetailColors,
-            keyboardController = keyboardController,
-            focusManager = focusManager,
-            onValueChanged = { onOutLinedTextFieldValueChanged(selectedText) },
-            trailingIcon = {
-                Icon(
-                    setIcon(isExpanded),
-                    "contentDescription",
-                    Modifier.clickable { onTrailingIconClicked() },
-                    tint = colorResource(id = R.color.color_800),
-                )
-            },
+            ),
         )
 
         DropdownMenu(
-            expanded = isExpanded,
-            onDismissRequest = { onDropdownMenuDismissRequest() },
+            expanded = visualProps.isExpanded,
+            onDismissRequest = { callBack.onDropdownMenuDismissRequest() },
             modifier = Modifier
-                .width(with(LocalDensity.current) { textFieldSize.width.toDp() }),
+                .width(with(LocalDensity.current) { visualProps.textFieldSize.width.toDp() }),
         ) {
-            items.forEach { label ->
+            visualProps.items.forEach { label ->
                 DropdownMenuItem(onClick = {
-                    onDropdownMenuItemClicked(label)
-                    onDropdownMenuDismissRequest()
+                    callBack.onDropdownMenuItemClicked(label)
+                    callBack.onDropdownMenuDismissRequest()
                 }) {
                     Text(text = label)
                 }
@@ -102,11 +94,14 @@ private fun setIcon(isExpanded: Boolean) = if (isExpanded) {
 @Composable
 fun DefaultPreview() {
     DropdownComponent(
-        isExpanded = false,
-        modifier = Modifier.padding(16.dp),
-        label = "Tipo de transação",
-        items = listOf("A", "B", "C"),
-        textFieldSize = Size.Zero,
-        selectedText = "A",
+        visualProps = DropdownComponentVisualProps(
+            isExpanded = false,
+            modifier = Modifier.padding(16.dp),
+            label = "Tipo de transação",
+            items = listOf("A", "B", "C"),
+            textFieldSize = Size.Zero,
+            selectedText = "A",
+        ),
+        callBack = DropdownComponentCallbackProps(),
     )
 }

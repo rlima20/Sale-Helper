@@ -77,7 +77,7 @@ class HomeViewModel(
     private fun getTransaction(): Transaction = transaction.value
 
     // Public functions
-    fun setShowAlertDialogTransactionDetail(state: Boolean) {
+    fun setTransactionDetailsDialogVisibility(state: Boolean) {
         _transactionDetailsDialogVisibility.value = state
     }
 
