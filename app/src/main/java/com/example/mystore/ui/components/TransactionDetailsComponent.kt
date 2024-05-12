@@ -16,8 +16,9 @@ import androidx.compose.ui.unit.dp
 import com.example.mystore.R
 import com.example.mystore.TransactionType
 import com.example.mystore.Type
-import com.example.mystore.model.Product
-import com.example.mystore.model.Transaction
+import com.example.mystore.model.screen.Product
+import com.example.mystore.model.screen.Transaction
+import com.example.mystore.model.props.ColorProps
 import com.example.mystore.model.props.DropdownComponentCallbackProps
 import com.example.mystore.model.props.DropdownComponentVisualProps
 import com.example.mystore.toShortDateString
@@ -100,9 +101,8 @@ private fun TransactionDetailsBody(
 
         // Date
         RowComponent(
-            leftSideText = stringResource(id = R.string.my_store_date),
-            transactionDetailColors = Pair(R.color.color_500, R.color.color_50),
-            rightSide = {
+            leftContent = stringResource(id = R.string.my_store_date),
+            rightContent = {
                 TextCurrencyComponent(
                     value = Date().toShortDateString(),
                     currencyVisibility = currencyVisibility,
@@ -117,9 +117,9 @@ private fun TransactionDetailsBody(
 
         // Unit value
         RowComponent(
-            leftSideText = stringResource(id = R.string.my_store_unit_value),
-            transactionDetailColors = Pair(R.color.color_500, R.color.color_50),
-            rightSide = {
+            leftContent = stringResource(id = R.string.my_store_unit_value),
+            fontColor = ColorProps().unfocusedLabelColor,
+            rightContent = {
                 TextCurrencyComponent(
                     value = transaction.unitValue.toString(),
                     currencyVisibility = currencyVisibility,
@@ -134,9 +134,9 @@ private fun TransactionDetailsBody(
 
         // Quantity
         RowComponent(
-            leftSideText = stringResource(id = R.string.my_store_quantity),
-            transactionDetailColors = Pair(R.color.color_500, R.color.color_50),
-            rightSide = {
+            leftContent = stringResource(id = R.string.my_store_quantity),
+            fontColor = ColorProps().unfocusedLabelColor,
+            rightContent = {
                 TextCurrencyComponent(
                     value = transaction.quantity.toString(),
                     currencyVisibility = currencyVisibility,
@@ -151,9 +151,9 @@ private fun TransactionDetailsBody(
 
         // Total Amount
         RowComponent(
-            leftSideText = stringResource(id = R.string.my_store_total),
-            transactionDetailColors = Pair(R.color.color_500, R.color.color_50),
-            rightSide = {
+            leftContent = stringResource(id = R.string.my_store_total),
+            fontColor = ColorProps().unfocusedLabelColor,
+            rightContent = {
                 TextCurrencyComponent(
                     value = transaction.transactionAmount.toString(),
                     currencyVisibility = currencyVisibility,

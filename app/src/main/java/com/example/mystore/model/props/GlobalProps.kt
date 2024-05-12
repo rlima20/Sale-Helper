@@ -1,7 +1,7 @@
 package com.example.mystore.model.props
 
 import androidx.compose.ui.Modifier
-import com.example.mystore.model.Product
+import com.example.mystore.model.screen.Product
 
 data class GlobalProps(
     val modifier: Modifier = Modifier,

@@ -28,8 +28,11 @@ import com.example.mystore.Screens
 import com.example.mystore.TransactionType
 import com.example.mystore.Type
 import com.example.mystore.limitTo
-import com.example.mystore.model.Product
-import com.example.mystore.model.Transaction
+import com.example.mystore.model.SectionInfo
+import com.example.mystore.model.screen.Product
+import com.example.mystore.model.screen.Transaction
+import com.example.mystore.model.props.DropdownComponentCallbackProps
+import com.example.mystore.model.props.DropdownComponentVisualProps
 import com.example.mystore.setItemSize
 import com.example.mystore.toShortDateString
 import com.example.mystore.toTransactionType
@@ -39,7 +42,6 @@ import com.example.mystore.ui.components.commons.FloatingActionButton
 import com.example.mystore.ui.components.commons.Quantifier
 import com.example.mystore.ui.components.commons.RowComponent
 import com.example.mystore.ui.components.commons.ScreenSectionComponent
-import com.example.mystore.ui.components.commons.SectionInfo
 import com.example.mystore.ui.components.commons.TextCurrencyComponent
 import com.example.mystore.ui.components.commons.ToastComponent
 import com.example.mystore.ui.components.commons.ValidateSection
@@ -202,48 +204,52 @@ private fun RegisterTransactionBody(
             modifier = Modifier.padding(start = 8.dp, end = 8.dp, bottom = 8.dp),
         ) {
             DropdownComponent(
-                isExpanded = isExpandedTransaction,
-                items = listOfTransactionTypes.map { it.name },
-                selectedText = selectedTextTransaction,
-                textFieldSize = textFieldSizeTransaction,
-                label = stringResource(id = R.string.my_store_transaction_type),
-                modifier = Modifier.fillMaxWidth(),
-                onOutLinedTextFieldSize = { textFieldSizeTransaction = it },
-                onOutLinedTextFieldValueChanged = { selectedTextTransaction = it },
-                onTrailingIconClicked = { isExpandedTransaction = !isExpandedTransaction },
-                onDropdownMenuDismissRequest = { isExpandedTransaction = false },
-                onDropdownMenuItemClicked = { itemSelected ->
-                    selectedTextTransaction = itemSelected
-
-                    setScreenStates(
-                        listOfProducts = listOfProducts,
-                        onSelectedTextTransaction = { selectedTextTransaction = it },
-                        selectedTextTransaction = selectedTextTransaction,
-                        quantity = quantity,
-                        maxQuantity = maxQuantity,
-                        productName = selectedTextProduct,
-                        registerTransactionViewModel = registerTransactionViewModel,
-                        itemSelected = itemSelected,
-                        onSetQuantity = { quantity, newTransaction ->
-                            registerTransactionViewModel.setQuantity(
-                                if (quantity > newTransaction.product.quantity) {
-                                    if (newTransaction.product.quantity == 0) {
-                                        1
-                                    } else {
-                                        newTransaction.product.quantity
-                                    }
-                                } else {
-                                    quantity
-                                },
-                            )
-                        },
-                    )
-                },
-                transactionDetailColors = Triple(
-                    R.color.color_500,
-                    R.color.color_500,
-                    R.color.white,
+                DropdownComponentVisualProps(
+                    isExpanded = isExpandedTransaction,
+                    items = listOfTransactionTypes.map { it.name },
+                    selectedText = selectedTextTransaction,
+                    textFieldSize = textFieldSizeTransaction,
+                    label = stringResource(id = R.string.my_store_transaction_type),
+                    modifier = Modifier.fillMaxWidth(),
+                    transactionDetailColors = Triple(
+                        R.color.color_500,
+                        R.color.color_500,
+                        R.color.white,
+                    ),
                 ),
+                DropdownComponentCallbackProps(
+                    onOutLinedTextFieldSize = { textFieldSizeTransaction = it },
+                    onOutLinedTextFieldValueChanged = { selectedTextTransaction = it },
+                    onTrailingIconClicked = { isExpandedTransaction = !isExpandedTransaction },
+                    onDropdownMenuDismissRequest = { isExpandedTransaction = false },
+                    onDropdownMenuItemClicked = { itemSelected ->
+                        selectedTextTransaction = itemSelected
+                        setScreenStates(
+                            listOfProducts = listOfProducts,
+                            onSelectedTextTransaction = { selectedTextTransaction = it },
+                            selectedTextTransaction = selectedTextTransaction,
+                            quantity = quantity,
+                            maxQuantity = maxQuantity,
+                            productName = selectedTextProduct,
+                            registerTransactionViewModel = registerTransactionViewModel,
+                            itemSelected = itemSelected,
+                            onSetQuantity = { quantity, newTransaction ->
+                                registerTransactionViewModel.setQuantity(
+                                    if (quantity > newTransaction.product.quantity) {
+                                        if (newTransaction.product.quantity == 0) {
+                                            1
+                                        } else {
+                                            newTransaction.product.quantity
+                                        }
+                                    } else {
+                                        quantity
+                                    },
+                                )
+                            },
+                        )
+                    },
+
+                    )
             )
         }
 
@@ -253,33 +259,37 @@ private fun RegisterTransactionBody(
             modifier = Modifier.padding(start = 8.dp, end = 8.dp, bottom = 8.dp),
         ) {
             DropdownComponent(
-                isExpanded = isExpandedProduct,
-                items = listOfProducts.map { it.title.limitTo(20) },
-                selectedText = selectedTextProduct,
-                textFieldSize = textFieldSizeProduct,
-                label = stringResource(id = R.string.my_store_product_2),
-                modifier = Modifier.width(screenWidth.setItemSize()),
-                onOutLinedTextFieldSize = { textFieldSizeProduct = it },
-                onOutLinedTextFieldValueChanged = { selectedTextProduct = it },
-                onTrailingIconClicked = { isExpandedProduct = !isExpandedProduct },
-                onDropdownMenuDismissRequest = { isExpandedProduct = false },
-                onDropdownMenuItemClicked = { itemSelected ->
-                    setScreenStates(
-                        listOfProducts = listOfProducts,
-                        selectedTextTransaction = selectedTextTransaction,
-                        quantity = quantity,
-                        productName = itemSelected,
-                        maxQuantity = maxQuantity,
-                        registerTransactionViewModel = registerTransactionViewModel,
-                        itemSelected = itemSelected,
-                        onSelectedTextTransaction = { selectedTextProduct = it },
-                    )
-                },
-                transactionDetailColors = Triple(
-                    R.color.color_500,
-                    R.color.color_500,
-                    R.color.white,
+                DropdownComponentVisualProps(
+                    isExpanded = isExpandedProduct,
+                    items = listOfProducts.map { it.title.limitTo(20) },
+                    selectedText = selectedTextProduct,
+                    textFieldSize = textFieldSizeProduct,
+                    label = stringResource(id = R.string.my_store_product_2),
+                    modifier = Modifier.width(screenWidth.setItemSize()),
+                    transactionDetailColors = Triple(
+                        R.color.color_500,
+                        R.color.color_500,
+                        R.color.white,
+                    ),
                 ),
+                DropdownComponentCallbackProps(
+                    onOutLinedTextFieldSize = { textFieldSizeProduct = it },
+                    onOutLinedTextFieldValueChanged = { selectedTextProduct = it },
+                    onTrailingIconClicked = { isExpandedProduct = !isExpandedProduct },
+                    onDropdownMenuDismissRequest = { isExpandedProduct = false },
+                    onDropdownMenuItemClicked = { itemSelected ->
+                        setScreenStates(
+                            listOfProducts = listOfProducts,
+                            selectedTextTransaction = selectedTextTransaction,
+                            quantity = quantity,
+                            productName = itemSelected,
+                            maxQuantity = maxQuantity,
+                            registerTransactionViewModel = registerTransactionViewModel,
+                            itemSelected = itemSelected,
+                            onSelectedTextTransaction = { selectedTextProduct = it },
+                        )
+                    },
+                )
             )
 
             Quantifier(
@@ -312,8 +322,8 @@ private fun RegisterTransactionBody(
             modifier = Modifier.fillMaxWidth(),
         ) {
             RowComponent(
-                leftSideText = stringResource(id = R.string.my_store_total),
-                rightSide = {
+                leftContent = stringResource(id = R.string.my_store_total),
+                rightContent = {
                     TextCurrencyComponent(
                         value = setText(transaction, total),
                         currencyVisibility = shouldItemBeVisible,
@@ -345,14 +355,14 @@ private fun setEnabled(
     total: Double,
     transaction: Transaction,
 ) = (
-    (total > 0.0) && (
-        if (transaction.transactionType == TransactionType.SALE) {
-            transaction.product.quantity > 0
-        } else {
-            true
-        }
+        (total > 0.0) && (
+                if (transaction.transactionType == TransactionType.SALE) {
+                    transaction.product.quantity > 0
+                } else {
+                    true
+                }
+                )
         )
-    )
 
 @Composable
 private fun setText(

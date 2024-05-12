@@ -21,12 +21,12 @@ import com.example.mystore.Screens
 import com.example.mystore.Section
 import com.example.mystore.TransactionType
 import com.example.mystore.Type
-import com.example.mystore.model.Transaction
+import com.example.mystore.model.SectionEmptyStateInfo
+import com.example.mystore.model.SectionInfo
+import com.example.mystore.model.screen.Transaction
 import com.example.mystore.toStringResource
 import com.example.mystore.ui.components.commons.RowComponent
 import com.example.mystore.ui.components.commons.ScreenSectionComponent
-import com.example.mystore.ui.components.commons.SectionEmptyStateInfo
-import com.example.mystore.ui.components.commons.SectionInfo
 import com.example.mystore.ui.components.commons.TextCurrencyComponent
 import com.example.mystore.ui.components.commons.ValidateSection
 import com.example.mystore.ui.components.commons.validateSection
@@ -125,8 +125,8 @@ fun ConsolidatedPosBody(
                         .background(colorResource(id = R.color.white)),
                 ) {
                     RowComponent(
-                        leftSideText = stringResource(id = R.string.my_store_product),
-                        rightSide = {
+                        leftContent = stringResource(id = R.string.my_store_product),
+                        rightContent = {
                             TextCurrencyComponent(
                                 value = transaction.product.title,
                                 currencyVisibility = shouldItemBeVisible,
@@ -135,8 +135,8 @@ fun ConsolidatedPosBody(
                         },
                     )
                     RowComponent(
-                        leftSideText = stringResource(id = R.string.my_store_date),
-                        rightSide = {
+                        leftContent = stringResource(id = R.string.my_store_date),
+                        rightContent = {
                             TextCurrencyComponent(
                                 value = transaction.transactionDate,
                                 currencyVisibility = shouldItemBeVisible,
@@ -145,8 +145,8 @@ fun ConsolidatedPosBody(
                         },
                     )
                     RowComponent(
-                        leftSideText = stringResource(id = R.string.my_store_quantity),
-                        rightSide = {
+                        leftContent = stringResource(id = R.string.my_store_quantity),
+                        rightContent = {
                             TextCurrencyComponent(
                                 value = transaction.quantity.toString(),
                                 currencyVisibility = shouldItemBeVisible,
@@ -155,8 +155,8 @@ fun ConsolidatedPosBody(
                         },
                     )
                     RowComponent(
-                        leftSideText = stringResource(id = R.string.my_store_unit_value),
-                        rightSide = {
+                        leftContent = stringResource(id = R.string.my_store_unit_value),
+                        rightContent = {
                             TextCurrencyComponent(
                                 value = transaction.unitValue.toString(),
                                 currencyVisibility = shouldItemBeVisible,
@@ -165,8 +165,8 @@ fun ConsolidatedPosBody(
                         },
                     )
                     RowComponent(
-                        leftSideText = setLeftSideText(transaction),
-                        rightSide = {
+                        leftContent = setLeftSideText(transaction),
+                        rightContent = {
                             TextCurrencyComponent(
                                 value = transaction.transactionAmount.toString(),
                                 currencyVisibility = shouldItemBeVisible,

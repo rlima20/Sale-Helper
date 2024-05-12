@@ -2,27 +2,41 @@ package com.example.mystore.ui.components.commons
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.sp
-import com.example.mystore.R
+import com.example.mystore.Type
+import com.example.mystore.model.props.ColorProps
 
-// todo - parei aqui. Ver se esse componente e seus nomes fazem sentido
 @Composable
 fun RowComponent(
-    leftSideText: String,
+    leftContent: String,
+    rightContent: @Composable () -> Unit,
     fontSize: TextUnit = 18.sp,
-    rightSide: @Composable () -> Unit,
-    transactionDetailColors: Pair<Int, Int> = Pair(
-        first = R.color.color_900,
-        second = R.color.color_900,
-    ),
+    fontColor: Int = ColorProps().rowComponentRightContentColor,
 ) {
     Row {
         TextFormattedComponent(
-            leftSideText = leftSideText,
+            leftContent = leftContent,
             fontSize = fontSize,
-            color = transactionDetailColors.first,
+            fontColor = fontColor,
         )
-        rightSide()
+        rightContent()
     }
+}
+
+
+@Preview
+@Composable
+fun Preview() {
+    RowComponent(
+        leftContent = "Left side text",
+        rightContent = {
+            TextCurrencyComponent(
+                value = 0.0.toString(),
+                currencyVisibility = true,
+                type = Type.CURRENCY_DEBIT_ONLY,
+            )
+        }
+    )
 }

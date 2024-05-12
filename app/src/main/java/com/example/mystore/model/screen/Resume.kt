@@ -1,4 +1,4 @@
-package com.example.mystore.model
+package com.example.mystore.model.screen
 
 data class Resume(
     val debits: Double = 0.0,

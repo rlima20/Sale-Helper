@@ -1,6 +1,6 @@
 package com.example.mystore.model.props
 
-import com.example.mystore.model.Product
+import com.example.mystore.model.screen.Product
 
 data class ProductProps(
     val product: Product,

@@ -11,8 +11,8 @@ import com.example.mystore.mappers.toProduct
 import com.example.mystore.mappers.toProductEntity
 import com.example.mystore.mappers.toTransaction
 import com.example.mystore.mappers.toTransactionEntity
-import com.example.mystore.model.Product
-import com.example.mystore.model.Transaction
+import com.example.mystore.model.screen.Product
+import com.example.mystore.model.screen.Transaction
 import com.example.mystore.repository.ProductRepositoryImpl
 import com.example.mystore.repository.TransactionRepositoryImpl
 import kotlinx.coroutines.CoroutineScope

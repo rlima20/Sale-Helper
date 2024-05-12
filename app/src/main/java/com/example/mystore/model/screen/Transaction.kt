@@ -1,4 +1,4 @@
-package com.example.mystore.model
+package com.example.mystore.model.screen
 
 import com.example.mystore.TransactionType
 

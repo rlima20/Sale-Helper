@@ -5,7 +5,7 @@ import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.example.mystore.TransactionType
-import com.example.mystore.model.Product
+import com.example.mystore.model.screen.Product
 
 @Entity(tableName = "transaction")
 data class TransactionEntity(

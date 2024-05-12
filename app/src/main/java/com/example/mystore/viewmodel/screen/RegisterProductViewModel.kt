@@ -1,6 +1,6 @@
 package com.example.mystore.viewmodel.screen
 
-import com.example.mystore.model.Product
+import com.example.mystore.model.screen.Product
 import com.example.mystore.repository.ProductRepositoryImpl
 import com.example.mystore.repository.TransactionRepositoryImpl
 import kotlinx.coroutines.flow.MutableStateFlow

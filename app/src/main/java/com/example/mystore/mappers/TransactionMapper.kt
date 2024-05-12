@@ -1,7 +1,7 @@
 package com.example.mystore.mappers
 
 // Mapper Transaction to TransactionEntity
-import com.example.mystore.model.Transaction
+import com.example.mystore.model.screen.Transaction
 import com.example.mystore.room.entities.TransactionEntity
 
 fun TransactionEntity.toTransaction(): Transaction {

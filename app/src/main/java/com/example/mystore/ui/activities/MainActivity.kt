@@ -18,7 +18,7 @@ import androidx.compose.ui.res.colorResource
 import androidx.navigation.compose.rememberNavController
 import com.example.mystore.AppApplication
 import com.example.mystore.R
-import com.example.mystore.model.Product
+import com.example.mystore.model.screen.Product
 import com.example.mystore.model.props.GlobalProps
 import com.example.mystore.model.props.NavigationProps
 import com.example.mystore.model.props.ProductProps
@@ -184,7 +184,7 @@ fun MyStoreApp(
                         TotalComponent(
                             salesValue = totalAmountOfSales,
                             purchasesValue = totalAmountOfPurchases,
-                            shouldItemBeVisible = shouldItemBeVisible,
+                            isItemVisible = shouldItemBeVisible,
                         )
                     },
                     onHomeIconClicked = {

@@ -10,7 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
-import com.example.mystore.model.Product
+import com.example.mystore.model.screen.Product
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable

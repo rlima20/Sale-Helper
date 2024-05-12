@@ -1,43 +1,41 @@
 package com.example.mystore.ui.components.commons
 
 import android.content.Context
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.size
+import androidx.compose.material.AlertDialog
 import androidx.compose.material.Button
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.DialogProperties
 import coil.request.ImageRequest
-import coil.size.Size
 import com.example.mystore.R
 import com.example.mystore.Screens
 import com.example.mystore.Section
 import com.example.mystore.States
 import com.example.mystore.Type
 import com.example.mystore.getAsyncImagePainter
+import com.example.mystore.model.SectionEmptyStateInfo
+import com.example.mystore.model.SectionInfo
+import com.example.mystore.model.props.ColorProps
+import com.example.mystore.model.props.ShowAlertDialogComponentCallbackProps
 import com.example.mystore.toCurrency
 import com.example.mystore.toUnity
 import com.example.mystore.toUnityOutOfStock
 import com.example.mystore.ui.navigation.RegisterProductScreen
 import com.example.mystore.ui.navigation.RegisterTransactionScreen
+import coil.size.Size as SizeCoil
 
-data class SectionInfo(
-    val section: @Composable () -> Unit,
-    val sectionName: Section = Section.NONE,
-)
-
-data class SectionEmptyStateInfo(
-    val data: List<Any?> = listOf(),
-    val emptySectionTitle: String = "",
-    val emptySectionPainter: Painter,
-    val onEmptyStateImageClicked: () -> Unit = {},
-)
 
 @Composable
 fun setUnit(text: String, type: Type, shouldItemBeVisible: Boolean) =
@@ -75,6 +73,7 @@ fun validateSection(section: Section): String {
         Section.REGISTER -> {
             RegisterProductScreen.route
         }
+
         else -> ""
     }
 }
@@ -87,116 +86,56 @@ fun ValidateSection(
         emptySectionPainter = painterResource(id = R.drawable.empty_state),
     ),
 ) {
-    if (sectionEmptyStateInfo.data.isNotEmpty()) {
+    val isSectionEmpty = sectionEmptyStateInfo.data.isEmpty()
+    val isRegisterScreen =
+        screen == Screens.REGISTER_PRODUCT || screen == Screens.REGISTER_TRANSACTION
+    val isTransactionSection = sectionInfo.sectionName == Section.TRANSACTIONS
+
+    if (isSectionEmpty || (!isTransactionSection && isRegisterScreen)) {
         sectionInfo.section()
     } else {
-        if (sectionInfo.sectionName != Section.TRANSACTIONS) {
-            if (screen == Screens.REGISTER_PRODUCT || screen == Screens.REGISTER_TRANSACTION) {
-                sectionInfo.section()
-            } else if (sectionEmptyStateInfo.data.isEmpty()) {
-                EmptyStateSectionComponent(
-                    title = sectionEmptyStateInfo.emptySectionTitle,
-                    painter = sectionEmptyStateInfo.emptySectionPainter,
-                    onEmptyStateImageClicked = { sectionEmptyStateInfo.onEmptyStateImageClicked() },
-                )
-            } else {
-                sectionInfo.section()
-            }
-        }
+        EmptyStateSectionComponent(
+            title = sectionEmptyStateInfo.emptySectionTitle,
+            painter = sectionEmptyStateInfo.emptySectionPainter,
+            onEmptyStateImageClicked = { sectionEmptyStateInfo.onEmptyStateImageClicked() },
+        )
     }
 }
 
 @Composable
-fun getPainter(
-    imageUrl: String,
-    onImageRequestState: (state: States) -> Unit,
-): Painter {
-    val painter = getAsyncImage(
-        context = LocalContext.current,
-        imageUrl = imageUrl,
-    ).getAsyncImagePainter(
-        onStateChanged = {
-            onImageRequestState(it)
-        },
-    )
-    return painter
-}
+fun getPainter(imageUrl: String, onImageRequestState: (state: States) -> Unit): Painter =
+    getAsyncImage(context = LocalContext.current, imageUrl = imageUrl)
+        .getAsyncImagePainter(onStateChanged = { onImageRequestState(it) })
 
 @Composable
-fun getAsyncImage(
-    context: Context,
-    imageUrl: String,
-): ImageRequest {
-    return ImageRequest.Builder(context)
+fun getAsyncImage(context: Context, imageUrl: String): ImageRequest =
+    ImageRequest.Builder(context)
         .data(imageUrl)
-        .size(Size.ORIGINAL)
+        .size(SizeCoil.ORIGINAL)
         .crossfade(true)
         .build()
-}
 
+// Todo - Criar classes Props pra esse componente e deixá-lo separado num arquivo .kt
+// Todo - Existem 2 AlertDialogComponent - Unificar os dois componentes
 @Composable
-fun TotalComponent(
-    salesValue: Double,
-    purchasesValue: Double,
-    shouldItemBeVisible: Boolean,
-) {
-    Column(
-        modifier = Modifier.padding(top = 8.dp, bottom = 8.dp),
-    ) {
-        RowComponent(
-            leftSideText = stringResource(id = R.string.my_store_total_purchases),
-            rightSide = {
-                TextCurrencyComponent(
-                    value = purchasesValue.toString(),
-                    currencyVisibility = shouldItemBeVisible,
-                    type = Type.CURRENCY_ONLY,
-                )
-            },
-        )
-        RowComponent(
-            leftSideText = stringResource(id = R.string.my_store_total_sales),
-            rightSide = {
-                TextCurrencyComponent(
-                    value = salesValue.toString(),
-                    currencyVisibility = shouldItemBeVisible,
-                    type = Type.CURRENCY_ONLY,
-                )
-            },
-        )
-        RowComponent(
-            leftSideText = stringResource(id = R.string.my_store_total),
-            rightSide = {
-                TextCurrencyComponent(
-                    value = (salesValue - purchasesValue).toString(),
-                    currencyVisibility = shouldItemBeVisible,
-                    type = Type.CURRENCY_PURCHASE,
-                )
-            },
-        )
-    }
-}
-
-@Composable
-fun ShowAlertDialogComponent(
-    showAlert: Boolean,
-    title: String,
+fun AlertDialogComponent(
+    alertDialogVisibility: Boolean,
+    alertDialogTitle: String,
     alertDialogMessage: String,
-    onDismissButtonClicked: () -> Unit = {},
-    onConfirmButtonClicked: () -> Unit = {},
-    onDismissRequest: () -> Unit = {},
+    callback: ShowAlertDialogComponentCallbackProps
 ) {
-    if (showAlert) {
+    if (alertDialogVisibility) {
         AlertDialogComponent(
-            title = title,
+            title = alertDialogTitle,
             content = {
                 Text(
                     text = alertDialogMessage,
                     color = colorResource(id = R.color.color_700),
                 )
             },
-            onDismissRequest = { onDismissRequest() },
+            onDismissRequest = { callback.onDismissRequest() },
             confirmButton = {
-                Button(onClick = { onConfirmButtonClicked() }) {
+                Button(onClick = { callback.onConfirmButtonClicked() }) {
                     Text(
                         text = stringResource(R.string.my_store_ok),
                         color = colorResource(id = R.color.color_50),
@@ -204,7 +143,7 @@ fun ShowAlertDialogComponent(
                 }
             },
             dismissButton = {
-                Button(onClick = { onDismissButtonClicked() }) {
+                Button(onClick = { callback.onDismissButtonClicked() }) {
                     Text(
                         text = stringResource(R.string.my_store_cancel),
                         color = colorResource(id = R.color.color_50),
@@ -213,5 +152,60 @@ fun ShowAlertDialogComponent(
             },
             color = colorResource(id = R.color.white),
         )
+    }
+}
+
+@Composable
+fun UnifiedAlertDialog(
+    alertDialogVisibility: Boolean,
+    alertDialogTitle: String = "",
+    content: @Composable () -> Unit = {},
+    alertDialogSize: Size? = null,
+    alertDialogColor: Color = colorResource(id = ColorProps().focusedBorderColor),
+    alertDialogCallback: ShowAlertDialogComponentCallbackProps
+) {
+    if (alertDialogVisibility) {
+        Box {
+            AlertDialog(
+                modifier = if (alertDialogSize == null) {
+                    Modifier
+                } else {
+                    Modifier.size(
+                        width = alertDialogSize.width.dp,
+                        height = alertDialogSize.height.dp,
+                    )
+                },
+                shape = MaterialTheme.shapes.large,
+                properties = DialogProperties(
+                    decorFitsSystemWindows = false,
+                    usePlatformDefaultWidth = false,
+                ),
+                backgroundColor = alertDialogColor,
+                title = {
+                    Text(
+                        text = alertDialogTitle,
+                        color = colorResource(id = R.color.color_700),
+                    )
+                },
+                text = { content() },
+                confirmButton = {
+                    Button(onClick = { alertDialogCallback.onConfirmButtonClicked() }) {
+                        Text(
+                            text = stringResource(R.string.my_store_ok),
+                            color = colorResource(id = R.color.color_50),
+                        )
+                    }
+                },
+                dismissButton = {
+                    Button(onClick = { alertDialogCallback.onDismissButtonClicked() }) {
+                        Text(
+                            text = stringResource(R.string.my_store_cancel),
+                            color = colorResource(id = R.color.color_50),
+                        )
+                    }
+                },
+                onDismissRequest = { alertDialogCallback.onDismissRequest() },
+            )
+        }
     }
 }

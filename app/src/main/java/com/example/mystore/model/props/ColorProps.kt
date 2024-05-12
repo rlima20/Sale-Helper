@@ -11,4 +11,6 @@ class ColorProps(
     val disabledLabelColor: Int = R.color.color_50,
     val cursorColor: Int = R.color.color_50,
     val placeholderColor: Int = R.color.color_50,
+    val rowComponentRightContentColor: Int = R.color.color_900,
+    val alertDialogTextColor: Int = R.color.color_700
 )

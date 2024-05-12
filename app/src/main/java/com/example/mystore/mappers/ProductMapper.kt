@@ -1,6 +1,6 @@
 package com.example.mystore.mappers
 
-import com.example.mystore.model.Product
+import com.example.mystore.model.screen.Product
 import com.example.mystore.room.entities.ProductEntity
 
 // Mapper Product to ProductEntity

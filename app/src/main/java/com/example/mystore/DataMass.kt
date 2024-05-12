@@ -1,7 +1,7 @@
 package com.example.mystore
 
-import com.example.mystore.model.Product
-import com.example.mystore.model.Transaction
+import com.example.mystore.model.screen.Product
+import com.example.mystore.model.screen.Transaction
 
 val listOfProductsLocal = mutableListOf<Product>()
 /*    Product(

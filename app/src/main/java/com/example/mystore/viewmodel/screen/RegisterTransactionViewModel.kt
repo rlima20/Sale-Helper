@@ -1,10 +1,9 @@
 package com.example.mystore.viewmodel.screen
 
-import androidx.lifecycle.viewModelScope
 import com.example.mystore.TransactionType
 import com.example.mystore.mappers.toTransactionEntity
-import com.example.mystore.model.Product
-import com.example.mystore.model.Transaction
+import com.example.mystore.model.screen.Product
+import com.example.mystore.model.screen.Transaction
 import com.example.mystore.repository.ProductRepositoryImpl
 import com.example.mystore.repository.TransactionRepositoryImpl
 import kotlinx.coroutines.CoroutineScope

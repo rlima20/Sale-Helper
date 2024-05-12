@@ -1,4 +1,4 @@
-package com.example.mystore.model
+package com.example.mystore.model.screen
 
 data class Product(
     val productId: Int = 0,

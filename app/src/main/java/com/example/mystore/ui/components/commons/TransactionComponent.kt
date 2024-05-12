@@ -18,12 +18,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.mystore.R
 import com.example.mystore.TransactionType
 import com.example.mystore.Type
 import com.example.mystore.colorTransactionType
 import com.example.mystore.limitTo
-import com.example.mystore.model.Transaction
+import com.example.mystore.model.screen.Transaction
+import com.example.mystore.model.props.ColorProps
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -41,7 +41,7 @@ fun TransactionComponent(
             bottomStart = 10.dp,
             bottomEnd = 10.dp,
         ),
-        color = colorResource(id = R.color.color_50),
+        color = colorResource(id = ColorProps().focusedBorderColor),
     ) {
         Column(
             modifier = Modifier.combinedClickable(
@@ -54,7 +54,7 @@ fun TransactionComponent(
                 contentAlignment = Alignment.CenterStart,
                 modifier = Modifier
                     .padding(4.dp)
-                    .background(color = colorResource(id = R.color.color_50)),
+                    .background(color = colorResource(id = ColorProps().focusedBorderColor)),
             ) {
                 Row(
                     modifier = Modifier
@@ -70,7 +70,7 @@ fun TransactionComponent(
                 ) {
                     TextFormattedComponent(
                         modifier = Modifier.padding(start = 24.dp),
-                        leftSideText = transaction.product.title.limitTo(20),
+                        leftContent = transaction.product.title.limitTo(20),
                         fontSize = 16.sp,
                     )
                     TextCurrencyComponent(

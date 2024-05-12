@@ -36,7 +36,9 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.mystore.R
-import com.example.mystore.model.Product
+import com.example.mystore.model.screen.Product
+import com.example.mystore.model.props.OutLinedTextFieldComponentCallbackProps
+import com.example.mystore.model.props.OutLinedTextFieldComponentVisualProps
 import com.example.mystore.setQuantifierSize
 import com.example.mystore.ui.components.commons.AlertDialogComponent
 import com.example.mystore.ui.components.commons.FloatingActionButton
@@ -44,7 +46,6 @@ import com.example.mystore.ui.components.commons.ImageComponent
 import com.example.mystore.ui.components.commons.OutLinedTextFieldComponent
 import com.example.mystore.ui.components.commons.Quantifier
 import com.example.mystore.ui.components.commons.ScreenSectionComponent
-import com.example.mystore.ui.components.commons.ShowAlertDialogComponent
 import com.example.mystore.ui.components.commons.TextFormattedComponent
 import com.example.mystore.ui.components.commons.ToastComponent
 import com.example.mystore.ui.components.commons.getPainter
@@ -186,26 +187,29 @@ fun RegisterProductScreenBody(
         )
     }
 
+    // todo - o problema está nesse dialog
     // AlertDialog with product creation or edition
-    ShowAlertDialogComponent(
-        showAlert = showAlertDialogProductScreen,
+    AlertDialogComponent(
+        // dialogVisibility = showAlertDialogProductScreen,
         title = if (isEditMode) {
             stringResource(R.string.my_store_registry_update)
         } else {
             stringResource(R.string.my_store_registry_creation)
         },
-        alertDialogMessage = stringResource(
-            if (isEditMode) {
-                R.string.my_store_edition_confirmation
-            } else {
-                R.string.my_store_creation_confirmation
-            },
-        ),
+        content = {
+            stringResource(
+                if (isEditMode) {
+                    R.string.my_store_edition_confirmation
+                } else {
+                    R.string.my_store_creation_confirmation
+                },
+            )
+        },
         onDismissRequest = { registerProductViewModel.setShowAlertDialogProductScreen(false) },
-        onDismissButtonClicked = {
+        dismissButton = {
             registerProductViewModel.setShowAlertDialogProductScreen(false)
         },
-        onConfirmButtonClicked = {
+        confirmButton = {
             registerProductViewModel.saveProduct(
                 product = Product(
                     productId = setProductId(isEditMode, registerProductViewModel, product),
@@ -244,13 +248,18 @@ fun RegisterProductScreenBody(
     val titleKeyboardController = LocalSoftwareKeyboardController.current
     val titleFocusManager = LocalFocusManager.current
     OutLinedTextFieldComponent(
-        selectedText = titleSelectedText,
-        label = titleLabel,
-        keyboardController = titleKeyboardController,
-        focusManager = titleFocusManager,
-        onValueChanged = {
-            registerProductViewModel.setTitleSelectedText(it)
-        },
+        OutLinedTextFieldComponentVisualProps(
+            selectedText = titleSelectedText,
+            label = titleLabel,
+            keyboardController = titleKeyboardController,
+            focusManager = titleFocusManager,
+
+            ),
+        OutLinedTextFieldComponentCallbackProps(
+            onValueChanged = {
+                registerProductViewModel.setTitleSelectedText(it)
+            },
+        )
     )
 
     // Description
@@ -258,11 +267,16 @@ fun RegisterProductScreenBody(
     val descriptionKeyboardController = LocalSoftwareKeyboardController.current
     val descriptionFocusManager = LocalFocusManager.current
     OutLinedTextFieldComponent(
-        selectedText = descriptionSelectedText,
-        label = descriptionLabel,
-        keyboardController = descriptionKeyboardController,
-        focusManager = descriptionFocusManager,
-        onValueChanged = { registerProductViewModel.setDescriptionSelectedText(it) },
+        OutLinedTextFieldComponentVisualProps(
+            selectedText = descriptionSelectedText,
+            label = descriptionLabel,
+            keyboardController = descriptionKeyboardController,
+            focusManager = descriptionFocusManager,
+
+            ),
+        OutLinedTextFieldComponentCallbackProps(
+            onValueChanged = { registerProductViewModel.setDescriptionSelectedText(it) },
+        )
     )
 
     // Purchase Price
@@ -270,19 +284,24 @@ fun RegisterProductScreenBody(
     val purchasePriceKeyboardController = LocalSoftwareKeyboardController.current
     val purchasePriceFocusManager = LocalFocusManager.current
     OutLinedTextFieldComponent(
-        selectedText = purchasePriceSelectedText,
-        label = purchasePriceLabel,
-        keyboardController = purchasePriceKeyboardController,
-        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-        focusManager = purchasePriceFocusManager,
-        onValueChanged = {
-            registerProductViewModel.setPurchasePriceSelectedText(it.removeCurrencyToProductValue())
-        },
-        onDone = {
-            registerProductViewModel.setPurchasePriceSelectedText(
-                purchasePriceSelectedText.removeCurrencyToProductValue(),
-            )
-        },
+        OutLinedTextFieldComponentVisualProps(
+            selectedText = purchasePriceSelectedText,
+            label = purchasePriceLabel,
+            keyboardController = purchasePriceKeyboardController,
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+            focusManager = purchasePriceFocusManager,
+
+            ),
+        OutLinedTextFieldComponentCallbackProps(
+            onValueChanged = {
+                registerProductViewModel.setPurchasePriceSelectedText(it.removeCurrencyToProductValue())
+            },
+            onDone = {
+                registerProductViewModel.setPurchasePriceSelectedText(
+                    purchasePriceSelectedText.removeCurrencyToProductValue(),
+                )
+            },
+        )
     )
 
     // Sale Price
@@ -290,26 +309,31 @@ fun RegisterProductScreenBody(
     val salePriceKeyboardController = LocalSoftwareKeyboardController.current
     val salePriceFocusManager = LocalFocusManager.current
     OutLinedTextFieldComponent(
-        selectedText = salePriceSelectedText,
-        label = salePriceLabel,
-        keyboardController = salePriceKeyboardController,
-        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-        focusManager = salePriceFocusManager,
-        onValueChanged = {
-            registerProductViewModel.setSalePriceSelectedText(it.removeCurrencyToProductValue())
-        },
-        onDone = {
-            registerProductViewModel.setSalePriceSelectedText(
-                salePriceSelectedText.removeCurrencyToProductValue(),
-            )
-        },
+        OutLinedTextFieldComponentVisualProps(
+            selectedText = salePriceSelectedText,
+            label = salePriceLabel,
+            keyboardController = salePriceKeyboardController,
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+            focusManager = salePriceFocusManager,
+
+            ),
+        OutLinedTextFieldComponentCallbackProps(
+            onValueChanged = {
+                registerProductViewModel.setSalePriceSelectedText(it.removeCurrencyToProductValue())
+            },
+            onDone = {
+                registerProductViewModel.setSalePriceSelectedText(
+                    salePriceSelectedText.removeCurrencyToProductValue(),
+                )
+            },
+        )
     )
 
     Row {
         Column {
             // Quantity
             TextFormattedComponent(
-                leftSideText = stringResource(id = R.string.my_store_product_quantity),
+                leftContent = stringResource(id = R.string.my_store_product_quantity),
                 fontSize = 18.sp,
             )
             Quantifier(
@@ -325,7 +349,7 @@ fun RegisterProductScreenBody(
         Column {
             // Max Quantity To Buy
             TextFormattedComponent(
-                leftSideText = stringResource(id = R.string.my_store_product_max_quantity),
+                leftContent = stringResource(id = R.string.my_store_product_max_quantity),
                 fontSize = 18.sp,
             )
             Quantifier(
@@ -390,16 +414,21 @@ fun ImageUrlBody(
         )
 
         OutLinedTextFieldComponent(
-            selectedText = imageUrlInternal,
-            label = stringResource(id = R.string.my_store_image_url),
-            keyboardController = titleKeyboardController,
-            focusManager = titleFocusManager,
-            transactionDetailColors = Triple(
-                R.color.color_500,
-                R.color.color_500,
-                R.color.white,
-            ),
-            onValueChanged = { imageUrlInternal = it },
+            OutLinedTextFieldComponentVisualProps(
+                selectedText = imageUrlInternal,
+                label = stringResource(id = R.string.my_store_image_url),
+                keyboardController = titleKeyboardController,
+                focusManager = titleFocusManager,
+                transactionDetailColors = Triple(
+                    R.color.color_500,
+                    R.color.color_500,
+                    R.color.white,
+                ),
+
+                ),
+            OutLinedTextFieldComponentCallbackProps(
+                onValueChanged = { imageUrlInternal = it },
+            )
         )
 
         Row {

@@ -23,9 +23,13 @@ import com.example.mystore.R
 import com.example.mystore.Screens
 import com.example.mystore.Section
 import com.example.mystore.Type
-import com.example.mystore.model.Product
-import com.example.mystore.model.Resume
-import com.example.mystore.model.Transaction
+import com.example.mystore.model.SectionEmptyStateInfo
+import com.example.mystore.model.SectionInfo
+import com.example.mystore.model.props.ColorProps
+import com.example.mystore.model.props.ShowAlertDialogComponentCallbackProps
+import com.example.mystore.model.screen.Product
+import com.example.mystore.model.screen.Resume
+import com.example.mystore.model.screen.Transaction
 import com.example.mystore.toStringResource
 import com.example.mystore.ui.components.TransactionDetailsComponent
 import com.example.mystore.ui.components.commons.AlertDialogComponent
@@ -33,12 +37,10 @@ import com.example.mystore.ui.components.commons.DividerComponent
 import com.example.mystore.ui.components.commons.ProductCarouselComponent
 import com.example.mystore.ui.components.commons.RowComponent
 import com.example.mystore.ui.components.commons.ScreenSectionComponent
-import com.example.mystore.ui.components.commons.SectionEmptyStateInfo
-import com.example.mystore.ui.components.commons.SectionInfo
-import com.example.mystore.ui.components.commons.ShowAlertDialogComponent
 import com.example.mystore.ui.components.commons.TextCurrencyComponent
 import com.example.mystore.ui.components.commons.ToastComponent
 import com.example.mystore.ui.components.commons.TransactionComponent
+import com.example.mystore.ui.components.commons.UnifiedAlertDialog
 import com.example.mystore.ui.components.commons.ValidateSection
 import com.example.mystore.ui.components.commons.validateSection
 import com.example.mystore.viewmodel.screen.HomeViewModel
@@ -73,7 +75,6 @@ fun HomeScreen(
             stringResource(R.string.my_store_successfull_transaction_removed)
         val productToastMessage = stringResource(R.string.my_store_successfull_product_removed)
 
-        // todo - Continuar aqui. Ver se o nome das variáveis fazem sentudo e onde são chamadas
         if (showToast.second) ToastComponent(showToast.first)
 
         Column(
@@ -82,13 +83,30 @@ fun HomeScreen(
                 .verticalScroll(rememberScrollState()),
         ) {
             // AlertDialog with transaction details
+            UnifiedAlertDialog(
+                alertDialogVisibility = transactionDetailsDialogVisibility,
+                alertDialogSize = Size(
+                    width = LocalConfiguration.current.screenWidthDp.dp.value * 1f,
+                    height = LocalConfiguration.current.screenHeightDp.dp.value * 0.58f,
+                ),
+                content = {
+                    TransactionDetailsComponent(
+                        transaction = transaction,
+                        currencyVisibility = currencyVisibility,
+                        onCloseAlertDialogTransactionDetail = {
+                            setTransactionDetailsDialogVisibility(false)
+                        },
+                    )
+                },
+                alertDialogColor = colorResource(id = R.color.color_transaparent),
+                alertDialogCallback = ShowAlertDialogComponentCallbackProps(
+                    onDismissRequest = { setTransactionDetailsDialogVisibility(false) },
+                ),
+            )
+
+
             if (transactionDetailsDialogVisibility) {
                 AlertDialogComponent(
-                    size = Size(
-                        width = LocalConfiguration.current.screenWidthDp.dp.value * 1f,
-                        height = LocalConfiguration.current.screenHeightDp.dp.value * 0.58f,
-                    ),
-                    color = colorResource(id = R.color.color_transaparent),
                     content = {
                         TransactionDetailsComponent(
                             transaction = transaction,
@@ -98,38 +116,51 @@ fun HomeScreen(
                             },
                         )
                     },
-                    onDismissRequest = { setTransactionDetailsDialogVisibility(false) },
                 )
             }
 
             // AlertDialog Transaction delete confirmation
-            ShowAlertDialogComponent(
-                showAlert = transactionDeleteConfirmationDialogVisibility,
-                title = stringResource(R.string.my_store_registry_removal),
-                alertDialogMessage = stringResource(R.string.my_store_removal_confirmation),
-                onDismissRequest = { setShowAlertDialogHomeScreen(false) },
-                onDismissButtonClicked = { setShowAlertDialogHomeScreen(false) },
-                onConfirmButtonClicked = {
-                    setShowToastState(transactionToastMessage, true)
-                    deleteTransaction(transaction)
-                    setShowAlertDialogHomeScreen(false)
-                    getListOfTransactions()
-                },
-            )
+            if (transactionDeleteConfirmationDialogVisibility) {
+                AlertDialogComponent(
+                    title = stringResource(R.string.my_store_registry_removal),
+                    content = {
+                        Text(
+                            text = stringResource(R.string.my_store_removal_confirmation),
+                            color = colorResource(id = ColorProps().alertDialogTextColor),
+                        )
+                    },
+                    onDismissRequest = { setShowAlertDialogHomeScreen(false) },
+                    confirmButton = {
+                        setShowToastState(transactionToastMessage, true)
+                        deleteTransaction(transaction)
+                        setShowAlertDialogHomeScreen(false)
+                        getListOfTransactions()
+                    },
+                    dismissButton = { setShowAlertDialogHomeScreen(false) },
+                    color = colorResource(id = R.color.white),
+                )
+            }
 
             // AlertDialog Product delete confirmation
-            ShowAlertDialogComponent(
-                showAlert = productDeleteConfirmationDialogVisibility,
-                title = stringResource(R.string.my_store_registry_removal),
+            if (productDeleteConfirmationDialogVisibility) {
+                AlertDialogComponent(
+
+                )
+            }
+            AlertDialogComponent(
+                alertDialogVisibility = productDeleteConfirmationDialogVisibility,
+                alertDialogTitle = stringResource(R.string.my_store_registry_removal),
                 alertDialogMessage = stringResource(R.string.my_store_removal_product_confirmation),
-                onDismissRequest = { setShowAlertDialogHomeScreenProduct(false) },
-                onDismissButtonClicked = { setShowAlertDialogHomeScreenProduct(false) },
-                onConfirmButtonClicked = {
-                    setShowToastState(productToastMessage, true)
-                    deleteProduct(product)
-                    setShowAlertDialogHomeScreenProduct(false)
-                    getListOfProducts()
-                },
+                callback = ShowAlertDialogComponentCallbackProps(
+                    onDismissRequest = { setShowAlertDialogHomeScreenProduct(false) },
+                    onDismissButtonClicked = { setShowAlertDialogHomeScreenProduct(false) },
+                    onConfirmButtonClicked = {
+                        setShowToastState(productToastMessage, true)
+                        deleteProduct(product)
+                        setShowAlertDialogHomeScreenProduct(false)
+                        getListOfProducts()
+                    },
+                )
             )
 
             // Total geral Section
@@ -176,7 +207,7 @@ fun HomeScreen(
                             body = {
                                 HomeTransactions(
                                     listOfTransactions = listOfTransactions,
-                                    shouldItemBeVisible = currencyVisibility,
+                                    isItemVisible = currencyVisibility,
                                     onClick = {
                                         setTransactionDetailsDialogVisibility(true)
                                         setTransaction(it)
@@ -255,7 +286,7 @@ fun HomeScreen(
 @Composable
 private fun HomeTransactions(
     listOfTransactions: List<Transaction> = listOf(),
-    shouldItemBeVisible: Boolean,
+    isItemVisible: Boolean,
     onClick: (Transaction) -> Unit = {},
     onLongClick: (Transaction) -> Unit = {},
 ) {
@@ -269,7 +300,7 @@ private fun HomeTransactions(
         listOfTransactions.forEach { transaction ->
             TransactionComponent(
                 transaction = transaction,
-                shouldItemBeVisible = shouldItemBeVisible,
+                shouldItemBeVisible = isItemVisible,
                 onClick = { onClick(it) },
                 onLongClick = { onLongClick(it) },
             )
@@ -283,8 +314,8 @@ private fun HomeBody(
     shouldItemBeVisible: Boolean,
 ) {
     RowComponent(
-        leftSideText = stringResource(id = R.string.my_store_debits),
-        rightSide = {
+        leftContent = stringResource(id = R.string.my_store_debits),
+        rightContent = {
             TextCurrencyComponent(
                 value = resume.debits.toString(),
                 currencyVisibility = shouldItemBeVisible,
@@ -294,8 +325,8 @@ private fun HomeBody(
     )
 
     RowComponent(
-        leftSideText = stringResource(id = R.string.my_store_stock_value),
-        rightSide = {
+        leftContent = stringResource(id = R.string.my_store_stock_value),
+        rightContent = {
             TextCurrencyComponent(
                 value = resume.stockValue.toString(),
                 currencyVisibility = shouldItemBeVisible,
@@ -305,8 +336,8 @@ private fun HomeBody(
     )
 
     RowComponent(
-        leftSideText = stringResource(id = R.string.my_store_gross_revenue),
-        rightSide = {
+        leftContent = stringResource(id = R.string.my_store_gross_revenue),
+        rightContent = {
             TextCurrencyComponent(
                 value = resume.grossRevenue.toString(),
                 currencyVisibility = shouldItemBeVisible,
@@ -318,9 +349,9 @@ private fun HomeBody(
     DividerComponent()
 
     RowComponent(
-        leftSideText = stringResource(id = R.string.my_store_net_revenue),
+        leftContent = stringResource(id = R.string.my_store_net_revenue),
         fontSize = 20.sp,
-        rightSide = {
+        rightContent = {
             TextCurrencyComponent(
                 value = resume.netRevenue.toString(),
                 currencyVisibility = shouldItemBeVisible,
