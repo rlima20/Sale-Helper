@@ -16,13 +16,17 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
 import androidx.navigation.compose.rememberNavController
-import com.example.mystore.AppApplication
 import com.example.mystore.R
-import com.example.mystore.model.Product
+import com.example.mystore.commons.AppApplication
+import com.example.mystore.commons.viewmodel.CommonViewModel
+import com.example.mystore.features.homescreen.viewmodel.HomeViewModel
+import com.example.mystore.features.registerproduct.model.Product
+import com.example.mystore.features.registerproduct.viewmodel.RegisterProductViewModel
+import com.example.mystore.features.registertransaction.viewmodel.RegisterTransactionViewModel
 import com.example.mystore.navigateSingleTopTo
-import com.example.mystore.ui.components.commons.BottomBarComponent
-import com.example.mystore.ui.components.commons.TopBarComponent
 import com.example.mystore.ui.components.commons.TotalComponent
+import com.example.mystore.ui.components.main.BottomBarComponent
+import com.example.mystore.ui.components.main.TopBarComponent
 import com.example.mystore.ui.navigation.ConsolidatedPositionScreen
 import com.example.mystore.ui.navigation.HomeScreen
 import com.example.mystore.ui.navigation.MyStoreDestinationInterface
@@ -30,16 +34,12 @@ import com.example.mystore.ui.navigation.MyStoreNavHost
 import com.example.mystore.ui.navigation.RegisterProductScreen
 import com.example.mystore.ui.navigation.RegisterTransactionScreen
 import com.example.mystore.ui.theme.MyStoreTheme
-import com.example.mystore.viewmodel.global.GlobalViewModel
-import com.example.mystore.viewmodel.screen.HomeViewModel
-import com.example.mystore.viewmodel.screen.RegisterProductViewModel
-import com.example.mystore.viewmodel.screen.RegisterTransactionViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : ComponentActivity() {
 
     private val application = AppApplication.instance
-    private val viewModel: GlobalViewModel by viewModel()
+    private val viewModel: CommonViewModel by viewModel()
     private val homeViewModel: HomeViewModel by viewModel()
     private val registerTransactionViewModel: RegisterTransactionViewModel by viewModel()
     private val registerProductViewModel: RegisterProductViewModel by viewModel()
@@ -61,7 +61,7 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun MyStoreApp(
     application: AppApplication,
-    myStoreViewModel: GlobalViewModel,
+    myStoreViewModel: CommonViewModel,
     homeViewModel: HomeViewModel,
     registerTransactionViewModel: RegisterTransactionViewModel,
     registerProductViewModel: RegisterProductViewModel,
@@ -192,7 +192,7 @@ fun MyStoreApp(
 }
 
 private fun transformStringToInterfaceObject(application: AppApplication, screen: String):
-    MyStoreDestinationInterface {
+        MyStoreDestinationInterface {
     return when (screen) {
         application.getString(R.string.my_store_home) -> HomeScreen
         application.getString(R.string.my_store_register_product) -> RegisterProductScreen

@@ -9,15 +9,15 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.example.mystore.model.Product
+import com.example.mystore.features.consolidatedposition.ui.ConsolidatedPositionScreen
+import com.example.mystore.features.homescreen.ui.HomeScreen
+import com.example.mystore.features.homescreen.viewmodel.HomeViewModel
+import com.example.mystore.features.registerproduct.model.Product
+import com.example.mystore.features.registerproduct.ui.RegisterProductScreen
+import com.example.mystore.features.registerproduct.viewmodel.RegisterProductViewModel
+import com.example.mystore.features.registertransaction.ui.RegisterTransactionScreen
+import com.example.mystore.features.registertransaction.viewmodel.RegisterTransactionViewModel
 import com.example.mystore.navigateSingleTopTo
-import com.example.mystore.ui.components.screens.ConsolidatedPositionScreen
-import com.example.mystore.ui.components.screens.HomeScreen
-import com.example.mystore.ui.components.screens.RegisterProductScreen
-import com.example.mystore.ui.components.screens.RegisterTransactionScreen
-import com.example.mystore.viewmodel.screen.HomeViewModel
-import com.example.mystore.viewmodel.screen.RegisterProductViewModel
-import com.example.mystore.viewmodel.screen.RegisterTransactionViewModel
 
 @Composable
 fun MyStoreNavHost(
