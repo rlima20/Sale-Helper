@@ -1,4 +1,4 @@
-package com.example.mystore.features.registerproduct.room.entities
+package com.example.mystore.features.registerproduct.datasource.room.entities
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

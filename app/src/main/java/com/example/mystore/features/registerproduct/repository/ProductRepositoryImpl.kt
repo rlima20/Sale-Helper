@@ -1,24 +1,31 @@
 package com.example.mystore.features.registerproduct.repository
 
-import com.example.mystore.features.registerproduct.room.dao.ProductDao
-import com.example.mystore.features.registerproduct.room.entities.ProductEntity
+import com.example.mystore.features.registerproduct.datasource.local.ProductLocalDataSource
+import com.example.mystore.features.registerproduct.datasource.room.dao.ProductDao
+import com.example.mystore.features.registerproduct.datasource.room.entities.ProductEntity
+import com.example.mystore.features.registerproduct.model.Product
 import kotlinx.coroutines.flow.Flow
 
-class ProductRepositoryImpl(private val productDao: ProductDao) : ProductRepositoryInterface {
+class ProductRepositoryImpl(
+    private val productDataSource: ProductDao,
+    private val productLocalDataSource: ProductLocalDataSource
+) : ProductRepository {
 
     override fun getAllProducts(): Flow<List<ProductEntity>> {
-        return productDao.getAllProducts()
+        return productDataSource.getAllProducts()
     }
 
+    override fun getAllProductsLocal(): List<Product> = productLocalDataSource.getAllProductsLocal()
+
     override suspend fun insertProduct(product: ProductEntity) {
-        productDao.insertProduct(product)
+        productDataSource.insertProduct(product)
     }
 
     override suspend fun deleteProduct(product: ProductEntity) {
-        productDao.deleteProduct(product)
+        productDataSource.deleteProduct(product)
     }
 
     override suspend fun updateProduct(product: ProductEntity) {
-        productDao.updateProduct(product)
+        productDataSource.updateProduct(product)
     }
 }

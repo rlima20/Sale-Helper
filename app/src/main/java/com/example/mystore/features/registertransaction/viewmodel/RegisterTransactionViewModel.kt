@@ -1,52 +1,21 @@
 package com.example.mystore.features.registertransaction.viewmodel
 
+import androidx.lifecycle.viewModelScope
+import com.example.mystore.commons.usecase.CommonUseCase
 import com.example.mystore.commons.viewmodel.CommonViewModel
 import com.example.mystore.enums.TransactionType
 import com.example.mystore.features.registerproduct.model.Product
-import com.example.mystore.features.registerproduct.repository.ProductRepositoryImpl
-import com.example.mystore.features.registertransaction.mappers.toTransactionEntity
 import com.example.mystore.features.registertransaction.model.Transaction
-import com.example.mystore.features.registertransaction.repository.TransactionRepositoryImpl
-import kotlinx.coroutines.CoroutineScope
+import com.example.mystore.features.registertransaction.viewstate.RegisterTransactionViewState
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 class RegisterTransactionViewModel(
-    transactionRepository: TransactionRepositoryImpl,
-    productRepository: ProductRepositoryImpl,
-) : CommonViewModel(
-    transactionRepository,
-    productRepository,
-) {
+    private val commonUseCase: CommonUseCase,
+    private val dispatcherProvider: Dispatchers
+) : CommonViewModel(commonUseCase, dispatcherProvider) {
 
-    private var _listOfTransactionType: MutableStateFlow<List<TransactionType>> =
-        MutableStateFlow(listOf(TransactionType.SALE, TransactionType.PURCHASE))
-    val listOfTransactionType: StateFlow<List<TransactionType>> = _listOfTransactionType
-
-    private val _quantity: MutableStateFlow<Int> = MutableStateFlow(1)
-    val quantity: StateFlow<Int> = _quantity
-
-    private val _maxQuantity: MutableStateFlow<Int> = MutableStateFlow(1)
-    val maxQuantity: StateFlow<Int> = _maxQuantity
-
-    private val _screenWidth: MutableStateFlow<Int> = MutableStateFlow(0)
-    val screenWidth: StateFlow<Int> = _screenWidth
-
-    private val _totalValue: MutableStateFlow<Double> = MutableStateFlow(0.0)
-    val totalValue: StateFlow<Double> = _totalValue
-
-    private val _transactionValue: MutableStateFlow<Transaction> = MutableStateFlow(Transaction())
-    val transactionValue: StateFlow<Transaction> = _transactionValue
-
-    private val _showAlertDialogOnRegisterTransaction: MutableStateFlow<Boolean> =
-        MutableStateFlow(false)
-    val showAlertDialogOnRegisterTransaction: StateFlow<Boolean> =
-        _showAlertDialogOnRegisterTransaction
-
-    private val _showToast: MutableStateFlow<Boolean> = MutableStateFlow(false)
-    val showToast: StateFlow<Boolean> = _showToast
+    val registerTransactionViewState = RegisterTransactionViewState()
 
     init {
         getListOfProducts()
@@ -63,74 +32,61 @@ class RegisterTransactionViewModel(
     }
 
     private fun getTransactionTypes() {
-        _listOfTransactionType.value = listOf(
+        registerTransactionViewState.listOfTransactionType.value = listOf(
             TransactionType.SALE,
             TransactionType.PURCHASE,
         )
     }
 
-    private fun getScreenWidth() {
-        _screenWidth.value = screenWidth.value
-    }
-
-    private fun getQuantity() {
-        _quantity.value = quantity.value
-    }
-
-    private fun getMaxQuantity() {
-        _maxQuantity.value = maxQuantity.value
-    }
-
-    private fun getShowAlertDialogOnRegisterTransaction() {
-        _showAlertDialogOnRegisterTransaction.value = showAlertDialogOnRegisterTransaction.value
-    }
+    private fun getScreenWidth() = registerTransactionViewState.screenWidth.value
+    private fun getQuantity() = registerTransactionViewState.quantity.value
+    private fun getMaxQuantity() = registerTransactionViewState.maxQuantity.value
+    private fun getShowAlertDialogOnRegisterTransaction() =
+        registerTransactionViewState.showAlertDialogOnRegisterTransaction.value
 
     fun setShowAlertDialogOnRegisterTransaction(show: Boolean) {
-        _showAlertDialogOnRegisterTransaction.value = show
+        registerTransactionViewState.showAlertDialogOnRegisterTransaction.value = show
     }
 
-    fun getShowToast() {
-        _showToast.value = showToast.value
-    }
-
+    private fun getShowToast() = registerTransactionViewState.showToast.value
     fun setShowToast(show: Boolean) {
-        _showToast.value = show
+        registerTransactionViewState.showToast.value = show
     }
 
     fun setMaxQuantity(quantity: Int) {
-        _maxQuantity.value = quantity
+        registerTransactionViewState.maxQuantity.value = quantity
     }
 
     fun setTotalValue(value: Double) {
-        _totalValue.value = value
+        registerTransactionViewState.totalValue.value = value
     }
 
     fun setScreenWidth(width: Int) {
-        _screenWidth.value = width
+        registerTransactionViewState.screenWidth.value = width
     }
 
     fun setQuantity(quantity: Int) {
-        _quantity.value = quantity
+        registerTransactionViewState.quantity.value = quantity
     }
 
     fun setTransactionValue(transaction: Transaction) {
-        _transactionValue.value = transaction
+        registerTransactionViewState.transactionValue.value = transaction
     }
 
     fun saveTransaction(transaction: Transaction) {
-        if (shouldUseDatabase.value) {
-            CoroutineScope(Dispatchers.IO).launch {
-                transactionRepository.insertTransaction(transaction.toTransactionEntity())
+        if (commonViewState.shouldUseDatabase.value) {
+            viewModelScope.launch(dispatcherProvider.IO) {
+                commonUseCase.insertTransaction(transaction)
             }
         } else {
-            _transactionValue.value = transaction
+            registerTransactionViewState.transactionValue.value = transaction
         }
     }
 
     fun clearAll() {
-        _transactionValue.value = Transaction()
-        _quantity.value = 1
-        _totalValue.value = 0.0
+        registerTransactionViewState.transactionValue.value = Transaction()
+        registerTransactionViewState.quantity.value = 1
+        registerTransactionViewState.totalValue.value = 0.0
     }
 
     /**
@@ -141,16 +97,16 @@ class RegisterTransactionViewModel(
         quantity: Int,
         transaction: Transaction,
     ) {
-        val index = listOfProducts.value.indexOf(product)
+        val index = commonViewState.listOfProducts.value?.indexOf(product) ?: 0
+        val innerList = commonViewState.listOfProducts.value ?: emptyList()
 
         if (transaction.transactionType.name == TransactionType.SALE.name) {
-            listOfProducts.value[index].quantity -= quantity
+            innerList[index].quantity -= quantity
         } else {
-            listOfProducts.value[index].quantity += quantity
+            innerList[index].quantity += quantity
         }
-
-        CoroutineScope(Dispatchers.IO).launch {
-            updateProduct(listOfProducts.value[index])
+        viewModelScope.launch(dispatcherProvider.IO) {
+            commonUseCase.updateProduct(innerList[index])
         }
     }
 }

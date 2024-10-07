@@ -18,7 +18,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.mystore.R
-import com.example.mystore.commons.screenList
+import com.example.mystore.commons.constants.screenList
 import com.example.mystore.ui.theme.mcpalette0_A800
 
 @Composable

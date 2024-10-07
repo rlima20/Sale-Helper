@@ -78,8 +78,9 @@ fun MyStoreNavHost(
                 onShowBottomBarExpanded = {
                     val sales = homeViewModel.getSalesValue()
                     val purchases = homeViewModel.getPurchasesValue()
-                    val listOfSales = homeViewModel.listOfSales.value
-                    val listOfPurchases = homeViewModel.listOfPurchases.value
+                    val listOfSales = homeViewModel.commonViewState.listOfSales.value ?: emptyList()
+                    val listOfPurchases =
+                        homeViewModel.commonViewState.listOfPurchases.value ?: emptyList()
 
                     if (listOfSales.isNotEmpty() || listOfPurchases.isNotEmpty()) {
                         onExpandBottomBar(true)

@@ -1,5 +1,6 @@
 package com.example.mystore.features.registertransaction.ui
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -11,7 +12,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -46,6 +46,7 @@ import com.example.mystore.ui.components.commons.ToastComponent
 import com.example.mystore.ui.components.commons.ValidateSection
 import java.util.Calendar
 
+@SuppressLint("StateFlowValueCalledInComposition")
 @Composable
 fun RegisterTransactionScreen(
     registerTransactionViewModel: RegisterTransactionViewModel,
@@ -63,15 +64,24 @@ fun RegisterTransactionScreen(
     onClearAllStates(false)
     registerTransactionViewModel.setScreenWidth(LocalConfiguration.current.screenWidthDp)
 
-    val listOfProducts by registerTransactionViewModel.listOfProducts.collectAsState()
-    val listOfTransactionTypes by registerTransactionViewModel.listOfTransactionType.collectAsState()
-    val screenWidth by registerTransactionViewModel.screenWidth.collectAsState()
-    val quantity by registerTransactionViewModel.quantity.collectAsState()
-    val maxQuantity by registerTransactionViewModel.maxQuantity.collectAsState()
-    val total by registerTransactionViewModel.totalValue.collectAsState()
-    val transaction by registerTransactionViewModel.transactionValue.collectAsState()
-    val showAlertDialog by registerTransactionViewModel.showAlertDialogOnRegisterTransaction.collectAsState()
-    val showToast by registerTransactionViewModel.showToast.collectAsState()
+    val listOfProducts =
+        registerTransactionViewModel.commonViewState.listOfProducts.value ?: emptyList()
+    val listOfTransactionTypes =
+        registerTransactionViewModel.registerTransactionViewState.listOfTransactionType.value
+    val screenWidth =
+        registerTransactionViewModel.registerTransactionViewState.screenWidth.value
+    val quantity =
+        registerTransactionViewModel.registerTransactionViewState.quantity.value
+    val maxQuantity =
+        registerTransactionViewModel.registerTransactionViewState.maxQuantity.value
+    val total =
+        registerTransactionViewModel.registerTransactionViewState.totalValue.value
+    val transaction =
+        registerTransactionViewModel.registerTransactionViewState.transactionValue.value
+    val showAlertDialog =
+        registerTransactionViewModel.registerTransactionViewState.showAlertDialogOnRegisterTransaction.value
+    val showToast =
+        registerTransactionViewModel.registerTransactionViewState.showToast.value
 
     Column {
         ValidateSection(
@@ -153,19 +163,17 @@ private fun RegisterTransactionBody(
                         onShowToast(true)
 
                         registerTransactionViewModel.saveTransaction(
-                            registerTransactionViewModel
-                                .transactionValue.value,
+                            registerTransactionViewModel.registerTransactionViewState.transactionValue.value
                         )
 
                         registerTransactionViewModel.incrementListOfTransactions(
-                            registerTransactionViewModel
-                                .transactionValue.value,
+                            registerTransactionViewModel.registerTransactionViewState.transactionValue.value
                         )
 
                         registerTransactionViewModel.updateProductQuantity(
-                            registerTransactionViewModel.transactionValue.value.product,
+                            registerTransactionViewModel.registerTransactionViewState.transactionValue.value.product,
                             quantity,
-                            registerTransactionViewModel.transactionValue.value,
+                            registerTransactionViewModel.registerTransactionViewState.transactionValue.value,
                         )
 
                         clearStates(

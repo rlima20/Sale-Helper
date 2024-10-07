@@ -1,4 +1,4 @@
-package com.example.mystore.commons
+package com.example.mystore.commons.constants
 
 import com.example.mystore.R
 import com.example.mystore.toStringResource

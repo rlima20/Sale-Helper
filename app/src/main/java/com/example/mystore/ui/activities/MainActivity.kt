@@ -8,12 +8,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.res.colorResource
 import androidx.navigation.compose.rememberNavController
 import com.example.mystore.R
@@ -61,17 +61,17 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun MyStoreApp(
     application: AppApplication,
-    myStoreViewModel: CommonViewModel,
+    commonViewModel: CommonViewModel,
     homeViewModel: HomeViewModel,
     registerTransactionViewModel: RegisterTransactionViewModel,
     registerProductViewModel: RegisterProductViewModel,
 ) {
     MyStoreTheme {
         val navController = rememberNavController()
-        val screenTitle by myStoreViewModel.screenTitle.collectAsState()
-        val isMenuExpanded by myStoreViewModel.isMenuExpanded.collectAsState()
-        val textFieldSize by myStoreViewModel.textFieldSize.collectAsState()
-        val shouldItemBeVisible by myStoreViewModel.shouldItemBeVisible.collectAsState()
+        val screenTitle = commonViewModel.commonViewState.screenTitle.value ?: ""
+        val isMenuExpanded = commonViewModel.commonViewState.isMenuExpanded.value ?: false
+        val textFieldSize = commonViewModel.commonViewState.textFieldSize.value ?: Size(0F, 0F)
+        val shouldItemBeVisible = commonViewModel.commonViewState.shouldItemBeVisible.value ?: false
         var currentScreen: MyStoreDestinationInterface by remember { mutableStateOf(HomeScreen) }
         var expandedBottomBar: Boolean by remember { mutableStateOf(false) }
         var totalAmountOfSales: Double by remember { mutableStateOf(0.0) }
@@ -89,21 +89,21 @@ fun MyStoreApp(
                     textFieldSize = textFieldSize,
                     shouldDisplayIcon = shouldDisplayIcon,
                     onIconVisibilityClicked = {
-                        myStoreViewModel.setValueVisibility(!shouldItemBeVisible)
+                        commonViewModel.setValueVisibility(!shouldItemBeVisible)
                     },
                     onMenuIconClicked = {
-                        myStoreViewModel.expandMenu(!isMenuExpanded)
+                        commonViewModel.expandMenu(!isMenuExpanded)
                     },
                     onDismissRequest = {
-                        myStoreViewModel.expandMenu(false)
+                        commonViewModel.expandMenu(false)
                     },
                     onDropDownMenuItemClicked = { screen ->
                         currentScreen = transformStringToInterfaceObject(application, screen)
-                        myStoreViewModel.setScreenTitle(screen)
-                        myStoreViewModel.expandMenu(false)
+                        commonViewModel.setScreenTitle(screen)
+                        commonViewModel.expandMenu(false)
                         navController.navigateSingleTopTo(currentScreen.route)
                     },
-                    onChangeTextFieldSize = { size -> myStoreViewModel.setTextFieldSize(size) },
+                    onChangeTextFieldSize = { size -> commonViewModel.setTextFieldSize(size) },
                 )
             },
 
@@ -138,18 +138,18 @@ fun MyStoreApp(
                     },
                     onNavigateToHome = {
                         navController.navigateSingleTopTo(HomeScreen.route)
-                        myStoreViewModel.setScreenTitle(
+                        commonViewModel.setScreenTitle(
                             application.getString(R.string.my_store_home),
                         )
                     },
-                    onUpdateTopBarText = { myStoreViewModel.setScreenTitle(it) },
+                    onUpdateTopBarText = { commonViewModel.setScreenTitle(it) },
                 )
             },
             bottomBar = {
                 BottomBarComponent(
                     expandedBottomBar = expandedBottomBar,
                     onPositionConsolidateIconClicked = {
-                        myStoreViewModel.setScreenTitle(
+                        commonViewModel.setScreenTitle(
                             application.getString(
                                 R.string
                                     .my_store_consolidated_position,
@@ -158,7 +158,7 @@ fun MyStoreApp(
                         navController.navigateSingleTopTo(ConsolidatedPositionScreen.route)
                     },
                     onRegisterProductIconClicked = {
-                        myStoreViewModel.setScreenTitle(
+                        commonViewModel.setScreenTitle(
                             application.getString(R.string.my_store_register_product),
                         )
                         isEditMode = false
@@ -166,7 +166,7 @@ fun MyStoreApp(
                         navController.navigateSingleTopTo(RegisterProductScreen.route)
                     },
                     onRegisterTransactionIconClicked = {
-                        myStoreViewModel.setScreenTitle(
+                        commonViewModel.setScreenTitle(
                             application.getString(
                                 R.string
                                     .my_store_register_transaction,
@@ -182,7 +182,7 @@ fun MyStoreApp(
                         )
                     },
                     onHomeIconClicked = {
-                        myStoreViewModel.setScreenTitle(application.getString(R.string.my_store_home))
+                        commonViewModel.setScreenTitle(application.getString(R.string.my_store_home))
                         navController.navigateSingleTopTo(HomeScreen.route)
                     },
                 )

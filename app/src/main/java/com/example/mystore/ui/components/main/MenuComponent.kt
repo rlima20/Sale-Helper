@@ -19,7 +19,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.unit.toSize
-import com.example.mystore.commons.screenList
+import com.example.mystore.commons.constants.screenList
 
 @Composable
 fun MenuComponent(

@@ -1,7 +1,7 @@
 package com.example.mystore.features.registerproduct.model
 
 data class Product(
-    val productId: Int = 0,
+    var productId: Int = 0,
     val title: String = "",
     val description: String = "",
     var quantity: Int = 0,

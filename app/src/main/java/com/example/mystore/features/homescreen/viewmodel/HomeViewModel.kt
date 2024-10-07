@@ -1,60 +1,23 @@
 package com.example.mystore.features.homescreen.viewmodel
 
+import com.example.mystore.commons.usecase.CommonUseCase
 import com.example.mystore.commons.viewmodel.CommonViewModel
+import com.example.mystore.commons.viewstate.CommonViewState
 import com.example.mystore.features.homescreen.model.Resume
+import com.example.mystore.features.homescreen.viewstate.HomeViewState
 import com.example.mystore.features.registerproduct.model.Product
-import com.example.mystore.features.registerproduct.repository.ProductRepositoryImpl
 import com.example.mystore.features.registertransaction.model.Transaction
-import com.example.mystore.features.registertransaction.repository.TransactionRepositoryImpl
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-
-/**
- * Home view model.
- * Essa classe é responsável por gerenciar os dados da tela Home.
- * _resume: Dados do resumo.
- * _showAlertDialogHomeScreen: Estado do alert dialog da tela Home.
- * _showAlertDialogHomeScreenProduct: Estado do alert dialog da tela Home.
- * _showAlertDialogTransactionDetail: Estado do alert dialog da tela de Detalhe.
- * _showToast: Estado do toast.
- * _transaction: Dados da transação.
- * _product: Dados do produto.
- * getResume: Função que retorna os dados do resumo.
- * @constructor Create empty constructor for home view model
- */
+import kotlinx.coroutines.Dispatchers
 
 class HomeViewModel(
-    transactionRepository: TransactionRepositoryImpl,
-    productRepository: ProductRepositoryImpl,
+    commonUseCase: CommonUseCase,
+    dispatcherProvider: Dispatchers
 ) : CommonViewModel(
-    transactionRepository,
-    productRepository,
+    commonUseCase,
+    dispatcherProvider
 ) {
 
-    private val _resume: MutableStateFlow<Resume?> = MutableStateFlow(Resume())
-    val resume: StateFlow<Resume?> = _resume
-
-    private val _showAlertDialogHomeScreen: MutableStateFlow<Boolean> = MutableStateFlow(false)
-    val showAlertDialogHomeScreen: StateFlow<Boolean> = _showAlertDialogHomeScreen
-
-    private val _showAlertDialogHomeScreenProduct: MutableStateFlow<Boolean> =
-        MutableStateFlow(false)
-    val showAlertDialogHomeScreenProduct: StateFlow<Boolean> = _showAlertDialogHomeScreenProduct
-
-    private val _showAlertDialogTransactionDetail: MutableStateFlow<Boolean> =
-        MutableStateFlow(false)
-    val showAlertDialogTransactionDetail: StateFlow<Boolean> =
-        _showAlertDialogTransactionDetail
-
-    private val _showToast: MutableStateFlow<Pair<String, Boolean>> =
-        MutableStateFlow(Pair("", false))
-    val showToast: StateFlow<Pair<String, Boolean>> = _showToast
-
-    private val _transaction: MutableStateFlow<Transaction> = MutableStateFlow(Transaction())
-    val transaction: StateFlow<Transaction> = _transaction
-
-    private val _product: MutableStateFlow<Product> = MutableStateFlow(Product())
-    val product: StateFlow<Product> = _product
+    val homeViewState = HomeViewState()
 
     init {
         getResume()
@@ -68,61 +31,76 @@ class HomeViewModel(
     }
 
     // Private functions
-    private fun getShowToastState() = showToast.value
+    private fun getShowToastState() = homeViewState.showToast.value
 
-    private fun getShowAlertDialogTransactionDetail() = showAlertDialogTransactionDetail.value
+    private fun getShowAlertDialogTransactionDetail() =
+        homeViewState.showAlertDialogTransactionDetail.value
 
-    private fun getTransaction(): Transaction = transaction.value
+    private fun getTransaction(): Transaction = homeViewState.transaction.value
 
     // Public functions
     fun setShowAlertDialogTransactionDetail(state: Boolean) {
-        _showAlertDialogTransactionDetail.value = state
+        homeViewState.showAlertDialogTransactionDetail.value = state
     }
 
     fun setTransaction(transaction: Transaction) {
-        _transaction.value = transaction
+        homeViewState.transaction.value = transaction
     }
 
     fun setShowToastState(message: String, state: Boolean) {
-        _showToast.value = Pair(message, state)
+        homeViewState.showToast.value = Pair(message, state)
     }
 
     fun getResume() {
-        val debits = listOfPurchases.value.sumOf { it.transactionAmount }
-        val grossRevenue = listOfSales.value.sumOf { it.transactionAmount }
-        val netRevenue = grossRevenue.minus(debits)
-        val stockValue = listOfProducts.value.sumOf { it.purchasePrice * it.quantity }
+        var debits = 0.0
+        var grossRevenue = 0.0
 
-        if ((debits.equals(0.0)) && (grossRevenue.equals(0.0)) && (netRevenue.equals(0.0)) && (
-                    stockValue.equals(0.0)
-                    )
+        commonViewState.listOfPurchases.value?.let { listOfTransaction ->
+            debits = listOfTransaction.sumOf { it.transactionAmount }
+        } ?: 0
+
+        commonViewState.listOfSales.value?.let { listOfTransaction ->
+            grossRevenue = listOfTransaction.sumOf { it.transactionAmount }
+        } ?: 0
+
+        val netRevenue = grossRevenue.minus(debits)
+
+        var stock = 0.0
+        val stockValue = commonViewState.listOfProducts.value?.let { listOfProducts ->
+            stock = listOfProducts.sumOf { it.purchasePrice * it.quantity }
+
+        } ?: 0
+
+        if ((debits.equals(0.0)) && (grossRevenue.equals(0.0)) &&
+            (netRevenue.equals(0.0)) && (stockValue.equals(0.0))
         ) {
-            _resume.value = null
+            homeViewState.resume.value = null
         } else {
-            _resume.value = Resume(
+            homeViewState.resume.value = Resume(
                 debits = debits,
                 grossRevenue = grossRevenue,
                 netRevenue = netRevenue,
-                stockValue = stockValue,
+                stockValue = stock,
             )
         }
     }
 
-    fun getShowAlertDialogHomeScreen() = showAlertDialogHomeScreen.value
+    fun getShowAlertDialogHomeScreen() = homeViewState.showAlertDialogHomeScreen.value
 
     fun setShowAlertDialogHomeScreen(state: Boolean) {
-        _showAlertDialogHomeScreen.value = state
+        homeViewState.showAlertDialogHomeScreen.value = state
     }
 
-    private fun getShowAlertDialogHomeScreenProduct() = showAlertDialogHomeScreenProduct.value
+    private fun getShowAlertDialogHomeScreenProduct() =
+        homeViewState.showAlertDialogHomeScreenProduct.value
 
     fun setShowAlertDialogHomeScreenProduct(state: Boolean) {
-        _showAlertDialogHomeScreenProduct.value = state
+        homeViewState.showAlertDialogHomeScreenProduct.value = state
     }
 
-    private fun getProduct() = product.value
+    private fun getProduct() = homeViewState.product.value
 
     fun setProduct(product: Product) {
-        _product.value = product
+        homeViewState.product.value = product
     }
 }

@@ -1,11 +1,11 @@
-package com.example.mystore.features.registerproduct.room.dao
+package com.example.mystore.features.registerproduct.datasource.room.dao
 
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
-import com.example.mystore.features.registerproduct.room.entities.ProductEntity
+import com.example.mystore.features.registerproduct.datasource.room.entities.ProductEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao

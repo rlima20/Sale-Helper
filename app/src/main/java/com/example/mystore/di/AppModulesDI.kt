@@ -1,16 +1,27 @@
 package com.example.mystore.di
 
+import com.example.mystore.commons.usecase.CommonUseCase
+import com.example.mystore.commons.usecase.CommonUseCaseImpl
 import com.example.mystore.commons.viewmodel.CommonViewModel
-import com.example.mystore.features.homescreen.di.homeViewModelDI
-import com.example.mystore.features.registerproduct.di.productDaoDI
-import com.example.mystore.features.registerproduct.di.productRepositoryDI
-import com.example.mystore.features.registerproduct.di.registerProductViewModelDI
-import com.example.mystore.features.registertransaction.di.registerTransactionViewModelDI
-import com.example.mystore.features.registertransaction.di.transactionDaoDI
-import com.example.mystore.features.registertransaction.di.transactionRepositoryDI
+import com.example.mystore.features.homescreen.viewmodel.HomeViewModel
+import com.example.mystore.features.registerproduct.datasource.local.ProductLocalDataSource
+import com.example.mystore.features.registerproduct.datasource.local.ProductLocalDataSourceImpl
+import com.example.mystore.features.registerproduct.repository.ProductRepository
+import com.example.mystore.features.registerproduct.repository.ProductRepositoryImpl
+import com.example.mystore.features.registerproduct.viewmodel.RegisterProductViewModel
+import com.example.mystore.features.registertransaction.datasource.TransactionLocalDataSource
+import com.example.mystore.features.registertransaction.datasource.TransactionLocalDataSourceImpl
+import com.example.mystore.features.registertransaction.repository.TransactionRepository
+import com.example.mystore.features.registertransaction.repository.TransactionRepositoryImpl
+import com.example.mystore.features.registertransaction.viewmodel.RegisterTransactionViewModel
 import com.example.mystore.room.AppDatabase
+import kotlinx.coroutines.Dispatchers
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
+
+val dispatcherDI = module {
+    single<Dispatchers> { Dispatchers }
+}
 
 val databaseDI = module {
     single {
@@ -18,16 +29,77 @@ val databaseDI = module {
     }
 }
 
+val productDaoDI = module {
+    factory {
+        get<AppDatabase>().productDao()
+    }
+}
+
+val transactionDaoDI = module {
+    factory {
+        get<AppDatabase>().transactionDao()
+    }
+}
+
+val productLocalDataSourceDI = module {
+    factory<ProductLocalDataSource> {
+        ProductLocalDataSourceImpl()
+    }
+}
+
+val transactionLocalDataSourceDI = module {
+    factory<TransactionLocalDataSource> {
+        TransactionLocalDataSourceImpl()
+    }
+}
+
+val productRepositoryDI = module {
+    factory<ProductRepository> {
+        ProductRepositoryImpl(get(), get())
+    }
+}
+
+val transactionRepositoryDI = module {
+    factory<TransactionRepository> {
+        TransactionRepositoryImpl(get())
+    }
+}
+
+val commonUseCaseDI = module {
+    factory<CommonUseCase> { CommonUseCaseImpl(get(), get()) }
+}
+
+val homeViewModelDI = module {
+    viewModel { HomeViewModel(get(), get()) }
+}
+
 val commonViewModelDI = module {
-    viewModel { CommonViewModel(get(), get()) }
+    viewModel {
+        CommonViewModel(
+            commonUseCase = get(),
+            dispatcherProvider = get()
+        )
+    }
+}
+
+val registerTransactionViewModelDI = module {
+    viewModel { RegisterTransactionViewModel(get(), get()) }
+}
+
+val registerProductViewModelDI = module {
+    viewModel { RegisterProductViewModel(get(), get()) }
 }
 
 val appModules = listOf(
+    dispatcherDI,
     databaseDI,
     productDaoDI,
     transactionDaoDI,
+    productLocalDataSourceDI,
+    transactionLocalDataSourceDI,
     productRepositoryDI,
     transactionRepositoryDI,
+    commonUseCaseDI,
     commonViewModelDI,
     homeViewModelDI,
     registerTransactionViewModelDI,

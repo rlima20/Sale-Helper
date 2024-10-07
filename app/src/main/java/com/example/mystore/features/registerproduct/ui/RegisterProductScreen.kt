@@ -82,19 +82,19 @@ fun RegisterProductScreen(
             title = stringResource(id = R.string.my_store_product_2).setTitle(isEditMode),
             body = {
                 RegisterProductScreenBody(
-                    product = this.product.collectAsState().value,
+                    product = this.registerProductViewState.product.collectAsState().value,
                     isEditMode = isEditMode,
                     registerProductViewModel = registerProductViewModel,
-                    screenWidth = screenWidth.collectAsState().value,
-                    titleSelectedText = titleSelectedText.collectAsState().value,
-                    descriptionSelectedText = descriptionSelectedText.collectAsState().value,
-                    purchasePriceSelectedText = purchasePriceSelectedText.collectAsState().value,
-                    salePriceSelectedText = salePriceSelectedText.collectAsState().value,
-                    quantity = quantity.collectAsState().value,
-                    maxQuantityToBuy = maxQuantityToBuy.collectAsState().value,
-                    showAlertDialogProductScreen = showAlertDialogProductScreen.collectAsState().value,
-                    showAlertDialogImageUrl = showAlertDialogImageUrl.collectAsState().value,
-                    showToastProductScreen = showToastProductScreen.collectAsState().value,
+                    screenWidth = registerProductViewState.screenWidth.collectAsState().value,
+                    titleSelectedText = registerProductViewState.titleSelectedText.collectAsState().value,
+                    descriptionSelectedText = registerProductViewState.descriptionSelectedText.collectAsState().value,
+                    purchasePriceSelectedText = registerProductViewState.purchasePriceSelectedText.collectAsState().value,
+                    salePriceSelectedText = registerProductViewState.salePriceSelectedText.collectAsState().value,
+                    quantity = registerProductViewState.quantity.collectAsState().value,
+                    maxQuantityToBuy = registerProductViewState.maxQuantityToBuy.collectAsState().value,
+                    showAlertDialogProductScreen = registerProductViewState.showAlertDialogProductScreen.collectAsState().value,
+                    showAlertDialogImageUrl = registerProductViewState.showAlertDialogImageUrl.collectAsState().value,
+                    showToastProductScreen = registerProductViewState.showToastProductScreen.collectAsState().value,
                     onNavigateToHome = { onNavigateToHome() },
                 )
                 onClearStates(false)
@@ -360,7 +360,18 @@ private fun setProductId(
     isEditMode: Boolean,
     registerProductViewModel: RegisterProductViewModel,
     product: Product,
-) = if (!isEditMode) registerProductViewModel.listOfProducts.value.size + 1 else product.productId
+): Int {
+    var id = 0
+    if (!isEditMode) {
+        //registerProductViewModel.listOfProducts.value.size + 1
+        registerProductViewModel.commonViewState.listOfProducts.value?.let { listOfProduct ->
+            id = listOfProduct.size + 1
+        }
+    } else {
+        id = product.productId
+    }
+    return id
+}
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalComposeUiApi::class)
 @Composable
