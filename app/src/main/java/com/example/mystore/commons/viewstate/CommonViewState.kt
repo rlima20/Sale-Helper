@@ -9,18 +9,19 @@ import com.example.mystore.commons.AppApplication
 import com.example.mystore.enums.States
 import com.example.mystore.features.registerproduct.model.Product
 import com.example.mystore.features.registertransaction.model.Transaction
+import kotlinx.coroutines.flow.MutableStateFlow
 
 class CommonViewState {
     private val application = AppApplication.instance
 
-    val listOfProducts: MutableLiveData<List<Product>> = MutableLiveData(mutableListOf())
-    val listOfSales: MutableLiveData<List<Transaction>> = MutableLiveData(listOf())
-    val listOfPurchases: MutableLiveData<List<Transaction>> = MutableLiveData(listOf())
-    val listOfTransactions: MutableLiveData<List<Transaction>> = MutableLiveData(mutableListOf())
-    val imageRequestState: MutableLiveData<States> = MutableLiveData(States.LOADING)
-    val shouldUseDatabase: MutableState<Boolean> = mutableStateOf(true)
-    val screenTitle: MutableLiveData<String> = MutableLiveData(application.getString(R.string.my_store_home),)
-    val isMenuExpanded: MutableLiveData<Boolean> = MutableLiveData(false)
-    val textFieldSize: MutableLiveData<Size> = MutableLiveData(Size.Zero)
-    val shouldItemBeVisible: MutableLiveData<Boolean> = MutableLiveData(true)
+    val listOfProducts: MutableStateFlow<List<Product>> = MutableStateFlow(mutableListOf())
+    val listOfSales: MutableStateFlow<List<Transaction>> = MutableStateFlow(listOf())
+    val listOfPurchases: MutableStateFlow<List<Transaction>> = MutableStateFlow(listOf())
+    val listOfTransactions: MutableStateFlow<List<Transaction>> = MutableStateFlow(mutableListOf())
+    val imageRequestState: MutableStateFlow<States> = MutableStateFlow(States.LOADING)
+    val shouldUseDatabase: MutableStateFlow<Boolean> = MutableStateFlow(true)
+    val screenTitle: MutableStateFlow<String> = MutableStateFlow(application.getString(R.string.my_store_home))
+    val isMenuExpanded: MutableStateFlow<Boolean> = MutableStateFlow(false)
+    val textFieldSize: MutableStateFlow<Size> = MutableStateFlow(Size.Zero)
+    val shouldItemBeVisible: MutableStateFlow<Boolean> = MutableStateFlow(true)
 }

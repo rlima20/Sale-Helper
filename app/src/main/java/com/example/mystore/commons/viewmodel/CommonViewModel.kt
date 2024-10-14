@@ -35,27 +35,27 @@ open class CommonViewModel(
     fun getListOfProducts() {
         if (commonViewState.shouldUseDatabase.value) {
             viewModelScope.launch(innerDispatcherProvider.IO) {
-                commonViewState.listOfProducts.postValue(innerCommonUseCase.getListOfProducts())
+                commonViewState.listOfProducts.value = innerCommonUseCase.getListOfProducts()
             }
         } else {
-            commonViewState.listOfProducts.postValue(innerCommonUseCase.getListOfProductsLocal())
+            commonViewState.listOfProducts.value = innerCommonUseCase.getListOfProductsLocal()
         }
     }
 
     fun getListOfTransactions() {
         if (commonViewState.shouldUseDatabase.value) {
             viewModelScope.launch(innerDispatcherProvider.IO) {
-                commonViewState.listOfTransactions.postValue(innerCommonUseCase.getAllTransactions())
+                commonViewState.listOfTransactions.value = innerCommonUseCase.getAllTransactions()
             }
         } else {
-            commonViewState.listOfTransactions.postValue(listOfTransactionsLocal)
+            commonViewState.listOfTransactions.value = listOfTransactionsLocal
         }
     }
 
     fun getListOfSales() {
         if (commonViewState.shouldUseDatabase.value) {
             commonViewState.listOfSales.value =
-                commonViewState.listOfTransactions.value?.filter {
+                commonViewState.listOfTransactions.value.filter {
                     it.transactionType == TransactionType.SALE
                 }
         } else {
@@ -68,9 +68,9 @@ open class CommonViewModel(
     fun getListOfPurchases() {
         if (commonViewState.shouldUseDatabase.value) {
             commonViewState.listOfPurchases.value =
-                commonViewState.listOfTransactions.value?.filter {
+                commonViewState.listOfTransactions.value.filter {
                     it.transactionType == TransactionType.PURCHASE
-                } ?: emptyList()
+                }
         } else {
             commonViewState.listOfPurchases.value = listOfTransactionsLocal.filter {
                 it.transactionType == TransactionType.PURCHASE
@@ -123,10 +123,10 @@ open class CommonViewModel(
     }
 
     private fun getTotalValueByTransactionType(type: TransactionType): Double {
-        return commonViewState.listOfTransactions.value?.let {
+        return commonViewState.listOfTransactions.value.let {
             it.filter { transaction -> transaction.transactionType == type }
                 .sumOf { transaction -> transaction.transactionAmount }
-        } ?: 0.0
+        }
     }
 
     fun setImageRequestState(state: States) {
@@ -136,7 +136,7 @@ open class CommonViewModel(
     fun incrementListOfTransactions(transaction: Transaction) {
         val currentList = commonViewState.listOfTransactions.value.orEmpty().toMutableList()
         currentList.add(transaction)
-        commonViewState.listOfTransactions.postValue(currentList)
+        commonViewState.listOfTransactions.value = currentList
     }
 
     fun getSalesValue(): Double = getTotalValueByTransactionType(TransactionType.SALE)

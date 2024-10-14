@@ -78,23 +78,35 @@ fun RegisterProductScreen(
         setShowToastProductScreen(false)
         setProduct(product)
 
+        val productState by this.registerProductViewState.product.collectAsState()
+        val screenWidth by this.registerProductViewState.screenWidth.collectAsState()
+        val titleSelectedText by this.registerProductViewState.titleSelectedText.collectAsState()
+        val descriptionSelectedText by this.registerProductViewState.descriptionSelectedText.collectAsState()
+        val purchasePriceSelectedText by this.registerProductViewState.purchasePriceSelectedText.collectAsState()
+        val salePriceSelectedText by this.registerProductViewState.salePriceSelectedText.collectAsState()
+        val quantity by this.registerProductViewState.quantity.collectAsState()
+        val maxQuantityToBuy by this.registerProductViewState.maxQuantityToBuy.collectAsState()
+        val showAlertDialogProductScreen by this.registerProductViewState.showAlertDialogProductScreen.collectAsState()
+        val showAlertDialogImageUrl by this.registerProductViewState.showAlertDialogImageUrl.collectAsState()
+        val showToastProductScreen by this.registerProductViewState.showToastProductScreen.collectAsState()
+
         ScreenSectionComponent(
             title = stringResource(id = R.string.my_store_product_2).setTitle(isEditMode),
             body = {
                 RegisterProductScreenBody(
-                    product = this.registerProductViewState.product.collectAsState().value,
+                    product = productState,
                     isEditMode = isEditMode,
                     registerProductViewModel = registerProductViewModel,
-                    screenWidth = registerProductViewState.screenWidth.collectAsState().value,
-                    titleSelectedText = registerProductViewState.titleSelectedText.collectAsState().value,
-                    descriptionSelectedText = registerProductViewState.descriptionSelectedText.collectAsState().value,
-                    purchasePriceSelectedText = registerProductViewState.purchasePriceSelectedText.collectAsState().value,
-                    salePriceSelectedText = registerProductViewState.salePriceSelectedText.collectAsState().value,
-                    quantity = registerProductViewState.quantity.collectAsState().value,
-                    maxQuantityToBuy = registerProductViewState.maxQuantityToBuy.collectAsState().value,
-                    showAlertDialogProductScreen = registerProductViewState.showAlertDialogProductScreen.collectAsState().value,
-                    showAlertDialogImageUrl = registerProductViewState.showAlertDialogImageUrl.collectAsState().value,
-                    showToastProductScreen = registerProductViewState.showToastProductScreen.collectAsState().value,
+                    screenWidth = screenWidth,
+                    titleSelectedText = titleSelectedText,
+                    descriptionSelectedText = descriptionSelectedText,
+                    purchasePriceSelectedText = purchasePriceSelectedText,
+                    salePriceSelectedText = salePriceSelectedText,
+                    quantity = quantity,
+                    maxQuantityToBuy = maxQuantityToBuy,
+                    showAlertDialogProductScreen = showAlertDialogProductScreen,
+                    showAlertDialogImageUrl = showAlertDialogImageUrl,
+                    showToastProductScreen = showToastProductScreen,
                     onNavigateToHome = { onNavigateToHome() },
                 )
                 onClearStates(false)

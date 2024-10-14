@@ -8,6 +8,8 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.platform.LocalConfiguration
@@ -54,17 +56,17 @@ fun HomeScreen(
         getListOfPurchases()
         getShowAlertDialogHomeScreen()
 
-        val resume = homeViewModel.homeViewState.resume.value
-        val listOfProducts = commonViewState.listOfProducts.value ?: emptyList()
-        val listOfTransactions = commonViewState.listOfTransactions.value ?: emptyList()
-        val showAlertDialogHomeScreen = homeViewModel.homeViewState.showAlertDialogHomeScreen.value
-        val showAlertDialogHomeScreenProduct =
-            homeViewModel.homeViewState.showAlertDialogHomeScreenProduct.value
-        val showAlertDialogTransactionDetail =
-            homeViewModel.homeViewState.showAlertDialogTransactionDetail.value
-        val showToast = homeViewModel.homeViewState.showToast.value
-        val transaction = homeViewModel.homeViewState.transaction.value
-        val product = homeViewModel.homeViewState.product.value
+        val resume by homeViewModel.homeViewState.resume.collectAsState()
+        val listOfProducts by commonViewState.listOfProducts.collectAsState()
+        val listOfTransactions by commonViewState.listOfTransactions.collectAsState()
+        val showAlertDialogHomeScreen by homeViewModel.homeViewState.showAlertDialogHomeScreen.collectAsState()
+        val showAlertDialogHomeScreenProduct by
+            homeViewModel.homeViewState.showAlertDialogHomeScreenProduct.collectAsState()
+        val showAlertDialogTransactionDetail by
+            homeViewModel.homeViewState.showAlertDialogTransactionDetail.collectAsState()
+        val showToast by homeViewModel.homeViewState.showToast.collectAsState()
+        val transaction by homeViewModel.homeViewState.transaction.collectAsState()
+        val product by homeViewModel.homeViewState.product.collectAsState()
 
         val transactionToastMessage =
             stringResource(R.string.my_store_successfull_transaction_removed)

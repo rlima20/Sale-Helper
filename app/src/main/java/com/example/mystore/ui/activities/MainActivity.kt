@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -68,10 +69,10 @@ fun MyStoreApp(
 ) {
     MyStoreTheme {
         val navController = rememberNavController()
-        val screenTitle = commonViewModel.commonViewState.screenTitle.value ?: ""
-        val isMenuExpanded = commonViewModel.commonViewState.isMenuExpanded.value ?: false
-        val textFieldSize = commonViewModel.commonViewState.textFieldSize.value ?: Size(0F, 0F)
-        val shouldItemBeVisible = commonViewModel.commonViewState.shouldItemBeVisible.value ?: false
+        val screenTitle by commonViewModel.commonViewState.screenTitle.collectAsState()
+        val isMenuExpanded by commonViewModel.commonViewState.isMenuExpanded.collectAsState()
+        val textFieldSize by commonViewModel.commonViewState.textFieldSize.collectAsState()
+        val shouldItemBeVisible by commonViewModel.commonViewState.shouldItemBeVisible.collectAsState()
         var currentScreen: MyStoreDestinationInterface by remember { mutableStateOf(HomeScreen) }
         var expandedBottomBar: Boolean by remember { mutableStateOf(false) }
         var totalAmountOfSales: Double by remember { mutableStateOf(0.0) }

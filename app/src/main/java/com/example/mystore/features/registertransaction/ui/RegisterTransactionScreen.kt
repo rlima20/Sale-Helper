@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -64,24 +65,15 @@ fun RegisterTransactionScreen(
     onClearAllStates(false)
     registerTransactionViewModel.setScreenWidth(LocalConfiguration.current.screenWidthDp)
 
-    val listOfProducts =
-        registerTransactionViewModel.commonViewState.listOfProducts.value ?: emptyList()
-    val listOfTransactionTypes =
-        registerTransactionViewModel.registerTransactionViewState.listOfTransactionType.value
-    val screenWidth =
-        registerTransactionViewModel.registerTransactionViewState.screenWidth.value
-    val quantity =
-        registerTransactionViewModel.registerTransactionViewState.quantity.value
-    val maxQuantity =
-        registerTransactionViewModel.registerTransactionViewState.maxQuantity.value
-    val total =
-        registerTransactionViewModel.registerTransactionViewState.totalValue.value
-    val transaction =
-        registerTransactionViewModel.registerTransactionViewState.transactionValue.value
-    val showAlertDialog =
-        registerTransactionViewModel.registerTransactionViewState.showAlertDialogOnRegisterTransaction.value
-    val showToast =
-        registerTransactionViewModel.registerTransactionViewState.showToast.value
+    val listOfProducts by registerTransactionViewModel.commonViewState.listOfProducts.collectAsState()
+    val listOfTransactionTypes by registerTransactionViewModel.registerTransactionViewState.listOfTransactionType.collectAsState()
+    val screenWidth by registerTransactionViewModel.registerTransactionViewState.screenWidth.collectAsState()
+    val quantity by registerTransactionViewModel.registerTransactionViewState.quantity.collectAsState()
+    val maxQuantity by registerTransactionViewModel.registerTransactionViewState.maxQuantity.collectAsState()
+    val total by registerTransactionViewModel.registerTransactionViewState.totalValue.collectAsState()
+    val transaction by registerTransactionViewModel.registerTransactionViewState.transactionValue.collectAsState()
+    val showAlertDialog by registerTransactionViewModel.registerTransactionViewState.showAlertDialogOnRegisterTransaction.collectAsState()
+    val showToast by registerTransactionViewModel.registerTransactionViewState.showToast.collectAsState()
 
     Column {
         ValidateSection(
