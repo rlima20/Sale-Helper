@@ -134,7 +134,6 @@ fun HomeScreen(
 
             // Total geral Section
             ValidateSection(
-                screen = Screens.HOME,
                 sectionInfo = SectionInfo(
                     section = {
                         ScreenSectionComponent(
@@ -207,7 +206,10 @@ fun HomeScreen(
 
             // Products Section
             ValidateSection(
+                screen = Screens.HOME,
                 sectionInfo = SectionInfo(
+                    sectionName = Section.PRODUCTS,
+                    section =
                     {
                         ScreenSectionComponent(
                             title = stringResource(id = R.string.my_store_products),

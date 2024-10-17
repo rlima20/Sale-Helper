@@ -26,6 +26,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.mystore.R
 import com.example.mystore.enums.Screens
+import com.example.mystore.enums.Section
 import com.example.mystore.enums.TransactionType
 import com.example.mystore.enums.Type
 import com.example.mystore.features.registerproduct.model.Product
@@ -55,6 +56,8 @@ fun RegisterTransactionScreen(
     clearAllStates: Boolean = false,
     onClearAllStates: (Boolean) -> Unit = {},
 ) {
+    registerTransactionViewModel.getListOfTransactions()
+
     if (clearAllStates) {
         clearStates(
             registerTransactionViewModel = registerTransactionViewModel,
@@ -79,6 +82,7 @@ fun RegisterTransactionScreen(
         ValidateSection(
             screen = Screens.REGISTER_TRANSACTION,
             sectionInfo = SectionInfo(
+                sectionName = Section.TRANSACTIONS,
                 section = {
                     ScreenSectionComponent(
                         title = stringResource(id = R.string.my_store_register_transaction),

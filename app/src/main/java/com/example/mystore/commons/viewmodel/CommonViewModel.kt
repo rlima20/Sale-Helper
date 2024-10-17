@@ -20,8 +20,8 @@ open class CommonViewModel(
     dispatcherProvider: Dispatchers
 ) : ViewModel() {
 
-    val innerDispatcherProvider = dispatcherProvider
-    val innerCommonUseCase = commonUseCase
+    private val innerDispatcherProvider = dispatcherProvider
+    private val innerCommonUseCase = commonUseCase
 
     val commonViewState = CommonViewState()
 

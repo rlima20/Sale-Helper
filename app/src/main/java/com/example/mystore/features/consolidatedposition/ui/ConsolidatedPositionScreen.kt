@@ -52,6 +52,8 @@ fun ConsolidatedPositionScreen(
         ValidateSection(
             screen = Screens.CONSOLIDATED_POSITION,
             sectionInfo = SectionInfo(
+                sectionName = Section.TRANSACTIONS,
+                section =
                 {
                     ScreenSectionComponent(
                         title = stringResource(id = R.string.my_store_sales),
@@ -81,6 +83,8 @@ fun ConsolidatedPositionScreen(
         ValidateSection(
             screen = Screens.CONSOLIDATED_POSITION,
             sectionInfo = SectionInfo(
+                sectionName = Section.TRANSACTIONS,
+                section =
                 {
                     ScreenSectionComponent(
                         title = stringResource(id = R.string.my_store_purchases),

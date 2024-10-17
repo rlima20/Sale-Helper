@@ -91,7 +91,7 @@ fun ValidateSection(
     if (sectionEmptyStateInfo.data.isNotEmpty()) {
         sectionInfo.section()
     } else {
-        if (sectionInfo.sectionName != Section.TRANSACTIONS) {
+         if (sectionInfo.sectionName != Section.NONE) {
             if (screen == Screens.REGISTER_PRODUCT || screen == Screens.REGISTER_TRANSACTION) {
                 sectionInfo.section()
             } else if (sectionEmptyStateInfo.data.isEmpty()) {
@@ -103,7 +103,7 @@ fun ValidateSection(
             } else {
                 sectionInfo.section()
             }
-        }
+         }
     }
 }
 

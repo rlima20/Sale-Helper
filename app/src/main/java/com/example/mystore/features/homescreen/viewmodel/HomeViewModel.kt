@@ -55,24 +55,23 @@ class HomeViewModel(
         var debits = 0.0
         var grossRevenue = 0.0
 
-        commonViewState.listOfPurchases.value?.let { listOfTransaction ->
+        commonViewState.listOfPurchases.value.let { listOfTransaction ->
             debits = listOfTransaction.sumOf { it.transactionAmount }
-        } ?: 0
+        }
 
-        commonViewState.listOfSales.value?.let { listOfTransaction ->
+        commonViewState.listOfSales.value.let { listOfTransaction ->
             grossRevenue = listOfTransaction.sumOf { it.transactionAmount }
-        } ?: 0
+        }
 
         val netRevenue = grossRevenue.minus(debits)
 
         var stock = 0.0
-        val stockValue = commonViewState.listOfProducts.value?.let { listOfProducts ->
+        commonViewState.listOfProducts.value.let { listOfProducts ->
             stock = listOfProducts.sumOf { it.purchasePrice * it.quantity }
-
-        } ?: 0
+        }
 
         if ((debits.equals(0.0)) && (grossRevenue.equals(0.0)) &&
-            (netRevenue.equals(0.0)) && (stockValue.equals(0.0))
+            (netRevenue.equals(0.0)) && (stock.equals(0.0))
         ) {
             homeViewState.resume.value = null
         } else {
