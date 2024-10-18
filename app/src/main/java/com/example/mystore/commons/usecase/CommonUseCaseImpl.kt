@@ -1,17 +1,14 @@
 package com.example.mystore.commons.usecase
 
 import com.example.mystore.features.registerproduct.datasource.room.entities.ProductEntity
-import com.example.mystore.features.registerproduct.mappers.toListOfProduct
 import com.example.mystore.features.registerproduct.mappers.toProductEntity
 import com.example.mystore.features.registerproduct.model.Product
 import com.example.mystore.features.registerproduct.repository.ProductRepository
-import com.example.mystore.features.registertransaction.mappers.toListOfTransaction
 import com.example.mystore.features.registertransaction.mappers.toTransactionEntity
 import com.example.mystore.features.registertransaction.model.Transaction
 import com.example.mystore.features.registertransaction.repository.TransactionRepository
 import com.example.mystore.features.registertransaction.room.entities.TransactionEntity
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.first
 
 class CommonUseCaseImpl(
     private val transactionRepository: TransactionRepository,

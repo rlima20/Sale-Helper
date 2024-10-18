@@ -50,16 +50,6 @@ open class CommonViewModel(
         }
     }
 
-//    fun getAllProducts2() {
-//        if (commonViewState.shouldUseDatabase.value) {
-//            viewModelScope.launch {
-//                commonViewState.listOfProducts.value = innerCommonUseCase.getAllProducts()
-//            }
-//        } else {
-//            commonViewState.listOfProducts.value = innerCommonUseCase.getListOfProductsLocal()
-//        }
-//    }
-
     fun getListOfTransactions() {
         if (commonViewState.shouldUseDatabase.value) {
             viewModelScope.launch(innerDispatcherProvider.IO) {
@@ -75,16 +65,6 @@ open class CommonViewModel(
             commonViewState.listOfTransactions.value = listOfTransactionsLocal
         }
     }
-
-//    fun getListOfTransactions() {
-//        if (commonViewState.shouldUseDatabase.value) {
-//            viewModelScope.launch(innerDispatcherProvider.IO) {
-//                commonViewState.listOfTransactions.value = innerCommonUseCase.getAllTransactions()
-//            }
-//        } else {
-//            commonViewState.listOfTransactions.value = listOfTransactionsLocal
-//        }
-//    }
 
     fun getListOfSales() {
         if (commonViewState.shouldUseDatabase.value) {
