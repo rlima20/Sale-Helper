@@ -8,8 +8,10 @@ import com.example.mystore.commons.viewstate.CommonViewState
 import com.example.mystore.enums.States
 import com.example.mystore.enums.TransactionType
 import com.example.mystore.features.registerproduct.datasource.local.listOfProductsLocal
+import com.example.mystore.features.registerproduct.mappers.toProduct
 import com.example.mystore.features.registerproduct.model.Product
 import com.example.mystore.features.registertransaction.datasource.listOfTransactionsLocal
+import com.example.mystore.features.registertransaction.mappers.toTransaction
 import com.example.mystore.features.registertransaction.model.Transaction
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -34,23 +36,55 @@ open class CommonViewModel(
 
     fun getAllProducts() {
         if (commonViewState.shouldUseDatabase.value) {
-            viewModelScope.launch {
-                commonViewState.listOfProducts.value = innerCommonUseCase.getAllProducts()
+            viewModelScope.launch(innerDispatcherProvider.IO) {
+                innerCommonUseCase.getAllProducts().collect { listOfProductEntity ->
+                    val listOfProducts = mutableListOf<Product>()
+                    listOfProductEntity.forEach { productEntity ->
+                        listOfProducts.add(productEntity.toProduct())
+                    }
+                    commonViewState.listOfProducts.value = listOfProducts
+                }
             }
         } else {
             commonViewState.listOfProducts.value = innerCommonUseCase.getListOfProductsLocal()
         }
     }
 
+//    fun getAllProducts2() {
+//        if (commonViewState.shouldUseDatabase.value) {
+//            viewModelScope.launch {
+//                commonViewState.listOfProducts.value = innerCommonUseCase.getAllProducts()
+//            }
+//        } else {
+//            commonViewState.listOfProducts.value = innerCommonUseCase.getListOfProductsLocal()
+//        }
+//    }
+
     fun getListOfTransactions() {
         if (commonViewState.shouldUseDatabase.value) {
             viewModelScope.launch(innerDispatcherProvider.IO) {
-                commonViewState.listOfTransactions.value = innerCommonUseCase.getAllTransactions()
+                innerCommonUseCase.getAllTransactions().collect { listOfTransactionEntity ->
+                    val listOfTransactions = mutableListOf<Transaction>()
+                    listOfTransactionEntity.forEach { transactionEntity ->
+                        listOfTransactions.add(transactionEntity.toTransaction())
+                    }
+                    commonViewState.listOfTransactions.value = listOfTransactions
+                }
             }
         } else {
             commonViewState.listOfTransactions.value = listOfTransactionsLocal
         }
     }
+
+//    fun getListOfTransactions() {
+//        if (commonViewState.shouldUseDatabase.value) {
+//            viewModelScope.launch(innerDispatcherProvider.IO) {
+//                commonViewState.listOfTransactions.value = innerCommonUseCase.getAllTransactions()
+//            }
+//        } else {
+//            commonViewState.listOfTransactions.value = listOfTransactionsLocal
+//        }
+//    }
 
     fun getListOfSales() {
         if (commonViewState.shouldUseDatabase.value) {

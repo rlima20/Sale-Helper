@@ -1,5 +1,6 @@
 package com.example.mystore.commons.usecase
 
+import com.example.mystore.features.registerproduct.datasource.room.entities.ProductEntity
 import com.example.mystore.features.registerproduct.mappers.toListOfProduct
 import com.example.mystore.features.registerproduct.mappers.toProductEntity
 import com.example.mystore.features.registerproduct.model.Product
@@ -8,6 +9,8 @@ import com.example.mystore.features.registertransaction.mappers.toListOfTransact
 import com.example.mystore.features.registertransaction.mappers.toTransactionEntity
 import com.example.mystore.features.registertransaction.model.Transaction
 import com.example.mystore.features.registertransaction.repository.TransactionRepository
+import com.example.mystore.features.registertransaction.room.entities.TransactionEntity
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 
 class CommonUseCaseImpl(
@@ -15,19 +18,11 @@ class CommonUseCaseImpl(
     private val productRepository: ProductRepository,
 ) : CommonUseCase {
 
-    override suspend fun getAllProducts(): List<Product> {
-        var listOfProducts: List<Product> = mutableListOf()
-        productRepository.getAllProducts().collect {
-            listOfProducts = it.toListOfProduct()
-        }
-        return listOfProducts
-    }
+    override suspend fun getAllProducts(): Flow<List<ProductEntity>> =
+        productRepository.getAllProducts()
 
-    override suspend fun getAllTransactions(): List<Transaction>{
-        var listOfTransactions: List<Transaction> = mutableListOf()
-        transactionRepository.getAllTransactions().collect{ listOfTransactions = it.toListOfTransaction() }
-        return listOfTransactions
-    }
+    override suspend fun getAllTransactions(): Flow<List<TransactionEntity>> =
+        transactionRepository.getAllTransactions()
 
     override fun getListOfProductsLocal(): List<Product> =
         productRepository.getAllProductsLocal()

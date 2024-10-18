@@ -34,3 +34,16 @@ fun Product.toProductEntity(): ProductEntity {
         image = this.imageUrl,
     )
 }
+
+fun ProductEntity.toProduct(): Product {
+    return Product(
+        productId = this.productId,
+        title = this.title,
+        description = this.description,
+        quantity = this.quantity,
+        maxQuantityToBuy = this.maxQuantityToBuy,
+        purchasePrice = this.purchasePrice,
+        salePrice = this.salePrice,
+        imageUrl = this.image,
+    )
+}
