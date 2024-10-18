@@ -2,7 +2,6 @@ package com.example.mystore.features.homescreen.viewmodel
 
 import com.example.mystore.commons.usecase.CommonUseCase
 import com.example.mystore.commons.viewmodel.CommonViewModel
-import com.example.mystore.commons.viewstate.CommonViewState
 import com.example.mystore.features.homescreen.model.Resume
 import com.example.mystore.features.homescreen.viewstate.HomeViewState
 import com.example.mystore.features.registerproduct.model.Product
@@ -21,7 +20,7 @@ class HomeViewModel(
 
     init {
         getResume()
-        getListOfProducts()
+        getAllProducts()
         getShowAlertDialogHomeScreen()
         getShowAlertDialogTransactionDetail()
         getShowAlertDialogHomeScreenProduct()

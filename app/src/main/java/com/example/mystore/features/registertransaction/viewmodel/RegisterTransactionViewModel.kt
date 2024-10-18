@@ -8,7 +8,6 @@ import com.example.mystore.features.registerproduct.model.Product
 import com.example.mystore.features.registertransaction.model.Transaction
 import com.example.mystore.features.registertransaction.viewstate.RegisterTransactionViewState
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
 class RegisterTransactionViewModel(
@@ -19,7 +18,7 @@ class RegisterTransactionViewModel(
     val registerTransactionViewState = RegisterTransactionViewState()
 
     init {
-        getListOfProducts()
+        getAllProducts()
         getTransactionTypes()
         getSalesValue()
         getPurchasesValue()

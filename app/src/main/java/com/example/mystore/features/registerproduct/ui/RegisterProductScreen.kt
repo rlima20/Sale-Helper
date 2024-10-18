@@ -79,6 +79,7 @@ fun RegisterProductScreen(
         setProduct(product)
 
         val productState by this.registerProductViewState.product.collectAsState()
+        val listOfProducts by this.commonViewState.listOfProducts.collectAsState()
         val screenWidth by this.registerProductViewState.screenWidth.collectAsState()
         val titleSelectedText by this.registerProductViewState.titleSelectedText.collectAsState()
         val descriptionSelectedText by this.registerProductViewState.descriptionSelectedText.collectAsState()
@@ -108,6 +109,7 @@ fun RegisterProductScreen(
                     showAlertDialogImageUrl = showAlertDialogImageUrl,
                     showToastProductScreen = showToastProductScreen,
                     onNavigateToHome = { onNavigateToHome() },
+                    listOfProducts = listOfProducts
                 )
                 onClearStates(false)
             },
@@ -153,6 +155,7 @@ fun RegisterProductScreenBody(
     showAlertDialogImageUrl: Boolean,
     showToastProductScreen: Boolean,
     onNavigateToHome: () -> Unit,
+    listOfProducts: List<Product>
 ) {
     if (showToastProductScreen) {
         ToastComponent(
@@ -217,9 +220,10 @@ fun RegisterProductScreenBody(
             registerProductViewModel.setShowAlertDialogProductScreen(false)
         },
         onConfirmButtonClicked = {
+            registerProductViewModel.getAllProducts()
             registerProductViewModel.saveProduct(
                 product = Product(
-                    productId = setProductId(isEditMode, registerProductViewModel, product),
+                    productId = setProductId(isEditMode, listOfProducts, product),
                     title = titleSelectedText,
                     description = descriptionSelectedText,
                     purchasePrice = purchasePriceSelectedText.replaceCommaFromValue().toDouble(),
@@ -232,6 +236,7 @@ fun RegisterProductScreenBody(
             )
             registerProductViewModel.setShowToastProductScreen(true)
             registerProductViewModel.setShowAlertDialogProductScreen(false)
+            registerProductViewModel.getAllProducts()
         },
     )
 
@@ -370,20 +375,10 @@ fun RegisterProductScreenBody(
 
 private fun setProductId(
     isEditMode: Boolean,
-    registerProductViewModel: RegisterProductViewModel,
+    listOfProducts: List<Product>,
     product: Product,
-): Int {
-    var id = 0
-    if (!isEditMode) {
-        //registerProductViewModel.listOfProducts.value.size + 1
-        registerProductViewModel.commonViewState.listOfProducts.value?.let { listOfProduct ->
-            id = listOfProduct.size + 1
-        }
-    } else {
-        id = product.productId
-    }
-    return id
-}
+) = if (!isEditMode) listOfProducts.size + 1 else product.productId
+
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalComposeUiApi::class)
 @Composable

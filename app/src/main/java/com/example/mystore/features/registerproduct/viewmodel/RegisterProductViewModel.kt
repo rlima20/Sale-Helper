@@ -16,6 +16,10 @@ class RegisterProductViewModel(
     dispatcherProvider
 ) {
 
+    init{
+        getAllProducts()
+    }
+
     val registerProductViewState = RegisterProductViewState()
 
     fun getProduct(): Product {
@@ -70,7 +74,7 @@ class RegisterProductViewModel(
     fun saveProduct(product: Product, isEditMode: Boolean) {
         viewModelScope.launch(dispatcherProvider.IO) {
             if (isEditMode) updateProduct(product) else createProduct(product)
-            getListOfProducts()
+            getAllProducts()
             clearAllStates()
         }
     }

@@ -4,7 +4,7 @@ import com.example.mystore.features.registerproduct.model.Product
 import com.example.mystore.features.registertransaction.model.Transaction
 
 interface CommonUseCase {
-    suspend fun getListOfProducts(): List<Product>
+    suspend fun getAllProducts(): List<Product>
     suspend fun getAllTransactions(): List<Transaction>
     suspend fun createProduct(product: Product)
     suspend fun updateProduct(product: Product)

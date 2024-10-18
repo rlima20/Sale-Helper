@@ -26,16 +26,16 @@ open class CommonViewModel(
     val commonViewState = CommonViewState()
 
     init {
-        getListOfProducts()
+        getAllProducts()
         getListOfTransactions()
         getListOfSales()
         getListOfPurchases()
     }
 
-    fun getListOfProducts() {
+    fun getAllProducts() {
         if (commonViewState.shouldUseDatabase.value) {
-            viewModelScope.launch(innerDispatcherProvider.IO) {
-                commonViewState.listOfProducts.value = innerCommonUseCase.getListOfProducts()
+            viewModelScope.launch {
+                commonViewState.listOfProducts.value = innerCommonUseCase.getAllProducts()
             }
         } else {
             commonViewState.listOfProducts.value = innerCommonUseCase.getListOfProductsLocal()
@@ -86,6 +86,7 @@ open class CommonViewModel(
         } else {
             listOfProductsLocal.add(product)
         }
+        getAllProducts()
     }
 
     suspend fun updateProduct(product: Product) {
@@ -98,6 +99,7 @@ open class CommonViewModel(
                 it.productId == product.productId
             }] = product
         }
+        getAllProducts()
     }
 
     fun deleteProduct(product: Product) {
@@ -108,7 +110,7 @@ open class CommonViewModel(
         } else {
             listOfProductsLocal.removeAt(listOfProductsLocal.indexOf(product))
         }
-        getListOfProducts()
+        getAllProducts()
     }
 
     // TRANSACTIONS

@@ -51,22 +51,20 @@ fun HomeScreen(
 ) {
     with(homeViewModel) {
         getResume()
-        getListOfProducts()
+        getAllProducts()
         getListOfSales()
         getListOfPurchases()
         getShowAlertDialogHomeScreen()
 
-        val resume by homeViewModel.homeViewState.resume.collectAsState()
+        val resume by homeViewState.resume.collectAsState()
         val listOfProducts by commonViewState.listOfProducts.collectAsState()
         val listOfTransactions by commonViewState.listOfTransactions.collectAsState()
-        val showAlertDialogHomeScreen by homeViewModel.homeViewState.showAlertDialogHomeScreen.collectAsState()
-        val showAlertDialogHomeScreenProduct by
-            homeViewModel.homeViewState.showAlertDialogHomeScreenProduct.collectAsState()
-        val showAlertDialogTransactionDetail by
-            homeViewModel.homeViewState.showAlertDialogTransactionDetail.collectAsState()
-        val showToast by homeViewModel.homeViewState.showToast.collectAsState()
-        val transaction by homeViewModel.homeViewState.transaction.collectAsState()
-        val product by homeViewModel.homeViewState.product.collectAsState()
+        val showAlertDialogHomeScreen by homeViewState.showAlertDialogHomeScreen.collectAsState()
+        val showAlertDialogHomeScreenProduct by homeViewState.showAlertDialogHomeScreenProduct.collectAsState()
+        val showAlertDialogTransactionDetail by homeViewState.showAlertDialogTransactionDetail.collectAsState()
+        val showToast by homeViewState.showToast.collectAsState()
+        val transaction by homeViewState.transaction.collectAsState()
+        val product by homeViewState.product.collectAsState()
 
         val transactionToastMessage =
             stringResource(R.string.my_store_successfull_transaction_removed)
@@ -128,7 +126,7 @@ fun HomeScreen(
                     setShowToastState(productToastMessage, true)
                     deleteProduct(product)
                     setShowAlertDialogHomeScreenProduct(false)
-                    getListOfProducts()
+                    getAllProducts()
                 },
             )
 

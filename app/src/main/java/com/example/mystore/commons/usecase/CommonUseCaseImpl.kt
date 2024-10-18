@@ -15,14 +15,22 @@ class CommonUseCaseImpl(
     private val productRepository: ProductRepository,
 ) : CommonUseCase {
 
-    override suspend fun getListOfProducts(): List<Product> =
-        productRepository.getAllProducts().first().toListOfProduct()
+    override suspend fun getAllProducts(): List<Product> {
+        var listOfProducts: List<Product> = mutableListOf()
+        productRepository.getAllProducts().collect {
+            listOfProducts = it.toListOfProduct()
+        }
+        return listOfProducts
+    }
+
+    override suspend fun getAllTransactions(): List<Transaction>{
+        var listOfTransactions: List<Transaction> = mutableListOf()
+        transactionRepository.getAllTransactions().collect{ listOfTransactions = it.toListOfTransaction() }
+        return listOfTransactions
+    }
 
     override fun getListOfProductsLocal(): List<Product> =
         productRepository.getAllProductsLocal()
-
-    override suspend fun getAllTransactions(): List<Transaction> =
-        transactionRepository.getAllTransactions().first().toListOfTransaction()
 
     override fun getListOfTransactionsLocal(): List<Transaction> =
         transactionRepository.getAllTransactionsLocal()
