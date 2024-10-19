@@ -49,26 +49,21 @@ class HomeViewModel(
     }
 
     fun getResume() {
-        var debits = 0.0
-        var grossRevenue = 0.0
-
-        commonViewState.listOfPurchases.value.let { listOfTransaction ->
-            debits = listOfTransaction.sumOf { it.transactionAmount }
-        }
-
-        commonViewState.listOfSales.value.let { listOfTransaction ->
-            grossRevenue = listOfTransaction.sumOf { it.transactionAmount }
-        }
-
+        val debits: Double = getDebits()
+        val grossRevenue: Double = getGrossRevenue()
         val netRevenue = grossRevenue.minus(debits)
+        val stock: Double = getStock()
+        setResumeValue(debits, grossRevenue, netRevenue, stock)
+    }
 
-        var stock = 0.0
-        commonViewState.listOfProducts.value.let { listOfProducts ->
-            stock = listOfProducts.sumOf { it.purchasePrice * it.quantity }
-        }
-
-        if ((debits.equals(0.0)) && (grossRevenue.equals(0.0)) &&
-            (netRevenue.equals(0.0)) && (stock.equals(0.0))
+    private fun setResumeValue(
+        debits: Double,
+        grossRevenue: Double,
+        netRevenue: Double,
+        stock: Double
+    ) {
+        if ((debits.equals(ZERO)) && (grossRevenue.equals(ZERO)) &&
+            (netRevenue.equals(ZERO)) && (stock.equals(ZERO))
         ) {
             homeViewState.resume.value = null
         } else {
@@ -81,7 +76,31 @@ class HomeViewModel(
         }
     }
 
-    fun getShowAlertDialogHomeScreen() = homeViewState.showAlertDialogHomeScreen.value
+    private fun getStock(): Double {
+        var stock = 0.0
+        commonViewState.listOfProducts.value.let { listOfProducts ->
+            stock = listOfProducts.sumOf { it.purchasePrice * it.quantity }
+        }
+        return stock
+    }
+
+    private fun getGrossRevenue(): Double {
+        var grossRevenue = 0.0
+        commonViewState.listOfSales.value.let { listOfTransaction ->
+            grossRevenue = listOfTransaction.sumOf { it.transactionAmount }
+        }
+        return grossRevenue
+    }
+
+    private fun getDebits(): Double {
+        var debits = 0.0
+        commonViewState.listOfPurchases.value.let { listOfTransaction ->
+            debits = listOfTransaction.sumOf { it.transactionAmount }
+        }
+        return debits
+    }
+
+    private fun getShowAlertDialogHomeScreen() = homeViewState.showAlertDialogHomeScreen.value
 
     fun setShowAlertDialogHomeScreen(state: Boolean) {
         homeViewState.showAlertDialogHomeScreen.value = state
