@@ -29,7 +29,6 @@ class HomeViewModel(
         getProduct()
     }
 
-    // Private functions
     private fun getShowToastState() = homeViewState.showToast.value
 
     private fun getShowAlertDialogTransactionDetail() =
@@ -37,7 +36,6 @@ class HomeViewModel(
 
     private fun getTransaction(): Transaction = homeViewState.transaction.value
 
-    // Public functions
     fun setShowAlertDialogTransactionDetail(state: Boolean) {
         homeViewState.showAlertDialogTransactionDetail.value = state
     }
@@ -100,5 +98,9 @@ class HomeViewModel(
 
     fun setProduct(product: Product) {
         homeViewState.product.value = product
+    }
+
+    companion object {
+        const val ZERO = 0.0
     }
 }

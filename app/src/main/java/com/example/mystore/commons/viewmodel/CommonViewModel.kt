@@ -24,7 +24,6 @@ open class CommonViewModel(
 
     private val innerDispatcherProvider = dispatcherProvider
     private val innerCommonUseCase = commonUseCase
-
     val commonViewState = CommonViewState()
 
     init {
@@ -100,7 +99,6 @@ open class CommonViewModel(
         } else {
             listOfProductsLocal.add(product)
         }
-        getAllProducts()
     }
 
     suspend fun updateProduct(product: Product) {
@@ -113,7 +111,6 @@ open class CommonViewModel(
                 it.productId == product.productId
             }] = product
         }
-        getAllProducts()
     }
 
     fun deleteProduct(product: Product) {
@@ -124,10 +121,8 @@ open class CommonViewModel(
         } else {
             listOfProductsLocal.removeAt(listOfProductsLocal.indexOf(product))
         }
-        getAllProducts()
     }
 
-    // TRANSACTIONS
     fun deleteTransaction(transaction: Transaction) {
         if (commonViewState.shouldUseDatabase.value) {
             CoroutineScope(Dispatchers.IO).launch {
@@ -150,7 +145,7 @@ open class CommonViewModel(
     }
 
     fun incrementListOfTransactions(transaction: Transaction) {
-        val currentList = commonViewState.listOfTransactions.value.orEmpty().toMutableList()
+        val currentList = commonViewState.listOfTransactions.value.toMutableList()
         currentList.add(transaction)
         commonViewState.listOfTransactions.value = currentList
     }

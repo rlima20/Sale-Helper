@@ -50,11 +50,10 @@ fun HomeScreen(
     onEditMode: (Boolean, Product) -> Unit = { _, _ -> },
 ) {
     with(homeViewModel) {
+
         getResume()
-        getAllProducts()
         getListOfSales()
         getListOfPurchases()
-        getShowAlertDialogHomeScreen()
 
         val resume by homeViewState.resume.collectAsState()
         val listOfProducts by commonViewState.listOfProducts.collectAsState()
