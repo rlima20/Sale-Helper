@@ -16,10 +16,10 @@ import androidx.compose.ui.unit.dp
 import coil.request.ImageRequest
 import coil.size.Size
 import com.example.mystore.R
-import com.example.mystore.Screens
-import com.example.mystore.Section
-import com.example.mystore.States
-import com.example.mystore.Type
+import com.example.mystore.enums.Screens
+import com.example.mystore.enums.Section
+import com.example.mystore.enums.States
+import com.example.mystore.enums.Type
 import com.example.mystore.getAsyncImagePainter
 import com.example.mystore.toCurrency
 import com.example.mystore.toUnity
@@ -75,6 +75,7 @@ fun validateSection(section: Section): String {
         Section.REGISTER -> {
             RegisterProductScreen.route
         }
+
         else -> ""
     }
 }
@@ -90,7 +91,7 @@ fun ValidateSection(
     if (sectionEmptyStateInfo.data.isNotEmpty()) {
         sectionInfo.section()
     } else {
-        if (sectionInfo.sectionName != Section.TRANSACTIONS) {
+         if (sectionInfo.sectionName != Section.NONE) {
             if (screen == Screens.REGISTER_PRODUCT || screen == Screens.REGISTER_TRANSACTION) {
                 sectionInfo.section()
             } else if (sectionEmptyStateInfo.data.isEmpty()) {
@@ -102,7 +103,7 @@ fun ValidateSection(
             } else {
                 sectionInfo.section()
             }
-        }
+         }
     }
 }
 

@@ -1,0 +1,14 @@
+package com.example.mystore.enums
+
+enum class Type {
+    CURRENCY_ONLY,
+    CURRENCY_PURCHASE,
+    CURRENCY_DEBIT_ONLY,
+    CURRENCY_TRANSACTION_DETAIL,
+    QUANTITY,
+    QUANTITY_OOS,
+    QUANTITY_TRANSACTION_DETAIL,
+    DATE,
+    STRING,
+    STRING_ONLY,
+}

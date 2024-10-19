@@ -12,7 +12,7 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.mystore.R
-import com.example.mystore.Type
+import com.example.mystore.enums.Type
 import com.example.mystore.limitTo
 import com.example.mystore.setTextColor
 
