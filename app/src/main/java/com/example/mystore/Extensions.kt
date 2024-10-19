@@ -13,6 +13,11 @@ import coil.request.ImageRequest
 import com.example.mystore.commons.AppApplication
 import com.example.mystore.enums.States
 import com.example.mystore.enums.TransactionType
+import com.example.mystore.ui.navigation.ConsolidatedPositionScreen
+import com.example.mystore.ui.navigation.HomeScreen
+import com.example.mystore.ui.navigation.MyStoreDestinationInterface
+import com.example.mystore.ui.navigation.RegisterProductScreen
+import com.example.mystore.ui.navigation.RegisterTransactionScreen
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -122,4 +127,16 @@ fun TransactionType.colorTransactionType() =
 fun Int.setItemSize() = ((this - 16) / 2).dp
 
 fun Int.setQuantifierSize() = ((this - 74) / 2).dp
+
+fun String.transformStringToInterfaceObject(
+    application: AppApplication,
+): MyStoreDestinationInterface {
+    return when (this) {
+        application.getString(R.string.my_store_home) -> HomeScreen
+        application.getString(R.string.my_store_register_product) -> RegisterProductScreen
+        application.getString(R.string.my_store_register_transaction) -> RegisterTransactionScreen
+        application.getString(R.string.my_store_consolidated_position) -> ConsolidatedPositionScreen
+        else -> HomeScreen
+    }
+}
 

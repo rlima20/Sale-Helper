@@ -14,7 +14,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.res.colorResource
 import androidx.navigation.compose.rememberNavController
 import com.example.mystore.R
@@ -25,6 +24,7 @@ import com.example.mystore.features.registerproduct.model.Product
 import com.example.mystore.features.registerproduct.viewmodel.RegisterProductViewModel
 import com.example.mystore.features.registertransaction.viewmodel.RegisterTransactionViewModel
 import com.example.mystore.navigateSingleTopTo
+import com.example.mystore.transformStringToInterfaceObject
 import com.example.mystore.ui.components.commons.TotalComponent
 import com.example.mystore.ui.components.main.BottomBarComponent
 import com.example.mystore.ui.components.main.TopBarComponent
@@ -40,7 +40,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class MainActivity : ComponentActivity() {
 
     private val application = AppApplication.instance
-    private val viewModel: CommonViewModel by viewModel()
+    private val commonViewModel: CommonViewModel by viewModel()
     private val homeViewModel: HomeViewModel by viewModel()
     private val registerTransactionViewModel: RegisterTransactionViewModel by viewModel()
     private val registerProductViewModel: RegisterProductViewModel by viewModel()
@@ -50,7 +50,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             MyStoreApp(
                 application,
-                viewModel,
+                commonViewModel,
                 homeViewModel,
                 registerTransactionViewModel,
                 registerProductViewModel,
@@ -99,7 +99,7 @@ fun MyStoreApp(
                         commonViewModel.expandMenu(false)
                     },
                     onDropDownMenuItemClicked = { screen ->
-                        currentScreen = transformStringToInterfaceObject(application, screen)
+                        currentScreen = screen.transformStringToInterfaceObject(application)
                         commonViewModel.setScreenTitle(screen)
                         commonViewModel.expandMenu(false)
                         navController.navigateSingleTopTo(currentScreen.route)
@@ -107,7 +107,6 @@ fun MyStoreApp(
                     onChangeTextFieldSize = { size -> commonViewModel.setTextFieldSize(size) },
                 )
             },
-
             content = { content ->
                 MyStoreNavHost(
                     navController = navController,
@@ -189,16 +188,5 @@ fun MyStoreApp(
                 )
             },
         )
-    }
-}
-
-private fun transformStringToInterfaceObject(application: AppApplication, screen: String):
-        MyStoreDestinationInterface {
-    return when (screen) {
-        application.getString(R.string.my_store_home) -> HomeScreen
-        application.getString(R.string.my_store_register_product) -> RegisterProductScreen
-        application.getString(R.string.my_store_register_transaction) -> RegisterTransactionScreen
-        application.getString(R.string.my_store_consolidated_position) -> ConsolidatedPositionScreen
-        else -> HomeScreen
     }
 }
