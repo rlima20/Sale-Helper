@@ -71,9 +71,11 @@ fun ImageRequest.getAsyncImagePainter(
         is AsyncImagePainter.State.Success -> {
             onStateChanged(States.SUCCESS)
         }
+
         is AsyncImagePainter.State.Loading -> {
             onStateChanged(States.LOADING)
         }
+
         else -> {
             onStateChanged(States.ERROR)
         }
@@ -140,3 +142,7 @@ fun String.transformStringToInterfaceObject(
     }
 }
 
+@Composable
+fun Boolean.setPainter(): Painter =
+    if (this) painterResource(id = R.drawable.my_store_show_icon)
+    else painterResource(id = R.drawable.my_store_hidden_icon)

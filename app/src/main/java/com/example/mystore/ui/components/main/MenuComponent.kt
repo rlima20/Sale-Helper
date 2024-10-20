@@ -26,7 +26,7 @@ fun MenuComponent(
     modifier: Modifier = Modifier,
     screens: List<String>,
     isMenuExpanded: Boolean,
-    textFieldSize: Size,
+    menuDropdownWidth: Size,
     onMenuIconClicked: () -> Unit = {},
     onDismissRequest: () -> Unit = {},
     onDropDownMenuItemClicked: (String) -> Unit = {},
@@ -52,7 +52,7 @@ fun MenuComponent(
                 .onGloballyPositioned { coordinates ->
                     onChangeTextFieldSize(coordinates.size.toSize())
                 }
-                .width(with(LocalDensity.current) { textFieldSize.width.toDp() }),
+                .width(with(LocalDensity.current) { menuDropdownWidth.width.toDp() }),
         ) {
             screens.forEach { screenName ->
                 DropdownMenuItem(
@@ -79,6 +79,6 @@ fun DropDownComponentPreview() {
     MenuComponent(
         screens = screenList,
         isMenuExpanded = false,
-        textFieldSize = Size(0f, 0f),
+        menuDropdownWidth = Size(0f, 0f),
     )
 }

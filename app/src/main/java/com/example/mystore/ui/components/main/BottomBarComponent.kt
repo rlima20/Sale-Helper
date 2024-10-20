@@ -23,80 +23,102 @@ import com.example.mystore.ui.theme.mcpalette0_A900
 
 @Composable
 internal fun BottomBarComponent(
-    onPositionConsolidateIconClicked: () -> Unit,
-    onRegisterTransactionIconClicked: () -> Unit,
-    onRegisterProductIconClicked: () -> Unit,
-    onHomeIconClicked: () -> Unit,
-    expandedBottomBar: Boolean = false,
-    expandedBottomBarContent: @Composable () -> Unit = {},
+    bottomBarComponentProps: BottomBarComponentProps
 ) {
-    Column {
-        if (expandedBottomBar) {
+    with(bottomBarComponentProps) {
+        Column {
+            SetExpandedBottomBar()
             Row(
                 modifier = Modifier
                     .background(mcpalette0_A900)
+                    .padding(12.dp)
                     .fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween,
             ) {
-                expandedBottomBarContent()
+                SetHomeIcon()
+                SetPositionConsolidatedIcon()
+                SetRegisterTransactionIcon()
+                SetRegisterProductIcon()
             }
         }
+    }
+}
+
+@Composable
+private fun BottomBarComponentProps.SetRegisterProductIcon() {
+    Icon(
+        modifier = Modifier
+            .padding(end = 16.dp)
+            .clickable(
+                onClick = {
+                    onRegisterProductIconClicked()
+                },
+            ),
+        imageVector = Icons.Rounded.Add,
+        contentDescription = null,
+        tint = Color.Black,
+    )
+}
+
+@Composable
+private fun BottomBarComponentProps.SetRegisterTransactionIcon() {
+    Icon(
+        modifier = Modifier
+            .size(20.dp)
+            .clickable(
+                onClick = {
+                    onRegisterTransactionIconClicked()
+                },
+            ),
+        painter = painterResource(id = R.drawable.my_store_transaction_icon),
+        contentDescription = null,
+        tint = Color.Black,
+    )
+}
+
+@Composable
+private fun BottomBarComponentProps.SetPositionConsolidatedIcon() {
+    Icon(
+        modifier = Modifier
+            .padding(start = 16.dp)
+            .size(20.dp)
+            .clickable(
+                onClick = {
+                    onPositionConsolidateIconClicked()
+                },
+            ),
+        painter = painterResource(id = R.drawable.my_store_consolidated_position_icon),
+        contentDescription = null,
+        tint = Color.Black,
+    )
+}
+
+@Composable
+private fun BottomBarComponentProps.SetHomeIcon() {
+    Icon(
+        modifier = Modifier
+            .padding(end = 16.dp)
+            .clickable(
+                onClick = {
+                    onHomeIconClicked()
+                },
+            ),
+        imageVector = Icons.Rounded.Home,
+        contentDescription = null,
+        tint = Color.Black,
+    )
+}
+
+@Composable
+private fun BottomBarComponentProps.SetExpandedBottomBar() {
+    if (expandedBottomBar) {
         Row(
             modifier = Modifier
                 .background(mcpalette0_A900)
-                .padding(12.dp)
                 .fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween,
         ) {
-            Icon(
-                modifier = Modifier
-                    .padding(end = 16.dp)
-                    .clickable(
-                        onClick = {
-                            onHomeIconClicked()
-                        },
-                    ),
-                imageVector = Icons.Rounded.Home,
-                contentDescription = null,
-                tint = Color.Black,
-            )
-            Icon(
-                modifier = Modifier
-                    .padding(start = 16.dp)
-                    .size(20.dp)
-                    .clickable(
-                        onClick = {
-                            onPositionConsolidateIconClicked()
-                        },
-                    ),
-                painter = painterResource(id = R.drawable.my_store_consolidated_position_icon),
-                contentDescription = null,
-                tint = Color.Black,
-            )
-            Icon(
-                modifier = Modifier
-                    .size(20.dp)
-                    .clickable(
-                        onClick = {
-                            onRegisterTransactionIconClicked()
-                        },
-                    ),
-                painter = painterResource(id = R.drawable.my_store_transaction_icon),
-                contentDescription = null,
-                tint = Color.Black,
-            )
-            Icon(
-                modifier = Modifier
-                    .padding(end = 16.dp)
-                    .clickable(
-                        onClick = {
-                            onRegisterProductIconClicked()
-                        },
-                    ),
-                imageVector = Icons.Rounded.Add,
-                contentDescription = null,
-                tint = Color.Black,
-            )
+            expandedBottomBarContent()
         }
     }
 }
