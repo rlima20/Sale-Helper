@@ -40,6 +40,8 @@ import com.example.mystore.ui.components.commons.ToastComponent
 import com.example.mystore.ui.components.commons.ValidateSection
 import com.example.mystore.ui.components.commons.validateSection
 
+// todo HomeScreen props
+
 @Composable
 fun HomeScreen(
     homeViewModel: HomeViewModel,

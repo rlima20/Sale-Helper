@@ -37,11 +37,11 @@ fun ConsolidatedPositionScreen(
     homeViewModel: HomeViewModel,
     shouldItemBeVisible: Boolean,
     onEmptyStateImageClicked: (route: String, screen: String) -> Unit = { _, _ -> },
-    onShowBottomBarExpanded: (shouldSee: Boolean) -> Unit = {},
+    onShowBottomBarExpanded: @Composable (shouldSee: Boolean) -> Unit = {},
 ) {
 
-    val listOfSales = homeViewModel.commonViewState.listOfSales.value ?: emptyList()
-    val listOfPurchases = homeViewModel.commonViewState.listOfPurchases.value ?: emptyList()
+    val listOfSales = homeViewModel.commonViewState.listOfSales.value
+    val listOfPurchases = homeViewModel.commonViewState.listOfPurchases.value
 
     Column(
         modifier = Modifier

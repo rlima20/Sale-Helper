@@ -44,22 +44,7 @@ internal fun TopBarComponent(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween,
             ) {
-                if (isIconVisible) {
-                    Icon(
-                        modifier = Modifier
-                            .padding(end = 16.dp)
-                            .size(20.dp)
-                            .clickable(
-                                onClick = {
-                                    onIconVisibilityClicked()
-                                },
-                            ),
-                        painter = isIconLined.setPainter(),
-                        contentDescription = null,
-                        tint = Color.White,
-                    )
-                }
-
+                SetIconVisibility()
                 MenuComponent(
                     screens = screenList,
                     isMenuExpanded = isMenuExpanded,
@@ -71,5 +56,24 @@ internal fun TopBarComponent(
                 )
             }
         }
+    }
+}
+
+@Composable
+private fun TopBarComponentProps.SetIconVisibility() {
+    if (isIconVisible) {
+        Icon(
+            modifier = Modifier
+                .padding(end = 16.dp)
+                .size(20.dp)
+                .clickable(
+                    onClick = {
+                        onIconVisibilityClicked()
+                    },
+                ),
+            painter = isIconLined.setPainter(),
+            contentDescription = null,
+            tint = Color.White,
+        )
     }
 }

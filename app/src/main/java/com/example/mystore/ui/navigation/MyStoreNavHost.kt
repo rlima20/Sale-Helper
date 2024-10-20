@@ -67,6 +67,7 @@ private fun MyStoreNavHostProps.NavigateToRegisterProductScreen(
 ) {
     onExpandBottomBar(false)
     onShouldDisplayIcon(false)
+
     RegisterProductScreen(
         product = product,
         isEditMode = isEditMode,
@@ -83,6 +84,7 @@ private fun MyStoreNavHostProps.NavigateToRegisterTransactionScreen(
 ) {
     onExpandBottomBar(false)
     onShouldDisplayIcon(true)
+
     RegisterTransactionScreen(
         registerTransactionViewModel = registerTransactionViewModel,
         shouldItemBeVisible = shouldItemBeVisible,
@@ -98,25 +100,14 @@ private fun MyStoreNavHostProps.NavigateToConsolidatedPositionScreen(
 ) {
     homeViewModel.getListOfSales()
     homeViewModel.getListOfPurchases()
+    onShouldDisplayIcon(true)
     onTransactionClearAllState(true)
     onProductClearAllState(true)
-    onShouldDisplayIcon(true)
+
     ConsolidatedPositionScreen(
         homeViewModel = homeViewModel,
         shouldItemBeVisible = shouldItemBeVisible,
-        onShowBottomBarExpanded = {
-            val sales = homeViewModel.getSalesValue()
-            val purchases = homeViewModel.getPurchasesValue()
-            val listOfSales =
-                homeViewModel.commonViewState.listOfSales.value
-            val listOfPurchases =
-                homeViewModel.commonViewState.listOfPurchases.value
-
-            if (listOfSales.isNotEmpty() || listOfPurchases.isNotEmpty()) {
-                onExpandBottomBar(true)
-                onShowBottomBarExpanded(sales, purchases)
-            }
-        },
+        onShowBottomBarExpanded = { ShowBottomBarExpanded() },
         onEmptyStateImageClicked = { route, screen ->
             navController.navigateSingleTopTo(route)
             onUpdateTopBarText(screen)
@@ -133,6 +124,7 @@ private fun MyStoreNavHostProps.NavigateToHomeScreen(
     onProductClearAllState(true)
     onExpandBottomBar(false)
     onShouldDisplayIcon(true)
+
     HomeScreen(
         homeViewModel = homeViewModel,
         shouldItemBeVisible = shouldItemBeVisible,
@@ -144,4 +136,14 @@ private fun MyStoreNavHostProps.NavigateToHomeScreen(
         },
         onEditMode = { isEditMode, product -> onEditMode(isEditMode, product) },
     )
+}
+
+@Composable
+private fun MyStoreNavHostProps.ShowBottomBarExpanded() {
+    with(homeViewModel) {
+        if (commonViewState.listOfSales.value.isNotEmpty() || commonViewState.listOfPurchases.value.isNotEmpty()) {
+            onExpandBottomBar(true)
+            onShowBottomBarExpanded(getSalesValue(), getPurchasesValue())
+        }
+    }
 }
