@@ -1,4 +1,4 @@
-package com.example.mystore.ui.navigation
+package com.example.mystore.ui.model
 
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController

@@ -25,66 +25,56 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.toSize
 import com.example.mystore.R
+import com.example.mystore.ui.model.DropdownComponentProps
+import com.example.mystore.ui.model.OutLinedTextFieldComponentProps
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun DropdownComponent(
-    items: List<String>,
-    isExpanded: Boolean,
-    selectedText: String,
-    textFieldSize: Size,
-    label: String,
-    modifier: Modifier = Modifier,
-    transactionDetailColors: Triple<Int, Int, Int> = Triple(
-        first = R.color.color_50,
-        second = R.color.color_900,
-        third = R.color.color_50,
-    ),
-    onOutLinedTextFieldSize: (size: Size) -> Unit = {},
-    onOutLinedTextFieldValueChanged: (String) -> Unit = {},
-    onTrailingIconClicked: () -> Unit = {},
-    onDropdownMenuDismissRequest: () -> Unit = {},
-    onDropdownMenuItemClicked: (String) -> Unit = {},
+    dropdownComponentProps: DropdownComponentProps
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
     val focusManager = LocalFocusManager.current
+    with(dropdownComponentProps) {
+        Column {
+            OutLinedTextFieldComponent(
+                outLinedTextFieldComponentProps = OutLinedTextFieldComponentProps(
+                    enabled = false,
+                    modifier = modifier
+                        .background(colorResource(id = transactionDetailColors.second))
+                        .onGloballyPositioned { coordinates ->
+                            onOutLinedTextFieldSize(coordinates.size.toSize())
+                        },
+                    selectedText = selectedText,
+                    label = label,
+                    transactionDetailColors = transactionDetailColors,
+                    keyboardController = keyboardController,
+                    focusManager = focusManager,
+                    onValueChanged = { onOutLinedTextFieldValueChanged(selectedText) },
+                    trailingIcon = {
+                        Icon(
+                            setIcon(isExpanded),
+                            "contentDescription",
+                            Modifier.clickable { onTrailingIconClicked() },
+                            tint = colorResource(id = R.color.color_800),
+                        )
+                    },
+                ),
+            )
 
-    Column {
-        OutLinedTextFieldComponent(
-            enabled = false,
-            modifier = modifier
-                .background(colorResource(id = transactionDetailColors.second))
-                .onGloballyPositioned { coordinates ->
-                    onOutLinedTextFieldSize(coordinates.size.toSize())
-                },
-            selectedText = selectedText,
-            label = label,
-            transactionDetailColors = transactionDetailColors,
-            keyboardController = keyboardController,
-            focusManager = focusManager,
-            onValueChanged = { onOutLinedTextFieldValueChanged(selectedText) },
-            trailingIcon = {
-                Icon(
-                    setIcon(isExpanded),
-                    "contentDescription",
-                    Modifier.clickable { onTrailingIconClicked() },
-                    tint = colorResource(id = R.color.color_800),
-                )
-            },
-        )
-
-        DropdownMenu(
-            expanded = isExpanded,
-            onDismissRequest = { onDropdownMenuDismissRequest() },
-            modifier = Modifier
-                .width(with(LocalDensity.current) { textFieldSize.width.toDp() }),
-        ) {
-            items.forEach { label ->
-                DropdownMenuItem(onClick = {
-                    onDropdownMenuItemClicked(label)
-                    onDropdownMenuDismissRequest()
-                }) {
-                    Text(text = label)
+            DropdownMenu(
+                expanded = isExpanded,
+                onDismissRequest = { onDropdownMenuDismissRequest() },
+                modifier = Modifier
+                    .width(with(LocalDensity.current) { textFieldSize.width.toDp() }),
+            ) {
+                items.forEach { label ->
+                    DropdownMenuItem(onClick = {
+                        onDropdownMenuItemClicked(label)
+                        onDropdownMenuDismissRequest()
+                    }) {
+                        Text(text = label)
+                    }
                 }
             }
         }
@@ -92,21 +82,21 @@ fun DropdownComponent(
 }
 
 @Composable
-private fun setIcon(isExpanded: Boolean) = if (isExpanded) {
-    Icons.Filled.KeyboardArrowUp
-} else {
-    Icons.Filled.KeyboardArrowDown
-}
+private fun setIcon(isExpanded: Boolean) =
+    if (isExpanded) Icons.Filled.KeyboardArrowUp
+    else Icons.Filled.KeyboardArrowDown
 
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
     DropdownComponent(
-        isExpanded = false,
-        modifier = Modifier.padding(16.dp),
-        label = "Tipo de transação",
-        items = listOf("A", "B", "C"),
-        textFieldSize = Size.Zero,
-        selectedText = "A",
+        DropdownComponentProps(
+            isExpanded = false,
+            modifier = Modifier.padding(16.dp),
+            label = "Tipo de transação",
+            items = listOf("A", "B", "C"),
+            textFieldSize = Size.Zero,
+            selectedText = "A",
+        )
     )
 }

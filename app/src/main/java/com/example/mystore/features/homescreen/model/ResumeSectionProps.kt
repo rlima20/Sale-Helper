@@ -1,6 +1,4 @@
-package com.example.mystore.features.homescreen.ui
-
-import com.example.mystore.features.homescreen.model.Resume
+package com.example.mystore.features.homescreen.model
 
 data class ResumeSectionProps(
     val resume: Resume?,

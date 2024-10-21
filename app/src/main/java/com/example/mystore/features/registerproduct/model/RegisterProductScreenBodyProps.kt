@@ -1,6 +1,5 @@
-package com.example.mystore.features.registerproduct.ui
+package com.example.mystore.features.registerproduct.model
 
-import com.example.mystore.features.registerproduct.model.Product
 import com.example.mystore.features.registerproduct.viewmodel.RegisterProductViewModel
 
 data class RegisterProductScreenBodyProps(

@@ -17,6 +17,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.mystore.commons.constants.screenList
 import com.example.mystore.setPainter
+import com.example.mystore.ui.model.TopBarComponentProps
 import com.example.mystore.ui.theme.mcpalette0_A800
 
 @Composable

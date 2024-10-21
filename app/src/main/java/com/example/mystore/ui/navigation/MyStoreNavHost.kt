@@ -9,10 +9,12 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.mystore.features.consolidatedposition.ui.ConsolidatedPositionScreen
 import com.example.mystore.features.homescreen.ui.HomeScreen
-import com.example.mystore.features.homescreen.ui.HomeScreenProps
+import com.example.mystore.features.homescreen.model.HomeScreenProps
 import com.example.mystore.features.registerproduct.ui.RegisterProductScreen
 import com.example.mystore.features.registertransaction.ui.RegisterTransactionScreen
+import com.example.mystore.features.registertransaction.model.RegisterTransactionScreenProps
 import com.example.mystore.navigateSingleTopTo
+import com.example.mystore.ui.model.MyStoreNavHostProps
 
 @Composable
 fun MyStoreNavHost(
@@ -87,10 +89,12 @@ private fun MyStoreNavHostProps.NavigateToRegisterTransactionScreen(
     onShouldDisplayIcon(true)
 
     RegisterTransactionScreen(
-        registerTransactionViewModel = registerTransactionViewModel,
-        shouldItemBeVisible = shouldItemBeVisible,
-        clearAllStates = transactionClearStates,
-        onClearAllStates = { onClearAllStates(it) },
+        registerTransactionScreenProps = RegisterTransactionScreenProps(
+            registerTransactionViewModel = registerTransactionViewModel,
+            shouldItemBeVisible = shouldItemBeVisible,
+            clearAllStates = transactionClearStates,
+            onClearAllStates = { onClearAllStates(it) },
+        )
     )
 }
 

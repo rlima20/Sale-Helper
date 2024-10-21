@@ -21,6 +21,7 @@ import com.example.mystore.features.registertransaction.model.Transaction
 import com.example.mystore.toShortDateString
 import com.example.mystore.ui.components.commons.DividerComponent
 import com.example.mystore.ui.components.commons.DropdownComponent
+import com.example.mystore.ui.model.DropdownComponentProps
 import com.example.mystore.ui.components.commons.RowComponent
 import com.example.mystore.ui.components.commons.ScreenSectionComponent
 import com.example.mystore.ui.components.commons.TextCurrencyComponent
@@ -58,35 +59,39 @@ private fun TransactionDetailsBody(
     Column {
         // Dropdown Produto
         DropdownComponent(
-            isExpanded = false,
-            modifier = Modifier
-                .padding(start = 8.dp, end = 8.dp, bottom = 8.dp)
-                .fillMaxWidth(),
-            label = stringResource(R.string.my_store_product_2),
-            items = listOf(transaction.product.title),
-            textFieldSize = Size.Zero,
-            selectedText = transaction.product.title,
-            transactionDetailColors = Triple(
-                R.color.color_500,
-                R.color.color_500,
-                R.color.white,
+            dropdownComponentProps = DropdownComponentProps(
+                isExpanded = false,
+                modifier = Modifier
+                    .padding(start = 8.dp, end = 8.dp, bottom = 8.dp)
+                    .fillMaxWidth(),
+                label = stringResource(R.string.my_store_product_2),
+                items = listOf(transaction.product.title),
+                textFieldSize = Size.Zero,
+                selectedText = transaction.product.title,
+                transactionDetailColors = Triple(
+                    R.color.color_500,
+                    R.color.color_500,
+                    R.color.white,
+                ),
             ),
         )
 
         // Dropdwon Type
         DropdownComponent(
-            isExpanded = false,
-            modifier = Modifier
-                .padding(start = 8.dp, end = 8.dp, bottom = 8.dp)
-                .fillMaxWidth(),
-            label = stringResource(R.string.my_store_type),
-            items = listOf(transaction.transactionType.toString()),
-            textFieldSize = Size.Zero,
-            selectedText = transaction.transactionType.toString(),
-            transactionDetailColors = Triple(
-                R.color.color_500,
-                R.color.color_500,
-                R.color.white,
+            dropdownComponentProps = DropdownComponentProps(
+                isExpanded = false,
+                modifier = Modifier
+                    .padding(start = 8.dp, end = 8.dp, bottom = 8.dp)
+                    .fillMaxWidth(),
+                label = stringResource(R.string.my_store_type),
+                items = listOf(transaction.transactionType.toString()),
+                textFieldSize = Size.Zero,
+                selectedText = transaction.transactionType.toString(),
+                transactionDetailColors = Triple(
+                    R.color.color_500,
+                    R.color.color_500,
+                    R.color.white,
+                ),
             ),
         )
 

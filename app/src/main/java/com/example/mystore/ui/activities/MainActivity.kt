@@ -27,14 +27,14 @@ import com.example.mystore.navigateSingleTopTo
 import com.example.mystore.transformStringToInterfaceObject
 import com.example.mystore.ui.components.commons.TotalComponent
 import com.example.mystore.ui.components.main.BottomBarComponent
-import com.example.mystore.ui.components.main.BottomBarComponentProps
+import com.example.mystore.ui.model.BottomBarComponentProps
 import com.example.mystore.ui.components.main.TopBarComponent
-import com.example.mystore.ui.components.main.TopBarComponentProps
+import com.example.mystore.ui.model.TopBarComponentProps
 import com.example.mystore.ui.navigation.ConsolidatedPositionScreen
 import com.example.mystore.ui.navigation.HomeScreen
 import com.example.mystore.ui.navigation.MyStoreDestinationInterface
 import com.example.mystore.ui.navigation.MyStoreNavHost
-import com.example.mystore.ui.navigation.MyStoreNavHostProps
+import com.example.mystore.ui.model.MyStoreNavHostProps
 import com.example.mystore.ui.navigation.RegisterProductScreen
 import com.example.mystore.ui.navigation.RegisterTransactionScreen
 import com.example.mystore.ui.theme.MyStoreTheme

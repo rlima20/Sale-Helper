@@ -1,4 +1,4 @@
-package com.example.mystore.ui.components.main
+package com.example.mystore.ui.model
 
 import androidx.compose.runtime.Composable
 

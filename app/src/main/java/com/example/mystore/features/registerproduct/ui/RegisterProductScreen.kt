@@ -37,11 +37,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.mystore.R
 import com.example.mystore.features.registerproduct.model.Product
+import com.example.mystore.features.registerproduct.model.RegisterProductScreenBodyProps
 import com.example.mystore.features.registerproduct.viewmodel.RegisterProductViewModel
 import com.example.mystore.setQuantifierSize
 import com.example.mystore.ui.components.commons.AlertDialogComponent
 import com.example.mystore.ui.components.commons.FloatingActionButton
 import com.example.mystore.ui.components.commons.OutLinedTextFieldComponent
+import com.example.mystore.ui.model.OutLinedTextFieldComponentProps
 import com.example.mystore.ui.components.commons.Quantifier
 import com.example.mystore.ui.components.commons.ScreenSectionComponent
 import com.example.mystore.ui.components.commons.ShowAlertDialogComponent
@@ -208,13 +210,15 @@ fun RegisterProductScreenBody(
         val titleKeyboardController = LocalSoftwareKeyboardController.current
         val titleFocusManager = LocalFocusManager.current
         OutLinedTextFieldComponent(
-            selectedText = titleSelectedText,
-            label = titleLabel,
-            keyboardController = titleKeyboardController,
-            focusManager = titleFocusManager,
-            onValueChanged = {
-                registerProductViewModel.setTitleSelectedText(it)
-            },
+            outLinedTextFieldComponentProps = OutLinedTextFieldComponentProps(
+                selectedText = titleSelectedText,
+                label = titleLabel,
+                keyboardController = titleKeyboardController,
+                focusManager = titleFocusManager,
+                onValueChanged = {
+                    registerProductViewModel.setTitleSelectedText(it)
+                },
+            ),
         )
 
         // Description
@@ -222,11 +226,13 @@ fun RegisterProductScreenBody(
         val descriptionKeyboardController = LocalSoftwareKeyboardController.current
         val descriptionFocusManager = LocalFocusManager.current
         OutLinedTextFieldComponent(
-            selectedText = descriptionSelectedText,
-            label = descriptionLabel,
-            keyboardController = descriptionKeyboardController,
-            focusManager = descriptionFocusManager,
-            onValueChanged = { registerProductViewModel.setDescriptionSelectedText(it) },
+            outLinedTextFieldComponentProps = OutLinedTextFieldComponentProps(
+                selectedText = descriptionSelectedText,
+                label = descriptionLabel,
+                keyboardController = descriptionKeyboardController,
+                focusManager = descriptionFocusManager,
+                onValueChanged = { registerProductViewModel.setDescriptionSelectedText(it) },
+            ),
         )
 
         // Purchase Price
@@ -234,19 +240,21 @@ fun RegisterProductScreenBody(
         val purchasePriceKeyboardController = LocalSoftwareKeyboardController.current
         val purchasePriceFocusManager = LocalFocusManager.current
         OutLinedTextFieldComponent(
-            selectedText = purchasePriceSelectedText,
-            label = purchasePriceLabel,
-            keyboardController = purchasePriceKeyboardController,
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-            focusManager = purchasePriceFocusManager,
-            onValueChanged = {
-                registerProductViewModel.setPurchasePriceSelectedText(it.removeCurrencyToProductValue())
-            },
-            onDone = {
-                registerProductViewModel.setPurchasePriceSelectedText(
-                    purchasePriceSelectedText.removeCurrencyToProductValue(),
-                )
-            },
+            outLinedTextFieldComponentProps = OutLinedTextFieldComponentProps(
+                selectedText = purchasePriceSelectedText,
+                label = purchasePriceLabel,
+                keyboardController = purchasePriceKeyboardController,
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                focusManager = purchasePriceFocusManager,
+                onValueChanged = {
+                    registerProductViewModel.setPurchasePriceSelectedText(it.removeCurrencyToProductValue())
+                },
+                onDone = {
+                    registerProductViewModel.setPurchasePriceSelectedText(
+                        purchasePriceSelectedText.removeCurrencyToProductValue(),
+                    )
+                },
+            ),
         )
 
         // Sale Price
@@ -254,19 +262,21 @@ fun RegisterProductScreenBody(
         val salePriceKeyboardController = LocalSoftwareKeyboardController.current
         val salePriceFocusManager = LocalFocusManager.current
         OutLinedTextFieldComponent(
-            selectedText = salePriceSelectedText,
-            label = salePriceLabel,
-            keyboardController = salePriceKeyboardController,
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-            focusManager = salePriceFocusManager,
-            onValueChanged = {
-                registerProductViewModel.setSalePriceSelectedText(it.removeCurrencyToProductValue())
-            },
-            onDone = {
-                registerProductViewModel.setSalePriceSelectedText(
-                    salePriceSelectedText.removeCurrencyToProductValue(),
-                )
-            },
+            outLinedTextFieldComponentProps = OutLinedTextFieldComponentProps(
+                selectedText = salePriceSelectedText,
+                label = salePriceLabel,
+                keyboardController = salePriceKeyboardController,
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                focusManager = salePriceFocusManager,
+                onValueChanged = {
+                    registerProductViewModel.setSalePriceSelectedText(it.removeCurrencyToProductValue())
+                },
+                onDone = {
+                    registerProductViewModel.setSalePriceSelectedText(
+                        salePriceSelectedText.removeCurrencyToProductValue(),
+                    )
+                },
+            ),
         )
 
         Row {
@@ -377,16 +387,18 @@ fun ImageUrlBody(
         )
 
         OutLinedTextFieldComponent(
-            selectedText = imageUrlInternal,
-            label = stringResource(id = R.string.my_store_image_url),
-            keyboardController = titleKeyboardController,
-            focusManager = titleFocusManager,
-            transactionDetailColors = Triple(
-                R.color.color_500,
-                R.color.color_500,
-                R.color.white,
+            outLinedTextFieldComponentProps = OutLinedTextFieldComponentProps(
+                selectedText = imageUrlInternal,
+                label = stringResource(id = R.string.my_store_image_url),
+                keyboardController = titleKeyboardController,
+                focusManager = titleFocusManager,
+                transactionDetailColors = Triple(
+                    R.color.color_500,
+                    R.color.color_500,
+                    R.color.white,
+                ),
+                onValueChanged = { imageUrlInternal = it },
             ),
-            onValueChanged = { imageUrlInternal = it },
         )
 
         Row {

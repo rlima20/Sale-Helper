@@ -19,6 +19,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.example.mystore.R
+import com.example.mystore.ui.model.BottomBarComponentProps
 import com.example.mystore.ui.theme.mcpalette0_A900
 
 @Composable

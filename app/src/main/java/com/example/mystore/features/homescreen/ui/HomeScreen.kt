@@ -23,7 +23,15 @@ import com.example.mystore.R
 import com.example.mystore.enums.Screens
 import com.example.mystore.enums.Section
 import com.example.mystore.enums.Type
+import com.example.mystore.features.homescreen.model.DisplayAlertDialogProductDeleteConfirmationProps
+import com.example.mystore.features.homescreen.model.DisplayAlertDialogTransactionDeleteConfirmationProps
+import com.example.mystore.features.homescreen.model.DisplayAlertDialogWithTransactionDetailsProps
+import com.example.mystore.features.homescreen.model.HomeScreenProps
+import com.example.mystore.features.homescreen.model.ProductSectionProps
 import com.example.mystore.features.homescreen.model.Resume
+import com.example.mystore.features.homescreen.model.ResumeSectionProps
+import com.example.mystore.features.homescreen.model.TransactionProps
+import com.example.mystore.features.homescreen.model.TransactionSectionProps
 import com.example.mystore.features.homescreen.viewmodel.HomeViewModel
 import com.example.mystore.toStringResource
 import com.example.mystore.ui.components.commons.AlertDialogComponent

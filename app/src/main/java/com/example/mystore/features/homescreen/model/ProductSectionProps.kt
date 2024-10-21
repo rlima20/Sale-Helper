@@ -1,4 +1,4 @@
-package com.example.mystore.features.homescreen.ui
+package com.example.mystore.features.homescreen.model
 
 import com.example.mystore.features.registerproduct.model.Product
 
