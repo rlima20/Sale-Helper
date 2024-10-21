@@ -34,7 +34,7 @@ internal fun TopBarComponent(
             horizontalArrangement = Arrangement.SpaceBetween,
         ) {
             Text(
-                text = screenTitle,
+                text = visualProperties.screenTitle,
                 color = Color.White,
                 fontSize = 18.sp,
             )
@@ -48,12 +48,20 @@ internal fun TopBarComponent(
                 SetIconVisibility()
                 MenuComponent(
                     screens = screenList,
-                    isMenuExpanded = isMenuExpanded,
-                    menuDropdownWidth = dropdownMenuWidth,
-                    onMenuIconClicked = { onMenuIconClicked() },
-                    onDismissRequest = { onDismissRequest() },
-                    onDropDownMenuItemClicked = { screen -> onDropDownMenuItemClicked(screen) },
-                    onChangeTextFieldSize = { size -> onChangeDropdownMenuWidth(size) },
+                    isMenuExpanded = menuActions.isMenuExpanded,
+                    menuDropdownWidth = dropdownMenuProperties.dropdownMenuWidth,
+                    onMenuIconClicked = { menuActions.onMenuIconClicked() },
+                    onDismissRequest = { menuActions.onDismissRequest() },
+                    onDropDownMenuItemClicked = { screen ->
+                        dropdownMenuProperties.onDropDownMenuItemClicked(
+                            screen
+                        )
+                    },
+                    onChangeTextFieldSize = { size ->
+                        dropdownMenuProperties.onChangeDropdownMenuWidth(
+                            size
+                        )
+                    },
                 )
             }
         }
@@ -62,19 +70,19 @@ internal fun TopBarComponent(
 
 @Composable
 private fun TopBarComponentProps.SetIconVisibility() {
-    if (isIconVisible) {
-        Icon(
-            modifier = Modifier
-                .padding(end = 16.dp)
-                .size(20.dp)
-                .clickable(
-                    onClick = {
-                        onIconVisibilityClicked()
-                    },
-                ),
-            painter = isIconLined.setPainter(),
-            contentDescription = null,
-            tint = Color.White,
-        )
+    with(visualProperties) {
+        if (isIconVisible) {
+            Icon(
+                modifier = Modifier
+                    .padding(end = 16.dp)
+                    .size(20.dp)
+                    .clickable(
+                        onClick = { onIconVisibilityClicked() },
+                    ),
+                painter = isIconLined.setPainter(),
+                contentDescription = null,
+                tint = Color.White,
+            )
+        }
     }
 }

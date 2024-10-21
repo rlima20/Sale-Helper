@@ -141,6 +141,7 @@ private fun RegisterTransactionBody(
             var isExpandedProduct: Boolean by remember { mutableStateOf(false) }
             var textFieldSizeProduct: Size by remember { mutableStateOf(Size.Zero) }
 
+            // Todo - refatorar esse if. Esá muito grande e não está seguindo o princípio da responsailidade única
             if (showAlertDialog) {
                 AlertDialogComponent(
                     size = null,
@@ -198,6 +199,7 @@ private fun RegisterTransactionBody(
                     color = colorResource(id = R.color.white),
                 )
             }
+
             // Dropdown TransactionType
             Row(
                 modifier = Modifier.padding(start = 8.dp, end = 8.dp, bottom = 8.dp),
@@ -216,7 +218,6 @@ private fun RegisterTransactionBody(
                         onDropdownMenuDismissRequest = { isExpandedTransaction = false },
                         onDropdownMenuItemClicked = { itemSelected ->
                             selectedTextTransaction = itemSelected
-
                             setScreenStates(
                                 listOfProducts = listOfProducts,
                                 onSelectedTextTransaction = { selectedTextTransaction = it },

@@ -8,11 +8,11 @@ import androidx.compose.runtime.setValue
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.mystore.features.consolidatedposition.ui.ConsolidatedPositionScreen
-import com.example.mystore.features.homescreen.ui.HomeScreen
 import com.example.mystore.features.homescreen.model.HomeScreenProps
+import com.example.mystore.features.homescreen.ui.HomeScreen
 import com.example.mystore.features.registerproduct.ui.RegisterProductScreen
-import com.example.mystore.features.registertransaction.ui.RegisterTransactionScreen
 import com.example.mystore.features.registertransaction.model.RegisterTransactionScreenProps
+import com.example.mystore.features.registertransaction.ui.RegisterTransactionScreen
 import com.example.mystore.navigateSingleTopTo
 import com.example.mystore.ui.model.MyStoreNavHostProps
 
@@ -68,15 +68,15 @@ fun MyStoreNavHost(
 private fun MyStoreNavHostProps.NavigateToRegisterProductScreen(
     onClearStates: (onClearStates: Boolean) -> Unit
 ) {
-    onExpandBottomBar(false)
-    onShouldDisplayIcon(false)
+    uiProps.callbackProps.onExpandBottomBar(false)
+    uiProps.callbackProps.onShouldDisplayIcon(false)
 
     RegisterProductScreen(
-        product = product,
-        isEditMode = isEditMode,
-        registerProductViewModel = registerProductViewModel,
+        product = uiProps.stateProps.product,
+        isEditMode = uiProps.stateProps.isEditMode,
+        registerProductViewModel = viewModelProps.registerProductViewModel,
         onClearStates = { onClearStates(it) },
-        onNavigateToHome = { onNavigateToHome() },
+        onNavigateToHome = { uiProps.callbackProps.onNavigateToHome() },
     )
 }
 
@@ -85,13 +85,13 @@ private fun MyStoreNavHostProps.NavigateToRegisterTransactionScreen(
     transactionClearStates: Boolean,
     onClearAllStates: (onClearAllStates: Boolean) -> Unit
 ) {
-    onExpandBottomBar(false)
-    onShouldDisplayIcon(true)
+    uiProps.callbackProps.onExpandBottomBar(false)
+    uiProps.callbackProps.onShouldDisplayIcon(true)
 
     RegisterTransactionScreen(
         registerTransactionScreenProps = RegisterTransactionScreenProps(
-            registerTransactionViewModel = registerTransactionViewModel,
-            shouldItemBeVisible = shouldItemBeVisible,
+            registerTransactionViewModel = viewModelProps.registerTransactionViewModel,
+            shouldItemBeVisible = uiProps.stateProps.shouldItemBeVisible,
             clearAllStates = transactionClearStates,
             onClearAllStates = { onClearAllStates(it) },
         )
@@ -103,19 +103,19 @@ private fun MyStoreNavHostProps.NavigateToConsolidatedPositionScreen(
     onTransactionClearAllState: (onTransactionClearAll: Boolean) -> Unit,
     onProductClearAllState: (onTransactionClearAll: Boolean) -> Unit
 ) {
-    homeViewModel.getListOfSales()
-    homeViewModel.getListOfPurchases()
-    onShouldDisplayIcon(true)
+    viewModelProps.homeViewModel.getListOfSales()
+    viewModelProps.homeViewModel.getListOfPurchases()
+    uiProps.callbackProps.onShouldDisplayIcon(true)
     onTransactionClearAllState(true)
     onProductClearAllState(true)
 
     ConsolidatedPositionScreen(
-        homeViewModel = homeViewModel,
-        shouldItemBeVisible = shouldItemBeVisible,
+        homeViewModel = viewModelProps.homeViewModel,
+        shouldItemBeVisible = uiProps.stateProps.shouldItemBeVisible,
         onShowBottomBarExpanded = { ShowBottomBarExpanded() },
         onEmptyStateImageClicked = { route, screen ->
             navController.navigateSingleTopTo(route)
-            onUpdateTopBarText(screen)
+            uiProps.callbackProps.onUpdateTopBarText(screen)
         },
     )
 }
@@ -127,30 +127,35 @@ private fun MyStoreNavHostProps.NavigateToHomeScreen(
 ) {
     onTransactionClearAllState(true)
     onProductClearAllState(true)
-    onExpandBottomBar(false)
-    onShouldDisplayIcon(true)
+    uiProps.callbackProps.onExpandBottomBar(false)
+    uiProps.callbackProps.onShouldDisplayIcon(true)
 
     HomeScreen(
         homeScreenProps = HomeScreenProps(
-            homeViewModel = homeViewModel,
-            shouldItemBeVisible = shouldItemBeVisible,
-            onProductClick = { onProductClick(it) },
-            onProductDoubleClick = { onProductDoubleClick() },
+            homeViewModel = viewModelProps.homeViewModel,
+            shouldItemBeVisible = uiProps.stateProps.shouldItemBeVisible,
+            onProductClick = { uiProps.callbackProps.onProductClick(it) },
+            onProductDoubleClick = { uiProps.callbackProps.onProductDoubleClick() },
             onEmptyStateImageClicked = { route, screen ->
                 navController.navigateSingleTopTo(route)
-                onUpdateTopBarText(screen)
+                uiProps.callbackProps.onUpdateTopBarText(screen)
             },
-            onEditMode = { isEditMode, product -> onEditMode(isEditMode, product) },
+            onEditMode = { isEditMode, product ->
+                uiProps.callbackProps.onEditMode(
+                    isEditMode,
+                    product
+                )
+            },
         ),
     )
 }
 
 @Composable
 private fun MyStoreNavHostProps.ShowBottomBarExpanded() {
-    with(homeViewModel) {
+    with(viewModelProps.homeViewModel) {
         if (commonViewState.listOfSales.value.isNotEmpty() || commonViewState.listOfPurchases.value.isNotEmpty()) {
-            onExpandBottomBar(true)
-            onShowBottomBarExpanded(getSalesValue(), getPurchasesValue())
+            uiProps.callbackProps.onExpandBottomBar(true)
+            uiProps.callbackProps.onShowBottomBarExpanded(getSalesValue(), getPurchasesValue())
         }
     }
 }

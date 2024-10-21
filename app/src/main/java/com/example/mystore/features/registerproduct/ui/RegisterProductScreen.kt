@@ -43,13 +43,13 @@ import com.example.mystore.setQuantifierSize
 import com.example.mystore.ui.components.commons.AlertDialogComponent
 import com.example.mystore.ui.components.commons.FloatingActionButton
 import com.example.mystore.ui.components.commons.OutLinedTextFieldComponent
-import com.example.mystore.ui.model.OutLinedTextFieldComponentProps
 import com.example.mystore.ui.components.commons.Quantifier
 import com.example.mystore.ui.components.commons.ScreenSectionComponent
 import com.example.mystore.ui.components.commons.ShowAlertDialogComponent
 import com.example.mystore.ui.components.commons.TextFormattedComponent
 import com.example.mystore.ui.components.commons.ToastComponent
 import com.example.mystore.ui.components.commons.getPainter
+import com.example.mystore.ui.model.OutLinedTextFieldComponentProps
 
 @Composable
 fun RegisterProductScreen(

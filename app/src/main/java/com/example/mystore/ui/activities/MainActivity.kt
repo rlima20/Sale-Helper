@@ -27,14 +27,21 @@ import com.example.mystore.navigateSingleTopTo
 import com.example.mystore.transformStringToInterfaceObject
 import com.example.mystore.ui.components.commons.TotalComponent
 import com.example.mystore.ui.components.main.BottomBarComponent
-import com.example.mystore.ui.model.BottomBarComponentProps
 import com.example.mystore.ui.components.main.TopBarComponent
+import com.example.mystore.ui.model.BottomBarComponentProps
+import com.example.mystore.ui.model.CallbackProps
+import com.example.mystore.ui.model.DropdownMenuProperties
+import com.example.mystore.ui.model.MenuActions
+import com.example.mystore.ui.model.MyStoreNavHostProps
+import com.example.mystore.ui.model.StateProps
 import com.example.mystore.ui.model.TopBarComponentProps
+import com.example.mystore.ui.model.UIProps
+import com.example.mystore.ui.model.ViewModelProps
+import com.example.mystore.ui.model.VisualProperties
 import com.example.mystore.ui.navigation.ConsolidatedPositionScreen
 import com.example.mystore.ui.navigation.HomeScreen
 import com.example.mystore.ui.navigation.MyStoreDestinationInterface
 import com.example.mystore.ui.navigation.MyStoreNavHost
-import com.example.mystore.ui.model.MyStoreNavHostProps
 import com.example.mystore.ui.navigation.RegisterProductScreen
 import com.example.mystore.ui.navigation.RegisterTransactionScreen
 import com.example.mystore.ui.theme.MyStoreTheme
@@ -88,21 +95,31 @@ fun MyStoreApp(
             topBar = {
                 TopBarComponent(
                     topBarComponentProps = TopBarComponentProps(
-                        screenTitle = screenTitle,
-                        isIconLined = shouldItemBeVisible,
-                        isMenuExpanded = isMenuExpanded,
-                        dropdownMenuWidth = textFieldSize,
-                        isIconVisible = shouldDisplayIcon,
-                        onIconVisibilityClicked = { commonViewModel.setValueVisibility(!shouldItemBeVisible) },
-                        onMenuIconClicked = { commonViewModel.expandMenu(!isMenuExpanded) },
-                        onDismissRequest = { commonViewModel.expandMenu(false) },
-                        onDropDownMenuItemClicked = { screen ->
-                            currentScreen = screen.transformStringToInterfaceObject(application)
-                            commonViewModel.setScreenTitle(screen)
-                            commonViewModel.expandMenu(false)
-                            navController.navigateSingleTopTo(currentScreen.route)
-                        },
-                        onChangeDropdownMenuWidth = { size -> commonViewModel.setTextFieldSize(size) },
+                        visualProperties = VisualProperties(
+                            screenTitle = screenTitle,
+                            isIconVisible = shouldDisplayIcon,
+                            isIconLined = shouldItemBeVisible,
+                            onIconVisibilityClicked = { commonViewModel.setValueVisibility(!shouldItemBeVisible) },
+                        ),
+                        menuActions = MenuActions(
+                            isMenuExpanded = isMenuExpanded,
+                            onMenuIconClicked = { commonViewModel.expandMenu(!isMenuExpanded) },
+                            onDismissRequest = { commonViewModel.expandMenu(false) },
+                        ),
+                        dropdownMenuProperties = DropdownMenuProperties(
+                            dropdownMenuWidth = textFieldSize,
+                            onDropDownMenuItemClicked = { screen ->
+                                currentScreen = screen.transformStringToInterfaceObject(application)
+                                commonViewModel.setScreenTitle(screen)
+                                commonViewModel.expandMenu(false)
+                                navController.navigateSingleTopTo(currentScreen.route)
+                            },
+                            onChangeDropdownMenuWidth = { size ->
+                                commonViewModel.setTextFieldSize(
+                                    size
+                                )
+                            },
+                        ),
                     ),
                 )
             },
@@ -114,36 +131,49 @@ fun MyStoreApp(
                             .fillMaxSize()
                             .background(colorResource(id = R.color.color_50))
                             .padding(content),
-                        homeViewModel = homeViewModel,
-                        registerTransactionViewModel = registerTransactionViewModel,
-                        registerProductViewModel = registerProductViewModel,
-                        shouldItemBeVisible = shouldItemBeVisible,
-                        isEditMode = isEditMode,
-                        product = product,
-                        onExpandBottomBar = { shouldExpandBottomBar ->
-                            expandedBottomBar = shouldExpandBottomBar
-                        },
-                        onShowBottomBarExpanded = { sales, purchases ->
-                            totalAmountOfSales = sales
-                            totalAmountOfPurchases = purchases
-                        },
-                        onProductClick = { navController.navigateSingleTopTo(RegisterProductScreen.route) },
-                        onProductDoubleClick = {},
-                        onEditMode = { first, second ->
-                            isEditMode = first
-                            product = second
-                        },
-                        onShouldDisplayIcon = { shouldDisplay ->
-                            shouldDisplayIcon = shouldDisplay
-                        },
-                        onNavigateToHome = {
-                            navController.navigateSingleTopTo(HomeScreen.route)
-                            commonViewModel.setScreenTitle(
-                                application.getString(R.string.my_store_home),
+                        viewModelProps = ViewModelProps(
+                            homeViewModel = homeViewModel,
+                            registerTransactionViewModel = registerTransactionViewModel,
+                            registerProductViewModel = registerProductViewModel
+                        ),
+                        uiProps = UIProps(
+                            stateProps = StateProps(
+                                isEditMode = isEditMode,
+                                product = product,
+                                shouldItemBeVisible = shouldItemBeVisible
+                            ),
+                            callbackProps = CallbackProps(
+                                onExpandBottomBar = { shouldExpandBottomBar ->
+                                    expandedBottomBar = shouldExpandBottomBar
+                                },
+                                onShowBottomBarExpanded = { sales, purchases ->
+                                    totalAmountOfSales = sales
+                                    totalAmountOfPurchases = purchases
+                                },
+                                onProductClick = {
+                                    navController.navigateSingleTopTo(
+                                        RegisterProductScreen.route
+                                    )
+                                },
+                                onProductDoubleClick = {},
+                                onEditMode = { first, second ->
+                                    isEditMode = first
+                                    product = second
+                                },
+                                onShouldDisplayIcon = { shouldDisplay ->
+                                    shouldDisplayIcon = shouldDisplay
+                                },
+                                onNavigateToHome = {
+                                    navController.navigateSingleTopTo(HomeScreen.route)
+                                    commonViewModel.setScreenTitle(
+                                        application.getString(R.string.my_store_home),
+                                    )
+                                },
+                                onUpdateTopBarText = { commonViewModel.setScreenTitle(it) }
                             )
-                        },
-                        onUpdateTopBarText = { commonViewModel.setScreenTitle(it) },
+                        )
                     )
+
                 )
             },
             bottomBar = {
