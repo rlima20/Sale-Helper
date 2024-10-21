@@ -26,7 +26,6 @@ import com.example.mystore.enums.Type
 import com.example.mystore.features.homescreen.model.Resume
 import com.example.mystore.features.homescreen.viewmodel.HomeViewModel
 import com.example.mystore.features.registerproduct.model.Product
-import com.example.mystore.features.registertransaction.model.Transaction
 import com.example.mystore.toStringResource
 import com.example.mystore.ui.components.commons.AlertDialogComponent
 import com.example.mystore.ui.components.commons.DividerComponent
@@ -40,18 +39,11 @@ import com.example.mystore.ui.components.commons.ToastComponent
 import com.example.mystore.ui.components.commons.ValidateSection
 import com.example.mystore.ui.components.commons.validateSection
 
-// todo HomeScreen props
-
 @Composable
 fun HomeScreen(
-    homeViewModel: HomeViewModel,
-    shouldItemBeVisible: Boolean,
-    onProductClick: (product: Product) -> Unit = {},
-    onProductDoubleClick: () -> Unit = {},
-    onEmptyStateImageClicked: (route: String, screen: String) -> Unit = { _: String, _: String -> },
-    onEditMode: (Boolean, Product) -> Unit = { _, _ -> },
+    homeScreenProps: HomeScreenProps
 ) {
-    with(homeViewModel) {
+    with(homeScreenProps.homeViewModel) {
 
         getResume()
         getListOfSales()
@@ -72,290 +64,309 @@ fun HomeScreen(
 
         DisplayConfirmationToast(showToast)
 
-        Column(
-            modifier = Modifier
-                .padding(bottom = 12.dp)
-                .verticalScroll(rememberScrollState()),
-        ) {
-            // AlertDialog with transaction details
-            DisplayAlertDialogWithTransactionDetails(
-                showAlertDialogTransactionDetail,
-                transaction,
-                shouldItemBeVisible
-            )
+        with(homeScreenProps) {
+            Column(
+                modifier = Modifier
+                    .padding(bottom = 12.dp)
+                    .verticalScroll(rememberScrollState()),
+            ) {
+                // AlertDialog with transaction details
+                DisplayAlertDialogWithTransactionDetails(
+                    displayAlertDialogWithTransactionDetailsProps = DisplayAlertDialogWithTransactionDetailsProps(
+                        showAlertDialogTransactionDetail,
+                        transaction,
+                        shouldItemBeVisible
+                    )
+                )
 
-            // AlertDialog Transaction delete confirmation
-            DisplayAlertDialogTransactionDeleteConfirmation(
-                showAlertDialogHomeScreen,
-                transactionToastMessage,
-                transaction
-            )
+                // AlertDialog Transaction delete confirmation
+                DisplayAlertDialogTransactionDeleteConfirmation(
+                    displayAlertDialogTransactionDeleteConfirmationProps = DisplayAlertDialogTransactionDeleteConfirmationProps(
+                        showAlertDialogHomeScreen,
+                        transactionToastMessage,
+                        transaction
+                    )
+                )
 
-            // AlertDialog Product delete confirmation
-            DisplayAlertDialogProductDeleteConfirmation(
-                showAlertDialogHomeScreenProduct,
-                productToastMessage,
-                product
-            )
+                // AlertDialog Product delete confirmation
+                DisplayAlertDialogProductDeleteConfirmation(
+                    displayAlertDialogProductDeleteConfirmationProps = DisplayAlertDialogProductDeleteConfirmationProps(
+                        showAlertDialogHomeScreenProduct,
+                        productToastMessage,
+                        product
+                    )
+                )
 
-            // Total geral Section
-            ResumeSection(resume, shouldItemBeVisible, onEmptyStateImageClicked)
+                // Total geral Section
+                ResumeSection(
+                    resumeSectionProps = ResumeSectionProps(
+                        resume,
+                        shouldItemBeVisible,
+                        onEmptyStateImageClicked
+                    )
+                )
 
-            // Transactions Section
-            TransactionSection(listOfTransactions, shouldItemBeVisible, onEmptyStateImageClicked)
+                // Transactions Section
+                TransactionSection(
+                    transactionSectionProps = TransactionSectionProps(
+                        listOfTransactions,
+                        shouldItemBeVisible,
+                        onEmptyStateImageClicked
+                    )
+                )
 
-            // Products Section
-            ProductSection(
-                listOfProducts,
-                shouldItemBeVisible,
-                onEditMode,
-                onProductClick,
-                onProductDoubleClick,
-                onEmptyStateImageClicked
-            )
+                // Products Section
+                ProductSection(
+                    productSectionProps = ProductSectionProps(
+                        listOfProducts,
+                        shouldItemBeVisible,
+                        onEditMode,
+                        onProductClick,
+                        onProductDoubleClick,
+                        onEmptyStateImageClicked
+                    )
+                )
 
-            // Sets visibility of Toast to false
-            setShowToastState(productToastMessage, false)
+                // Sets visibility of Toast to false
+                setShowToastState(productToastMessage, false)
+            }
         }
     }
 }
 
-@Composable
-private fun HomeViewModel.ProductSection(
-    listOfProducts: List<Product>,
-    shouldItemBeVisible: Boolean,
-    onEditMode: (Boolean, Product) -> Unit,
-    onProductClick: (product: Product) -> Unit,
-    onProductDoubleClick: () -> Unit,
-    onEmptyStateImageClicked: (route: String, screen: String) -> Unit
-) {
-    ValidateSection(
-        screen = Screens.HOME,
-        sectionInfo = SectionInfo(
-            sectionName = Section.PRODUCTS,
-            section =
-            {
-                ScreenSectionComponent(
-                    title = stringResource(id = R.string.my_store_products),
-                    body = {
-                        ProductCarouselComponent(
-                            listOfProducts = listOfProducts,
-                            shouldItemBeVisible = shouldItemBeVisible,
-                            onImageRequestState = { state ->
-                                setImageRequestState(state)
-                            },
-                            onProductClick = { product ->
-                                onEditMode(true, product)
-                                onProductClick(product)
-                            },
-                            onProductLongClick = { product ->
-                                setShowAlertDialogHomeScreenProduct(true)
-                                setProduct(product)
-                            },
-                            onProductDoubleClick = { onProductDoubleClick() },
-                        )
-                    },
-                )
-            },
-        ),
-        sectionEmptyStateInfo =
-        SectionEmptyStateInfo(
-            data = listOfProducts,
-            emptySectionTitle = stringResource(R.string.my_store_no_products),
-            emptySectionPainter = painterResource(id = R.drawable.plus_circled_icon),
-            onEmptyStateImageClicked = {
-                onEmptyStateImageClicked(
-                    validateSection(
-                        Section.PRODUCTS,
-                    ),
-                    R.string.my_store_register_product.toStringResource()
-                )
-            },
-        ),
-    )
-}
-
-@Composable
-private fun HomeViewModel.TransactionSection(
-    listOfTransactions: List<Transaction>,
-    shouldItemBeVisible: Boolean,
-    onEmptyStateImageClicked: (route: String, screen: String) -> Unit
-) {
-    ValidateSection(
-        screen = Screens.HOME,
-        sectionInfo = SectionInfo(
-            sectionName = Section.TRANSACTIONS,
-            section = {
-                ScreenSectionComponent(
-                    title = stringResource(id = R.string.my_store_transactions),
-                    body = {
-                        HomeTransactions(
-                            listOfTransactions = listOfTransactions,
-                            shouldItemBeVisible = shouldItemBeVisible,
-                            onClick = {
-                                setShowAlertDialogTransactionDetail(true)
-                                setTransaction(it)
-                            },
-                            onLongClick = {
-                                setTransaction(it)
-                                setShowAlertDialogHomeScreen(true)
-                            },
-                        )
-                    },
-                )
-            },
-        ),
-        sectionEmptyStateInfo = SectionEmptyStateInfo(
-            data = listOfTransactions.ifEmpty { listOf() },
-            emptySectionTitle = stringResource(R.string.my_store_no_transactions_done),
-            emptySectionPainter = painterResource(id = R.drawable.my_store_plus_icon),
-            onEmptyStateImageClicked = {
-                onEmptyStateImageClicked(
-                    validateSection(
-                        Section.TRANSACTIONS,
-                    ),
-                    R.string.my_store_register_transaction.toStringResource()
-                )
-            },
-        ),
-    )
-}
 
 @Composable
 private fun ResumeSection(
-    resume: Resume?,
-    shouldItemBeVisible: Boolean,
-    onEmptyStateImageClicked: (route: String, screen: String) -> Unit
+    resumeSectionProps: ResumeSectionProps
 ) {
-    ValidateSection(
-        sectionInfo = SectionInfo(
-            section = {
-                ScreenSectionComponent(
-                    title = stringResource(id = R.string.my_store_overall_total),
-                    body = {
-                        resume?.let {
-                            HomeBody(
-                                it,
-                                shouldItemBeVisible,
-                            )
-                        }
-                    },
-                )
-            },
-        ),
-        sectionEmptyStateInfo = SectionEmptyStateInfo(
-            data = if (resume == null) emptyList() else listOf(resume),
-            emptySectionTitle = stringResource(R.string.my_store_no_transactions_done),
-            emptySectionPainter = painterResource(id = R.drawable.my_store_plus_icon),
-            onEmptyStateImageClicked = {
-                onEmptyStateImageClicked(
-                    validateSection(
-                        Section.RESUME,
-                    ),
-                    R.string.my_store_register_transaction.toStringResource()
-                )
-            },
-        ),
-    )
-}
-
-@Composable
-private fun HomeViewModel.DisplayAlertDialogProductDeleteConfirmation(
-    showAlertDialogHomeScreenProduct: Boolean,
-    productToastMessage: String,
-    product: Product
-) {
-    ShowAlertDialogComponent(
-        showAlert = showAlertDialogHomeScreenProduct,
-        title = stringResource(R.string.my_store_registry_removal),
-        alertDialogMessage = stringResource(R.string.my_store_removal_product_confirmation),
-        onDismissRequest = { setShowAlertDialogHomeScreenProduct(false) },
-        onDismissButtonClicked = { setShowAlertDialogHomeScreenProduct(false) },
-        onConfirmButtonClicked = {
-            setShowToastState(productToastMessage, true)
-            deleteProduct(product)
-            setShowAlertDialogHomeScreenProduct(false)
-            getAllProducts()
-        },
-    )
-}
-
-@Composable
-private fun HomeViewModel.DisplayAlertDialogTransactionDeleteConfirmation(
-    showAlertDialogHomeScreen: Boolean,
-    transactionToastMessage: String,
-    transaction: Transaction
-) {
-    ShowAlertDialogComponent(
-        showAlert = showAlertDialogHomeScreen,
-        title = stringResource(R.string.my_store_registry_removal),
-        alertDialogMessage = stringResource(R.string.my_store_removal_confirmation),
-        onDismissRequest = { setShowAlertDialogHomeScreen(false) },
-        onDismissButtonClicked = { setShowAlertDialogHomeScreen(false) },
-        onConfirmButtonClicked = {
-            setShowToastState(transactionToastMessage, true)
-            deleteTransaction(transaction)
-            setShowAlertDialogHomeScreen(false)
-            getListOfTransactions()
-        },
-    )
-}
-
-@Composable
-private fun HomeViewModel.DisplayAlertDialogWithTransactionDetails(
-    showAlertDialogTransactionDetail: Boolean,
-    transaction: Transaction,
-    shouldItemBeVisible: Boolean
-) {
-    if (showAlertDialogTransactionDetail) {
-        AlertDialogComponent(
-            size = Size(
-                width = LocalConfiguration.current.screenWidthDp.dp.value * 1f,
-                height = LocalConfiguration.current.screenHeightDp.dp.value * 0.58f,
+    with(resumeSectionProps) {
+        ValidateSection(
+            sectionInfo = SectionInfo(
+                section = {
+                    ScreenSectionComponent(
+                        title = stringResource(id = R.string.my_store_overall_total),
+                        body = {
+                            resume?.let {
+                                HomeBody(
+                                    it,
+                                    shouldItemBeVisible,
+                                )
+                            }
+                        },
+                    )
+                },
             ),
-            color = colorResource(id = R.color.color_transaparent),
-            content = {
-                TransactionDetailsComponent(
-                    transaction = transaction,
-                    shouldItemBeVisible = shouldItemBeVisible,
-                    onCloseAlertDialogTransactionDetail = {
-                        setShowAlertDialogTransactionDetail(false)
-                    },
-                )
-            },
-            onDismissRequest = { setShowAlertDialogTransactionDetail(false) },
+            sectionEmptyStateInfo = SectionEmptyStateInfo(
+                data = if (resume == null) emptyList() else listOf(resume),
+                emptySectionTitle = stringResource(R.string.my_store_no_transactions_done),
+                emptySectionPainter = painterResource(id = R.drawable.my_store_plus_icon),
+                onEmptyStateImageClicked = {
+                    onEmptyStateImageClicked(
+                        validateSection(
+                            Section.RESUME,
+                        ),
+                        R.string.my_store_register_transaction.toStringResource()
+                    )
+                },
+            ),
         )
     }
 }
 
 @Composable
-private fun DisplayConfirmationToast(showToast: Pair<String, Boolean>) {
-    if (showToast.second) {
-        ToastComponent(showToast.first)
+private fun HomeViewModel.ProductSection(
+    productSectionProps: ProductSectionProps
+) {
+    with(productSectionProps) {
+        ValidateSection(
+            screen = Screens.HOME,
+            sectionInfo = SectionInfo(
+                sectionName = Section.PRODUCTS,
+                section =
+                {
+                    ScreenSectionComponent(
+                        title = stringResource(id = R.string.my_store_products),
+                        body = {
+                            ProductCarouselComponent(
+                                listOfProducts = listOfProducts,
+                                shouldItemBeVisible = shouldItemBeVisible,
+                                onImageRequestState = { state ->
+                                    setImageRequestState(state)
+                                },
+                                onProductClick = { product ->
+                                    onEditMode(true, product)
+                                    onProductClick(product)
+                                },
+                                onProductLongClick = { product ->
+                                    setShowAlertDialogHomeScreenProduct(true)
+                                    setProduct(product)
+                                },
+                                onProductDoubleClick = { onProductDoubleClick() },
+                            )
+                        },
+                    )
+                },
+            ),
+            sectionEmptyStateInfo =
+            SectionEmptyStateInfo(
+                data = listOfProducts,
+                emptySectionTitle = stringResource(R.string.my_store_no_products),
+                emptySectionPainter = painterResource(id = R.drawable.plus_circled_icon),
+                onEmptyStateImageClicked = {
+                    onEmptyStateImageClicked(
+                        validateSection(
+                            Section.PRODUCTS,
+                        ),
+                        R.string.my_store_register_product.toStringResource()
+                    )
+                },
+            ),
+        )
     }
 }
 
 @Composable
-private fun HomeTransactions(
-    listOfTransactions: List<Transaction> = listOf(),
-    shouldItemBeVisible: Boolean,
-    onClick: (Transaction) -> Unit = {},
-    onLongClick: (Transaction) -> Unit = {},
+private fun HomeViewModel.TransactionSection(
+    transactionSectionProps: TransactionSectionProps
 ) {
-    Column(
-        modifier = Modifier
-            .padding(bottom = 8.dp, start = 8.dp, end = 8.dp)
-            .height(160.dp)
-            .verticalScroll(rememberScrollState()),
-        verticalArrangement = Arrangement.spacedBy(8.dp),
-    ) {
-        listOfTransactions.forEach { transaction ->
-            TransactionComponent(
-                transaction = transaction,
-                shouldItemBeVisible = shouldItemBeVisible,
-                onClick = { onClick(it) },
-                onLongClick = { onLongClick(it) },
+    with(transactionSectionProps) {
+        ValidateSection(
+            screen = Screens.HOME,
+            sectionInfo = SectionInfo(
+                sectionName = Section.TRANSACTIONS,
+                section = {
+                    ScreenSectionComponent(
+                        title = stringResource(id = R.string.my_store_transactions),
+                        body = {
+                            Transactions(
+                                transactionProps = TransactionProps(
+                                    listOfTransactions = listOfTransactions,
+                                    shouldItemBeVisible = shouldItemBeVisible,
+                                    onClick = {
+                                        setShowAlertDialogTransactionDetail(true)
+                                        setTransaction(it)
+                                    },
+                                    onLongClick = {
+                                        setTransaction(it)
+                                        setShowAlertDialogHomeScreen(true)
+                                    },
+                                ),
+                            )
+                        },
+                    )
+                },
+            ),
+            sectionEmptyStateInfo = SectionEmptyStateInfo(
+                data = listOfTransactions.ifEmpty { listOf() },
+                emptySectionTitle = stringResource(R.string.my_store_no_transactions_done),
+                emptySectionPainter = painterResource(id = R.drawable.my_store_plus_icon),
+                onEmptyStateImageClicked = {
+                    onEmptyStateImageClicked(
+                        validateSection(
+                            Section.TRANSACTIONS,
+                        ),
+                        R.string.my_store_register_transaction.toStringResource()
+                    )
+                },
+            ),
+        )
+    }
+}
+
+@Composable
+private fun HomeViewModel.DisplayAlertDialogProductDeleteConfirmation(
+    displayAlertDialogProductDeleteConfirmationProps: DisplayAlertDialogProductDeleteConfirmationProps
+) {
+    with(displayAlertDialogProductDeleteConfirmationProps) {
+        ShowAlertDialogComponent(
+            showAlert = showAlertDialogHomeScreenProduct,
+            title = stringResource(R.string.my_store_registry_removal),
+            alertDialogMessage = stringResource(R.string.my_store_removal_product_confirmation),
+            onDismissRequest = { setShowAlertDialogHomeScreenProduct(false) },
+            onDismissButtonClicked = { setShowAlertDialogHomeScreenProduct(false) },
+            onConfirmButtonClicked = {
+                setShowToastState(productToastMessage, true)
+                deleteProduct(product)
+                setShowAlertDialogHomeScreenProduct(false)
+                getAllProducts()
+            }
+        )
+    }
+}
+
+@Composable
+private fun HomeViewModel.DisplayAlertDialogTransactionDeleteConfirmation(
+    displayAlertDialogTransactionDeleteConfirmationProps: DisplayAlertDialogTransactionDeleteConfirmationProps
+) {
+    with(displayAlertDialogTransactionDeleteConfirmationProps) {
+        ShowAlertDialogComponent(
+            showAlert = showAlertDialogHomeScreen,
+            title = stringResource(R.string.my_store_registry_removal),
+            alertDialogMessage = stringResource(R.string.my_store_removal_confirmation),
+            onDismissRequest = { setShowAlertDialogHomeScreen(false) },
+            onDismissButtonClicked = { setShowAlertDialogHomeScreen(false) },
+            onConfirmButtonClicked = {
+                setShowToastState(transactionToastMessage, true)
+                deleteTransaction(transaction)
+                setShowAlertDialogHomeScreen(false)
+                getListOfTransactions()
+            },
+        )
+    }
+}
+
+@Composable
+private fun HomeViewModel.DisplayAlertDialogWithTransactionDetails(
+    displayAlertDialogWithTransactionDetailsProps: DisplayAlertDialogWithTransactionDetailsProps
+) {
+    with(displayAlertDialogWithTransactionDetailsProps) {
+        if (showAlertDialogTransactionDetail) {
+            AlertDialogComponent(
+                size = Size(
+                    width = LocalConfiguration.current.screenWidthDp.dp.value * 1f,
+                    height = LocalConfiguration.current.screenHeightDp.dp.value * 0.58f,
+                ),
+                color = colorResource(id = R.color.color_transaparent),
+                content = {
+                    TransactionDetailsComponent(
+                        transaction = transaction,
+                        shouldItemBeVisible = shouldItemBeVisible,
+                        onCloseAlertDialogTransactionDetail = {
+                            setShowAlertDialogTransactionDetail(false)
+                        },
+                    )
+                },
+                onDismissRequest = { setShowAlertDialogTransactionDetail(false) },
             )
+        }
+    }
+}
+
+@Composable
+private fun DisplayConfirmationToast(showToast: Pair<String, Boolean>) {
+    if (showToast.second) ToastComponent(showToast.first)
+}
+
+@Composable
+private fun Transactions(
+    transactionProps: TransactionProps
+) {
+    with(transactionProps) {
+        Column(
+            modifier = Modifier
+                .padding(bottom = 8.dp, start = 8.dp, end = 8.dp)
+                .height(160.dp)
+                .verticalScroll(rememberScrollState()),
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+        ) {
+            listOfTransactions.forEach { transaction ->
+                TransactionComponent(
+                    transaction = transaction,
+                    shouldItemBeVisible = shouldItemBeVisible,
+                    onClick = { onClick(it) },
+                    onLongClick = { onLongClick(it) },
+                )
+            }
         }
     }
 }

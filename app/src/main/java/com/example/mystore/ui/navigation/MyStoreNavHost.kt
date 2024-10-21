@@ -9,6 +9,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.mystore.features.consolidatedposition.ui.ConsolidatedPositionScreen
 import com.example.mystore.features.homescreen.ui.HomeScreen
+import com.example.mystore.features.homescreen.ui.HomeScreenProps
 import com.example.mystore.features.registerproduct.ui.RegisterProductScreen
 import com.example.mystore.features.registertransaction.ui.RegisterTransactionScreen
 import com.example.mystore.navigateSingleTopTo
@@ -126,15 +127,17 @@ private fun MyStoreNavHostProps.NavigateToHomeScreen(
     onShouldDisplayIcon(true)
 
     HomeScreen(
-        homeViewModel = homeViewModel,
-        shouldItemBeVisible = shouldItemBeVisible,
-        onProductClick = { onProductClick(it) },
-        onProductDoubleClick = { onProductDoubleClick() },
-        onEmptyStateImageClicked = { route, screen ->
-            navController.navigateSingleTopTo(route)
-            onUpdateTopBarText(screen)
-        },
-        onEditMode = { isEditMode, product -> onEditMode(isEditMode, product) },
+        homeScreenProps = HomeScreenProps(
+            homeViewModel = homeViewModel,
+            shouldItemBeVisible = shouldItemBeVisible,
+            onProductClick = { onProductClick(it) },
+            onProductDoubleClick = { onProductDoubleClick() },
+            onEmptyStateImageClicked = { route, screen ->
+                navController.navigateSingleTopTo(route)
+                onUpdateTopBarText(screen)
+            },
+            onEditMode = { isEditMode, product -> onEditMode(isEditMode, product) },
+        ),
     )
 }
 
