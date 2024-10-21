@@ -10,6 +10,14 @@ import androidx.navigation.NavHostController
 import coil.compose.AsyncImagePainter
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
+import com.example.mystore.commons.AppApplication
+import com.example.mystore.enums.States
+import com.example.mystore.enums.TransactionType
+import com.example.mystore.ui.navigation.ConsolidatedPositionScreen
+import com.example.mystore.ui.navigation.HomeScreen
+import com.example.mystore.ui.navigation.MyStoreDestinationInterface
+import com.example.mystore.ui.navigation.RegisterProductScreen
+import com.example.mystore.ui.navigation.RegisterTransactionScreen
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -63,9 +71,11 @@ fun ImageRequest.getAsyncImagePainter(
         is AsyncImagePainter.State.Success -> {
             onStateChanged(States.SUCCESS)
         }
+
         is AsyncImagePainter.State.Loading -> {
             onStateChanged(States.LOADING)
         }
+
         else -> {
             onStateChanged(States.ERROR)
         }
@@ -120,3 +130,19 @@ fun Int.setItemSize() = ((this - 16) / 2).dp
 
 fun Int.setQuantifierSize() = ((this - 74) / 2).dp
 
+fun String.transformStringToInterfaceObject(
+    application: AppApplication,
+): MyStoreDestinationInterface {
+    return when (this) {
+        application.getString(R.string.my_store_home) -> HomeScreen
+        application.getString(R.string.my_store_register_product) -> RegisterProductScreen
+        application.getString(R.string.my_store_register_transaction) -> RegisterTransactionScreen
+        application.getString(R.string.my_store_consolidated_position) -> ConsolidatedPositionScreen
+        else -> HomeScreen
+    }
+}
+
+@Composable
+fun Boolean.setPainter(): Painter =
+    if (this) painterResource(id = R.drawable.my_store_show_icon)
+    else painterResource(id = R.drawable.my_store_hidden_icon)
