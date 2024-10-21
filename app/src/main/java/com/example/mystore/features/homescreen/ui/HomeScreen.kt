@@ -25,7 +25,6 @@ import com.example.mystore.enums.Section
 import com.example.mystore.enums.Type
 import com.example.mystore.features.homescreen.model.Resume
 import com.example.mystore.features.homescreen.viewmodel.HomeViewModel
-import com.example.mystore.features.registerproduct.model.Product
 import com.example.mystore.toStringResource
 import com.example.mystore.ui.components.commons.AlertDialogComponent
 import com.example.mystore.ui.components.commons.DividerComponent
@@ -322,10 +321,7 @@ private fun HomeViewModel.DisplayAlertDialogWithTransactionDetails(
     with(displayAlertDialogWithTransactionDetailsProps) {
         if (showAlertDialogTransactionDetail) {
             AlertDialogComponent(
-                size = Size(
-                    width = LocalConfiguration.current.screenWidthDp.dp.value * 1f,
-                    height = LocalConfiguration.current.screenHeightDp.dp.value * 0.58f,
-                ),
+                size = setSize(),
                 color = colorResource(id = R.color.color_transaparent),
                 content = {
                     TransactionDetailsComponent(
@@ -424,6 +420,12 @@ private fun HomeBody(
         },
     )
 }
+
+@Composable
+private fun setSize() = Size(
+    width = LocalConfiguration.current.screenWidthDp.dp.value * 1f,
+    height = LocalConfiguration.current.screenHeightDp.dp.value * 0.58f,
+)
 
 @Preview
 @Composable

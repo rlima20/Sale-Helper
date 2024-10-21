@@ -26,30 +26,28 @@ fun AlertDialogComponent(
 ) {
     Box {
         AlertDialog(
-            modifier = if (size == null) {
-                Modifier
-            } else {
-                Modifier.size(
-                    width = size.width.dp,
-                    height = size.height.dp,
-                )
-            },
+            modifier = setModifier(size),
             shape = MaterialTheme.shapes.large,
             properties = DialogProperties(
                 decorFitsSystemWindows = false,
-                usePlatformDefaultWidth = false,
+                usePlatformDefaultWidth = false
             ),
             backgroundColor = color,
-            title = {
-                Text(
-                    text = title,
-                    color = colorResource(id = R.color.color_700),
-                )
-            },
+            title = { Text(text = title, color = colorResource(id = R.color.color_700)) },
             text = { content() },
             confirmButton = { confirmButton() },
             dismissButton = { dismissButton() },
             onDismissRequest = { onDismissRequest() },
         )
     }
+}
+
+@Composable
+private fun setModifier(size: Size?) = if (size == null) {
+    Modifier
+} else {
+    Modifier.size(
+        width = size.width.dp,
+        height = size.height.dp,
+    )
 }

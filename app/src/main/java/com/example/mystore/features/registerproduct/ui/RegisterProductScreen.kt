@@ -49,16 +49,6 @@ import com.example.mystore.ui.components.commons.TextFormattedComponent
 import com.example.mystore.ui.components.commons.ToastComponent
 import com.example.mystore.ui.components.commons.getPainter
 
-/**
- * Register product screen.
- *
- * @param product Product came from MyStoreNavHost
- * @param isEditMode Is edit mode
- * @param registerProductViewModel Register product view model
- * @param onClearStates On clear states
- * @param onNavigateToHome On navigate to home
- */
-
 @Composable
 fun RegisterProductScreen(
     product: Product = Product(),
@@ -95,21 +85,23 @@ fun RegisterProductScreen(
             title = stringResource(id = R.string.my_store_product_2).setTitle(isEditMode),
             body = {
                 RegisterProductScreenBody(
-                    product = productState,
-                    isEditMode = isEditMode,
-                    registerProductViewModel = registerProductViewModel,
-                    screenWidth = screenWidth,
-                    titleSelectedText = titleSelectedText,
-                    descriptionSelectedText = descriptionSelectedText,
-                    purchasePriceSelectedText = purchasePriceSelectedText,
-                    salePriceSelectedText = salePriceSelectedText,
-                    quantity = quantity,
-                    maxQuantityToBuy = maxQuantityToBuy,
-                    showAlertDialogProductScreen = showAlertDialogProductScreen,
-                    showAlertDialogImageUrl = showAlertDialogImageUrl,
-                    showToastProductScreen = showToastProductScreen,
-                    onNavigateToHome = { onNavigateToHome() },
-                    listOfProducts = listOfProducts
+                    registerProductScreenBodyProps = RegisterProductScreenBodyProps(
+                        product = productState,
+                        isEditMode = isEditMode,
+                        registerProductViewModel = registerProductViewModel,
+                        screenWidth = screenWidth,
+                        titleSelectedText = titleSelectedText,
+                        descriptionSelectedText = descriptionSelectedText,
+                        purchasePriceSelectedText = purchasePriceSelectedText,
+                        salePriceSelectedText = salePriceSelectedText,
+                        quantity = quantity,
+                        maxQuantityToBuy = maxQuantityToBuy,
+                        showAlertDialogProductScreen = showAlertDialogProductScreen,
+                        showAlertDialogImageUrl = showAlertDialogImageUrl,
+                        showToastProductScreen = showToastProductScreen,
+                        onNavigateToHome = { onNavigateToHome() },
+                        listOfProducts = listOfProducts
+                    ),
                 )
                 onClearStates(false)
             },
@@ -117,261 +109,239 @@ fun RegisterProductScreen(
     }
 }
 
-/**
- * Register product screen body.
- *
- * This is the entire registerProductScreen. It has all the componente from the ImageSection to
- * the save button.
- * @param product Product
- * @param screenWidth Screen width
- * @param isEditMode Is edit mode
- * @param registerProductViewModel Register product view model
- * @param titleSelectedText Title selected text
- * @param descriptionSelectedText Description selected text
- * @param purchasePriceSelectedText Purchase price selected text
- * @param salePriceSelectedText Sale price selected text
- * @param quantity Quantity
- * @param maxQuantityToBuy Max quantity to buy
- * @param showAlertDialogProductScreen Show alert dialog product screen
- * @param showAlertDialogImageUrl Show alert dialog image url
- * @param showToastProductScreen Show toast product screen
- * @param onNavigateToHome On navigate to home
- * @return
- */
 @OptIn(ExperimentalComposeUiApi::class, ExperimentalFoundationApi::class)
 @Composable
 fun RegisterProductScreenBody(
-    product: Product,
-    screenWidth: Int,
-    isEditMode: Boolean = false,
-    registerProductViewModel: RegisterProductViewModel,
-    titleSelectedText: String,
-    descriptionSelectedText: String,
-    purchasePriceSelectedText: String,
-    salePriceSelectedText: String,
-    quantity: Int,
-    maxQuantityToBuy: Int,
-    showAlertDialogProductScreen: Boolean,
-    showAlertDialogImageUrl: Boolean,
-    showToastProductScreen: Boolean,
-    onNavigateToHome: () -> Unit,
-    listOfProducts: List<Product>
+    registerProductScreenBodyProps: RegisterProductScreenBodyProps
 ) {
-    if (showToastProductScreen) {
-        ToastComponent(
-            stringResource(
-                id = if (isEditMode) {
-                    R.string.my_store_successful_edit
-                } else {
-                    R.string.my_store_successful_registry
-                },
-            ),
-        )
-        onNavigateToHome()
-    }
-
-    // AlertDialog with Url field to load an image from the net.
-    if (showAlertDialogImageUrl) {
-        AlertDialogComponent(
-            color = colorResource(id = R.color.color_transaparent),
-            size = Size(
-                width = LocalConfiguration.current.screenWidthDp.dp.value * 1f,
-                height = LocalConfiguration.current.screenHeightDp.dp.value * 0.47f,
-            ),
-            content = {
-                ScreenSectionComponent(
-                    title = stringResource(id = R.string.my_store_image_product),
-                    textColor = R.color.color_500,
-                    backgroundColor = R.color.white,
-                    body = {
-                        Column(modifier = Modifier.fillMaxSize()) {
-                            ImageUrlBody(
-                                registerProductViewModel = registerProductViewModel,
-                                imageUrl = product.imageUrl,
-                                onImageUrl = { imageUrl ->
-                                    registerProductViewModel.setImageUrl(product, imageUrl)
-                                },
-                            )
-                        }
+    with(registerProductScreenBodyProps) {
+        if (showToastProductScreen) {
+            ToastComponent(
+                stringResource(
+                    id = if (isEditMode) {
+                        R.string.my_store_successful_edit
+                    } else {
+                        R.string.my_store_successful_registry
                     },
+                ),
+            )
+            onNavigateToHome()
+        }
+
+        // AlertDialog with Url field to load an image from the net.
+        if (showAlertDialogImageUrl) {
+            AlertDialogComponent(
+                color = colorResource(id = R.color.color_transaparent),
+                size = setSize(),
+                content = {
+                    ScreenSectionComponent(
+                        title = stringResource(id = R.string.my_store_image_product),
+                        textColor = R.color.color_500,
+                        backgroundColor = R.color.white,
+                        body = {
+                            Column(modifier = Modifier.fillMaxSize()) {
+                                ImageUrlBody(
+                                    registerProductViewModel = registerProductViewModel,
+                                    imageUrl = product.imageUrl,
+                                    onImageUrl = { imageUrl ->
+                                        registerProductViewModel.setImageUrl(product, imageUrl)
+                                    },
+                                )
+                            }
+                        },
+                    )
+                },
+                onDismissRequest = { registerProductViewModel.setShowAlertDialogImageUrl(false) },
+            )
+        }
+
+        // AlertDialog with product creation or edition
+        ShowAlertDialogComponent(
+            showAlert = showAlertDialogProductScreen,
+            title = setAlertDialogTitle(),
+            alertDialogMessage = setAlertDialogMessage(),
+            onDismissRequest = { registerProductViewModel.setShowAlertDialogProductScreen(false) },
+            onDismissButtonClicked = {
+                registerProductViewModel.setShowAlertDialogProductScreen(
+                    false
                 )
             },
-            onDismissRequest = { registerProductViewModel.setShowAlertDialogImageUrl(false) },
-        )
-    }
-
-    // AlertDialog with product creation or edition
-    ShowAlertDialogComponent(
-        showAlert = showAlertDialogProductScreen,
-        title = if (isEditMode) {
-            stringResource(R.string.my_store_registry_update)
-        } else {
-            stringResource(R.string.my_store_registry_creation)
-        },
-        alertDialogMessage = stringResource(
-            if (isEditMode) {
-                R.string.my_store_edition_confirmation
-            } else {
-                R.string.my_store_creation_confirmation
+            onConfirmButtonClicked = {
+                registerProductViewModel.getAllProducts()
+                registerProductViewModel.saveProduct(
+                    product = Product(
+                        productId = setProductId(isEditMode, listOfProducts, product),
+                        title = titleSelectedText,
+                        description = descriptionSelectedText,
+                        purchasePrice = purchasePriceSelectedText.replaceCommaFromValue()
+                            .toDouble(),
+                        salePrice = salePriceSelectedText.replaceCommaFromValue().toDouble(),
+                        quantity = quantity,
+                        maxQuantityToBuy = maxQuantityToBuy,
+                        imageUrl = product.imageUrl,
+                    ),
+                    isEditMode = isEditMode,
+                )
+                registerProductViewModel.setShowToastProductScreen(true)
+                registerProductViewModel.setShowAlertDialogProductScreen(false)
+                registerProductViewModel.getAllProducts()
             },
-        ),
-        onDismissRequest = { registerProductViewModel.setShowAlertDialogProductScreen(false) },
-        onDismissButtonClicked = {
-            registerProductViewModel.setShowAlertDialogProductScreen(false)
-        },
-        onConfirmButtonClicked = {
-            registerProductViewModel.getAllProducts()
-            registerProductViewModel.saveProduct(
-                product = Product(
-                    productId = setProductId(isEditMode, listOfProducts, product),
-                    title = titleSelectedText,
-                    description = descriptionSelectedText,
-                    purchasePrice = purchasePriceSelectedText.replaceCommaFromValue().toDouble(),
-                    salePrice = salePriceSelectedText.replaceCommaFromValue().toDouble(),
-                    quantity = quantity,
-                    maxQuantityToBuy = maxQuantityToBuy,
-                    imageUrl = product.imageUrl,
-                ),
-                isEditMode = isEditMode,
-            )
-            registerProductViewModel.setShowToastProductScreen(true)
-            registerProductViewModel.setShowAlertDialogProductScreen(false)
-            registerProductViewModel.getAllProducts()
-        },
-    )
+        )
 
-    // Image Section
-    ImageSection(
-        modifier = Modifier
-            .fillMaxWidth()
-            .combinedClickable(
-                enabled = true,
-                onClick = { },
-                onLongClick = { },
-                onDoubleClick = { },
-            ),
-        registerProductViewModel = registerProductViewModel,
-        imageUrl = product.imageUrl,
-        onProductClick = { registerProductViewModel.setShowAlertDialogImageUrl(true) },
-    )
-
-    // Title
-    val titleLabel = stringResource(id = R.string.my_store_product_title)
-    val titleKeyboardController = LocalSoftwareKeyboardController.current
-    val titleFocusManager = LocalFocusManager.current
-    OutLinedTextFieldComponent(
-        selectedText = titleSelectedText,
-        label = titleLabel,
-        keyboardController = titleKeyboardController,
-        focusManager = titleFocusManager,
-        onValueChanged = {
-            registerProductViewModel.setTitleSelectedText(it)
-        },
-    )
-
-    // Description
-    val descriptionLabel = stringResource(id = R.string.my_store_product_description)
-    val descriptionKeyboardController = LocalSoftwareKeyboardController.current
-    val descriptionFocusManager = LocalFocusManager.current
-    OutLinedTextFieldComponent(
-        selectedText = descriptionSelectedText,
-        label = descriptionLabel,
-        keyboardController = descriptionKeyboardController,
-        focusManager = descriptionFocusManager,
-        onValueChanged = { registerProductViewModel.setDescriptionSelectedText(it) },
-    )
-
-    // Purchase Price
-    val purchasePriceLabel = stringResource(id = R.string.my_store_product_purchase_price)
-    val purchasePriceKeyboardController = LocalSoftwareKeyboardController.current
-    val purchasePriceFocusManager = LocalFocusManager.current
-    OutLinedTextFieldComponent(
-        selectedText = purchasePriceSelectedText,
-        label = purchasePriceLabel,
-        keyboardController = purchasePriceKeyboardController,
-        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-        focusManager = purchasePriceFocusManager,
-        onValueChanged = {
-            registerProductViewModel.setPurchasePriceSelectedText(it.removeCurrencyToProductValue())
-        },
-        onDone = {
-            registerProductViewModel.setPurchasePriceSelectedText(
-                purchasePriceSelectedText.removeCurrencyToProductValue(),
-            )
-        },
-    )
-
-    // Sale Price
-    val salePriceLabel = stringResource(id = R.string.my_store_product_sell_price)
-    val salePriceKeyboardController = LocalSoftwareKeyboardController.current
-    val salePriceFocusManager = LocalFocusManager.current
-    OutLinedTextFieldComponent(
-        selectedText = salePriceSelectedText,
-        label = salePriceLabel,
-        keyboardController = salePriceKeyboardController,
-        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-        focusManager = salePriceFocusManager,
-        onValueChanged = {
-            registerProductViewModel.setSalePriceSelectedText(it.removeCurrencyToProductValue())
-        },
-        onDone = {
-            registerProductViewModel.setSalePriceSelectedText(
-                salePriceSelectedText.removeCurrencyToProductValue(),
-            )
-        },
-    )
-
-    Row {
-        Column {
-            // Quantity
-            TextFormattedComponent(
-                leftSideText = stringResource(id = R.string.my_store_product_quantity),
-                fontSize = 18.sp,
-            )
-            Quantifier(
-                modifier = Modifier
-                    .width(screenWidth.setQuantifierSize())
-                    .padding(start = 8.dp, end = 4.dp),
-                enabled = !isEditMode,
-                shouldStartWithZero = true,
-                quantity = quantity,
-                onQuantifierChange = { registerProductViewModel.setQuantity(it) },
-            )
-        }
-        Column {
-            // Max Quantity To Buy
-            TextFormattedComponent(
-                leftSideText = stringResource(id = R.string.my_store_product_max_quantity),
-                fontSize = 18.sp,
-            )
-            Quantifier(
-                modifier = Modifier
-                    .width(screenWidth.setQuantifierSize())
-                    .padding(start = 4.dp, end = 8.dp),
-                shouldStartWithZero = true,
-                quantity = maxQuantityToBuy,
-                onQuantifierChange = { registerProductViewModel.setMaxQuantityToBuy(it) },
-            )
-        }
-
-        // Save button
-        Box(
-            contentAlignment = Alignment.BottomEnd,
+        // Image Section
+        ImageSection(
             modifier = Modifier
-                .offset(y = (12).dp)
-                .height(56.dp)
                 .fillMaxWidth()
-                .padding(top = 8.dp),
-        ) {
-            FloatingActionButton(
-                enabled = true,
-                modifier = Modifier.size(36.dp),
-                colorId = R.color.color_800,
-                onClick = { registerProductViewModel.setShowAlertDialogProductScreen(true) },
-            )
+                .combinedClickable(
+                    enabled = true,
+                    onClick = { },
+                    onLongClick = { },
+                    onDoubleClick = { },
+                ),
+            registerProductViewModel = registerProductViewModel,
+            imageUrl = product.imageUrl,
+            onProductClick = { registerProductViewModel.setShowAlertDialogImageUrl(true) },
+        )
+
+        // Title
+        val titleLabel = stringResource(id = R.string.my_store_product_title)
+        val titleKeyboardController = LocalSoftwareKeyboardController.current
+        val titleFocusManager = LocalFocusManager.current
+        OutLinedTextFieldComponent(
+            selectedText = titleSelectedText,
+            label = titleLabel,
+            keyboardController = titleKeyboardController,
+            focusManager = titleFocusManager,
+            onValueChanged = {
+                registerProductViewModel.setTitleSelectedText(it)
+            },
+        )
+
+        // Description
+        val descriptionLabel = stringResource(id = R.string.my_store_product_description)
+        val descriptionKeyboardController = LocalSoftwareKeyboardController.current
+        val descriptionFocusManager = LocalFocusManager.current
+        OutLinedTextFieldComponent(
+            selectedText = descriptionSelectedText,
+            label = descriptionLabel,
+            keyboardController = descriptionKeyboardController,
+            focusManager = descriptionFocusManager,
+            onValueChanged = { registerProductViewModel.setDescriptionSelectedText(it) },
+        )
+
+        // Purchase Price
+        val purchasePriceLabel = stringResource(id = R.string.my_store_product_purchase_price)
+        val purchasePriceKeyboardController = LocalSoftwareKeyboardController.current
+        val purchasePriceFocusManager = LocalFocusManager.current
+        OutLinedTextFieldComponent(
+            selectedText = purchasePriceSelectedText,
+            label = purchasePriceLabel,
+            keyboardController = purchasePriceKeyboardController,
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+            focusManager = purchasePriceFocusManager,
+            onValueChanged = {
+                registerProductViewModel.setPurchasePriceSelectedText(it.removeCurrencyToProductValue())
+            },
+            onDone = {
+                registerProductViewModel.setPurchasePriceSelectedText(
+                    purchasePriceSelectedText.removeCurrencyToProductValue(),
+                )
+            },
+        )
+
+        // Sale Price
+        val salePriceLabel = stringResource(id = R.string.my_store_product_sell_price)
+        val salePriceKeyboardController = LocalSoftwareKeyboardController.current
+        val salePriceFocusManager = LocalFocusManager.current
+        OutLinedTextFieldComponent(
+            selectedText = salePriceSelectedText,
+            label = salePriceLabel,
+            keyboardController = salePriceKeyboardController,
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+            focusManager = salePriceFocusManager,
+            onValueChanged = {
+                registerProductViewModel.setSalePriceSelectedText(it.removeCurrencyToProductValue())
+            },
+            onDone = {
+                registerProductViewModel.setSalePriceSelectedText(
+                    salePriceSelectedText.removeCurrencyToProductValue(),
+                )
+            },
+        )
+
+        Row {
+            Column {
+                // Quantity
+                TextFormattedComponent(
+                    leftSideText = stringResource(id = R.string.my_store_product_quantity),
+                    fontSize = 18.sp,
+                )
+                Quantifier(
+                    modifier = Modifier
+                        .width(screenWidth.setQuantifierSize())
+                        .padding(start = 8.dp, end = 4.dp),
+                    enabled = !isEditMode,
+                    shouldStartWithZero = true,
+                    quantity = quantity,
+                    onQuantifierChange = { registerProductViewModel.setQuantity(it) },
+                )
+            }
+            Column {
+                // Max Quantity To Buy
+                TextFormattedComponent(
+                    leftSideText = stringResource(id = R.string.my_store_product_max_quantity),
+                    fontSize = 18.sp,
+                )
+                Quantifier(
+                    modifier = Modifier
+                        .width(screenWidth.setQuantifierSize())
+                        .padding(start = 4.dp, end = 8.dp),
+                    shouldStartWithZero = true,
+                    quantity = maxQuantityToBuy,
+                    onQuantifierChange = { registerProductViewModel.setMaxQuantityToBuy(it) },
+                )
+            }
+
+            // Save button
+            Box(
+                contentAlignment = Alignment.BottomEnd,
+                modifier = Modifier
+                    .offset(y = (12).dp)
+                    .height(56.dp)
+                    .fillMaxWidth()
+                    .padding(top = 8.dp),
+            ) {
+                FloatingActionButton(
+                    enabled = true,
+                    modifier = Modifier.size(36.dp),
+                    colorId = R.color.color_800,
+                    onClick = { registerProductViewModel.setShowAlertDialogProductScreen(true) },
+                )
+            }
         }
     }
 }
+
+@Composable
+private fun RegisterProductScreenBodyProps.setAlertDialogMessage() =
+    stringResource(
+        if (isEditMode) R.string.my_store_edition_confirmation
+        else R.string.my_store_creation_confirmation
+    )
+
+@Composable
+private fun RegisterProductScreenBodyProps.setAlertDialogTitle() =
+    if (isEditMode) {
+        stringResource(R.string.my_store_registry_update)
+    } else {
+        stringResource(R.string.my_store_registry_creation)
+    }
+
+@Composable
+private fun setSize() = Size(
+    width = LocalConfiguration.current.screenWidthDp.dp.value * 1f,
+    height = LocalConfiguration.current.screenHeightDp.dp.value * 0.47f,
+)
 
 private fun setProductId(
     isEditMode: Boolean,
