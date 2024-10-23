@@ -9,6 +9,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -21,10 +22,18 @@ import com.example.mystore.features.registertransaction.model.Transaction
 import com.example.mystore.toShortDateString
 import com.example.mystore.ui.components.commons.DividerComponent
 import com.example.mystore.ui.components.commons.DropdownComponent
-import com.example.mystore.ui.model.DropdownComponentProps
 import com.example.mystore.ui.components.commons.RowComponent
 import com.example.mystore.ui.components.commons.ScreenSectionComponent
 import com.example.mystore.ui.components.commons.TextCurrencyComponent
+import com.example.mystore.ui.model.DropdownAppearance
+import com.example.mystore.ui.model.DropdownCallbacks
+import com.example.mystore.ui.model.DropdownColors
+import com.example.mystore.ui.model.DropdownComponentProps
+import com.example.mystore.ui.model.DropdownItem
+import com.example.mystore.ui.model.DropdownState
+import com.example.mystore.ui.model.OutLinedTextFieldComponentProps
+import com.example.mystore.ui.model.TextFieldAppearance
+import com.example.mystore.ui.model.TextFieldCallbacks
 import java.util.Date
 
 @Composable
@@ -60,39 +69,107 @@ private fun TransactionDetailsBody(
         // Dropdown Produto
         DropdownComponent(
             dropdownComponentProps = DropdownComponentProps(
-                isExpanded = false,
-                modifier = Modifier
-                    .padding(start = 8.dp, end = 8.dp, bottom = 8.dp)
-                    .fillMaxWidth(),
-                label = stringResource(R.string.my_store_product_2),
-                items = listOf(transaction.product.title),
-                textFieldSize = Size.Zero,
-                selectedText = transaction.product.title,
-                transactionDetailColors = Triple(
-                    R.color.color_500,
-                    R.color.color_500,
-                    R.color.white,
+                appearance = DropdownAppearance(
+                    modifier = Modifier
+                        .padding(start = 8.dp, end = 8.dp, bottom = 8.dp)
+                        .fillMaxWidth(),
+                    label = stringResource(R.string.my_store_product_2),
+                    textFieldSize = Size.Zero,
+                    colors = DropdownColors(
+                        transactionDetailColors = Triple(
+                            R.color.color_500,
+                            R.color.color_500,
+                            R.color.white
+                        )
+                    )
                 ),
+                state = DropdownState(
+                    isExpanded = false,
+                    selectedText = transaction.product.title
+                ),
+                items = DropdownItem(
+                    items = listOf(transaction.product.title)
+                ),
+                callbacks = DropdownCallbacks(
+                    onDropdownMenuDismissRequest = { /* Adicione a lógica necessária aqui */ },
+                    onDropdownMenuItemClicked = { selectedItem ->
+                        // Lógica para lidar com o item selecionado
+                    }
+                )
             ),
+            outLinedTextFieldComponentProps = OutLinedTextFieldComponentProps(
+                appearance = TextFieldAppearance(
+                    label = transaction.product.title,
+                    transactionDetailColors = Triple(
+                        R.color.color_500,
+                        R.color.color_500,
+                        R.color.white
+                    ),
+                    modifier = Modifier.padding(8.dp)
+                ),
+                focusManager = LocalFocusManager.current,
+                callbacks = TextFieldCallbacks(
+                    onValueChanged = { value ->
+                        // Lógica para lidar com a mudança de valor
+                    },
+                    onTrailingIconClicked = {
+                        // Lógica para o clique no ícone
+                    }
+                )
+            )
         )
 
         // Dropdwon Type
         DropdownComponent(
             dropdownComponentProps = DropdownComponentProps(
-                isExpanded = false,
-                modifier = Modifier
-                    .padding(start = 8.dp, end = 8.dp, bottom = 8.dp)
-                    .fillMaxWidth(),
-                label = stringResource(R.string.my_store_type),
-                items = listOf(transaction.transactionType.toString()),
-                textFieldSize = Size.Zero,
-                selectedText = transaction.transactionType.toString(),
-                transactionDetailColors = Triple(
-                    R.color.color_500,
-                    R.color.color_500,
-                    R.color.white,
+                appearance = DropdownAppearance(
+                    modifier = Modifier
+                        .padding(start = 8.dp, end = 8.dp, bottom = 8.dp)
+                        .fillMaxWidth(),
+                    label = stringResource(R.string.my_store_type),
+                    textFieldSize = Size.Zero,
+                    colors = DropdownColors(
+                        transactionDetailColors = Triple(
+                            R.color.color_500,
+                            R.color.color_500,
+                            R.color.white
+                        )
+                    )
                 ),
+                state = DropdownState(
+                    isExpanded = false,
+                    selectedText = transaction.transactionType.toString()
+                ),
+                items = DropdownItem(
+                    items = listOf(transaction.transactionType.toString())
+                ),
+                callbacks = DropdownCallbacks(
+                    onDropdownMenuDismissRequest = { /* Adicione a lógica necessária aqui */ },
+                    onDropdownMenuItemClicked = { selectedItem ->
+                        // Lógica para lidar com o item selecionado
+                    }
+                )
             ),
+            outLinedTextFieldComponentProps = OutLinedTextFieldComponentProps(
+                appearance = TextFieldAppearance(
+                    label = transaction.transactionType.toString(),
+                    transactionDetailColors = Triple(
+                        R.color.color_500,
+                        R.color.color_500,
+                        R.color.white
+                    ),
+                    modifier = Modifier.padding(8.dp)
+                ),
+                focusManager = LocalFocusManager.current,
+                callbacks = TextFieldCallbacks(
+                    onValueChanged = { value ->
+                        // Lógica para lidar com a mudança de valor
+                    },
+                    onTrailingIconClicked = {
+                        // Lógica para o clique no ícone
+                    }
+                )
+            )
         )
 
         // Date

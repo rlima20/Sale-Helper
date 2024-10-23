@@ -22,6 +22,8 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
+// Todo - Separar as estensões em subclasses?
+
 private val application = AppApplication.instance
 
 fun Int.toStringResource(): String = application.getString(this)

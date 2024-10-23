@@ -8,7 +8,7 @@ class RegisterTransactionViewState {
     var listOfTransactionType: MutableStateFlow<List<TransactionType>> =
         MutableStateFlow(listOf(TransactionType.SALE, TransactionType.PURCHASE))
     val quantity: MutableStateFlow<Int> = MutableStateFlow(1)
-    val maxQuantity: MutableStateFlow<Int> = MutableStateFlow(1)
+    val maxQuantity: MutableStateFlow<Int> = MutableStateFlow(9)
     val screenWidth: MutableStateFlow<Int> = MutableStateFlow(0)
     val totalValue: MutableStateFlow<Double> = MutableStateFlow(0.0)
     val transactionValue: MutableStateFlow<Transaction> = MutableStateFlow(Transaction())
