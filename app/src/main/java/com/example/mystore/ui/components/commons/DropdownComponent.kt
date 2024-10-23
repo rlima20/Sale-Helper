@@ -59,13 +59,13 @@ fun DropdownComponent(
                             },
                         label = appearance.label,
                         transactionDetailColors = appearance.transactionDetailColors,
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text) // Se necessário, ajuste aqui
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
                     ),
                     selectedText = selectedText,
                     keyboardController = keyboardController,
                     focusManager = focusManager,
                     callbacks = TextFieldCallbacks(
-                        onValueChanged = { callbacks.onOutLinedTextFieldValueChanged(it) }, // Passar o valor atualizado
+                        onValueChanged = { callbacks.onOutLinedTextFieldValueChanged(it) },
                         trailingIcon = {
                             Icon(
                                 setIcon(arrowPositionUp),

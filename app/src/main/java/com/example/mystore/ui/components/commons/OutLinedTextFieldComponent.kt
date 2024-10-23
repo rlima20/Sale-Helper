@@ -14,7 +14,6 @@ import androidx.compose.ui.unit.dp
 import com.example.mystore.R
 import com.example.mystore.ui.model.OutLinedTextFieldComponentProps
 
-@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun OutLinedTextFieldComponent(
     outLinedTextFieldComponentProps: OutLinedTextFieldComponentProps
