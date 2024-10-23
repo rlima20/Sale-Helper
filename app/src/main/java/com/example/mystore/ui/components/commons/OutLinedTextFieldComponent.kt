@@ -21,17 +21,17 @@ fun OutLinedTextFieldComponent(
 ) {
     with(outLinedTextFieldComponentProps) {
         OutlinedTextField(
-            enabled = enabled,
+            enabled = appearance.enabled,
             value = selectedText,
-            onValueChange = { onValueChanged(it) },
+            onValueChange = { callbacks.onValueChanged(it) },
             singleLine = true,
-            modifier = modifier
-                .background(colorResource(id = transactionDetailColors.third))
+            modifier = appearance.modifier
+                .background(colorResource(id = appearance.transactionDetailColors.third))
                 .fillMaxWidth(),
             label = { SetLabel() },
-            trailingIcon = { trailingIcon() },
+            trailingIcon = { callbacks.trailingIcon() },
             keyboardActions = createKeyboardActions(),
-            keyboardOptions = keyboardOptions,
+            keyboardOptions = appearance.keyboardOptions,
             colors = TextFieldDefaults.outlinedTextFieldColors(
                 focusedBorderColor = colorResource(id = R.color.color_50),
                 unfocusedBorderColor = colorResource(id = R.color.color_100),
@@ -40,8 +40,8 @@ fun OutLinedTextFieldComponent(
                 unfocusedLabelColor = colorResource(id = R.color.color_500),
                 disabledLabelColor = colorResource(id = R.color.color_50),
                 cursorColor = colorResource(id = R.color.color_50),
-                textColor = colorResource(id = transactionDetailColors.first),
-                disabledTextColor = colorResource(id = transactionDetailColors.first),
+                textColor = colorResource(id = appearance.transactionDetailColors.first),
+                disabledTextColor = colorResource(id = appearance.transactionDetailColors.first),
                 placeholderColor = colorResource(id = R.color.color_50),
             ),
             shape = RoundedCornerShape(15.dp),
@@ -57,14 +57,14 @@ private fun OutLinedTextFieldComponentProps.createKeyboardActions() =
         onDone = {
             keyboardController?.hide()
             focusManager.clearFocus()
-            onDone()
+            callbacks.onDone()
         },
     )
 
 @Composable
 private fun OutLinedTextFieldComponentProps.SetLabel() {
     Text(
-        color = colorResource(id = transactionDetailColors.first),
-        text = label,
+        color = colorResource(id = appearance.transactionDetailColors.first),
+        text = appearance.label,
     )
 }

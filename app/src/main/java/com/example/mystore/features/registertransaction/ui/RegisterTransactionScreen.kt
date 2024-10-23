@@ -21,6 +21,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -40,7 +41,6 @@ import com.example.mystore.toShortDateString
 import com.example.mystore.toTransactionType
 import com.example.mystore.ui.components.commons.AlertDialogComponent
 import com.example.mystore.ui.components.commons.DropdownComponent
-import com.example.mystore.ui.model.DropdownComponentProps
 import com.example.mystore.ui.components.commons.FloatingActionButton
 import com.example.mystore.ui.components.commons.Quantifier
 import com.example.mystore.ui.components.commons.RowComponent
@@ -49,6 +49,15 @@ import com.example.mystore.ui.components.commons.SectionInfo
 import com.example.mystore.ui.components.commons.TextCurrencyComponent
 import com.example.mystore.ui.components.commons.ToastComponent
 import com.example.mystore.ui.components.commons.ValidateSection
+import com.example.mystore.ui.model.DropdownAppearance
+import com.example.mystore.ui.model.DropdownCallbacks
+import com.example.mystore.ui.model.DropdownColors
+import com.example.mystore.ui.model.DropdownComponentProps
+import com.example.mystore.ui.model.DropdownItem
+import com.example.mystore.ui.model.DropdownState
+import com.example.mystore.ui.model.OutLinedTextFieldComponentProps
+import com.example.mystore.ui.model.TextFieldAppearance
+import com.example.mystore.ui.model.TextFieldCallbacks
 import java.util.Calendar
 
 @SuppressLint("StateFlowValueCalledInComposition")
@@ -206,48 +215,69 @@ private fun RegisterTransactionBody(
             ) {
                 DropdownComponent(
                     dropdownComponentProps = DropdownComponentProps(
-                        isExpanded = isExpandedTransaction,
-                        items = listOfTransactionTypes.map { it.name },
-                        selectedText = selectedTextTransaction,
-                        textFieldSize = textFieldSizeTransaction,
-                        label = stringResource(id = R.string.my_store_transaction_type),
-                        modifier = Modifier.fillMaxWidth(),
-                        onOutLinedTextFieldSize = { textFieldSizeTransaction = it },
-                        onOutLinedTextFieldValueChanged = { selectedTextTransaction = it },
-                        onTrailingIconClicked = { isExpandedTransaction = !isExpandedTransaction },
-                        onDropdownMenuDismissRequest = { isExpandedTransaction = false },
-                        onDropdownMenuItemClicked = { itemSelected ->
-                            selectedTextTransaction = itemSelected
-                            setScreenStates(
-                                listOfProducts = listOfProducts,
-                                onSelectedTextTransaction = { selectedTextTransaction = it },
-                                selectedTextTransaction = selectedTextTransaction,
-                                quantity = quantity,
-                                maxQuantity = maxQuantity,
-                                productName = selectedTextProduct,
-                                registerTransactionViewModel = registerTransactionViewModel,
-                                itemSelected = itemSelected,
-                                onSetQuantity = { quantity, newTransaction ->
-                                    registerTransactionViewModel.setQuantity(
-                                        if (quantity > newTransaction.product.quantity) {
-                                            if (newTransaction.product.quantity == 0) {
-                                                1
-                                            } else {
-                                                newTransaction.product.quantity
-                                            }
-                                        } else {
-                                            quantity
-                                        },
-                                    )
-                                },
+                        appearance = DropdownAppearance(
+                            textFieldSize = textFieldSizeTransaction,
+                            label = stringResource(id = R.string.my_store_transaction_type),
+                            modifier = Modifier.fillMaxWidth(),
+                            colors = DropdownColors(
+                                transactionDetailColors = Triple(
+                                    R.color.color_500,
+                                    R.color.color_500,
+                                    R.color.white,
+                                ),
                             )
-                        },
-                        transactionDetailColors = Triple(
-                            R.color.color_500,
-                            R.color.color_500,
-                            R.color.white,
+                        ),
+                        state = DropdownState(
+                            isExpanded = isExpandedTransaction,
+                            selectedText = selectedTextTransaction,
+                        ),
+                        items = DropdownItem(
+                            items = listOfTransactionTypes.map { it.name },
+                        ),
+                        callbacks = DropdownCallbacks(
+                            onDropdownMenuDismissRequest = { isExpandedTransaction = false },
+                            onDropdownMenuItemClicked = { itemSelected ->
+                                selectedTextTransaction = itemSelected
+                                setScreenStates(
+                                    listOfProducts = listOfProducts,
+                                    onSelectedTextTransaction = { selectedTextTransaction = it },
+                                    selectedTextTransaction = selectedTextTransaction,
+                                    quantity = quantity,
+                                    maxQuantity = maxQuantity,
+                                    productName = selectedTextProduct,
+                                    registerTransactionViewModel = registerTransactionViewModel,
+                                    itemSelected = itemSelected,
+                                    onSetQuantity = { quantity, newTransaction ->
+                                        registerTransactionViewModel.setQuantity(
+                                            if (quantity > newTransaction.product.quantity) {
+                                                if (newTransaction.product.quantity == 0) {
+                                                    1
+                                                } else {
+                                                    newTransaction.product.quantity
+                                                }
+                                            } else {
+                                                quantity
+                                            },
+                                        )
+                                    },
+                                )
+                            },
                         ),
                     ),
+                    outLinedTextFieldComponentProps = OutLinedTextFieldComponentProps(
+                        appearance = TextFieldAppearance(
+                            label = stringResource(id = R.string.my_store_transaction_type),
+                        ),
+                        selectedText = selectedTextTransaction,
+                        focusManager = LocalFocusManager.current,
+                        callbacks = TextFieldCallbacks(
+                            onOutLinedTextFieldSize = { textFieldSizeTransaction = it },
+                            onOutLinedTextFieldValueChanged = { selectedTextTransaction = it },
+                            onTrailingIconClicked = {
+                                isExpandedTransaction = !isExpandedTransaction
+                            },
+                        ),
+                    )
                 )
             }
 
@@ -258,60 +288,79 @@ private fun RegisterTransactionBody(
             ) {
                 DropdownComponent(
                     dropdownComponentProps = DropdownComponentProps(
-                        isExpanded = isExpandedProduct,
-                        items = listOfProducts.map { it.title.limitTo(20) },
-                        selectedText = selectedTextProduct,
-                        textFieldSize = textFieldSizeProduct,
-                        label = stringResource(id = R.string.my_store_product_2),
-                        modifier = Modifier.width(screenWidth.setItemSize()),
-                        onOutLinedTextFieldSize = { textFieldSizeProduct = it },
-                        onOutLinedTextFieldValueChanged = { selectedTextProduct = it },
-                        onTrailingIconClicked = { isExpandedProduct = !isExpandedProduct },
-                        onDropdownMenuDismissRequest = { isExpandedProduct = false },
-                        onDropdownMenuItemClicked = { itemSelected ->
-                            setScreenStates(
-                                listOfProducts = listOfProducts,
-                                selectedTextTransaction = selectedTextTransaction,
-                                quantity = quantity,
-                                productName = itemSelected,
-                                maxQuantity = maxQuantity,
-                                registerTransactionViewModel = registerTransactionViewModel,
-                                itemSelected = itemSelected,
-                                onSelectedTextTransaction = { selectedTextProduct = it },
+                        appearance = DropdownAppearance(
+                            textFieldSize = textFieldSizeProduct,
+                            label = stringResource(id = R.string.my_store_product_2),
+                            modifier = Modifier.width(screenWidth.setItemSize()),
+                            DropdownColors(
+                                transactionDetailColors = Triple(
+                                    R.color.color_500,
+                                    R.color.color_500,
+                                    R.color.white,
+                                ),
                             )
-                        },
-                        transactionDetailColors = Triple(
-                            R.color.color_500,
-                            R.color.color_500,
-                            R.color.white,
                         ),
-                    ),
-                )
-
-                Quantifier(
-                    modifier = Modifier
-                        .padding(start = 16.dp, top = 8.dp, end = 16.dp)
-                        .width(screenWidth.setItemSize()),
-                    maxQuantity = setMaxValue(
-                        selectedTextTransaction = selectedTextTransaction,
-                        transaction = transaction,
-                        maxQuantity = maxQuantity,
-                    ),
-                    quantity = quantity,
-                    onQuantifierChange = { quantifierQuantity ->
-                        setScreenStates(
-                            listOfProducts = listOfProducts,
-                            selectedTextTransaction = selectedTextTransaction,
-                            quantity = quantity,
-                            productName = selectedTextProduct,
-                            maxQuantity = maxQuantity,
-                            registerTransactionViewModel = registerTransactionViewModel,
-                            quantifierQuantity = quantifierQuantity,
-                            onQuantifierQuantity = { registerTransactionViewModel.setQuantity(it) },
+                        state = DropdownState(
+                            isExpanded = isExpandedProduct,
+                            selectedText = selectedTextProduct,
+                        ),
+                        items = DropdownItem(
+                            items = listOfProducts.map { it.title.limitTo(20) },
+                        ),
+                        callbacks = DropdownCallbacks(
+                            onDropdownMenuDismissRequest = { isExpandedProduct = false },
+                            onDropdownMenuItemClicked = { itemSelected ->
+                                setScreenStates(
+                                    listOfProducts = listOfProducts,
+                                    selectedTextTransaction = selectedTextTransaction,
+                                    quantity = quantity,
+                                    productName = itemSelected,
+                                    maxQuantity = maxQuantity,
+                                    registerTransactionViewModel = registerTransactionViewModel,
+                                    itemSelected = itemSelected,
+                                    onSelectedTextTransaction = { selectedTextProduct = it },
+                                )
+                            },
                         )
-                    },
+                    ),
+                    outLinedTextFieldComponentProps = OutLinedTextFieldComponentProps(
+                        appearance = TextFieldAppearance(
+                            label = stringResource(id = R.string.my_store_product_2),
+                        ),
+                        selectedText = selectedTextProduct,
+                        focusManager = LocalFocusManager.current,
+                        callbacks = TextFieldCallbacks(
+                            onOutLinedTextFieldSize = { textFieldSizeProduct = it },
+                            onOutLinedTextFieldValueChanged = { selectedTextProduct = it },
+                            onTrailingIconClicked = { isExpandedProduct = !isExpandedProduct }
+                        )
+                    ),
                 )
             }
+
+            Quantifier(
+                modifier = Modifier
+                    .padding(start = 8.dp, top = 8.dp, end = 16.dp, bottom = 16.dp)
+                    .width(screenWidth.setItemSize()),
+                maxQuantity = setMaxValue(
+                    selectedTextTransaction = selectedTextTransaction,
+                    transaction = transaction,
+                    maxQuantity = maxQuantity,
+                ),
+                quantity = quantity,
+                onQuantifierChange = { quantifierQuantity ->
+                    setScreenStates(
+                        listOfProducts = listOfProducts,
+                        selectedTextTransaction = selectedTextTransaction,
+                        quantity = quantity,
+                        productName = selectedTextProduct,
+                        maxQuantity = maxQuantity,
+                        registerTransactionViewModel = registerTransactionViewModel,
+                        quantifierQuantity = quantifierQuantity,
+                        onQuantifierQuantity = { registerTransactionViewModel.setQuantity(it) },
+                    )
+                },
+            )
 
             Row(
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -420,6 +469,7 @@ private fun createTransaction(
     )
 }
 
+// Todo - Refatorar essa função - está muito grande
 private fun setScreenStates(
     listOfProducts: List<Product>,
     selectedTextTransaction: String,
