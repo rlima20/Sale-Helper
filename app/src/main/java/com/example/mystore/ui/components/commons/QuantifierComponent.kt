@@ -24,12 +24,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.mystore.R
 
-// Todo - Mudar esse 9 daqui e deixar isso dinamico
 @Composable
 internal fun Quantifier(
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    maxQuantity: Int = 9,
+    maxQuantity: Int,
     quantity: Int,
     shouldStartWithZero: Boolean = false,
     onQuantifierChange: (Int) -> Unit,

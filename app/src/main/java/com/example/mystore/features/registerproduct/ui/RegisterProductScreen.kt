@@ -356,6 +356,7 @@ fun RegisterProductScreenBody(
                     shouldStartWithZero = true,
                     quantity = quantity,
                     onQuantifierChange = { registerProductViewModel.setQuantity(it) },
+                    maxQuantity = 9
                 )
             }
             Column {
@@ -371,6 +372,7 @@ fun RegisterProductScreenBody(
                     shouldStartWithZero = true,
                     quantity = maxQuantityToBuy,
                     onQuantifierChange = { registerProductViewModel.setMaxQuantityToBuy(it) },
+                    maxQuantity = 9
                 )
             }
 

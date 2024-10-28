@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 class RegisterTransactionViewState {
     var listOfTransactionType: List<TransactionType> = listOf(TransactionType.SALE, TransactionType.PURCHASE)
     val quantity: MutableStateFlow<Int> = MutableStateFlow(1)
-    val maxQuantity: MutableStateFlow<Int> = MutableStateFlow(9)
+    val maxQuantity: MutableStateFlow<Int> = MutableStateFlow(0)
     val screenWidth: MutableStateFlow<Int> = MutableStateFlow(0)
     val totalValue: MutableStateFlow<Double> = MutableStateFlow(0.0)
     val transactionValue: MutableStateFlow<Transaction> = MutableStateFlow(Transaction())
