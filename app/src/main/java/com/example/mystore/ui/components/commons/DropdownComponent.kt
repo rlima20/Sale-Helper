@@ -27,6 +27,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.toSize
 import com.example.mystore.R
+import com.example.mystore.toTransactionString
 import com.example.mystore.ui.model.DropdownAppearance
 import com.example.mystore.ui.model.DropdownCallbacks
 import com.example.mystore.ui.model.DropdownComponentProps
@@ -93,7 +94,7 @@ fun DropdownComponent(
                         callbacks.onDropdownMenuItemClicked(label)
                         callbacks.onDropdownMenuDismissRequest()
                     }) {
-                        Text(text = label)
+                        Text(text = label.toTransactionString())
                     }
                 }
             }

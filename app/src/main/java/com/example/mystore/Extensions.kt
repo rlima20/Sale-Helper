@@ -22,8 +22,6 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-// Todo - Separar as estensões em subclasses?
-
 private val application = AppApplication.instance
 
 fun Int.toStringResource(): String = application.getString(this)
@@ -56,9 +54,9 @@ fun Int.toUnityOutOfStock(isVisible: Boolean): String =
 
 fun String.toTransactionString(): String {
     return when (this) {
-        TransactionType.SALE.name -> "VENDA"
-        TransactionType.PURCHASE.name -> "COMPRA"
-        else -> "VENDA"
+        TransactionType.SALE.name -> application.getString(R.string.my_store_transaction_type_sale)
+        TransactionType.PURCHASE.name -> application.getString(R.string.my_store_transaction_type_purchase)
+        else -> this
     }
 }
 
@@ -122,11 +120,8 @@ fun NavHostController.navigateSingleTopTo(route: String) =
 
 @Composable
 fun TransactionType.colorTransactionType() =
-    if (this == TransactionType.SALE) {
-        colorResource(id = R.color.color_green_A900)
-    } else {
-        colorResource(id = R.color.color_red_A1000)
-    }
+    if (this == TransactionType.SALE) colorResource(id = R.color.color_green_A900)
+    else colorResource(id = R.color.color_red_A1000)
 
 fun Int.setItemSize() = ((this - 16) / 2).dp
 

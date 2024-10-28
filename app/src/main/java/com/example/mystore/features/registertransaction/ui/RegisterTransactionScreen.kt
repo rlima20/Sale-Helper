@@ -71,7 +71,8 @@ fun RegisterTransactionScreen(
 
         registerTransactionViewModel.setScreenWidth(LocalConfiguration.current.screenWidthDp)
         val listOfProducts by registerTransactionViewModel.commonViewState.listOfProducts.collectAsState()
-        val listOfTransactionTypes by registerTransactionViewModel.registerTransactionViewState.listOfTransactionType.collectAsState()
+        val listOfTransactionTypes =
+            registerTransactionViewModel.registerTransactionViewState.listOfTransactionType
         val screenWidth by registerTransactionViewModel.registerTransactionViewState.screenWidth.collectAsState()
         val quantity by registerTransactionViewModel.registerTransactionViewState.quantity.collectAsState()
         val maxQuantity by registerTransactionViewModel.registerTransactionViewState.maxQuantity.collectAsState()
@@ -158,7 +159,7 @@ private fun RegisterTransactionBody(
                 selectedTextTransaction = selectedTextTransaction,
                 onSetIsExpandedProduct = { isExpandedProduct = it },
                 onSetSelectedTextProduct = { selectedTextProduct = it },
-                onSetTextFieldSizeProduct = { textFieldSizeProduct = it}
+                onSetTextFieldSizeProduct = { textFieldSizeProduct = it }
             )
 
             Quantifier(
