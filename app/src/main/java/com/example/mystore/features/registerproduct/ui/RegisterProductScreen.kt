@@ -50,6 +50,8 @@ import com.example.mystore.ui.components.commons.TextFormattedComponent
 import com.example.mystore.ui.components.commons.ToastComponent
 import com.example.mystore.ui.components.commons.getPainter
 import com.example.mystore.ui.model.OutLinedTextFieldComponentProps
+import com.example.mystore.ui.model.TextFieldAppearance
+import com.example.mystore.ui.model.TextFieldCallbacks
 
 @Composable
 fun RegisterProductScreen(
@@ -211,14 +213,30 @@ fun RegisterProductScreenBody(
         val titleFocusManager = LocalFocusManager.current
         OutLinedTextFieldComponent(
             outLinedTextFieldComponentProps = OutLinedTextFieldComponentProps(
+                appearance = TextFieldAppearance(
+                    label = titleLabel,
+                    modifier = Modifier, // Adicione modificadores se necessário
+                    transactionDetailColors = Triple(
+                        R.color.color_900,
+                        R.color.white,
+                        R.color.white
+                    ) // Ajuste conforme necessário
+                ),
                 selectedText = titleSelectedText,
-                label = titleLabel,
                 keyboardController = titleKeyboardController,
                 focusManager = titleFocusManager,
-                onValueChanged = {
-                    registerProductViewModel.setTitleSelectedText(it)
-                },
-            ),
+                callbacks = TextFieldCallbacks(
+                    onValueChanged = {
+                        registerProductViewModel.setTitleSelectedText(it)
+                    },
+                    onTrailingIconClicked = {
+                        // Lógica para o clique no ícone (se necessário)
+                    },
+                    onDone = {
+                        // Lógica para finalizar a edição (se necessário)
+                    }
+                )
+            )
         )
 
         // Description
@@ -227,12 +245,30 @@ fun RegisterProductScreenBody(
         val descriptionFocusManager = LocalFocusManager.current
         OutLinedTextFieldComponent(
             outLinedTextFieldComponentProps = OutLinedTextFieldComponentProps(
+                appearance = TextFieldAppearance(
+                    label = descriptionLabel,
+                    modifier = Modifier, // Adicione modificadores se necessário
+                    transactionDetailColors = Triple(
+                        R.color.color_900,
+                        R.color.white,
+                        R.color.white
+                    ) // Ajuste conforme necessário
+                ),
                 selectedText = descriptionSelectedText,
-                label = descriptionLabel,
                 keyboardController = descriptionKeyboardController,
                 focusManager = descriptionFocusManager,
-                onValueChanged = { registerProductViewModel.setDescriptionSelectedText(it) },
-            ),
+                callbacks = TextFieldCallbacks(
+                    onValueChanged = {
+                        registerProductViewModel.setDescriptionSelectedText(it)
+                    },
+                    onTrailingIconClicked = {
+                        // Lógica para o clique no ícone (se necessário)
+                    },
+                    onDone = {
+                        // Lógica para finalizar a edição (se necessário)
+                    }
+                )
+            )
         )
 
         // Purchase Price
@@ -241,20 +277,33 @@ fun RegisterProductScreenBody(
         val purchasePriceFocusManager = LocalFocusManager.current
         OutLinedTextFieldComponent(
             outLinedTextFieldComponentProps = OutLinedTextFieldComponentProps(
+                appearance = TextFieldAppearance(
+                    label = purchasePriceLabel,
+                    modifier = Modifier, // Adicione modificadores se necessário
+                    transactionDetailColors = Triple(
+                        R.color.color_900,
+                        R.color.white,
+                        R.color.white
+                    ), // Ajuste conforme necessário
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+                ),
                 selectedText = purchasePriceSelectedText,
-                label = purchasePriceLabel,
                 keyboardController = purchasePriceKeyboardController,
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 focusManager = purchasePriceFocusManager,
-                onValueChanged = {
-                    registerProductViewModel.setPurchasePriceSelectedText(it.removeCurrencyToProductValue())
-                },
-                onDone = {
-                    registerProductViewModel.setPurchasePriceSelectedText(
-                        purchasePriceSelectedText.removeCurrencyToProductValue(),
-                    )
-                },
-            ),
+                callbacks = TextFieldCallbacks(
+                    onValueChanged = {
+                        registerProductViewModel.setPurchasePriceSelectedText(it.removeCurrencyToProductValue())
+                    },
+                    onDone = {
+                        registerProductViewModel.setPurchasePriceSelectedText(
+                            purchasePriceSelectedText.removeCurrencyToProductValue()
+                        )
+                    },
+                    onTrailingIconClicked = {
+                        // Lógica para o clique no ícone (se necessário)
+                    }
+                )
+            )
         )
 
         // Sale Price
@@ -263,20 +312,33 @@ fun RegisterProductScreenBody(
         val salePriceFocusManager = LocalFocusManager.current
         OutLinedTextFieldComponent(
             outLinedTextFieldComponentProps = OutLinedTextFieldComponentProps(
+                appearance = TextFieldAppearance(
+                    label = salePriceLabel,
+                    modifier = Modifier, // Adicione modificadores se necessário
+                    transactionDetailColors = Triple(
+                        R.color.color_900,
+                        R.color.white,
+                        R.color.white
+                    ), // Ajuste conforme necessário
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+                ),
                 selectedText = salePriceSelectedText,
-                label = salePriceLabel,
                 keyboardController = salePriceKeyboardController,
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 focusManager = salePriceFocusManager,
-                onValueChanged = {
-                    registerProductViewModel.setSalePriceSelectedText(it.removeCurrencyToProductValue())
-                },
-                onDone = {
-                    registerProductViewModel.setSalePriceSelectedText(
-                        salePriceSelectedText.removeCurrencyToProductValue(),
-                    )
-                },
-            ),
+                callbacks = TextFieldCallbacks(
+                    onValueChanged = {
+                        registerProductViewModel.setSalePriceSelectedText(it.removeCurrencyToProductValue())
+                    },
+                    onDone = {
+                        registerProductViewModel.setSalePriceSelectedText(
+                            salePriceSelectedText.removeCurrencyToProductValue()
+                        )
+                    },
+                    onTrailingIconClicked = {
+                        // Lógica para o clique no ícone (se necessário)
+                    }
+                )
+            )
         )
 
         Row {
@@ -294,6 +356,7 @@ fun RegisterProductScreenBody(
                     shouldStartWithZero = true,
                     quantity = quantity,
                     onQuantifierChange = { registerProductViewModel.setQuantity(it) },
+                    maxQuantity = 9
                 )
             }
             Column {
@@ -309,6 +372,7 @@ fun RegisterProductScreenBody(
                     shouldStartWithZero = true,
                     quantity = maxQuantityToBuy,
                     onQuantifierChange = { registerProductViewModel.setMaxQuantityToBuy(it) },
+                    maxQuantity = 9
                 )
             }
 
@@ -385,20 +449,32 @@ fun ImageUrlBody(
             imageUrl = imageUrlInternal,
             onProductClick = { registerProductViewModel.setShowAlertDialogImageUrl(true) },
         )
-
         OutLinedTextFieldComponent(
             outLinedTextFieldComponentProps = OutLinedTextFieldComponentProps(
+                appearance = TextFieldAppearance(
+                    label = stringResource(id = R.string.my_store_image_url),
+                    modifier = Modifier, // Adicione modificadores se necessário
+                    transactionDetailColors = Triple(
+                        R.color.color_500,
+                        R.color.color_500,
+                        R.color.white
+                    )
+                ),
                 selectedText = imageUrlInternal,
-                label = stringResource(id = R.string.my_store_image_url),
                 keyboardController = titleKeyboardController,
                 focusManager = titleFocusManager,
-                transactionDetailColors = Triple(
-                    R.color.color_500,
-                    R.color.color_500,
-                    R.color.white,
-                ),
-                onValueChanged = { imageUrlInternal = it },
-            ),
+                callbacks = TextFieldCallbacks(
+                    onValueChanged = { newValue ->
+                        imageUrlInternal = newValue
+                    },
+                    onTrailingIconClicked = {
+                        // Lógica para o clique no ícone (se necessário)
+                    },
+                    onDone = {
+                        // Lógica para finalizar a edição (se necessário)
+                    }
+                )
+            )
         )
 
         Row {

@@ -28,7 +28,7 @@ import com.example.mystore.R
 internal fun Quantifier(
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    maxQuantity: Int = 9,
+    maxQuantity: Int,
     quantity: Int,
     shouldStartWithZero: Boolean = false,
     onQuantifierChange: (Int) -> Unit,

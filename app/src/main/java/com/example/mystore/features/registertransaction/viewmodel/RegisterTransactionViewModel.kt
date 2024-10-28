@@ -32,7 +32,7 @@ class RegisterTransactionViewModel(
     }
 
     private fun getTransactionTypes() {
-        registerTransactionViewState.listOfTransactionType.value = listOf(
+        registerTransactionViewState.listOfTransactionType = listOf(
             TransactionType.SALE,
             TransactionType.PURCHASE,
         )
@@ -97,8 +97,8 @@ class RegisterTransactionViewModel(
         quantity: Int,
         transaction: Transaction,
     ) {
-        val index = commonViewState.listOfProducts.value?.indexOf(product) ?: 0
-        val innerList = commonViewState.listOfProducts.value ?: emptyList()
+        val index = commonViewState.listOfProducts.value.indexOf(product)
+        val innerList = commonViewState.listOfProducts.value
 
         if (transaction.transactionType.name == TransactionType.SALE.name) {
             innerList[index].quantity -= quantity
