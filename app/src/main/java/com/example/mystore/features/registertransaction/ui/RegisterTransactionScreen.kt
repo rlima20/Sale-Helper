@@ -38,6 +38,7 @@ import com.example.mystore.features.registertransaction.viewmodel.RegisterTransa
 import com.example.mystore.limitTo
 import com.example.mystore.setItemSize
 import com.example.mystore.toShortDateString
+import com.example.mystore.toTransactionString
 import com.example.mystore.toTransactionType
 import com.example.mystore.ui.components.commons.AlertDialogComponent
 import com.example.mystore.ui.components.commons.DropdownComponent
@@ -546,7 +547,7 @@ private fun RegisterTransactionBodyProps.DropdownTransactionType(
                             productName = selectedTextProduct,
                             registerTransactionViewModel = registerTransactionViewModel,
                             itemSelected = itemSelected,
-                            onSetQuantity = { quantity, newTransaction ->
+                            onSetQuantity = { quantity, newTransaction -> // todo - melhorar isso
                                 registerTransactionViewModel.setQuantity(
                                     if (quantity > newTransaction.product.quantity) {
                                         if (newTransaction.product.quantity == 0) {
@@ -567,7 +568,7 @@ private fun RegisterTransactionBodyProps.DropdownTransactionType(
                 appearance = TextFieldAppearance(
                     label = stringResource(id = R.string.my_store_transaction_type),
                 ),
-                selectedText = selectedTextTransaction,
+                selectedText = selectedTextTransaction.toTransactionString(),
                 focusManager = LocalFocusManager.current,
                 callbacks = TextFieldCallbacks(
                     onOutLinedTextFieldSize = { onSetTextFieldSizeTransaction(it) },
