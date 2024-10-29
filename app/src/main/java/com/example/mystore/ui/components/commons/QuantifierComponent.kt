@@ -30,7 +30,7 @@ internal fun Quantifier(
     enabled: Boolean = true,
     maxQuantity: Int,
     quantity: Int,
-    shouldStartWithZero: Boolean = false,
+    shouldStartWithZero: Boolean = true,
     onQuantifierChange: (Int) -> Unit,
 ) {
     var isLeftIconEnabled = false
@@ -49,37 +49,58 @@ internal fun Quantifier(
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
         ) {
-            IconButton(
-                enabled = isLeftIconEnabled,
-                onClick = { onQuantifierChange(quantity - 1) },
-            ) {
-                Icon(
-                    modifier = Modifier.size(18.dp),
-                    imageVector = Icons.Default.KeyboardArrowLeft,
-                    contentDescription = null,
-                    tint = SetIconButtonColor(isLeftIconEnabled),
-                )
-            }
-
-            Text(
-                modifier = Modifier.padding(top = 8.dp),
-                text = quantity.toString(),
-                fontSize = 18.dp.value.sp,
-                color = colorResource(id = R.color.color_400),
-            )
-
-            IconButton(
-                enabled = isRightIconEnabled,
-                onClick = { onQuantifierChange(quantity + 1) },
-            ) {
-                Icon(
-                    modifier = Modifier.size(18.dp),
-                    imageVector = Icons.Default.KeyboardArrowRight,
-                    contentDescription = null,
-                    tint = SetIconButtonColor(isRightIconEnabled),
-                )
-            }
+            LeftIcon(isLeftIconEnabled, onQuantifierChange, quantity)
+            TextQuantity(quantity)
+            RightIcon(isRightIconEnabled, onQuantifierChange, quantity)
         }
+    }
+}
+
+@Composable
+private fun RightIcon(
+    isRightIconEnabled: Boolean,
+    onQuantifierChange: (Int) -> Unit,
+    quantity: Int
+) {
+    IconButton(
+        enabled = isRightIconEnabled,
+        onClick = { onQuantifierChange(quantity + 1) },
+    ) {
+        Icon(
+            modifier = Modifier.size(18.dp),
+            imageVector = Icons.Default.KeyboardArrowRight,
+            contentDescription = null,
+            tint = SetIconButtonColor(isRightIconEnabled),
+        )
+    }
+}
+
+@Composable
+private fun TextQuantity(quantity: Int) {
+    Text(
+        modifier = Modifier.padding(top = 8.dp),
+        text = quantity.toString(),
+        fontSize = 18.dp.value.sp,
+        color = colorResource(id = R.color.color_400),
+    )
+}
+
+@Composable
+private fun LeftIcon(
+    isLeftIconEnabled: Boolean,
+    onQuantifierChange: (Int) -> Unit,
+    quantity: Int
+) {
+    IconButton(
+        enabled = isLeftIconEnabled,
+        onClick = { onQuantifierChange(quantity - 1) },
+    ) {
+        Icon(
+            modifier = Modifier.size(18.dp),
+            imageVector = Icons.Default.KeyboardArrowLeft,
+            contentDescription = null,
+            tint = SetIconButtonColor(isLeftIconEnabled),
+        )
     }
 }
 
@@ -94,11 +115,8 @@ private fun setRoundedCornersShape(): RoundedCornerShape =
 @SuppressLint("ComposableNaming")
 @Composable
 private fun SetIconButtonColor(condition: Boolean): Color =
-    if (condition) {
-        colorResource(id = R.color.color_400)
-    } else {
-        colorResource(id = R.color.color_100)
-    }
+    if (condition) colorResource(id = R.color.color_400)
+    else colorResource(id = R.color.color_100)
 
 @Preview
 @Composable
@@ -110,7 +128,7 @@ private fun QuantifierPreview() {
             Modifier,
             true,
             9,
-            1,
+            0,
         ) {}
     }
 }
