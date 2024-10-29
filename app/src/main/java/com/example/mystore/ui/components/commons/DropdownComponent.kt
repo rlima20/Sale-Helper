@@ -58,7 +58,7 @@ fun DropdownComponent(
                             .onGloballyPositioned { coordinates ->
                                 callbacks.onOutLinedTextFieldSize(coordinates.size.toSize())
                             },
-                        label = appearance.label,
+                        label = appearance.label.toTransactionString(),
                         transactionDetailColors = appearance.transactionDetailColors,
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
                     ),
