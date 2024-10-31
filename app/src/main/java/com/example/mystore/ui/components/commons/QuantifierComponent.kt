@@ -94,11 +94,8 @@ private fun setRoundedCornersShape(): RoundedCornerShape =
 @SuppressLint("ComposableNaming")
 @Composable
 private fun SetIconButtonColor(condition: Boolean): Color =
-    if (condition) {
-        colorResource(id = R.color.color_400)
-    } else {
-        colorResource(id = R.color.color_100)
-    }
+    if (condition) colorResource(id = R.color.color_400)
+    else colorResource(id = R.color.color_100)
 
 @Preview
 @Composable

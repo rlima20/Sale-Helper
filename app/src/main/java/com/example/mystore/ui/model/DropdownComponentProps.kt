@@ -1,5 +1,6 @@
 package com.example.mystore.ui.model
 
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Size
 import com.example.mystore.R

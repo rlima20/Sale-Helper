@@ -1,5 +1,6 @@
 package com.example.mystore.features.registertransaction.repository
 
+import com.example.mystore.features.registertransaction.datasource.listOfTransactionsLocal
 import com.example.mystore.features.registertransaction.model.Transaction
 import com.example.mystore.features.registertransaction.room.dao.TransactionDao
 import com.example.mystore.features.registertransaction.room.entities.TransactionEntity
@@ -13,7 +14,7 @@ class TransactionRepositoryImpl(
     }
 
     override fun getAllTransactionsLocal(): List<Transaction> {
-        TODO("Not yet implemented")
+        return listOfTransactionsLocal
     }
 
     override suspend fun insertTransaction(transaction: TransactionEntity) {
