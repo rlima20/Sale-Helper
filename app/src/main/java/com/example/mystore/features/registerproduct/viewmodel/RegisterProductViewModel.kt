@@ -9,7 +9,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class RegisterProductViewModel(
-    private val commonUseCase: CommonUseCase,
+    commonUseCase: CommonUseCase,
     private val dispatcherProvider: Dispatchers
 ) : CommonViewModel(
     commonUseCase,
@@ -22,15 +22,11 @@ class RegisterProductViewModel(
 
     val registerProductViewState = RegisterProductViewState()
 
-    fun getProduct(): Product {
-        return registerProductViewState.product.value
-    }
-
     fun setProduct(product: Product) {
         registerProductViewState.product.value = product
     }
 
-    fun setImageUrl(product: Product, imageUrl: String) {
+    fun setImageUrl(imageUrl: String) {
         with(registerProductViewState.product.value) {
             val innerProduct = Product(
                 productId = productId,
@@ -46,29 +42,21 @@ class RegisterProductViewModel(
         }
     }
 
-    fun getScreenWidth(): Int {
-        return registerProductViewState.screenWidth.value
-    }
-
     fun setScreenWidth(screenWidth: Int) {
         registerProductViewState.screenWidth.value = screenWidth
-    }
-
-    fun getIsEditMode(): Boolean {
-        return registerProductViewState.isEditMode.value
     }
 
     fun setIsEditMode(isEditMode: Boolean) {
         registerProductViewState.isEditMode.value = isEditMode
     }
 
-    private fun clearAllStates() {
-        registerProductViewState.titleSelectedText.value = ""
-        registerProductViewState.descriptionSelectedText.value = ""
-        registerProductViewState.purchasePriceSelectedText.value = ""
-        registerProductViewState.salePriceSelectedText.value = ""
-        registerProductViewState.quantity.value = 0
-        registerProductViewState.maxQuantityToBuy.value = 0
+    fun clearAllStates() {
+        registerProductViewState.titleSelectedText.value = EMPTY_STRING
+        registerProductViewState.descriptionSelectedText.value = EMPTY_STRING
+        registerProductViewState.purchasePriceSelectedText.value = EMPTY_STRING
+        registerProductViewState.salePriceSelectedText.value = EMPTY_STRING
+        registerProductViewState.quantity.value = ZERO
+        registerProductViewState.maxQuantityToBuy.value = ZERO
     }
 
     fun saveProduct(product: Product, isEditMode: Boolean) {
@@ -77,10 +65,6 @@ class RegisterProductViewModel(
             getAllProducts()
             clearAllStates()
         }
-    }
-
-    fun getTitleSelectedText(): String {
-        return registerProductViewState.titleSelectedText.value
     }
 
     fun setTitleSelectedText(titleSelectedText: String) {
@@ -107,27 +91,20 @@ class RegisterProductViewModel(
         registerProductViewState.maxQuantityToBuy.value = maxQuantityToBuy
     }
 
-    fun getShowAlertDialogProductScreen(): Boolean {
-        return registerProductViewState.showAlertDialogProductScreen.value
-    }
-
     fun setShowAlertDialogProductScreen(showAlertDialogProductScreen: Boolean) {
         registerProductViewState.showAlertDialogProductScreen.value = showAlertDialogProductScreen
-    }
-
-    fun getShowToastProductScreen(): Boolean {
-        return registerProductViewState.showToastProductScreen.value
     }
 
     fun setShowToastProductScreen(showToastProductScreen: Boolean) {
         registerProductViewState.showToastProductScreen.value = showToastProductScreen
     }
 
-    fun getShowAlertDialogImageUrl(): Boolean {
-        return registerProductViewState.showAlertDialogImageUrl.value
-    }
-
     fun setShowAlertDialogImageUrl(showAlertDialogImageUrl: Boolean) {
         registerProductViewState.showAlertDialogImageUrl.value = showAlertDialogImageUrl
+    }
+
+    companion object{
+        private const val EMPTY_STRING = ""
+        private const val ZERO = 0
     }
 }

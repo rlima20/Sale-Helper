@@ -57,7 +57,10 @@ fun MyStoreNavHost(
             // Navigates to RegisterProductScreen
             composable(route = RegisterProductScreen.route) {
                 NavigateToRegisterProductScreen(
-                    onClearStates = { productClearStates = it }
+                    onClearStates = {
+                        productClearStates = it
+                        if (productClearStates) viewModelProps.registerProductViewModel.clearAllStates()
+                    }
                 )
             }
         }

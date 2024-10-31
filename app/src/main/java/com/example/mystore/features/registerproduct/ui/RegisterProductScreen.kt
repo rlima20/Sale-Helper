@@ -86,7 +86,7 @@ fun RegisterProductScreen(
         val showToastProductScreen by this.registerProductViewState.showToastProductScreen.collectAsState()
 
         ScreenSectionComponent(
-            title = stringResource(id = R.string.my_store_product_2).setTitle(isEditMode),
+            title = setTitle(isEditMode),
             body = {
                 RegisterProductScreenBody(
                     registerProductScreenBodyProps = RegisterProductScreenBodyProps(
@@ -122,11 +122,8 @@ fun RegisterProductScreenBody(
         if (showToastProductScreen) {
             ToastComponent(
                 stringResource(
-                    id = if (isEditMode) {
-                        R.string.my_store_successful_edit
-                    } else {
-                        R.string.my_store_successful_registry
-                    },
+                    id = if (isEditMode) R.string.my_store_successful_edit
+                    else R.string.my_store_successful_registry,
                 ),
             )
             onNavigateToHome()
@@ -148,7 +145,7 @@ fun RegisterProductScreenBody(
                                     registerProductViewModel = registerProductViewModel,
                                     imageUrl = product.imageUrl,
                                     onImageUrl = { imageUrl ->
-                                        registerProductViewModel.setImageUrl(product, imageUrl)
+                                        registerProductViewModel.setImageUrl(imageUrl)
                                     },
                                 )
                             }
@@ -174,7 +171,11 @@ fun RegisterProductScreenBody(
                 registerProductViewModel.getAllProducts()
                 registerProductViewModel.saveProduct(
                     product = Product(
-                        productId = setProductId(isEditMode, listOfProducts, product),
+                        productId = setProductId(
+                            isEditMode,
+                            listOfProducts,
+                            product
+                        ),
                         title = titleSelectedText,
                         description = descriptionSelectedText,
                         purchasePrice = purchasePriceSelectedText.replaceCommaFromValue()
@@ -215,12 +216,12 @@ fun RegisterProductScreenBody(
             outLinedTextFieldComponentProps = OutLinedTextFieldComponentProps(
                 appearance = TextFieldAppearance(
                     label = titleLabel,
-                    modifier = Modifier, // Adicione modificadores se necessário
+                    modifier = Modifier,
                     transactionDetailColors = Triple(
                         R.color.color_900,
                         R.color.white,
                         R.color.white
-                    ) // Ajuste conforme necessário
+                    )
                 ),
                 selectedText = titleSelectedText,
                 keyboardController = titleKeyboardController,
@@ -228,12 +229,6 @@ fun RegisterProductScreenBody(
                 callbacks = TextFieldCallbacks(
                     onValueChanged = {
                         registerProductViewModel.setTitleSelectedText(it)
-                    },
-                    onTrailingIconClicked = {
-                        // Lógica para o clique no ícone (se necessário)
-                    },
-                    onDone = {
-                        // Lógica para finalizar a edição (se necessário)
                     }
                 )
             )
@@ -247,12 +242,12 @@ fun RegisterProductScreenBody(
             outLinedTextFieldComponentProps = OutLinedTextFieldComponentProps(
                 appearance = TextFieldAppearance(
                     label = descriptionLabel,
-                    modifier = Modifier, // Adicione modificadores se necessário
+                    modifier = Modifier,
                     transactionDetailColors = Triple(
                         R.color.color_900,
                         R.color.white,
                         R.color.white
-                    ) // Ajuste conforme necessário
+                    )
                 ),
                 selectedText = descriptionSelectedText,
                 keyboardController = descriptionKeyboardController,
@@ -260,12 +255,6 @@ fun RegisterProductScreenBody(
                 callbacks = TextFieldCallbacks(
                     onValueChanged = {
                         registerProductViewModel.setDescriptionSelectedText(it)
-                    },
-                    onTrailingIconClicked = {
-                        // Lógica para o clique no ícone (se necessário)
-                    },
-                    onDone = {
-                        // Lógica para finalizar a edição (se necessário)
                     }
                 )
             )
@@ -279,12 +268,12 @@ fun RegisterProductScreenBody(
             outLinedTextFieldComponentProps = OutLinedTextFieldComponentProps(
                 appearance = TextFieldAppearance(
                     label = purchasePriceLabel,
-                    modifier = Modifier, // Adicione modificadores se necessário
+                    modifier = Modifier,
                     transactionDetailColors = Triple(
                         R.color.color_900,
                         R.color.white,
                         R.color.white
-                    ), // Ajuste conforme necessário
+                    ),
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
                 ),
                 selectedText = purchasePriceSelectedText,
@@ -298,9 +287,6 @@ fun RegisterProductScreenBody(
                         registerProductViewModel.setPurchasePriceSelectedText(
                             purchasePriceSelectedText.removeCurrencyToProductValue()
                         )
-                    },
-                    onTrailingIconClicked = {
-                        // Lógica para o clique no ícone (se necessário)
                     }
                 )
             )
@@ -466,12 +452,6 @@ fun ImageUrlBody(
                 callbacks = TextFieldCallbacks(
                     onValueChanged = { newValue ->
                         imageUrlInternal = newValue
-                    },
-                    onTrailingIconClicked = {
-                        // Lógica para o clique no ícone (se necessário)
-                    },
-                    onDone = {
-                        // Lógica para finalizar a edição (se necessário)
                     }
                 )
             )
@@ -532,14 +512,20 @@ fun ImageSection(
     }
 }
 
-private fun String.setTitle(editMode: Boolean) =
-    if (editMode) "$this | EDIÇÃO" else "$this | CRIAÇÃO"
+@Composable
+private fun setTitle(editMode: Boolean): String {
+    val titleProduct = stringResource(id = R.string.my_store_product_2)
+    return if (editMode) "$titleProduct $PRODUCT_EDIT"
+    else "$titleProduct $PRODUCT_CREATION"
+}
 
-private fun String.removeCurrencyToProductValue() = this.replace("R$", "")
+private fun String.removeCurrencyToProductValue() = this.replace(REAL, EMPTY)
 
-private fun String.replaceCommaFromValue() = this.replace(",", ".")
+private fun String.replaceCommaFromValue() = this.replace(COMMA, DOT)
 
-private fun String.addCurrencyToProductValue() = "R$ ${
-    String.format("%.2f", this.replace(",", ".").toDouble())
-        .replace(".", ",")
-}"
+private const val PRODUCT_EDIT = "| EDIÇÃO"
+private const val PRODUCT_CREATION = "| CRIAÇÃO"
+private const val COMMA = ","
+private const val DOT = "."
+private const val REAL = "."
+private const val EMPTY = ""

@@ -5,7 +5,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 
 class RegisterProductViewState {
     val screenWidth: MutableStateFlow<Int> = MutableStateFlow(0)
-    val isEditMode: MutableStateFlow<Boolean> = MutableStateFlow(false)
+    var isEditMode: MutableStateFlow<Boolean> = MutableStateFlow(false)
     val titleSelectedText: MutableStateFlow<String> = MutableStateFlow("")
     val descriptionSelectedText: MutableStateFlow<String> = MutableStateFlow("")
     val purchasePriceSelectedText: MutableStateFlow<String> = MutableStateFlow("")
