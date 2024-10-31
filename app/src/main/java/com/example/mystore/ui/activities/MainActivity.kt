@@ -83,11 +83,11 @@ fun MyStoreApp(
         val isMenuExpanded by commonViewModel.commonViewState.isMenuExpanded.collectAsState()
         val textFieldSize by commonViewModel.commonViewState.textFieldSize.collectAsState()
         val shouldItemBeVisible by commonViewModel.commonViewState.shouldItemBeVisible.collectAsState()
+        val isEditMode: Boolean by registerProductViewModel.registerProductViewState.isEditMode.collectAsState()
         var currentScreen: MyStoreDestinationInterface by remember { mutableStateOf(HomeScreen) }
         var expandedBottomBar: Boolean by remember { mutableStateOf(false) }
         var totalAmountOfSales: Double by remember { mutableStateOf(0.0) }
         var totalAmountOfPurchases: Double by remember { mutableStateOf(0.0) }
-        var isEditMode: Boolean by remember { mutableStateOf(false) }
         var product: Product by remember { mutableStateOf(Product()) }
         var shouldDisplayIcon: Boolean by remember { mutableStateOf(true) }
 
@@ -112,6 +112,8 @@ fun MyStoreApp(
                                 currentScreen = screen.transformStringToInterfaceObject(application)
                                 commonViewModel.setScreenTitle(screen)
                                 commonViewModel.expandMenu(false)
+                                registerProductViewModel.setIsEditMode(false)
+                                product = Product()
                                 navController.navigateSingleTopTo(currentScreen.route)
                             },
                             onChangeDropdownMenuWidth = { size ->
@@ -151,13 +153,14 @@ fun MyStoreApp(
                                     totalAmountOfPurchases = purchases
                                 },
                                 onProductClick = {
+                                    registerProductViewModel.setIsEditMode(true)
                                     navController.navigateSingleTopTo(
                                         RegisterProductScreen.route
                                     )
                                 },
                                 onProductDoubleClick = {},
                                 onEditMode = { first, second ->
-                                    isEditMode = first
+                                    registerProductViewModel.setIsEditMode(first)
                                     product = second
                                 },
                                 onShouldDisplayIcon = { shouldDisplay ->
@@ -193,7 +196,7 @@ fun MyStoreApp(
                             commonViewModel.setScreenTitle(
                                 application.getString(R.string.my_store_register_product),
                             )
-                            isEditMode = false
+                            registerProductViewModel.setIsEditMode(false)
                             product = Product()
                             navController.navigateSingleTopTo(RegisterProductScreen.route)
                         },
