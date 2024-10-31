@@ -20,54 +20,51 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.unit.toSize
 import com.example.mystore.commons.constants.screenList
+import com.example.mystore.ui.model.Callbacks
+import com.example.mystore.ui.model.MenuComponentProps
 
 @Composable
 fun MenuComponent(
-    modifier: Modifier = Modifier,
-    screens: List<String>,
-    isMenuExpanded: Boolean,
-    menuDropdownWidth: Size,
-    onMenuIconClicked: () -> Unit = {},
-    onDismissRequest: () -> Unit = {},
-    onDropDownMenuItemClicked: (String) -> Unit = {},
-    onChangeTextFieldSize: (size: Size) -> Unit = {},
+    menuComponentProps: MenuComponentProps
 ) {
-    Column(modifier = modifier) {
-        Icon(
-            imageVector = Icons.Rounded.Menu,
-            contentDescription = null,
-            tint = Color.White,
-            modifier = Modifier.clickable(
-                onClick = {
-                    onMenuIconClicked()
-                },
-            ),
-        )
-
-        DropdownMenu(
-            expanded = isMenuExpanded,
-            onDismissRequest = { onDismissRequest() },
-            modifier = Modifier
-                .fillMaxWidth()
-                .onGloballyPositioned { coordinates ->
-                    onChangeTextFieldSize(coordinates.size.toSize())
-                }
-                .width(with(LocalDensity.current) { menuDropdownWidth.width.toDp() }),
-        ) {
-            screens.forEach { screenName ->
-                DropdownMenuItem(
+    with(menuComponentProps) {
+        Column(modifier = modifier) {
+            Icon(
+                imageVector = Icons.Rounded.Menu,
+                contentDescription = null,
+                tint = Color.White,
+                modifier = Modifier.clickable(
                     onClick = {
-                        onDropDownMenuItemClicked(screenName)
+                        callbacks.onMenuIconClicked()
                     },
-                    content = {
-                        Column {
-                            Text(
-                                text = screenName,
-                                fontSize = 16.sp,
-                            )
-                        }
-                    },
-                )
+                ),
+            )
+
+            DropdownMenu(
+                expanded = isMenuExpanded,
+                onDismissRequest = { callbacks.onDismissRequest() },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .onGloballyPositioned { coordinates ->
+                        callbacks.onChangeTextFieldSize(coordinates.size.toSize())
+                    }
+                    .width(with(LocalDensity.current) { menuDropdownWidth.width.toDp() }),
+            ) {
+                screens.forEach { screenName ->
+                    DropdownMenuItem(
+                        onClick = {
+                            callbacks.onDropDownMenuItemClicked(screenName)
+                        },
+                        content = {
+                            Column {
+                                Text(
+                                    text = screenName,
+                                    fontSize = 16.sp,
+                                )
+                            }
+                        },
+                    )
+                }
             }
         }
     }
@@ -77,8 +74,11 @@ fun MenuComponent(
 @Preview
 fun DropDownComponentPreview() {
     MenuComponent(
-        screens = screenList,
-        isMenuExpanded = false,
-        menuDropdownWidth = Size(0f, 0f),
+        menuComponentProps = MenuComponentProps(
+            screens = screenList,
+            isMenuExpanded = false,
+            menuDropdownWidth = Size(0f, 0f),
+            callbacks = Callbacks()
+        )
     )
 }
