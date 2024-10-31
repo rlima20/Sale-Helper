@@ -17,6 +17,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.mystore.commons.constants.screenList
 import com.example.mystore.setPainter
+import com.example.mystore.ui.model.Callbacks
+import com.example.mystore.ui.model.MenuComponentProps
 import com.example.mystore.ui.model.TopBarComponentProps
 import com.example.mystore.ui.theme.mcpalette0_A800
 
@@ -47,21 +49,25 @@ internal fun TopBarComponent(
             ) {
                 SetIconVisibility()
                 MenuComponent(
-                    screens = screenList,
-                    isMenuExpanded = menuActions.isMenuExpanded,
-                    menuDropdownWidth = dropdownMenuProperties.dropdownMenuWidth,
-                    onMenuIconClicked = { menuActions.onMenuIconClicked() },
-                    onDismissRequest = { menuActions.onDismissRequest() },
-                    onDropDownMenuItemClicked = { screen ->
-                        dropdownMenuProperties.onDropDownMenuItemClicked(
-                            screen
-                        )
-                    },
-                    onChangeTextFieldSize = { size ->
-                        dropdownMenuProperties.onChangeDropdownMenuWidth(
-                            size
-                        )
-                    },
+                    menuComponentProps = MenuComponentProps(
+                        screens = screenList,
+                        isMenuExpanded = menuActions.isMenuExpanded,
+                        menuDropdownWidth = dropdownMenuProperties.dropdownMenuWidth,
+                        callbacks = Callbacks(
+                            onMenuIconClicked = { menuActions.onMenuIconClicked() },
+                            onDismissRequest = { menuActions.onDismissRequest() },
+                            onDropDownMenuItemClicked = { screen ->
+                                dropdownMenuProperties.onDropDownMenuItemClicked(
+                                    screen
+                                )
+                            },
+                            onChangeTextFieldSize = { size ->
+                                dropdownMenuProperties.onChangeDropdownMenuWidth(
+                                    size
+                                )
+                            },
+                        ),
+                    ),
                 )
             }
         }
