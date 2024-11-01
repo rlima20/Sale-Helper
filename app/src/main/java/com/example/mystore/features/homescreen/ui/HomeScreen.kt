@@ -2,6 +2,7 @@ package com.example.mystore.features.homescreen.ui
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
@@ -74,7 +75,8 @@ fun HomeScreen(
         with(homeScreenProps) {
             Column(
                 modifier = Modifier
-                    .padding(bottom = 12.dp)
+                    .fillMaxHeight()
+                    .padding(bottom = 16.dp)
                     .verticalScroll(rememberScrollState()),
             ) {
                 // AlertDialog with transaction details

@@ -29,12 +29,11 @@ import com.example.mystore.R
 @Composable
 fun EmptyStateSectionComponent(
     title: String,
-    painter: Painter,
     onEmptyStateImageClicked: () -> Unit = {},
 ) {
     Surface(
         modifier = Modifier
-            .padding(8.dp)
+            .padding(start = 8.dp, top = 8.dp, end = 8.dp, bottom = 0.dp)
             .fillMaxWidth(),
         shape = RoundedCornerShape(15.dp),
         elevation = 12.dp,
@@ -93,6 +92,5 @@ fun EmptyStateSectionComponent(
 fun EmptyStateComponentPreview() {
     EmptyStateSectionComponent(
         title = stringResource(R.string.my_store_no_transactions_done),
-        painter = painterResource(id = R.drawable.my_store_plus_icon),
     )
 }

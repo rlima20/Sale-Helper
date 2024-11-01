@@ -72,10 +72,9 @@ fun DropdownComponent(
                                 setIcon(arrowPositionUp),
                                 "contentDescription",
                                 Modifier.clickable { callbacks.onTrailingIconClicked() },
-                                tint = colorResource(id = R.color.color_800),
+                                tint = colorResource(appearance.trailingIconTintColor),
                             )
                         },
-                        onDone = { /* Adicione a lógica necessária se houver */ }
                     )
                 )
             )
@@ -103,7 +102,7 @@ fun DropdownComponent(
 }
 
 @Composable
-private fun setIcon(isExpanded: Boolean) =
+fun setIcon(isExpanded: Boolean) =
     if (isExpanded) Icons.Filled.KeyboardArrowUp
     else Icons.Filled.KeyboardArrowDown
 
