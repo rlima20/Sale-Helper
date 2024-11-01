@@ -391,16 +391,13 @@ private fun RegisterProductScreenBodyProps.setAlertDialogMessage() =
 
 @Composable
 private fun RegisterProductScreenBodyProps.setAlertDialogTitle() =
-    if (isEditMode) {
-        stringResource(R.string.my_store_registry_update)
-    } else {
-        stringResource(R.string.my_store_registry_creation)
-    }
+    if (isEditMode) stringResource(R.string.my_store_registry_update)
+    else stringResource(R.string.my_store_registry_creation)
 
 @Composable
 private fun setSize() = Size(
     width = LocalConfiguration.current.screenWidthDp.dp.value * 1f,
-    height = LocalConfiguration.current.screenHeightDp.dp.value * 0.47f,
+    height = LocalConfiguration.current.screenHeightDp.dp.value * 0.5f,
 )
 
 private fun setProductId(
@@ -500,7 +497,7 @@ fun ImageSection(
         ImageComponent(
             modifier = modifier
                 .fillMaxWidth()
-                .height(100.dp),
+                .height(200.dp),
             painterResource = getPainter(
                 imageUrl = imageUrl,
                 onImageRequestState = {
