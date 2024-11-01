@@ -1,10 +1,12 @@
 package com.example.mystore.features.homescreen.ui
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Button
+import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -25,6 +27,7 @@ import com.example.mystore.ui.components.commons.DropdownComponent
 import com.example.mystore.ui.components.commons.RowComponent
 import com.example.mystore.ui.components.commons.ScreenSectionComponent
 import com.example.mystore.ui.components.commons.TextCurrencyComponent
+import com.example.mystore.ui.components.commons.setIcon
 import com.example.mystore.ui.model.DropdownAppearance
 import com.example.mystore.ui.model.DropdownCallbacks
 import com.example.mystore.ui.model.DropdownColors
@@ -90,12 +93,7 @@ private fun TransactionDetailsBody(
                 items = DropdownItem(
                     items = listOf(transaction.product.title)
                 ),
-                callbacks = DropdownCallbacks(
-                    onDropdownMenuDismissRequest = { /* Adicione a lógica necessária aqui */ },
-                    onDropdownMenuItemClicked = { selectedItem ->
-                        // Lógica para lidar com o item selecionado
-                    }
-                )
+                callbacks = DropdownCallbacks()
             ),
             outLinedTextFieldComponentProps = OutLinedTextFieldComponentProps(
                 appearance = TextFieldAppearance(
@@ -105,15 +103,18 @@ private fun TransactionDetailsBody(
                         R.color.color_500,
                         R.color.white
                     ),
-                    modifier = Modifier.padding(8.dp)
+                    modifier = Modifier.padding(8.dp),
+                    trailingIconTintColor = R.color.white
                 ),
                 focusManager = LocalFocusManager.current,
                 callbacks = TextFieldCallbacks(
-                    onValueChanged = { value ->
-                        // Lógica para lidar com a mudança de valor
-                    },
-                    onTrailingIconClicked = {
-                        // Lógica para o clique no ícone
+                    trailingIcon = {
+                        Icon(
+                            setIcon(false),
+                            "contentDescription",
+                            Modifier.clickable { },
+                            tint = colorResource(id = R.color.color_50),
+                        )
                     }
                 )
             )
@@ -134,7 +135,7 @@ private fun TransactionDetailsBody(
                             R.color.color_500,
                             R.color.white
                         )
-                    )
+                    ),
                 ),
                 state = DropdownState(
                     isExpanded = false,
@@ -143,12 +144,7 @@ private fun TransactionDetailsBody(
                 items = DropdownItem(
                     items = listOf(transaction.transactionType.toString())
                 ),
-                callbacks = DropdownCallbacks(
-                    onDropdownMenuDismissRequest = { /* Adicione a lógica necessária aqui */ },
-                    onDropdownMenuItemClicked = { selectedItem ->
-                        // Lógica para lidar com o item selecionado
-                    }
-                )
+                callbacks = DropdownCallbacks()
             ),
             outLinedTextFieldComponentProps = OutLinedTextFieldComponentProps(
                 appearance = TextFieldAppearance(
@@ -158,17 +154,11 @@ private fun TransactionDetailsBody(
                         R.color.color_500,
                         R.color.white
                     ),
-                    modifier = Modifier.padding(8.dp)
+                    modifier = Modifier.padding(8.dp),
+                    trailingIconTintColor = R.color.white
                 ),
                 focusManager = LocalFocusManager.current,
-                callbacks = TextFieldCallbacks(
-                    onValueChanged = { value ->
-                        // Lógica para lidar com a mudança de valor
-                    },
-                    onTrailingIconClicked = {
-                        // Lógica para o clique no ícone
-                    }
-                )
+                callbacks = TextFieldCallbacks()
             )
         )
 

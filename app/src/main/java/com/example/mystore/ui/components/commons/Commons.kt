@@ -97,7 +97,6 @@ fun ValidateSection(
             } else if (sectionEmptyStateInfo.data.isEmpty()) {
                 EmptyStateSectionComponent(
                     title = sectionEmptyStateInfo.emptySectionTitle,
-                    painter = sectionEmptyStateInfo.emptySectionPainter,
                     onEmptyStateImageClicked = { sectionEmptyStateInfo.onEmptyStateImageClicked() },
                 )
             } else {

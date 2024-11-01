@@ -24,7 +24,8 @@ data class TextFieldAppearance(
     val label: String = "",
     val transactionDetailColors: Triple<Int, Int, Int> =
         Triple(R.color.color_900, R.color.white, R.color.white),
-    val keyboardOptions: KeyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
+    val keyboardOptions: KeyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+    val trailingIconTintColor: Int = R.color.color_800
 )
 
 data class TextFieldCallbacks(
