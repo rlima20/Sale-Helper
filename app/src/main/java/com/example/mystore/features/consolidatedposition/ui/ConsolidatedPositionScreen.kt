@@ -3,6 +3,7 @@ package com.example.mystore.features.consolidatedposition.ui
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -24,13 +25,14 @@ import com.example.mystore.enums.Type
 import com.example.mystore.features.homescreen.viewmodel.HomeViewModel
 import com.example.mystore.features.registertransaction.model.Transaction
 import com.example.mystore.toStringResource
+import com.example.mystore.ui.components.commons.ConsolidatedPositionScreenSection
 import com.example.mystore.ui.components.commons.RowComponent
-import com.example.mystore.ui.components.commons.ScreenSectionComponent
 import com.example.mystore.ui.components.commons.SectionEmptyStateInfo
 import com.example.mystore.ui.components.commons.SectionInfo
 import com.example.mystore.ui.components.commons.TextCurrencyComponent
 import com.example.mystore.ui.components.commons.ValidateSection
 import com.example.mystore.ui.components.commons.validateSection
+import com.example.mystore.ui.model.ColorProps
 
 @Composable
 fun ConsolidatedPositionScreen(
@@ -45,6 +47,7 @@ fun ConsolidatedPositionScreen(
 
     Column(
         modifier = Modifier
+            .fillMaxHeight()
             .padding(bottom = 1.dp)
             .verticalScroll(rememberScrollState()),
     ) {
@@ -53,16 +56,14 @@ fun ConsolidatedPositionScreen(
             screen = Screens.CONSOLIDATED_POSITION,
             sectionInfo = SectionInfo(
                 sectionName = Section.TRANSACTIONS,
-                section =
-                {
-                    ScreenSectionComponent(
+                section = {
+                    ConsolidatedPositionScreenSection(
                         title = stringResource(id = R.string.my_store_sales),
-                        body = {
-                            ConsolidatedPosBody(
-                                transactions = listOfSales,
-                                shouldItemBeVisible = shouldItemBeVisible,
-                            )
-                        },
+                        transactions = listOfSales,
+                        shouldItemBeVisible = shouldItemBeVisible,
+                        openTransactionEditScreen = true,
+                        colorProps = ColorProps(),
+                        onEditTransaction = { }
                     )
                 },
             ),
@@ -84,16 +85,14 @@ fun ConsolidatedPositionScreen(
             screen = Screens.CONSOLIDATED_POSITION,
             sectionInfo = SectionInfo(
                 sectionName = Section.TRANSACTIONS,
-                section =
-                {
-                    ScreenSectionComponent(
+                section = {
+                    ConsolidatedPositionScreenSection(
                         title = stringResource(id = R.string.my_store_purchases),
-                        body = {
-                            ConsolidatedPosBody(
-                                transactions = listOfPurchases,
-                                shouldItemBeVisible = shouldItemBeVisible,
-                            )
-                        },
+                        transactions = listOfPurchases,
+                        shouldItemBeVisible = shouldItemBeVisible,
+                        openTransactionEditScreen = true,
+                        colorProps = ColorProps(),
+                        onEditTransaction = { }
                     )
                 },
             ),
