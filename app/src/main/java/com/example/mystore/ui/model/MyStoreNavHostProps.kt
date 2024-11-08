@@ -2,6 +2,7 @@ package com.example.mystore.ui.model
 
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
+import com.example.mystore.features.consolidatedposition.ui.ConsolidatedPositionViewModel
 import com.example.mystore.features.homescreen.viewmodel.HomeViewModel
 import com.example.mystore.features.registerproduct.model.Product
 import com.example.mystore.features.registerproduct.viewmodel.RegisterProductViewModel
@@ -18,6 +19,7 @@ data class ViewModelProps(
     val homeViewModel: HomeViewModel,
     val registerTransactionViewModel: RegisterTransactionViewModel,
     val registerProductViewModel: RegisterProductViewModel,
+    val consolidatedPositionScreenViewModel: ConsolidatedPositionViewModel,
 )
 
 data class UIProps(

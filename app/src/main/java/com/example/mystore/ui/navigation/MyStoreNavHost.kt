@@ -8,10 +8,12 @@ import androidx.compose.runtime.setValue
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.mystore.features.consolidatedposition.ui.ConsolidatedPositionScreen
+import com.example.mystore.features.consolidatedposition.ui.EditTransactionScreen
 import com.example.mystore.features.homescreen.model.HomeScreenProps
 import com.example.mystore.features.homescreen.ui.HomeScreen
 import com.example.mystore.features.registerproduct.ui.RegisterProductScreen
 import com.example.mystore.features.registertransaction.model.RegisterTransactionScreenProps
+import com.example.mystore.features.registertransaction.model.Transaction
 import com.example.mystore.features.registertransaction.ui.RegisterTransactionScreen
 import com.example.mystore.navigateSingleTopTo
 import com.example.mystore.ui.model.MyStoreNavHostProps
@@ -20,9 +22,9 @@ import com.example.mystore.ui.model.MyStoreNavHostProps
 fun MyStoreNavHost(
     myStoreNavHostProps: MyStoreNavHostProps
 ) {
-
     var transactionClearStates by remember { mutableStateOf(false) }
     var productClearStates by remember { mutableStateOf(false) }
+    var transactionState by myStoreNavHostProps.viewModelProps.consolidatedPositionScreenViewModel.viewState.transaction
 
     with(myStoreNavHostProps) {
         NavHost(
@@ -34,7 +36,8 @@ fun MyStoreNavHost(
             composable(route = HomeScreen.route) {
                 NavigateToHomeScreen(
                     onTransactionClearAllState = { transactionClearStates = it },
-                    onProductClearAllState = { productClearStates = it }
+                    onProductClearAllState = { productClearStates = it },
+                    onUpdateTransaction = { transactionState = it }
                 )
             }
 
@@ -42,7 +45,8 @@ fun MyStoreNavHost(
             composable(route = ConsolidatedPositionScreen.route) {
                 NavigateToConsolidatedPositionScreen(
                     onTransactionClearAllState = { transactionClearStates = it },
-                    onProductClearAllState = { productClearStates = it }
+                    onProductClearAllState = { productClearStates = it },
+                    onUpdateTransaction = { transactionState = it }
                 )
             }
 
@@ -62,6 +66,11 @@ fun MyStoreNavHost(
                         if (productClearStates) viewModelProps.registerProductViewModel.clearAllStates()
                     }
                 )
+            }
+
+            // Navigates to EditTransactionScreen
+            composable(route = EditTransactionScreen.route) {
+                EditTransactionScreen(transactionState)
             }
         }
     }
@@ -104,7 +113,8 @@ private fun MyStoreNavHostProps.NavigateToRegisterTransactionScreen(
 @Composable
 private fun MyStoreNavHostProps.NavigateToConsolidatedPositionScreen(
     onTransactionClearAllState: (onTransactionClearAll: Boolean) -> Unit,
-    onProductClearAllState: (onTransactionClearAll: Boolean) -> Unit
+    onProductClearAllState: (onTransactionClearAll: Boolean) -> Unit,
+    onUpdateTransaction: (Transaction) -> Unit
 ) {
     viewModelProps.homeViewModel.getListOfSales()
     viewModelProps.homeViewModel.getListOfPurchases()
@@ -120,13 +130,18 @@ private fun MyStoreNavHostProps.NavigateToConsolidatedPositionScreen(
             navController.navigateSingleTopTo(route)
             uiProps.callbackProps.onUpdateTopBarText(screen)
         },
+        onNavigateToEditTransactionScreen = { route, transaction ->
+            onUpdateTransaction(transaction)
+            navController.navigateSingleTopTo(route)
+        }
     )
 }
 
 @Composable
 private fun MyStoreNavHostProps.NavigateToHomeScreen(
     onTransactionClearAllState: (onTransactionClearAll: Boolean) -> Unit,
-    onProductClearAllState: (onTransactionClearAll: Boolean) -> Unit
+    onProductClearAllState: (onTransactionClearAll: Boolean) -> Unit,
+    onUpdateTransaction: (Transaction) -> Unit
 ) {
     onTransactionClearAllState(true)
     onProductClearAllState(true)
@@ -149,6 +164,10 @@ private fun MyStoreNavHostProps.NavigateToHomeScreen(
                     product
                 )
             },
+            onNavigateToEditTransactionScreen = { route, transaction ->
+                onUpdateTransaction(transaction)
+                navController.navigateSingleTopTo(route)
+            }
         ),
     )
 }

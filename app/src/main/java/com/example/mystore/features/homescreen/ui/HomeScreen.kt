@@ -46,6 +46,7 @@ import com.example.mystore.ui.components.commons.TextCurrencyComponent
 import com.example.mystore.ui.components.commons.ToastComponent
 import com.example.mystore.ui.components.commons.ValidateSection
 import com.example.mystore.ui.components.commons.validateSection
+import com.example.mystore.ui.navigation.EditTransactionScreen
 
 @Composable
 fun HomeScreen(
@@ -120,7 +121,13 @@ fun HomeScreen(
                     transactionSectionProps = TransactionSectionProps(
                         listOfTransactions,
                         shouldItemBeVisible,
-                        onEmptyStateImageClicked
+                        onEmptyStateImageClicked,
+                        onEditTransactionIconClick = { transaction ->
+                            onNavigateToEditTransactionScreen(
+                                EditTransactionScreen.route,
+                                transaction
+                            )
+                        }
                     )
                 )
 
@@ -259,6 +266,9 @@ private fun HomeViewModel.TransactionSection(
                                         setTransaction(it)
                                         setShowAlertDialogHomeScreen(true)
                                     },
+                                    onEditTransactionIconClick = {
+                                        onEditTransactionIconClick(it)
+                                    }
                                 ),
                             )
                         },
@@ -371,6 +381,7 @@ private fun Transactions(
                     shouldItemBeVisible = shouldItemBeVisible,
                     onClick = { onClick(it) },
                     onLongClick = { onLongClick(it) },
+                    onEditTransactionIconClick = { onEditTransactionIconClick(it) }
                 )
             }
         }

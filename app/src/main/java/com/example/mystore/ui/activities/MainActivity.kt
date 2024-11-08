@@ -15,10 +15,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.rememberNavController
 import com.example.mystore.R
 import com.example.mystore.commons.AppApplication
 import com.example.mystore.commons.viewmodel.CommonViewModel
+import com.example.mystore.features.consolidatedposition.ui.ConsolidatedPositionViewModel
 import com.example.mystore.features.homescreen.viewmodel.HomeViewModel
 import com.example.mystore.features.registerproduct.model.Product
 import com.example.mystore.features.registerproduct.viewmodel.RegisterProductViewModel
@@ -54,6 +56,7 @@ class MainActivity : ComponentActivity() {
     private val homeViewModel: HomeViewModel by viewModel()
     private val registerTransactionViewModel: RegisterTransactionViewModel by viewModel()
     private val registerProductViewModel: RegisterProductViewModel by viewModel()
+    private val consolidatedPositionViewModel: ConsolidatedPositionViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,6 +67,7 @@ class MainActivity : ComponentActivity() {
                 homeViewModel,
                 registerTransactionViewModel,
                 registerProductViewModel,
+                consolidatedPositionViewModel,
             )
         }
     }
@@ -76,6 +80,7 @@ fun MyStoreApp(
     homeViewModel: HomeViewModel,
     registerTransactionViewModel: RegisterTransactionViewModel,
     registerProductViewModel: RegisterProductViewModel,
+    consolidatedPositionViewModel: ConsolidatedPositionViewModel
 ) {
     MyStoreTheme {
         val navController = rememberNavController()
@@ -136,7 +141,8 @@ fun MyStoreApp(
                         viewModelProps = ViewModelProps(
                             homeViewModel = homeViewModel,
                             registerTransactionViewModel = registerTransactionViewModel,
-                            registerProductViewModel = registerProductViewModel
+                            registerProductViewModel = registerProductViewModel,
+                            consolidatedPositionScreenViewModel = consolidatedPositionViewModel
                         ),
                         uiProps = UIProps(
                             stateProps = StateProps(
