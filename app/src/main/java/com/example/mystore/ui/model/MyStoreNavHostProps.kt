@@ -7,6 +7,7 @@ import com.example.mystore.features.homescreen.viewmodel.HomeViewModel
 import com.example.mystore.features.registerproduct.model.Product
 import com.example.mystore.features.registerproduct.viewmodel.RegisterProductViewModel
 import com.example.mystore.features.registertransaction.viewmodel.RegisterTransactionViewModel
+import com.example.mystore.features.updatetransaction.viewmodel.UpdateTransactionViewModel
 
 data class MyStoreNavHostProps(
     val navController: NavHostController,
@@ -20,6 +21,7 @@ data class ViewModelProps(
     val registerTransactionViewModel: RegisterTransactionViewModel,
     val registerProductViewModel: RegisterProductViewModel,
     val consolidatedPositionScreenViewModel: ConsolidatedPositionViewModel,
+    val updateTransactionViewModel: UpdateTransactionViewModel,
 )
 
 data class UIProps(

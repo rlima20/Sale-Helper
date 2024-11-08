@@ -24,6 +24,7 @@ import com.example.mystore.features.homescreen.viewmodel.HomeViewModel
 import com.example.mystore.features.registerproduct.model.Product
 import com.example.mystore.features.registerproduct.viewmodel.RegisterProductViewModel
 import com.example.mystore.features.registertransaction.viewmodel.RegisterTransactionViewModel
+import com.example.mystore.features.updatetransaction.viewmodel.UpdateTransactionViewModel
 import com.example.mystore.navigateSingleTopTo
 import com.example.mystore.transformStringToInterfaceObject
 import com.example.mystore.ui.components.commons.TotalComponent
@@ -56,6 +57,7 @@ class MainActivity : ComponentActivity() {
     private val registerTransactionViewModel: RegisterTransactionViewModel by viewModel()
     private val registerProductViewModel: RegisterProductViewModel by viewModel()
     private val consolidatedPositionViewModel: ConsolidatedPositionViewModel by viewModel()
+    private val updateTransactionViewModel: UpdateTransactionViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,6 +69,7 @@ class MainActivity : ComponentActivity() {
                 registerTransactionViewModel,
                 registerProductViewModel,
                 consolidatedPositionViewModel,
+                updateTransactionViewModel,
             )
         }
     }
@@ -79,7 +82,8 @@ fun MyStoreApp(
     homeViewModel: HomeViewModel,
     registerTransactionViewModel: RegisterTransactionViewModel,
     registerProductViewModel: RegisterProductViewModel,
-    consolidatedPositionViewModel: ConsolidatedPositionViewModel
+    consolidatedPositionViewModel: ConsolidatedPositionViewModel,
+    updateTransactionViewModel: UpdateTransactionViewModel,
 ) {
     MyStoreTheme {
         val navController = rememberNavController()
@@ -141,7 +145,8 @@ fun MyStoreApp(
                             homeViewModel = homeViewModel,
                             registerTransactionViewModel = registerTransactionViewModel,
                             registerProductViewModel = registerProductViewModel,
-                            consolidatedPositionScreenViewModel = consolidatedPositionViewModel
+                            consolidatedPositionScreenViewModel = consolidatedPositionViewModel,
+                            updateTransactionViewModel = updateTransactionViewModel
                         ),
                         uiProps = UIProps(
                             stateProps = StateProps(

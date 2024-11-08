@@ -8,13 +8,13 @@ import androidx.compose.runtime.setValue
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.mystore.features.consolidatedposition.ui.ConsolidatedPositionScreen
-import com.example.mystore.features.updatetransaction.ui.UpdateTransactionScreen
 import com.example.mystore.features.homescreen.model.HomeScreenProps
 import com.example.mystore.features.homescreen.ui.HomeScreen
 import com.example.mystore.features.registerproduct.ui.RegisterProductScreen
 import com.example.mystore.features.registertransaction.model.RegisterTransactionScreenProps
 import com.example.mystore.features.registertransaction.model.Transaction
 import com.example.mystore.features.registertransaction.ui.RegisterTransactionScreen
+import com.example.mystore.features.updatetransaction.ui.UpdateTransactionScreen
 import com.example.mystore.navigateSingleTopTo
 import com.example.mystore.ui.model.MyStoreNavHostProps
 
@@ -70,7 +70,12 @@ fun MyStoreNavHost(
 
             // Navigates to EditTransactionScreen
             composable(route = EditTransactionScreen.route) {
-                UpdateTransactionScreen(transactionState)
+                UpdateTransactionScreen(
+                    transactionState,
+                    onUpdateTransaction = {
+                        viewModelProps.updateTransactionViewModel.updateTransaction(it)
+                    }
+                )
             }
         }
     }
