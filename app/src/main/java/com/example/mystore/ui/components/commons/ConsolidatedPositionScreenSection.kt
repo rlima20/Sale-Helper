@@ -39,9 +39,8 @@ fun ConsolidatedPositionScreenSection(
     title: String,
     transactions: List<Transaction>,
     shouldItemBeVisible: Boolean,
-    openTransactionEditScreen: Boolean,
     colorProps: ColorProps,
-    onEditTransaction: (transaction: Transaction) -> Unit
+    onNavigateToTransactionEditScreen: (transition: Transaction) -> Unit,
 ) {
     Column(
         modifier = Modifier.padding(top = 10.dp),
@@ -60,7 +59,9 @@ fun ConsolidatedPositionScreenSection(
                     title = title,
                     transactions = transactions,
                     shouldItemBeVisible = shouldItemBeVisible,
-                    onEditTransaction = { onEditTransaction(it) }
+                    onNavigateToEditTransactionScreen = {
+                        onNavigateToTransactionEditScreen(it)
+                    }
                 )
             }
         }
@@ -73,7 +74,7 @@ private fun ScreenSectionBody(
     title: String,
     transactions: List<Transaction>,
     shouldItemBeVisible: Boolean,
-    onEditTransaction: (transition: Transaction) -> Unit
+    onNavigateToEditTransactionScreen: (transition: Transaction) -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -94,7 +95,9 @@ private fun ScreenSectionBody(
         ConsolidatedPositionBody(
             transactions = transactions,
             isItemVisible = shouldItemBeVisible,
-            onEditTransaction = { onEditTransaction(it) }
+            onNavigateToEditTransactionScreen = {
+                onNavigateToEditTransactionScreen(it)
+            }
         )
     }
 }
@@ -104,7 +107,7 @@ private fun ScreenSectionBody(
 fun ConsolidatedPositionBody(
     transactions: List<Transaction>,
     isItemVisible: Boolean,
-    onEditTransaction: (transition: Transaction) -> Unit
+    onNavigateToEditTransactionScreen: (transition: Transaction) -> Unit
 ) {
     LazyRow(
         modifier = Modifier.padding(8.dp),
@@ -121,9 +124,11 @@ fun ConsolidatedPositionBody(
                         .background(colorResource(id = R.color.white)),
                 ) {
                     TransactionSection(
-                        transaction,
-                        isItemVisible,
-                        onEditTransaction = { onEditTransaction(transaction) }
+                        transaction = transaction,
+                        isItemVisible = isItemVisible,
+                        onNavigateToEditTransactionScreen = {
+                            onNavigateToEditTransactionScreen(it)
+                        }
                     )
                 }
             }
@@ -135,7 +140,7 @@ fun ConsolidatedPositionBody(
 private fun TransactionSection(
     transaction: Transaction,
     isItemVisible: Boolean,
-    onEditTransaction: () -> Unit
+    onNavigateToEditTransactionScreen: (Transaction) -> Unit
 ) {
     Row(
         modifier = Modifier.fillMaxWidth(),
@@ -143,7 +148,7 @@ private fun TransactionSection(
     ) {
         TransactionSectionText(text = transaction.product.title)
         IconButton(
-            onClick = { onEditTransaction() },
+            onClick = { onNavigateToEditTransactionScreen(transaction) },
             modifier = Modifier,
             enabled = true,
         ) {

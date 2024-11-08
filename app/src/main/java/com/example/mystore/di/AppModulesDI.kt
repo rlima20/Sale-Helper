@@ -3,6 +3,7 @@ package com.example.mystore.di
 import com.example.mystore.commons.usecase.CommonUseCase
 import com.example.mystore.commons.usecase.CommonUseCaseImpl
 import com.example.mystore.commons.viewmodel.CommonViewModel
+import com.example.mystore.features.consolidatedposition.ui.ConsolidatedPositionViewModel
 import com.example.mystore.features.homescreen.viewmodel.HomeViewModel
 import com.example.mystore.features.registerproduct.datasource.local.ProductLocalDataSource
 import com.example.mystore.features.registerproduct.datasource.local.ProductLocalDataSourceImpl
@@ -82,6 +83,10 @@ val commonViewModelDI = module {
     }
 }
 
+val consolidatedPositionViewModelDI = module {
+    viewModel { ConsolidatedPositionViewModel() }
+}
+
 val registerTransactionViewModelDI = module {
     viewModel { RegisterTransactionViewModel(get(), get()) }
 }
@@ -104,4 +109,5 @@ val appModules = listOf(
     homeViewModelDI,
     registerTransactionViewModelDI,
     registerProductViewModelDI,
+    consolidatedPositionViewModelDI,
 )

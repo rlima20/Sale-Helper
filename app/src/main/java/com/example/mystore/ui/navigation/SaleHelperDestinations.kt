@@ -3,6 +3,7 @@ package com.example.mystore.ui.navigation
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Create
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Home
 
 object HomeScreen : MyStoreDestinationInterface {
@@ -24,3 +25,9 @@ object RegisterTransactionScreen : MyStoreDestinationInterface {
     override val icon = Icons.Filled.Add
     override val route = "register_transaction_screen"
 }
+
+object EditTransactionScreen : MyStoreDestinationInterface {
+    override val icon = Icons.Filled.Edit
+    override val route = "edit_transaction_screen"
+}
+

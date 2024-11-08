@@ -15,9 +15,8 @@ fun ScreenSectionComponentPartialPreview() {
         title = "Vendas",
         transactions = listOfTransactions,
         shouldItemBeVisible = true,
-        openTransactionEditScreen = false,
         colorProps = ColorProps(),
-        onEditTransaction = {}
+        onNavigateToTransactionEditScreen = {}
     )
 }
 
