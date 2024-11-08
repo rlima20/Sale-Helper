@@ -1,4 +1,4 @@
-package com.example.mystore.features.consolidatedposition.ui
+package com.example.mystore.features.consolidatedposition.preview
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview

@@ -19,6 +19,9 @@
       <SelectionState runConfigName="ScreenSectionComponentPartialPreview">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
+      <SelectionState runConfigName="My Store.My_Store.app">
+        <option name="selectionMode" value="DROPDOWN" />
+      </SelectionState>
     </selectionStates>
   </component>
 </project>
