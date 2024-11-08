@@ -8,6 +8,7 @@ import com.example.mystore.features.registerproduct.datasource.room.dao.ProductD
 import com.example.mystore.features.registerproduct.datasource.room.entities.ProductEntity
 import com.example.mystore.features.registertransaction.room.dao.TransactionDao
 import com.example.mystore.features.registertransaction.room.entities.TransactionEntity
+import com.example.mystore.features.updatetransaction.dao.UpdateTransactionDao
 
 /**
  * The Room database for this app
@@ -24,6 +25,7 @@ abstract class AppDatabase : RoomDatabase() {
 
     abstract fun productDao(): ProductDao
     abstract fun transactionDao(): TransactionDao
+    abstract fun updateTransactionDao(): UpdateTransactionDao
 
     companion object {
 

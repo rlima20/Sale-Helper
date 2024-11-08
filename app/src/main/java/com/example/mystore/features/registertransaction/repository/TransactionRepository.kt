@@ -9,5 +9,4 @@ interface TransactionRepository {
     fun getAllTransactionsLocal(): List<Transaction>
     suspend fun insertTransaction(transaction: TransactionEntity)
     suspend fun deleteTransaction(transaction: TransactionEntity)
-    suspend fun updateTransaction(transaction: TransactionEntity)
 }

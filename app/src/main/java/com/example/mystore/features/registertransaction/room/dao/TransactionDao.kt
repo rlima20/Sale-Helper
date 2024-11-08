@@ -4,7 +4,6 @@ import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
-import androidx.room.Update
 import com.example.mystore.features.registertransaction.room.entities.TransactionEntity
 import kotlinx.coroutines.flow.Flow
 
@@ -18,9 +17,6 @@ interface TransactionDao {
 
     @Insert
     fun insertTransaction(transaction: TransactionEntity)
-
-    @Update
-    fun updateTransaction(transaction: TransactionEntity)
 
     @Delete
     fun deleteTransaction(transaction: TransactionEntity)

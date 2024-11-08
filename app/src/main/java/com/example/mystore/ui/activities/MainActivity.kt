@@ -15,12 +15,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.rememberNavController
 import com.example.mystore.R
 import com.example.mystore.commons.AppApplication
 import com.example.mystore.commons.viewmodel.CommonViewModel
-import com.example.mystore.features.consolidatedposition.ui.ConsolidatedPositionViewModel
+import com.example.mystore.features.consolidatedposition.viewmodel.ConsolidatedPositionViewModel
 import com.example.mystore.features.homescreen.viewmodel.HomeViewModel
 import com.example.mystore.features.registerproduct.model.Product
 import com.example.mystore.features.registerproduct.viewmodel.RegisterProductViewModel

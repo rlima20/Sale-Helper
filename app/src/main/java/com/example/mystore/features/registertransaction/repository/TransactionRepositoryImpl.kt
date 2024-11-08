@@ -24,8 +24,4 @@ class TransactionRepositoryImpl(
     override suspend fun deleteTransaction(transaction: TransactionEntity) {
         transactionDao.deleteTransaction(transaction)
     }
-
-    override suspend fun updateTransaction(transaction: TransactionEntity) {
-        transactionDao.updateTransaction(transaction)
-    }
 }
