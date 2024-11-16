@@ -71,4 +71,8 @@
     <string name="my_store_successful_edit">Produto editado com sucesso!"</string>
     <string name="my_store_transaction_type_sale">Venda"</string>
     <string name="my_store_transaction_type_purchase">Compra"</string>
+
+    <!-- Date picker -->
+    <string name="my_store_transaction_choose_date">Escolher data</string>
+    <string name="my_store_date_picker_date">Data</string>
 </resources>

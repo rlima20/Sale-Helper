@@ -71,10 +71,11 @@ fun MyStoreNavHost(
             // Navigates to EditTransactionScreen
             composable(route = EditTransactionScreen.route) {
                 UpdateTransactionScreen(
-                    transactionState,
+                    transaction = transactionState,
+                    updateTransactionViewModel = viewModelProps.updateTransactionViewModel,
                     onUpdateTransaction = {
                         viewModelProps.updateTransactionViewModel.updateTransaction(it)
-                    }
+                    },
                 )
             }
         }

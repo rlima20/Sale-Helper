@@ -1,3 +1,5 @@
+@file:Suppress("OPT_IN_USAGE_FUTURE_ERROR")
+
 package com.example.mystore.features.registertransaction.ui
 
 import android.annotation.SuppressLint
@@ -39,7 +41,7 @@ import com.example.mystore.features.registertransaction.model.Transaction
 import com.example.mystore.features.registertransaction.viewmodel.RegisterTransactionViewModel
 import com.example.mystore.limitTo
 import com.example.mystore.setItemSize
-import com.example.mystore.toShortDateString
+import com.example.mystore.toBrazilianDateFormat
 import com.example.mystore.toTransactionString
 import com.example.mystore.toTransactionType
 import com.example.mystore.ui.components.commons.AlertDialogComponent
@@ -235,7 +237,7 @@ private fun createTransaction(
         product = product,
         transactionType = transactionType,
         unitValue = unitValue,
-        transactionDate = Calendar.getInstance().time.toShortDateString(),
+        transactionDate = Calendar.getInstance().time.time.toBrazilianDateFormat(),
         quantity = quantity,
         transactionAmount = quantity * unitValue,
     )
@@ -294,7 +296,6 @@ private fun setMaxQuantityByTransactionType(
     return when (transactionType) {
         TransactionType.SALE -> calculateSaleQuantity(maxQuantity, newTransaction)
         TransactionType.PURCHASE -> newTransaction.product.maxQuantityToBuy
-        else -> newTransaction.product.quantity
     }
 }
 

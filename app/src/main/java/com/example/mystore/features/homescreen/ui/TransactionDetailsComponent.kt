@@ -168,7 +168,7 @@ private fun TransactionDetailsBody(
             transactionDetailColors = Pair(R.color.color_500, R.color.color_50),
             rightSide = {
                 TextCurrencyComponent(
-                    value = Date().toShortDateString(),
+                    value = transaction.transactionDate,
                     shouldItemBeVisible = shouldItemBeVisible,
                     type = Type.DATE,
                     color = R.color.color_500,

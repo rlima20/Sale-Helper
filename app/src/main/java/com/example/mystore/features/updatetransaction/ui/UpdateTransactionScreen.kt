@@ -1,14 +1,6 @@
 package com.example.mystore.features.updatetransaction.ui
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Button
-import androidx.compose.material.Text
-import androidx.compose.material.TextField
-import androidx.compose.material3.DatePicker
-import androidx.compose.material3.DatePickerDefaults
-import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
@@ -16,98 +8,109 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.onFocusEvent
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.DialogProperties
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.res.stringResource
+import com.example.mystore.R
 import com.example.mystore.features.registertransaction.model.Transaction
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
-import java.util.TimeZone
+import com.example.mystore.features.updatetransaction.viewmodel.UpdateTransactionViewModel
+import com.example.mystore.ui.components.commons.OutLinedTextFieldComponent
+import com.example.mystore.ui.components.commons.ScreenSectionComponent
+import com.example.mystore.ui.model.OutLinedTextFieldComponentProps
+import com.example.mystore.ui.model.TextFieldAppearance
+import com.example.mystore.ui.model.TextFieldCallbacks
+
+/* todo - update screen here */
+/*
+* Transação | Edição
+* nome - Adidas
+* tipo - Venda
+* data - 10/10/2023
+* valor unitário - 15,00
+* Quantifier/ botão salvar
+* */
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun UpdateTransactionScreen(
-    transactionState: Transaction,
+    transaction: Transaction,
+    updateTransactionViewModel: UpdateTransactionViewModel,
     onUpdateTransaction: (transaction: Transaction) -> Unit
 ) {
+    updateTransactionViewModel.viewState.transaction.value = transaction
+
     val focusManager = LocalFocusManager.current
     var showDatePickerDialog by remember { mutableStateOf(false) }
     val datePickerState = rememberDatePickerState()
-    var selectedDate by remember { mutableStateOf("") }
+    var selectedDate by remember { mutableStateOf(transaction.transactionDate) }
+    val transactionViewState = updateTransactionViewModel.viewState.transaction
 
     Column {
-        Button(onClick = {
-            onUpdateTransaction(
-                Transaction(
-                    id = transactionState.id,
-                    transactionType = transactionState.transactionType,
-                    unitValue = 1234.00,
-                    transactionDate = transactionState.transactionDate,
-                    quantity = transactionState.quantity,
-                    transactionAmount = transactionState.transactionAmount,
-                    product = transactionState.product,
-                )
-            )
-            showDatePickerDialog = true
-        }) {
-            Text(text = "Alterar transação")
-        }
-        if (showDatePickerDialog) {
-            DatePickerDialog(
-                onDismissRequest = { showDatePickerDialog = false },
-                confirmButton = {
-                    Button(
-                        onClick = {
-                            datePickerState
-                                .selectedDateMillis?.let { millis ->
-                                    selectedDate = millis.toBrazilianDateFormat()
-                                }
-                            showDatePickerDialog = false
-                        }) {
-                        Text(text = "Escolher data")
-                    }
-                },
-                modifier = Modifier,
-                dismissButton = null,
-                shape = DatePickerDefaults.shape,
-                tonalElevation = DatePickerDefaults.TonalElevation,
-                colors = DatePickerDefaults.colors(),
-                properties = DialogProperties(usePlatformDefaultWidth = false),
-            ){
-                DatePicker(datePickerState)
+        ScreenSectionComponent(
+            title = TRANSACTION_UPDATE,
+            body = {
+                UpdateTransactionComponent(transaction = transactionViewState.value)
+
+//                Button(onClick = {
+//                    onUpdateTransaction(
+//                        Transaction(
+//                            id = transactionViewState.value.id,
+//                            transactionType = transactionViewState.value.transactionType,
+//                            unitValue = 1234.00,
+//                            transactionDate = selectedDate,
+//                            quantity = transactionViewState.value.quantity,
+//                            transactionAmount = transactionViewState.value.transactionAmount,
+//                            product = transactionViewState.value.product,
+//                        )
+//                    )
+//                    showDatePickerDialog = true
+//                }, content = { Text(text = "Alterar transação") })
+//                if (showDatePickerDialog) {
+//                    DatePickerComponent(
+//                        selectedDate = selectedDate,
+//                        datePickerState = datePickerState,
+//                        onShowDatePickerDialog = { showDatePickerDialog = it },
+//                        onSelectedDate = { selectedDate = it },
+//                        onValueChange = { selectedDate = it },
+//                        onClearFocus = { focusManager.clearFocus(force = true) }
+//                    )
+//                }
             }
-        }
-        TextField(
-            value = selectedDate,
-            onValueChange = { selectedDate = it },
-            Modifier
-                .padding(8.dp)
-                .fillMaxWidth()
-                .onFocusEvent {
-                    if (it.isFocused) {
-                        showDatePickerDialog = true
-                        focusManager.clearFocus(force = true)
-                    }
-                },
-            label = {
-                Text("Date")
-            },
-            readOnly = true
         )
     }
 }
 
-fun Long.toBrazilianDateFormat(
-    pattern: String = "dd/MM/yyyy"
-): String {
-    val date = Date(this)
-    val formatter = SimpleDateFormat(
-        pattern, Locale("pt-br")
-    ).apply {
-        timeZone = TimeZone.getTimeZone("GMT")
-    }
-    return formatter.format(date)
+@OptIn(ExperimentalComposeUiApi::class)
+@Composable
+fun UpdateTransactionComponent(
+    transaction: Transaction
+) {
+
+    // Transaction Product title
+    val titleKeyboardController = LocalSoftwareKeyboardController.current
+    val titleFocusManager = LocalFocusManager.current
+
+    OutLinedTextFieldComponent(
+        outLinedTextFieldComponentProps = OutLinedTextFieldComponentProps(
+            appearance = TextFieldAppearance(
+                enabled = false,
+                label = stringResource(R.string.my_store_product_title),
+                modifier = Modifier,
+                transactionDetailColors = Triple(
+                    R.color.color_900,
+                    R.color.white,
+                    R.color.white
+                )
+            ),
+            selectedText = transaction.product.title,
+            keyboardController = titleKeyboardController,
+            focusManager = titleFocusManager,
+            callbacks = TextFieldCallbacks()
+        )
+    )
 }
+
+private const val TRANSACTION_UPDATE = "Transação | EDIÇÃO"
+
