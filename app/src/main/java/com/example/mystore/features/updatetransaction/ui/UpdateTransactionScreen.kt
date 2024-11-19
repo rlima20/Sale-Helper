@@ -110,30 +110,4 @@ fun UpdateTransactionComponent(
     )
 }
 
-
-//                Button(onClick = {
-//                    onUpdateTransaction(
-//                        Transaction(
-//                            id = transactionViewState.value.id,
-//                            transactionType = transactionViewState.value.transactionType,
-//                            unitValue = 1234.00,
-//                            transactionDate = selectedDate,
-//                            quantity = transactionViewState.value.quantity,
-//                            transactionAmount = transactionViewState.value.transactionAmount,
-//                            product = transactionViewState.value.product,
-//                        )
-//                    )
-//                    showDatePickerDialog = true
-//                }, content = { Text(text = "Alterar transação") })
-//                if (showDatePickerDialog) {
-//                    DatePickerComponent(
-//                        selectedDate = selectedDate,
-//                        datePickerState = datePickerState,
-//                        onShowDatePickerDialog = { showDatePickerDialog = it },
-//                        onSelectedDate = { selectedDate = it },
-//                        onValueChange = { selectedDate = it },
-//                        onClearFocus = { focusManager.clearFocus(force = true) }
-//                    )
-//                }
-
 private const val TRANSACTION_UPDATE = "Transação | EDIÇÃO"
