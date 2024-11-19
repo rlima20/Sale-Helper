@@ -48,15 +48,14 @@ fun DatePickerComponent(
             properties = DialogProperties(usePlatformDefaultWidth = false),
             content = { DatePicker(datePickerState) }
         )
-
-        TextField(
-            value = selectedDate,
-            onValueChange = { onValueChange(it) },
-            modifier = Modifier.setTextFieldModifier(onShowDatePickerDialog, onClearFocus),
-            label = { Text(stringResource(R.string.my_store_date_picker_date)) },
-            readOnly = true
-        )
     }
+    TextField(
+        value = selectedDate,
+        onValueChange = { onValueChange(it) },
+        modifier = Modifier.setTextFieldModifier(onShowDatePickerDialog, onClearFocus),
+        label = { Text(stringResource(R.string.my_store_date_picker_date)) },
+        readOnly = true
+    )
 }
 
 @SuppressLint("ModifierFactoryUnreferencedReceiver", "UnnecessaryComposedModifier")
