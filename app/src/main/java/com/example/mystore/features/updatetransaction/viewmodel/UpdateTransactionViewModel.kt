@@ -7,7 +7,6 @@ import com.example.mystore.features.registertransaction.model.Transaction
 import com.example.mystore.features.updatetransaction.usecase.UpdateTransactionUseCase
 import com.example.mystore.features.updatetransaction.viewstate.UpdateTransactionScreenState
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
 class UpdateTransactionViewModel(
