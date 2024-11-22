@@ -76,6 +76,7 @@ fun MyStoreNavHost(
                     onUpdateTransaction = {
                         viewModelProps.updateTransactionViewModel.updateTransaction(it)
                     },
+                    shouldItemBeVisible = uiProps.stateProps.shouldItemBeVisible
                 )
             }
         }
