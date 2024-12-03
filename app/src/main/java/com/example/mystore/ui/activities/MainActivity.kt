@@ -10,6 +10,7 @@ import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableDoubleStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -94,8 +95,8 @@ fun MyStoreApp(
         val isEditMode: Boolean by registerProductViewModel.registerProductViewState.isEditMode.collectAsState()
         var currentScreen: MyStoreDestinationInterface by remember { mutableStateOf(HomeScreen) }
         var expandedBottomBar: Boolean by remember { mutableStateOf(false) }
-        var totalAmountOfSales: Double by remember { mutableStateOf(0.0) }
-        var totalAmountOfPurchases: Double by remember { mutableStateOf(0.0) }
+        var totalAmountOfSales: Double by remember { mutableDoubleStateOf(0.0) }
+        var totalAmountOfPurchases: Double by remember { mutableDoubleStateOf(0.0) }
         var product: Product by remember { mutableStateOf(Product()) }
         var shouldDisplayIcon: Boolean by remember { mutableStateOf(true) }
 
@@ -186,7 +187,6 @@ fun MyStoreApp(
                             )
                         )
                     )
-
                 )
             },
             bottomBar = {

@@ -71,10 +71,15 @@ fun MyStoreNavHost(
             // Navigates to EditTransactionScreen
             composable(route = EditTransactionScreen.route) {
                 UpdateTransactionScreen(
-                    transactionState,
+                    transaction = transactionState,
+                    updateTransactionViewModel = viewModelProps.updateTransactionViewModel,
                     onUpdateTransaction = {
                         viewModelProps.updateTransactionViewModel.updateTransaction(it)
-                    }
+                        viewModelProps.updateTransactionViewModel.getAllTransactions()
+                        composable(route = HomeScreen.route) {
+                            NavigateToHomeScreen()
+                        }
+                    },
                 )
             }
         }
@@ -144,9 +149,9 @@ private fun MyStoreNavHostProps.NavigateToConsolidatedPositionScreen(
 
 @Composable
 private fun MyStoreNavHostProps.NavigateToHomeScreen(
-    onTransactionClearAllState: (onTransactionClearAll: Boolean) -> Unit,
-    onProductClearAllState: (onTransactionClearAll: Boolean) -> Unit,
-    onUpdateTransaction: (Transaction) -> Unit
+    onTransactionClearAllState: (onTransactionClearAll: Boolean) -> Unit = {},
+    onProductClearAllState: (onTransactionClearAll: Boolean) -> Unit = {},
+    onUpdateTransaction: (Transaction) -> Unit = {}
 ) {
     onTransactionClearAllState(true)
     onProductClearAllState(true)
