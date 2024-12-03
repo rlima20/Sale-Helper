@@ -104,6 +104,12 @@ fun String.toTransactionType(): TransactionType = when (this) {
     else -> TransactionType.PURCHASE
 }
 
+fun String.toFormattedType(): TransactionType = when (this) {
+    TransactionType.PURCHASE.name.toTransactionString() -> TransactionType.PURCHASE
+    TransactionType.SALE.name.toTransactionString() -> TransactionType.SALE
+    else -> TransactionType.PURCHASE
+}
+
 fun Date.toShortDateString(): String {
     val formatter = SimpleDateFormat("EEE MMM dd", Locale.getDefault())
     return formatter.format(this)

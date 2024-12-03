@@ -119,7 +119,7 @@ val registerProductViewModelDI = module {
 }
 
 val updateTransactionViewModelDI = module {
-    viewModel { UpdateTransactionViewModel(get(), get()) }
+    viewModel { UpdateTransactionViewModel(get(), get(), get()) }
 }
 
 val appModules = listOf(

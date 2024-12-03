@@ -187,7 +187,6 @@ fun MyStoreApp(
                             )
                         )
                     )
-
                 )
             },
             bottomBar = {

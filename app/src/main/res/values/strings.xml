@@ -70,6 +70,7 @@
     <string name="my_store_type">Tipo de transação</string>
     <string name="my_store_successful_registry">Produto cadastrado com sucesso!</string>
     <string name="my_store_successful_edit">Produto editado com sucesso!"</string>
+    <string name="my_store_successful_edit_transaction">Transação alterada com sucesso!"</string>
     <string name="my_store_transaction_type_sale">Venda"</string>
     <string name="my_store_transaction_type_purchase">Compra"</string>
 

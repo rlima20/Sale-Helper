@@ -194,7 +194,7 @@ private fun verifyTransactionType(transaction: Transaction) =
     else true
 
 @Composable
-private fun setText(transaction: Transaction, total: Double) =
+fun setText(transaction: Transaction, total: Double) =
     if ((transaction.product.quantity == 0) && (transaction.transactionType == TransactionType.SALE)) "0"
     else total.toString()
 
