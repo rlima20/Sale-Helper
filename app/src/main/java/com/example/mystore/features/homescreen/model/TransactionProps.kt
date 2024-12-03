@@ -7,4 +7,5 @@ data class TransactionProps(
     val shouldItemBeVisible: Boolean,
     val onClick: (Transaction) -> Unit = {},
     val onLongClick: (Transaction) -> Unit = {},
+    val onEditTransactionIconClick: (Transaction) -> Unit
 )

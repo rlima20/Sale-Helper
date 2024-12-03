@@ -10,6 +10,7 @@ import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableDoubleStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -19,10 +20,12 @@ import androidx.navigation.compose.rememberNavController
 import com.example.mystore.R
 import com.example.mystore.commons.AppApplication
 import com.example.mystore.commons.viewmodel.CommonViewModel
+import com.example.mystore.features.consolidatedposition.viewmodel.ConsolidatedPositionViewModel
 import com.example.mystore.features.homescreen.viewmodel.HomeViewModel
 import com.example.mystore.features.registerproduct.model.Product
 import com.example.mystore.features.registerproduct.viewmodel.RegisterProductViewModel
 import com.example.mystore.features.registertransaction.viewmodel.RegisterTransactionViewModel
+import com.example.mystore.features.updatetransaction.viewmodel.UpdateTransactionViewModel
 import com.example.mystore.navigateSingleTopTo
 import com.example.mystore.transformStringToInterfaceObject
 import com.example.mystore.ui.components.commons.TotalComponent
@@ -54,6 +57,8 @@ class MainActivity : ComponentActivity() {
     private val homeViewModel: HomeViewModel by viewModel()
     private val registerTransactionViewModel: RegisterTransactionViewModel by viewModel()
     private val registerProductViewModel: RegisterProductViewModel by viewModel()
+    private val consolidatedPositionViewModel: ConsolidatedPositionViewModel by viewModel()
+    private val updateTransactionViewModel: UpdateTransactionViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,6 +69,8 @@ class MainActivity : ComponentActivity() {
                 homeViewModel,
                 registerTransactionViewModel,
                 registerProductViewModel,
+                consolidatedPositionViewModel,
+                updateTransactionViewModel,
             )
         }
     }
@@ -76,6 +83,8 @@ fun MyStoreApp(
     homeViewModel: HomeViewModel,
     registerTransactionViewModel: RegisterTransactionViewModel,
     registerProductViewModel: RegisterProductViewModel,
+    consolidatedPositionViewModel: ConsolidatedPositionViewModel,
+    updateTransactionViewModel: UpdateTransactionViewModel,
 ) {
     MyStoreTheme {
         val navController = rememberNavController()
@@ -86,8 +95,8 @@ fun MyStoreApp(
         val isEditMode: Boolean by registerProductViewModel.registerProductViewState.isEditMode.collectAsState()
         var currentScreen: MyStoreDestinationInterface by remember { mutableStateOf(HomeScreen) }
         var expandedBottomBar: Boolean by remember { mutableStateOf(false) }
-        var totalAmountOfSales: Double by remember { mutableStateOf(0.0) }
-        var totalAmountOfPurchases: Double by remember { mutableStateOf(0.0) }
+        var totalAmountOfSales: Double by remember { mutableDoubleStateOf(0.0) }
+        var totalAmountOfPurchases: Double by remember { mutableDoubleStateOf(0.0) }
         var product: Product by remember { mutableStateOf(Product()) }
         var shouldDisplayIcon: Boolean by remember { mutableStateOf(true) }
 
@@ -136,7 +145,9 @@ fun MyStoreApp(
                         viewModelProps = ViewModelProps(
                             homeViewModel = homeViewModel,
                             registerTransactionViewModel = registerTransactionViewModel,
-                            registerProductViewModel = registerProductViewModel
+                            registerProductViewModel = registerProductViewModel,
+                            consolidatedPositionScreenViewModel = consolidatedPositionViewModel,
+                            updateTransactionViewModel = updateTransactionViewModel
                         ),
                         uiProps = UIProps(
                             stateProps = StateProps(
@@ -176,7 +187,6 @@ fun MyStoreApp(
                             )
                         )
                     )
-
                 )
             },
             bottomBar = {

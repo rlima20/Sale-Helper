@@ -6,6 +6,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
@@ -22,13 +23,14 @@ internal fun TextCurrencyComponent(
     type: Type,
     shouldItemBeVisible: Boolean,
     fontSize: TextUnit = 18.sp,
+    fontWeight: FontWeight? = MaterialTheme.typography.h5.fontWeight,
     color: Int = R.color.color_800,
     paddings: Pair<Dp, Dp> = Pair(8.dp, 8.dp),
 ) {
     Text(
         modifier = Modifier.padding(start = paddings.first, end = paddings.second),
         fontSize = fontSize,
-        fontWeight = MaterialTheme.typography.h5.fontWeight,
+        fontWeight = fontWeight,
         color = colorResource(setColorBasedType(type, color, value)),
         text = setUnit(value, type, shouldItemBeVisible).limitTo(14),
         overflow = TextOverflow.Ellipsis,

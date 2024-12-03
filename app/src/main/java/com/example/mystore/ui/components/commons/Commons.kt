@@ -50,6 +50,16 @@ fun setUnit(text: String, type: Type, shouldItemBeVisible: Boolean) =
         else -> text.toDouble().toCurrency(shouldItemBeVisible)
     }
 
+fun toDoubleTransaction(text: String, type: Type, shouldItemBeVisible: Boolean) =
+    when (type) {
+        Type.QUANTITY -> text.toInt().toUnity(shouldItemBeVisible)
+        Type.QUANTITY_OOS -> text.toInt().toUnityOutOfStock(shouldItemBeVisible)
+        Type.QUANTITY_TRANSACTION_DETAIL -> text.toInt().toUnity(shouldItemBeVisible)
+        Type.STRING_ONLY -> text
+        Type.DATE -> text
+        else -> text.toDouble().toCurrency(shouldItemBeVisible)
+    }
+
 fun validateSection(section: Section): String {
     return when (section) {
         Section.RESUME -> {
@@ -91,7 +101,7 @@ fun ValidateSection(
     if (sectionEmptyStateInfo.data.isNotEmpty()) {
         sectionInfo.section()
     } else {
-         if (sectionInfo.sectionName != Section.NONE) {
+        if (sectionInfo.sectionName != Section.NONE) {
             if (screen == Screens.REGISTER_PRODUCT || screen == Screens.REGISTER_TRANSACTION) {
                 sectionInfo.section()
             } else if (sectionEmptyStateInfo.data.isEmpty()) {
@@ -102,7 +112,7 @@ fun ValidateSection(
             } else {
                 sectionInfo.section()
             }
-         }
+        }
     }
 }
 

@@ -21,6 +21,7 @@ import com.example.mystore.ui.navigation.RegisterTransactionScreen
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import java.util.TimeZone
 
 private val application = AppApplication.instance
 
@@ -103,6 +104,12 @@ fun String.toTransactionType(): TransactionType = when (this) {
     else -> TransactionType.PURCHASE
 }
 
+fun String.toFormattedType(): TransactionType = when (this) {
+    TransactionType.PURCHASE.name.toTransactionString() -> TransactionType.PURCHASE
+    TransactionType.SALE.name.toTransactionString() -> TransactionType.SALE
+    else -> TransactionType.PURCHASE
+}
+
 fun Date.toShortDateString(): String {
     val formatter = SimpleDateFormat("EEE MMM dd", Locale.getDefault())
     return formatter.format(this)
@@ -143,3 +150,11 @@ fun String.transformStringToInterfaceObject(
 fun Boolean.setPainter(): Painter =
     if (this) painterResource(id = R.drawable.my_store_show_icon)
     else painterResource(id = R.drawable.my_store_hidden_icon)
+
+fun Long.toBrazilianDateFormat(pattern: String = "dd/MM/yyyy"): String {
+    val date = Date(this)
+    val formatter = SimpleDateFormat(pattern, Locale("pt-br")).apply {
+        timeZone = TimeZone.getTimeZone("GMT")
+    }
+    return formatter.format(date)
+}

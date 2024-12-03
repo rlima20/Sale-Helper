@@ -9,9 +9,14 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -34,6 +39,7 @@ fun TransactionComponent(
     shouldItemBeVisible: Boolean,
     onClick: (Transaction) -> Unit = {},
     onLongClick: (Transaction) -> Unit = {},
+    onEditTransactionIconClick: (Transaction) -> Unit
 ) {
     Surface(
         elevation = 4.dp,
@@ -62,7 +68,9 @@ fun TransactionComponent(
                     modifier = Modifier
                         .padding(start = 8.dp),
                     verticalAlignment = Alignment.CenterVertically,
-                ) { TextTransactionType(transaction.transactionType) }
+                ) {
+                    TextTransactionType(transaction.transactionType)
+                }
                 Row(
                     modifier = Modifier
                         .padding(start = 8.dp, end = 8.dp)
@@ -75,6 +83,18 @@ fun TransactionComponent(
                         leftSideText = transaction.product.title.limitTo(20),
                         fontSize = 16.sp,
                     )
+                    IconButton(
+                        onClick = { onEditTransactionIconClick(transaction) },
+                        modifier = Modifier,
+                        enabled = true,
+                    ) {
+                        Icon(
+                            modifier = Modifier.size(18.dp),
+                            imageVector = Icons.Default.Edit,
+                            contentDescription = null,
+                            tint = colorResource(R.color.color_900)
+                        )
+                    }
                     TextCurrencyComponent(
                         value = transaction.transactionAmount.toString(),
                         shouldItemBeVisible = shouldItemBeVisible,

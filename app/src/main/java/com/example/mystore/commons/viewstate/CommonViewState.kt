@@ -13,7 +13,6 @@ import kotlinx.coroutines.flow.StateFlow
 
 class CommonViewState {
     private val application = AppApplication.instance
-
     val listOfProducts: MutableStateFlow<List<Product>> = MutableStateFlow(mutableListOf())
     val listOfSales: MutableState<List<Transaction>> = mutableStateOf(listOf())
     val listOfPurchases: MutableState<List<Transaction>> = mutableStateOf(listOf())

@@ -33,6 +33,7 @@
     <string name="my_store_debits">Débitos: </string>
     <string name="my_store_gross_revenue">Receita bruta: </string>
     <string name="my_store_unit_value">Valor unitário: </string>
+    <string name="my_store_unit_value_update_transaction">Valor unitário</string>
     <string name="my_store_net_revenue">Receita líquida: </string>
     <string name="my_store_revenue">Lucro: </string>
     <string name="my_store_stock_value">Valor em estoque: </string>
@@ -69,6 +70,11 @@
     <string name="my_store_type">Tipo de transação</string>
     <string name="my_store_successful_registry">Produto cadastrado com sucesso!</string>
     <string name="my_store_successful_edit">Produto editado com sucesso!"</string>
+    <string name="my_store_successful_edit_transaction">Transação alterada com sucesso!"</string>
     <string name="my_store_transaction_type_sale">Venda"</string>
     <string name="my_store_transaction_type_purchase">Compra"</string>
+
+    <!-- Date picker -->
+    <string name="my_store_transaction_choose_date">Escolher data</string>
+    <string name="my_store_date_picker_date">Data</string>
 </resources>
